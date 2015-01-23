@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+	<persistence-unit name="llz" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>com.game.bizModules.login.entity.UserEntity</class>
+        <properties>
+        	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/llz_s001_game?characterEncoding=utf-8&amp;useServerPrepStmts=true" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="root" />
+
+			<property name="eclipselink.connection-pool.default.initial" value="1" />
+            <property name="eclipselink.connection-pool.default.min" value="64" />
+            <property name="eclipselink.connection-pool.default.max" value="64" />
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/game_bizModules"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/code_libs"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/game_core"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/game_server"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/log_server"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs.common"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

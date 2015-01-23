@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="build" name="SceneServer.BizModules">
+	<!--// import //-->
+	<import file="../../Common/make/ant-jarOneProj.xml" />
+
+	<!--// 目标项目 //-->
+	<path id="targetProj" location="${basedir}/.." />
+
+	<!--// 相关项目 //-->
+	<path id="relativeProjs">
+		<dirset dir="../../">
+			<include name="Common" />
+			<include name="SceneServer" />
+		</dirset>
+	</path>
+
+	<!--// 引用包目录 //-->
+	<path id="libs">
+		<pathelement location="${LIBS_DIR}/json-1.0.0.jar"/>
+    </path>
+
+	<!--// 构建当前项目 //-->
+	<target name="build">
+		<jarOneProj targetProj="targetProj" targetVer="${targetVer}" 
+			libs="libs" 
+			relativeProjs="relativeProjs" />
+	</target>
+
+</project>

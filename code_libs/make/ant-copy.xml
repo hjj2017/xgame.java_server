@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="main" name="codeLibs">
+	<!--// import //-->
+	<import file="./ant-globalsConfig.xml" />
+	<property name="copyToDir" value="/C:/hdsgz/copy" />
+
+	<!--// 分拣文件 //-->
+	<target name="main">
+    	<antcall target="remkDirs" />
+		<antcall target="copyJars" />
+	</target>
+
+	<!--// 重建目录 //-->
+	<target name="remkDirs">
+		<delete dir="${copyToDir}/libs" />
+		<mkdir dir="${copyToDir}/libs" />
+		<mkdir dir="${copyToDir}/libs/java" />
+	</target>
+
+	<!--// 复制依赖包 //-->
+	<target name="copyJars">
+		<copy todir="${copyToDir}/libs/java">
+			<fileset dir="../libs" includes="**/*.jar" />
+		</copy>
+	</target>
+
+</project>

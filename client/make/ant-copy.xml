@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="main" name="client">
+	<!--// import //-->
+	<property name="copyToDir" value="/C:/hdsgz/copy" />
+
+	<!--// 分拣文件 //-->
+	<target name="main">
+    	<antcall target="remkDirs" />
+		<antcall target="copyPHP" />
+	</target>
+
+	<!--// 重建目录 //-->
+	<target name="remkDirs">
+		<delete dir="${copyToDir}/client" />
+		 <mkdir dir="${copyToDir}/client" />
+		 <mkdir dir="${copyToDir}/client/BR" />
+	</target>
+
+	<!--// 复制依赖包 //-->
+	<target name="copyPHP">
+		<copy todir="${copyToDir}/client">
+			<fileset dir="../">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<delete dir="${copyToDir}/client/.settings" />
+		<delete dir="${copyToDir}/client/make" />
+		<delete>
+			<fileset dir="${copyToDir}/client">
+				<include name=".project" />
+				<include name="config/log4php.config.xml" />
+				<include name="maintenance/WhiteListConfig.php" />
+				<include name="maintenance/Show.html" />
+				<include name="maintenance/TimeConfig.php" />
+			</fileset>
+		</delete>
+	</target>
+
+</project>
