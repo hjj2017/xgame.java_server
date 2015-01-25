@@ -5,7 +5,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 
-import com.game.core.NullArgsError;
+import com.game.part.NullArgsError;
 
 /**
  * 消息解码器工厂类

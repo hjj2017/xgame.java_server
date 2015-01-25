@@ -1,8 +1,8 @@
 package com.game.gameServer.framework;
 
-import com.game.core.io.IoOperServ;
-import com.game.core.msg.MsgDispatcher;
 import com.game.gameServer.io.IoOperThreadEnum;
+import com.game.part.io.IoOperServ;
+import com.game.part.msg.MsgDispatcher;
 
 /**
  * 网关服务器内核类

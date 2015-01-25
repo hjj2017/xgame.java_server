@@ -1,6 +1,6 @@
 package com.game.bizModules.cd.model;
 
-import com.game.core.utils.EnumHelper;
+import com.game.part.utils.EnumHelper;
 
 /**
  * Cd 类型

@@ -3,7 +3,7 @@ package com.game.bizModules.cd.serv;
 import com.game.bizModules.cd.model.CdTimer;
 import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.bizModules.character.Human;
-import com.game.core.utils.Assert;
+import com.game.part.utils.Assert;
 
 /**
  * 增加 Cd 时间

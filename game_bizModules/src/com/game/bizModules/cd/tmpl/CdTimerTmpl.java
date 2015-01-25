@@ -3,12 +3,12 @@ package com.game.bizModules.cd.tmpl;
 import java.util.Map;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.core.tmpl.anno.XlsxTmpl;
-import com.game.core.tmpl.anno.Id;
-import com.game.core.tmpl.anno.IdMap;
-import com.game.core.tmpl.anno.PlainColumn;
-import com.game.core.tmpl.anno.Validator;
-import com.game.core.utils.Assert;
+import com.game.part.tmpl.anno.Id;
+import com.game.part.tmpl.anno.IdMap;
+import com.game.part.tmpl.anno.PlainColumn;
+import com.game.part.tmpl.anno.Validator;
+import com.game.part.tmpl.anno.XlsxTmpl;
+import com.game.part.utils.Assert;
 
 /**
  * Cd 计时器模板

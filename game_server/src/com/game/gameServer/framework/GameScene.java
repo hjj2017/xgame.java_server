@@ -1,8 +1,8 @@
 package com.game.gameServer.framework;
 
-import com.game.core.msg.BaseMsg;
-import com.game.core.scene.MyScene;
 import com.game.gameServer.msg.AbstractGameMsg;
+import com.game.part.msg.BaseMsg;
+import com.game.part.scene.MyScene;
 
 /**
  * 游戏场景

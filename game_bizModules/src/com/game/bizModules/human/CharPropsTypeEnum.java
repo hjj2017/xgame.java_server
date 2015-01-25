@@ -1,6 +1,6 @@
 package com.game.bizModules.human;
 
-import com.game.core.utils.EnumHelper;
+import com.game.part.utils.EnumHelper;
 
 /**
  * 角色属性枚举, 根据战斗系统中的属性而来.

@@ -1,6 +1,6 @@
 package com.game.gameServer.msg;
 
-import com.game.core.msg.BaseMsg;
+import com.game.part.msg.BaseMsg;
 
 /**
  * 游戏消息, 

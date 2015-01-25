@@ -1,7 +1,7 @@
 package com.game.gameServer.io;
 
-import com.game.core.msg.BaseMsg;
-import com.game.core.msg.MsgDispatcher;
+import com.game.part.msg.BaseMsg;
+import com.game.part.msg.MsgDispatcher;
 
 /**
  * 消息派发接口

@@ -10,6 +10,8 @@ import javax.persistence.Persistence;
 import org.junit.Test;
 
 import com.game.bizModules.login.entity.UserEntity;
+import com.game.part.dao.CommDao;
+import com.game.part.dao.DaoLog;
 
 /**
  * 测试登陆 DAO

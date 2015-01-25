@@ -12,7 +12,7 @@ import com.game.bizModules.cd.model.CdTimer;
 import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.bizModules.human.Human;
 import com.game.bizModules.human.IHumanEventListen;
-import com.game.core.utils.Assert;
+import com.game.part.utils.Assert;
 
 /**
  * 冷却队列服务

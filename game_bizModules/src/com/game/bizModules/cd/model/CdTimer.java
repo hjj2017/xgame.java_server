@@ -1,6 +1,6 @@
 package com.game.bizModules.cd.model;
 
-import com.game.core.utils.Assert;
+import com.game.part.utils.Assert;
 
 /**
  * 冷却计时器

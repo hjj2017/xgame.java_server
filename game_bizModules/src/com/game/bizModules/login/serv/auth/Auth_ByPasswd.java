@@ -6,7 +6,7 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import com.game.bizModules.login.entity.UserEntity;
-import com.game.core.dao.CommDao;
+import com.game.part.dao.CommDao;
 
 /**
  * 根据用户名和密码验证

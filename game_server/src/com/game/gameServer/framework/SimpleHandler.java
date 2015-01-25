@@ -6,8 +6,8 @@ import java.util.Set;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.game.core.handler.BaseHandler;
-import com.game.core.msg.BaseMsg;
+import com.game.part.handler.BaseHandler;
+import com.game.part.msg.BaseMsg;
 
 /**
  * 消息处理器

@@ -1,6 +1,6 @@
 package com.game.gameServer.io;
 
-import com.game.core.io.IIoOper;
+import com.game.part.io.IIoOper;
 
 /**
  * 可绑定的 IO 操作

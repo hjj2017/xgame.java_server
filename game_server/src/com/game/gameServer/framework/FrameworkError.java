@@ -1,6 +1,6 @@
 package com.game.gameServer.framework;
 
-import com.game.core.Error;
+import com.game.part.Error;
 
 /**
  * 内核错误

@@ -3,9 +3,9 @@ package com.game.gameServer.framework;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.core.msg.BaseMsg;
-import com.game.core.msg.MsgDispatcher;
-import com.game.core.utils.Assert;
+import com.game.part.msg.BaseMsg;
+import com.game.part.msg.MsgDispatcher;
+import com.game.part.utils.Assert;
 
 /**
  * 消息 IO 处理器

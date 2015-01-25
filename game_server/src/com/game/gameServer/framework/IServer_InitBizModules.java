@@ -3,16 +3,16 @@ package com.game.gameServer.framework;
 import java.text.MessageFormat;
 import java.util.Set;
 
-import com.game.core.Error;
-import com.game.core.handler.BaseHandler;
-import com.game.core.handler.HandlerObjMapper;
-import com.game.core.msg.BaseMsg;
-import com.game.core.msg.MsgObjMapper;
-import com.game.core.tmpl.XlsxTmplServ;
-import com.game.core.utils.Assert;
-import com.game.core.utils.ClazzUtil;
-import com.game.core.utils.PackageUtil;
 import com.game.gameServer.tmpl.AbstractXlsxTmpl;
+import com.game.part.Error;
+import com.game.part.handler.BaseHandler;
+import com.game.part.handler.HandlerObjMapper;
+import com.game.part.msg.BaseMsg;
+import com.game.part.msg.MsgObjMapper;
+import com.game.part.tmpl.XlsxTmplServ;
+import com.game.part.utils.Assert;
+import com.game.part.utils.ClazzUtil;
+import com.game.part.utils.PackageUtil;
 
 /**
  * 初始化业务模块

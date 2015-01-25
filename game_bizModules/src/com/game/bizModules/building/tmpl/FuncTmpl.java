@@ -1,6 +1,6 @@
 package com.game.bizModules.building.tmpl;
 
-import com.game.core.tmpl.anno.PlainColumn;
+import com.game.part.tmpl.anno.PlainColumn;
 
 /**
  * 功能模板

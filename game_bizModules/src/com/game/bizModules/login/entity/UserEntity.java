@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.game.core.entity.GenericEntity;
+import com.game.part.entity.GenericEntity;
 
 /**
  * 用户实体

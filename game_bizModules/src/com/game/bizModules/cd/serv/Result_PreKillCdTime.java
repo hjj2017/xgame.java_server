@@ -1,7 +1,7 @@
 package com.game.bizModules.cd.serv;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.core.utils.BizResult;
+import com.game.part.utils.BizResult;
 
 /**
  * 预杀死 CD 时间

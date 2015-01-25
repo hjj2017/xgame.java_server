@@ -1,6 +1,6 @@
 package com.game.bizModules.login.serv;
 
-import com.game.core.utils.BizResult;
+import com.game.part.utils.BizResult;
 
 /**
  * 登陆验证结果

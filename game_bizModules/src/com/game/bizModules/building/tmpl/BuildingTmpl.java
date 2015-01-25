@@ -3,15 +3,15 @@ package com.game.bizModules.building.tmpl;
 import java.util.List;
 import java.util.Map;
 
-import com.game.core.tmpl.anno.XlsxTmpl;
-import com.game.core.tmpl.anno.GroupMap;
-import com.game.core.tmpl.anno.Id;
-import com.game.core.tmpl.anno.IdMap;
-import com.game.core.tmpl.anno.IntRange;
-import com.game.core.tmpl.anno.ObjColumn;
-import com.game.core.tmpl.anno.PlainColumn;
-import com.game.core.tmpl.anno.StrLen;
-import com.game.core.tmpl.anno.Validator;
+import com.game.part.tmpl.anno.GroupMap;
+import com.game.part.tmpl.anno.Id;
+import com.game.part.tmpl.anno.IdMap;
+import com.game.part.tmpl.anno.IntRange;
+import com.game.part.tmpl.anno.ObjColumn;
+import com.game.part.tmpl.anno.PlainColumn;
+import com.game.part.tmpl.anno.StrLen;
+import com.game.part.tmpl.anno.Validator;
+import com.game.part.tmpl.anno.XlsxTmpl;
 
 /**
  * 建筑模板

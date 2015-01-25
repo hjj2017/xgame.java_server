@@ -8,9 +8,9 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.core.utils.BytesUtil;
-import com.game.core.utils.MD5Util;
 import com.game.gameServer.msg.CoreMsgTypeDef;
+import com.game.part.utils.BytesUtil;
+import com.game.part.utils.MD5Util;
 
 /**
  * 消息解密, 该类负责三件事情:

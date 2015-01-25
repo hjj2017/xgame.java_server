@@ -5,9 +5,10 @@ import java.util.List;
 
 
 
+
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.core.tmpl.XlsxTmplError;
-import com.game.core.utils.Assert;
+import com.game.part.tmpl.XlsxTmplError;
+import com.game.part.utils.Assert;
 
 /**
  * Cd 验证

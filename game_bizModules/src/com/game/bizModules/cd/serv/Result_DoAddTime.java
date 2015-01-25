@@ -1,6 +1,6 @@
 package com.game.bizModules.cd.serv;
 
-import com.game.core.utils.BizResult;
+import com.game.part.utils.BizResult;
 
 /**
  * 增加 Cd 时间

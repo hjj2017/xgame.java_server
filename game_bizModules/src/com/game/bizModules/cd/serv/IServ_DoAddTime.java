@@ -2,8 +2,8 @@ package com.game.bizModules.cd.serv;
 
 import com.game.bizModules.cd.model.CdTimer;
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.core.utils.Assert;
-import com.game.core.utils.BizResultPool;
+import com.game.part.utils.Assert;
+import com.game.part.utils.BizResultPool;
 
 /**
  * 增加 Cd 时间
