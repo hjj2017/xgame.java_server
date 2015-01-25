@@ -13,47 +13,9 @@ public class CGMoveTo extends AbstractGameMsg {
 	private static final short MSG_TYPE_ID = 1002;
 
 	/** 目标位置 X */
-	private int _x = -1;
+	public int _x = -1;
 	/** 目标位置 Y */
-	private int _y = -1;
-
-	/**
-	 * 获取目标位置 X
-	 * 
-	 * @return
-	 */
-	public int getX() {
-		return this._x;
-	}
-
-	/**
-	 * 设置目标位置 X
-	 * 
-	 * @param value 
-	 * 
-	 */
-	public void setX(int value) {
-		this._x = value;
-	}
-
-	/**
-	 * 获取目标位置 Y
-	 * 
-	 * @return
-	 */
-	public int getY() {
-		return this._y;
-	}
-
-	/**
-	 * 设置目标位置 Y
-	 * 
-	 * @param value 
-	 * 
-	 */
-	public void setY(int value) {
-		this._y = value;
-	}
+	public int _y = -1;
 
 	@Override
 	public short getMsgTypeId() {

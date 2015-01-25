@@ -28,8 +28,8 @@ public class Handler_CSMoveTo extends SimpleHandler<CGMoveTo> {
 		GCMoveTo gcMsg = new GCMoveTo();
 
 		gcMsg.setPlayerID(String.valueOf(csMsg._sessionId));
-		gcMsg.setX(csMsg.getX());
-		gcMsg.setY(csMsg.getY());
+		gcMsg.setX(csMsg._x);
+		gcMsg.setY(csMsg._y);
 
 		// 将引动消息广播给所有人
 		this.broadcast(gcMsg);
