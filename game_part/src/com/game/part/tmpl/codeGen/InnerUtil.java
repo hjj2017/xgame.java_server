@@ -28,8 +28,8 @@ public final class InnerUtil {
 	 * 导入引用包, 会生成如下代码 : <br /> 
 	 * import org.apache.poi.xssf.usermodel.XSSFCell;<br />
 	 * import org.apache.poi.xssf.usermodel.XSSFRow;<br />
-	 * import com.game.core.tmpl.IXlsxParser;<br />
-	 * import com.game.core.utils.XSSFUtil;<br />
+	 * import com.game.part.tmpl.IXlsxParser;<br />
+	 * import com.game.part.utils.XSSFUtil;<br />
 	 * 
 	 * @param pool
 	 * @param importClazzSet 

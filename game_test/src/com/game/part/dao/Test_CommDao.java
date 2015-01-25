@@ -1,4 +1,4 @@
-package com.game.core.dao;
+package com.game.part.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -111,8 +111,8 @@ public class Coder_R {
 			// 会生成如下代码 : 
 			// import org.apache.poi.xssf.usermodel.XSSFCell;
 			// import org.apache.poi.xssf.usermodel.XSSFRow;
-			// import com.game.core.tmpl.IXlsxParser;
-			// import com.game.core.utils.XSSFUtil;
+			// import com.game.part.tmpl.IXlsxParser;
+			// import com.game.part.utils.XSSFUtil;
 			codeCtx._importClazzSet.add(XSSFRow.class);
 			codeCtx._importClazzSet.add(IXlsxParser.class);
 			codeCtx._importClazzSet.add(XSSFUtil.class);
