@@ -5,7 +5,7 @@ import com.game.bizModules.cd.msg.CGKillCdTimeMsg;
 import com.game.bizModules.cd.serv.CdServ;
 import com.game.bizModules.cd.serv.Result_KillCdTime;
 import com.game.core.utils.Assert;
-import com.game.gameServer.framework.GameHandler;
+import com.game.gameServer.framework.SimpleHandler;
 
 /**
  * 清除 Cd 
@@ -14,7 +14,7 @@ import com.game.gameServer.framework.GameHandler;
  * @since 2014/6/24
  * 
  */
-public class CGKillCdTimeHandler extends GameHandler<CGKillCdTimeMsg> {
+public class Handler_CGKillCdTime extends SimpleHandler<CGKillCdTimeMsg> {
 	@Override
 	public void handle(CGKillCdTimeMsg cgMSG) {
 		// 断言参数不为空

@@ -4,6 +4,7 @@ package com.game.gameServer.msg;
  * 消息类型定义
  * 
  * @author hjj2017
+ * @since 2015/01/25
  * 
  */
 public final class CoreMsgTypeDef {

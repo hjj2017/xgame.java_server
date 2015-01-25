@@ -1,6 +1,6 @@
 package com.game.bizModules.cd.msg;
 
-import com.game.core.msg.BaseExternalMsg;
+import com.game.gameServer.msg.AbstractGameMsg;
 
 /**
  * 清除 Cd
@@ -9,14 +9,14 @@ import com.game.core.msg.BaseExternalMsg;
  * @since 2014/6/24
  * 
  */
-public class CGKillCdTimeMsg extends BaseExternalMsg {
+public class CGKillCdTimeMsg extends AbstractGameMsg {
 	/** 玩家角色 UUID */
 	public Long _humanUUID = null;
 	/** Cd 类型 Int 值 */
 	public Integer _cdTypeInt = null;
 
 	@Override
-	public short getMsgTypeID() {
+	public short getMsgTypeId() {
 		return 0;
 	}
 }

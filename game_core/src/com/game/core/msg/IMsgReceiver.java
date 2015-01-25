@@ -1,7 +1,5 @@
 package com.game.core.msg;
 
-import com.game.core.utils.OutBool;
-
 /**
  * 消息句柄
  * 
@@ -11,11 +9,14 @@ import com.game.core.utils.OutBool;
  */
 public interface IMsgReceiver {
 	/**
-	 * 处理消息对象
+	 * 尝试接收消息对象, 
+	 * 注意 : "尝试" 的意思是指能处理就处理, 
+	 * 如果处理不了, 
+	 * 就直接退出, 
+	 * 交给其他接收者处理...
 	 * 
-	 * @param msgObj 
-	 * @param gotoNextRecv 
+	 * @param msgObj 消息对象
 	 * 
 	 */
-	public void receive(BaseMsg msgObj, OutBool gotoNextRecv);
+	public void tryReceive(BaseMsg msgObj);
 }

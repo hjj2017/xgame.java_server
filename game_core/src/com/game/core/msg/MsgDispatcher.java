@@ -3,6 +3,7 @@ package com.game.core.msg;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.game.core.scene.MyScene;
 import com.game.core.utils.OutBool;
 
 /**
@@ -19,9 +20,15 @@ public class MsgDispatcher {
 	private List<IMsgReceiver> _msgRecvList = null;
 
 	/**
-	 * 添加消息接收者
+	 * 添加消息接收者, 
+	 * 消息接收者一般是场景对象 {@link MyScene}.
+	 * 但是这里使用的是一个接口 {@link IMsgReceiver}, 
+	 * 其目的是将消息分派者与具体的消息接收者分离!
+	 * 否则, 就需要在消息包里包含场景包, 
+	 * 在理论上,
+	 * 这是不应该发生的...
 	 * 
-	 * @param value
+	 * @param value 消息接收者
 	 * @return 
 	 * 
 	 */
@@ -62,13 +69,7 @@ public class MsgDispatcher {
 
 		this._msgRecvList.forEach((r) -> {
 			// 接收消息
-			r.receive(msgObj, nextRecv);
-
-			if (Boolean.FALSE.equals(nextRecv.getVal())) {
-				// 如果不继续向下执行了, 
-				// 则直接退出!
-				return;
-			}
+			r.tryReceive(msgObj);
 		});
 	}
 }

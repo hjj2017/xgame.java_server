@@ -2,7 +2,7 @@ package com.game.bizModules.login.handler;
 
 import com.game.bizModules.login.io.IoOper_Validate;
 import com.game.bizModules.login.msg.CGLogin;
-import com.game.gameServer.framework.GameHandler;
+import com.game.gameServer.framework.SimpleHandler;
 
 /**
  * 进入场景
@@ -10,7 +10,7 @@ import com.game.gameServer.framework.GameHandler;
  * @author hjj2019
  * 
  */
-public class Handler_CGLogin extends GameHandler<CGLogin> {
+public class Handler_CGLogin extends SimpleHandler<CGLogin> {
 	@Override
 	public void handle(CGLogin msg) {
 		if (msg == null) {

@@ -2,7 +2,7 @@ package com.game.bizModules.move.handler;
 
 import com.game.bizModules.move.msg.CGMoveTo;
 import com.game.bizModules.move.msg.GCMoveTo;
-import com.game.gameServer.framework.GameHandler;
+import com.game.gameServer.framework.SimpleHandler;
 import com.game.gameServer.framework.Player;
 
 /**
@@ -11,7 +11,7 @@ import com.game.gameServer.framework.Player;
  * @author hjj2017
  *
  */
-public class CSMoveToHandler extends GameHandler<CGMoveTo> {
+public class Handler_CSMoveTo extends SimpleHandler<CGMoveTo> {
 	@Override
 	public void handle(CGMoveTo csMsg) {
 		if (csMsg == null) {
@@ -25,13 +25,13 @@ public class CSMoveToHandler extends GameHandler<CGMoveTo> {
 			return;
 		}
 
-		GCMoveTo scMsg = new GCMoveTo();
+		GCMoveTo gcMsg = new GCMoveTo();
 
-		scMsg.setPlayerID(String.valueOf(csMsg._sessionId));
-		scMsg.setX(csMsg.getX());
-		scMsg.setY(csMsg.getY());
+		gcMsg.setPlayerID(String.valueOf(csMsg._sessionId));
+		gcMsg.setX(csMsg.getX());
+		gcMsg.setY(csMsg.getY());
 
 		// 将引动消息广播给所有人
-		this.broadcast(scMsg);
+		this.broadcast(gcMsg);
 	}
 }

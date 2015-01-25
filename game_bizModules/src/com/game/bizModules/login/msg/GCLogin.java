@@ -1,6 +1,6 @@
 package com.game.bizModules.login.msg;
 
-import com.game.core.msg.BaseExternalMsg;
+import com.game.gameServer.msg.AbstractGameMsg;
 
 /**
  * 登陆完成
@@ -9,7 +9,7 @@ import com.game.core.msg.BaseExternalMsg;
  * @since 2014/9/15
  * 
  */
-public class GCLogin extends BaseExternalMsg {
+public class GCLogin extends AbstractGameMsg {
 	/** 消息类型 ID */
 	private static final short MSG_TYPE_ID = 1001;
 	/** 是否成功 ? */
@@ -33,7 +33,7 @@ public class GCLogin extends BaseExternalMsg {
 	}
 
 	@Override
-	public short getMsgTypeID() {
+	public short getMsgTypeId() {
 		return MSG_TYPE_ID;
 	}
 }

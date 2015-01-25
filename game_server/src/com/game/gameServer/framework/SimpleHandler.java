@@ -7,25 +7,24 @@ import java.util.Set;
 import org.apache.mina.core.session.IoSession;
 
 import com.game.core.handler.BaseHandler;
-import com.game.core.msg.BaseExternalMsg;
 import com.game.core.msg.BaseMsg;
 
 /**
- * 网关消息处理器
+ * 消息处理器
  * 
  * @author hjj2019
- *
+ * @since 2015/01/25
  * @param <TMsg>
  * 
  */
-public abstract class GameHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg> implements IIoOperExecutable {
+public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg> implements IIoOperExecutable {
 	/**
 	 * 发送消息给客户端
 	 * 
 	 * @param msgObj
 	 * 
 	 */
-	protected void sendMsgToClient(BaseExternalMsg msgObj) {
+	protected void sendMsgToClient(BaseMsg msgObj) {
 		this.sendMsgToClient(
 			msgObj, msgObj._sessionId
 		);
@@ -38,8 +37,7 @@ public abstract class GameHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg
 	 * @param p
 	 * 
 	 */
-	protected void sendMsgToClient(
-		BaseExternalMsg msgObj, Player p) {
+	protected void sendMsgToClient(BaseMsg msgObj, Player p) {
 		if (msgObj == null || 
 			p == null) {
 			// 如果消息对象为空, 
@@ -58,8 +56,7 @@ public abstract class GameHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg
 	 * @param toSessionId
 	 * 
 	 */
-	protected void sendMsgToClient(
-		BaseExternalMsg msgObj, long toSessionId) {
+	protected void sendMsgToClient(BaseMsg msgObj, long toSessionId) {
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
@@ -191,7 +188,7 @@ public abstract class GameHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg
 	 * @param msgObj 
 	 * 
 	 */
-	protected void broadcast(BaseExternalMsg msgObj) {
+	protected void broadcast(BaseMsg msgObj) {
 		if (msgObj == null) {
 			return;
 		}
@@ -217,7 +214,7 @@ public abstract class GameHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg
 	 * @param pl 
 	 * 
 	 */
-	protected void broadcast(BaseExternalMsg msgObj, List<Player> pl) {
+	protected void broadcast(BaseMsg msgObj, List<Player> pl) {
 		if (msgObj == null || 
 			pl == null || 
 			pl.size() <= 0) {
@@ -238,7 +235,7 @@ public abstract class GameHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg
 	 * @param toSessionIdArr 
 	 * 
 	 */
-	protected void broadcast(BaseExternalMsg msgObj, long[] toSessionIdArr) {
+	protected void broadcast(BaseMsg msgObj, long[] toSessionIdArr) {
 		if (msgObj == null || 
 			toSessionIdArr == null || 
 			toSessionIdArr.length <= 0) {

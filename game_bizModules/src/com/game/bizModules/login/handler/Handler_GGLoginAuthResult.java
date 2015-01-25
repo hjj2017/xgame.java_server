@@ -2,7 +2,7 @@ package com.game.bizModules.login.handler;
 
 import com.game.bizModules.login.msg.GCLogin;
 import com.game.bizModules.login.msg.GGLoginAuthResult;
-import com.game.gameServer.framework.GameHandler;
+import com.game.gameServer.framework.SimpleHandler;
 import com.game.gameServer.framework.Player;
 
 /**
@@ -12,7 +12,7 @@ import com.game.gameServer.framework.Player;
  * @since 2014/9/10
  * 
  */
-public class Handler_GGLoginAuthResult extends GameHandler<GGLoginAuthResult> {
+public class Handler_GGLoginAuthResult extends SimpleHandler<GGLoginAuthResult> {
 	@Override
 	public void handle(GGLoginAuthResult msg) {
 		if (msg == null) {

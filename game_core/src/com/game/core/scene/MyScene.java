@@ -1,5 +1,6 @@
 package com.game.core.scene;
 
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,9 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.game.core.ThreadNamingFactory;
-import com.game.core.handler.HandlerObjMapper;
 import com.game.core.handler.BaseHandler;
+import com.game.core.handler.HandlerObjMapper;
 import com.game.core.msg.BaseMsg;
+import com.game.core.msg.IMsgReceiver;
 
 
 /**
@@ -21,11 +23,11 @@ import com.game.core.msg.BaseMsg;
  * @since 2014/5/2
  * 
  */
-public class DefaultScene {
+public class MyScene implements IMsgReceiver {
 	/** 提交线程 */
-	private static final String THREAD_NAME_POST_SERV = "com.game::defaultScene::postServ";
+	private static final String THREAD_NAME_POST_SERV = MyScene.class.getName() + "#postServ";
 	/** 执行线程 */
-	private static final String THREAD_NAME_EXEC_SERV = "com.game::defaultScene::execServ";
+	private static final String THREAD_NAME_EXEC_SERV = MyScene.class.getName() + "#execServ";
 	/** 每次执行消息数量 */
 	private static final int MSG_COUNT = 16;
 	/** 心跳毫秒数 */
@@ -33,9 +35,8 @@ public class DefaultScene {
 	/** 最大剩余消息数量 */
 	private static final int MAX_REMAIN_MSG = 512;
 
-	/** 单例对象 */
-	public static final DefaultScene OBJ = new DefaultScene();
-
+	/** 场景名称 */
+	private String _name = null;
 	/** 消息字典 */
 	private Map<Long, Queue<BaseMsg>> _msgMap = null;
 	/** 提交服务 */
@@ -48,40 +49,72 @@ public class DefaultScene {
 	/**
 	 * 类默认构造器
 	 * 
+	 * @param name 场景名称
+	 * 
 	 */
-	private DefaultScene() {
+	public MyScene(String name) {
+		// 设置场景名称
+		this._name = name;
 		// 初始化默认场景
-		this.init();
+		this.init(name);
+	}
+
+	/**
+	 * 获取场景名称
+	 * 
+	 * @return 
+	 * 
+	 */
+	public String getName() {
+		return this._name;
 	}
 
 	/**
 	 * 初始化消息字典
 	 * 
+	 * @param name
+	 * 
 	 */
-	private void init() {
+	private void init(String name) {
 		// 创建消息字典
 		this._msgMap = new ConcurrentHashMap<>();
 
 		// 创建线程命名工厂
 		ThreadNamingFactory nf = new ThreadNamingFactory();
-		// 创建线程服务
-		nf.putThreadName(THREAD_NAME_EXEC_SERV);
+		// 创建执行线程
+		nf.putThreadName(MessageFormat.format(
+			"{0}::{1}", 
+			THREAD_NAME_EXEC_SERV, 
+			name
+		));
 		this._execServ = Executors.newSingleThreadExecutor(nf);
-		nf.putThreadName(THREAD_NAME_POST_SERV);
+		// 创建提交线程
+		nf.putThreadName(MessageFormat.format(
+			"{0}::{1}",
+			THREAD_NAME_POST_SERV, 
+			name
+		));
 		this._postServ = Executors.newSingleThreadExecutor(nf);
 		this._postServ.submit(() -> this.loopPost());
 	}
 
-	/**
-	 * 消息入队
-	 * 
-	 * @param msgObj
-	 * 
-	 */
-	public void enqueue(BaseMsg msgObj) {
+	@Override
+	public final void tryReceive(BaseMsg msgObj) {
 		if (msgObj == null) {
 			// 如果参数对象为空, 
 			// 则直接跳过!
+			SceneLog.LOG.error("参数对象为空");
+			return;
+		}
+
+		if (this.canRecevie(msgObj) == false) {
+			// 如果消息不能被接收, 
+			// 则直接退出!
+			SceneLog.LOG.debug(MessageFormat.format(
+				"{0} 消息不能被 {1} 场景接收", 
+				msgObj.getClass().getSimpleName(), 
+				this.getName()
+			));
 			return;
 		}
 
@@ -99,6 +132,17 @@ public class DefaultScene {
 
 		// 添加消息对象到队列
 		msgQ.offer(msgObj);
+	}
+
+	/**
+	 * 是否可以接收消息对象
+	 * 
+	 * @param msgObj
+	 * @return 
+	 * 
+	 */
+	protected boolean canRecevie(BaseMsg msgObj) {
+		return true;
 	}
 
 	/**

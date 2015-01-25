@@ -2,6 +2,7 @@ package com.game.core.handler;
 
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.game.core.msg.BaseMsg;
@@ -15,13 +16,13 @@ import com.game.core.utils.ClazzUtil;
  * @since 2014/8/10
  * 
  */
-public class HandlerObjMapper {
+public final class HandlerObjMapper {
 	/** 单例对象 */
 	public static final HandlerObjMapper OBJ = new HandlerObjMapper();
 	/** 消息处理器字典 */
-	private final ConcurrentHashMap<Class<?>, BaseHandler<?>> _handlerMap = new ConcurrentHashMap<>();
+	private final Map<Class<?>, BaseHandler<?>> _handlerMap = new ConcurrentHashMap<>();
 	/** 消息类 -&gt; 行为字典 */
-	private final ConcurrentHashMap<Class<?>, BaseHandler<?>> _m2hMap = new ConcurrentHashMap<>();
+	private final Map<Class<?>, BaseHandler<?>> _m2hMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 类默认构造器

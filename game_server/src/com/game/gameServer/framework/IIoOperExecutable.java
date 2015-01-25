@@ -17,7 +17,7 @@ import com.game.gameServer.io.IoOperThreadEnum.GroupEnum;
  * @since 2014/9/15
  * 
  */
-interface IIoOperExecutable {
+public interface IIoOperExecutable {
 	/**
 	 * 执行 IO 操作
 	 * 
@@ -25,7 +25,7 @@ interface IIoOperExecutable {
 	 * @param group 
 	 * 
 	 */
-	static void execute(IBindUUIDIoOper oper, GroupEnum group) {
+	default void execute(IBindUUIDIoOper oper, GroupEnum group) {
 		// 断言参数不为空
 		Assert.notNull(oper);
 		// 获取 UUID
