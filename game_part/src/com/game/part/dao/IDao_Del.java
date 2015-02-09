@@ -10,7 +10,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Id;
 import javax.persistence.Query;
 
-import com.game.part.entity.GenericEntity;
 import com.game.part.utils.ClazzUtil;
 
 /**
@@ -29,12 +28,11 @@ interface IDao_Del {
 	/**
 	 * 删除数据实体
 	 * 
-	 * @param <TEntity>
 	 * @param clazz
 	 * @param id
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> void del(Class<TEntity> clazz, Object id) {
+	default void del(Class<?> clazz, Object id) {
 		if (clazz == null || 
 			id == null) {
 			// 如果参数对象为空, 
@@ -125,12 +123,11 @@ interface IDao_Del {
 	/**
 	 * 删除数据实体列表
 	 * 
-	 * @param <TEntity>
 	 * @param clazz
 	 * @param idList
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> void delAll(Class<TEntity> clazz, List<?> idList) {
+	default void delAll(Class<?> clazz, List<?> idList) {
 		if (clazz == null || 
 			idList == null || 
 			idList.isEmpty()) {

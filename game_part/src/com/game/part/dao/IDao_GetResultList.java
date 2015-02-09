@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.game.part.entity.GenericEntity;
-
 /**
  * 获取结果列表
  * 
@@ -31,7 +29,7 @@ interface IDao_GetResultList {
 	 * @return 
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> List<TEntity> getResultList(
+	default<TEntity> List<TEntity> getResultList(
 		Class<TEntity> clazz, 
 		String jpqlWhere, 
 		Map<String, Object> paramsMap, 
@@ -95,7 +93,7 @@ interface IDao_GetResultList {
 	 * @return
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> List<TEntity> getResultList(
+	default<TEntity> List<TEntity> getResultList(
 		Class<TEntity> clazz, 
 		String hqlWhere, 
 		Map<String, Object> paramsMap) {
@@ -112,7 +110,7 @@ interface IDao_GetResultList {
 	 * @param hqlWhere
 	 * @return
 	 */
-	default<TEntity extends GenericEntity<?>> List<TEntity> getResultList(
+	default<TEntity> List<TEntity> getResultList(
 		Class<TEntity> clazz, 
 		String hqlWhere) {
 		return this.getResultList(
@@ -128,7 +126,7 @@ interface IDao_GetResultList {
 	 * @param hqlWhere
 	 * @return
 	 */
-	default<TEntity extends GenericEntity<?>> List<TEntity> getResultList(
+	default<TEntity> List<TEntity> getResultList(
 		Class<TEntity> clazz, 
 		int start, 
 		int count) {
@@ -146,7 +144,7 @@ interface IDao_GetResultList {
 	 * @return
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> List<TEntity> getResultList(
+	default<TEntity> List<TEntity> getResultList(
 		Class<TEntity> clazz) {
 		return this.getResultList(
 			clazz, null, null, 0, Integer.MAX_VALUE

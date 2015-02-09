@@ -3,8 +3,6 @@ package com.game.part.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.game.part.entity.GenericEntity;
-
 /**
  * 获取单个结果
  * 
@@ -22,7 +20,7 @@ interface IDao_GetSingleResult {
 	 * @return 
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> TEntity getSingleResult(
+	default<TEntity> TEntity getSingleResult(
 		Class<TEntity> clazz, 
 		String jpqlWhere, 
 		Map<String, Object> paramsMap) {
@@ -45,7 +43,7 @@ interface IDao_GetSingleResult {
 	 * @return 
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> TEntity getSingleResult(
+	default<TEntity> TEntity getSingleResult(
 		Class<TEntity> clazz, 
 		String jpqlWhere) {
 		return this.getSingleResult(clazz, jpqlWhere, null);
@@ -58,7 +56,7 @@ interface IDao_GetSingleResult {
 	 * @return 
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> TEntity getSingleResult(
+	default<TEntity> TEntity getSingleResult(
 		Class<TEntity> clazz) {
 		return this.getSingleResult(clazz, null, null);
 	}

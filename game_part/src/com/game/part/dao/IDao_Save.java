@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import com.game.part.entity.GenericEntity;
-
 /**
  * 保存数据库实体
  * 
@@ -18,12 +16,11 @@ interface IDao_Save {
 	/**
 	 * 添加数据库实体
 	 * 
-	 * @param <TEntity>
-	 * @param e
+	 * @param entityObj
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> void save(TEntity e) {
-		if (e == null) {
+	default void save(Object entityObj) {
+		if (entityObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
@@ -44,7 +41,7 @@ interface IDao_Save {
 			// 开始事务过程
 			tranx.begin();
 			// 保存实体
-			em.merge(e);
+			em.merge(entityObj);
 			em.flush();
 			// 提交事务
 			tranx.commit();
@@ -57,13 +54,12 @@ interface IDao_Save {
 	/**
 	 * 添加数据库实体列表
 	 * 
-	 * @param <TEntity>
-	 * @param el 
+	 * @param entityObjList 
 	 * 
 	 */
-	default<TEntity extends GenericEntity<?>> void saveAll(List<TEntity> el) {
-		if (el == null || 
-			el.isEmpty()) {
+	default<TEntity> void saveAll(List<TEntity> entityObjList) {
+		if (entityObjList == null || 
+			entityObjList.isEmpty()) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
@@ -84,7 +80,7 @@ interface IDao_Save {
 			// 开始事务过程
 			tranx.begin();
 
-			el.forEach(newEntity -> {
+			entityObjList.forEach(newEntity -> {
 				// 保存实体
 				em.merge(newEntity);
 			});

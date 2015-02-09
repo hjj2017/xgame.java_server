@@ -3,7 +3,6 @@ package com.game.part.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.game.part.entity.GenericEntity;
 import com.game.part.utils.Assert;
 
 /**
@@ -54,7 +53,7 @@ public class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_Ge
 	 * @return 
 	 * 
 	 */
-	public<TEntity extends GenericEntity<?>> TEntity find(Class<TEntity> clazz, Object id) {
+	public<TEntity> TEntity find(Class<TEntity> clazz, Object id) {
 		if (clazz == null || 
 			id == null) {
 			// 如果参数对象为空, 

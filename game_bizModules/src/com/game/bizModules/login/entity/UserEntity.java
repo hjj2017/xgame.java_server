@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.game.part.entity.GenericEntity;
-
 /**
  * 用户实体
  * 
@@ -14,7 +12,7 @@ import com.game.part.entity.GenericEntity;
  * 
  */
 @Entity(name = "t_user")
-public class UserEntity extends GenericEntity<Long> {
+public class UserEntity {
 	/** 账号 Id */
 	@Id @Column(name = "passport_id", updatable = false)
 	public Long _passportId = null;
