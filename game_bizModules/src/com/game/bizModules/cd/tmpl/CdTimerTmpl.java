@@ -5,7 +5,7 @@ import java.util.Map;
 import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.part.tmpl.anno.Id;
 import com.game.part.tmpl.anno.IdMap;
-import com.game.part.tmpl.anno.PlainColumn;
+import com.game.part.tmpl.anno.ColName;
 import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.utils.Assert;
@@ -21,11 +21,11 @@ import com.game.part.utils.Assert;
 @Validator(clazz = CdTimerTmpl_Validator.class)
 public class CdTimerTmpl {
 	/** Cd 类型 Int */ @Id
-	@PlainColumn(name = "A")
+	@ColName("A")
 	public Integer _cdTypeInt = null;
 
 	/** 阈值 */
-	@PlainColumn(name = "B")
+	@ColName("B")
 	public Long _threshold = null;
 
 	/** Cd 字典 */ @IdMap

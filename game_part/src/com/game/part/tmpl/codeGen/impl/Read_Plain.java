@@ -2,7 +2,10 @@ package com.game.part.tmpl.codeGen.impl;
 
 import java.lang.reflect.Field;
 
-import com.game.part.tmpl.anno.PlainColumn;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+
+import com.game.part.tmpl.XlsxTmplError;
+import com.game.part.tmpl.anno.ColName;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
 import com.game.part.tmpl.codeGen.InnerUtil;
@@ -22,21 +25,26 @@ public class Read_Plain implements IReadCodeGen {
 		Assert.notNull(f, "f");
 		Assert.notNull(codeCtx, "codeCtx");
 
+		// 定义列名称
+		String colName = null;
 		// 转型注解
-		PlainColumn plainAnno = f.getAnnotation(PlainColumn.class);
-		// 获取列名称 A ~ Z
-		final String colName = plainAnno.name();
+		ColName colNameAnno = f.getAnnotation(ColName.class);
+
+		if (colNameAnno != null) {
+			// 获取列名称, 类似 A, B, C, AA, AB, AZ 这种
+			// 注意 : 可以为空值
+			colName = colNameAnno.value();
+		}
+
 		// 更新列索引
 		if (!codeCtx.jumpNext(colName)) {
 			// 如果更新列索引失败,
 			// 则抛出异常!
+			throw new XlsxTmplError("可能存在重复读取的 Excel 列, 请保证类字段定义顺序和 Excel 列顺序是一致的");
 		}
 
-		if (plainAnno.nullable() == false) {
-			// 如果不能为空值, 
-			// 则增加检查!
-			codeCtx._codeText.append("XSSFAssert.notNullCell(row, ").append(codeCtx._colIndex).append(");\n");
-		}
+		// 获取泛型参数
+		final ParameterizedTypeImpl TType = (ParameterizedTypeImpl)f.getGenericType();
 
 		// 生成如下代码 : 
 		// cell = row.getCell(0);
@@ -45,12 +53,21 @@ public class Read_Plain implements IReadCodeGen {
 			.append(");\n");
 
 		// 生成如下代码 : 
-		// obj._name = XSSFUtil.getStrCellVal(cell);
+		// obj._funcName._colIndex = 0;
 		codeCtx._codeText.append(codeCtx._varName)
 			.append(".")
 			.append(f.getName())
-			.append(" = ")
-			.append(InnerUtil.getXCellVal(f.getType()))
+			.append("._colIndex = ")
+			.append(codeCtx._colIndex)
+			.append(";\n");
+
+		// 生成如下代码 : 
+		// obj._funcName._objVal = XSSFUtil.getStrCellVal(cell);
+		codeCtx._codeText.append(codeCtx._varName)
+			.append(".")
+			.append(f.getName())
+			.append("._objVal = ")
+			.append(InnerUtil.getXCellVal(TType.getRawType()))
 			.append(";\n");
 	}
 }

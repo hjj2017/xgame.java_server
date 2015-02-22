@@ -2,7 +2,7 @@ package com.game.part.tmpl.codeGen.impl;
 
 import com.game.part.tmpl.anno.ObjColumn;
 import com.game.part.tmpl.codeGen.CodeContext;
-import com.game.part.tmpl.codeGen.Coder_R;
+import com.game.part.tmpl.codeGen.Coder;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
 import com.game.part.utils.Assert;
 
@@ -60,7 +60,7 @@ public class Read_Obj implements IReadCodeGen {
 			.append("();\n");
 
 		// 生成对象读取代码
-		Coder_R.OBJ.genReadCodeBody(fType, objCodeCtx);
+		Coder.OBJ.genReadCodeBody(fType, objCodeCtx);
 		// 添加子代码
 		codeCtx._codeText.append(objCodeCtx._codeText);
 		// 生成如下代码 : 

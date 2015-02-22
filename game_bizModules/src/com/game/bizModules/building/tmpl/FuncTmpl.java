@@ -1,6 +1,6 @@
 package com.game.bizModules.building.tmpl;
 
-import com.game.part.tmpl.anno.PlainColumn;
+import com.game.part.tmpl.anno.ColName;
 
 /**
  * 功能模板
@@ -11,12 +11,12 @@ import com.game.part.tmpl.anno.PlainColumn;
  */
 public class FuncTmpl {
 	/** 功能 ID */
-    @PlainColumn
+    @ColName
 	public Integer _ID;
 	/** 名称 */
-    @PlainColumn
+    @ColName
 	public String _name;
 	/** 说明 */
-    @PlainColumn
+    @ColName
 	public String _desc;
 }

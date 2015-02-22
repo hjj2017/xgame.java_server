@@ -9,7 +9,7 @@ import java.util.List;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import com.game.part.tmpl.XlsxTmplLog;
-import com.game.part.tmpl.anno.PlainColumn;
+import com.game.part.tmpl.anno.ColName;
 import com.game.part.tmpl.anno.PlainListColumn;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
@@ -53,7 +53,7 @@ public class Read_PlainList implements IReadCodeGen {
 		// 转型注解
 		PlainListColumn plainListAnno = f.getAnnotation(PlainListColumn.class);
 		// 获取注解数组
-		PlainColumn[] plainAnnoArr = plainListAnno.value();
+		ColName[] plainAnnoArr = plainListAnno.value();
 		// 列表变量名称, 
 		// 这里可以使用字段名称作为变量名, 
 		// 字段名称是不会重复定义的 ...
@@ -102,38 +102,38 @@ public class Read_PlainList implements IReadCodeGen {
 	 * @param codeCtx
 	 * 
 	 */
-	static void readOneCell(String listVarName, Class<?> elementType, PlainColumn anno, CodeContext codeCtx) {
+	static void readOneCell(String listVarName, Class<?> elementType, ColName anno, CodeContext codeCtx) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(listVarName, "listVarName");
 		Assert.notNull(elementType, "elementType");
 		Assert.notNull(anno, "anno");
 		Assert.notNull(codeCtx, "codeCtx");
 
-		// 获取列名称 A ~ Z
-		final String colName = anno.name();
-		// 更新列索引
-		if (!codeCtx.jumpNext(colName)) {
-			// 如果更新列索引失败,
-			// 则抛出异常!
-		}
-
-		if (anno.nullable() == false) {
-			// 如果不能为空值, 
-			// 则增加检查!
-			codeCtx._codeText.append("XSSFAssert.notNullCell(row, ").append(codeCtx._colIndex).append(");");
-		}
-
-		// 生成如下代码 : 
-		// cell = row.getCell(0);
-		codeCtx._codeText.append("cell = row.getCell(")
-			.append(codeCtx._colIndex)
-			.append(");\n");
-
-		// 生成如下代码 :
-		// _funcList.add(XSSFUtil.getIntCellVal(cell));
-		codeCtx._codeText.append(listVarName)
-			.append(".add(")
-			.append(InnerUtil.getXCellVal(elementType))
-			.append(");\n");
+//		// 获取列名称 A ~ Z
+//		final String colName = anno.name();
+//		// 更新列索引
+//		if (!codeCtx.jumpNext(colName)) {
+//			// 如果更新列索引失败,
+//			// 则抛出异常!
+//		}
+//
+//		if (anno.nullable() == false) {
+//			// 如果不能为空值, 
+//			// 则增加检查!
+//			codeCtx._codeText.append("XSSFAssert.notNullCell(row, ").append(codeCtx._colIndex).append(");");
+//		}
+//
+//		// 生成如下代码 : 
+//		// cell = row.getCell(0);
+//		codeCtx._codeText.append("cell = row.getCell(")
+//			.append(codeCtx._colIndex)
+//			.append(");\n");
+//
+//		// 生成如下代码 :
+//		// _funcList.add(XSSFUtil.getIntCellVal(cell));
+//		codeCtx._codeText.append(listVarName)
+//			.append(".add(")
+//			.append(InnerUtil.getXCellVal(elementType))
+//			.append(");\n");
 	}
 }

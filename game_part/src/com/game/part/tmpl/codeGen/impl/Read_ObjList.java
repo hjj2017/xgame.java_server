@@ -10,7 +10,7 @@ import com.game.part.tmpl.XlsxTmplLog;
 import com.game.part.tmpl.anno.ObjColumn;
 import com.game.part.tmpl.anno.ObjListColumn;
 import com.game.part.tmpl.codeGen.CodeContext;
-import com.game.part.tmpl.codeGen.Coder_R;
+import com.game.part.tmpl.codeGen.Coder;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
 import com.game.part.utils.Assert;
 
@@ -80,7 +80,7 @@ public class Read_ObjList implements IReadCodeGen {
 				.append("();\n");
 
 			// 生成代码
-			Coder_R.OBJ.genReadCodeBody(
+			Coder.OBJ.genReadCodeBody(
 				aType, objCodeCtx
 			);
 

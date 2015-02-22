@@ -1,9 +1,7 @@
 package com.game.part.tmpl.codeGen;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 
 import javassist.ClassPool;
@@ -14,6 +12,7 @@ import javassist.CtNewMethod;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import com.game.part.tmpl.IXlsxParser;
+import com.game.part.tmpl.XCol;
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.XlsxTmplLog;
 import com.game.part.utils.Assert;
@@ -28,15 +27,15 @@ import com.game.part.utils.XSSFUtil;
  * @since 2014/9/30
  * 
  */
-public class Coder_R {
+public class Coder {
 	/** 单例对象 */
-	public static final Coder_R OBJ = new Coder_R();
+	public static final Coder OBJ = new Coder();
 
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	private Coder_R() {
+	private Coder() {
 	}
 
 	/**
@@ -158,7 +157,11 @@ public class Coder_R {
 		Assert.notNull(codeCtx, "codeCtx");
 
 		// 获取字段列表
-		List<Field> fl = ClazzUtil.listField(byClazz);
+		List<Field> fl = ClazzUtil.listField(byClazz, f -> {
+			// 只过滤 XCol 类型的字段
+			return f != null 
+				&& f.getType().equals(XCol.class);
+		});
 
 		if (fl == null || 
 			fl.isEmpty()) {
@@ -188,25 +191,13 @@ public class Coder_R {
 		Assert.notNull(f, "f");
 		Assert.notNull(codeCtx, "codeCtx");
 
-		// 获取字段中的所有注解
-		Annotation[] annoArr = f.getAnnotations();
+		// 获取生成器
+		IReadCodeGen gen = RegisteredReadCodeGen.getGen(f);
 
-		if (annoArr == null || 
-			annoArr.length <= 0) {
-			// 如果注解为空, 
-			// 则直接退出!
-			return;
+		if (gen != null) {
+			// 如果生成器不为空, 
+			// 则构建读取代码
+			gen.genReadCode(f, codeCtx);
 		}
-
-		Arrays.asList(annoArr).forEach((anno) -> {
-			// 获取生成器
-			IReadCodeGen gen = RegisteredReadCodeGen.getGen(anno.annotationType());
-
-			if (gen != null) {
-				// 如果生成器不为空, 
-				// 则构建读取代码
-				gen.genReadCode(f, codeCtx);
-			}
-		});
 	}
 }

@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 列数组
+ * 列表元素个数
  * 
  * @author hjj2017
  * @since 2014/6/6
- *
+ * 
  */
-@Target(ElementType.FIELD)
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PlainListColumn {
-	/** 列数组 */
-	ColName[] value();
+public @interface ElementCount {
+	/** 长度数值 */
+	int value() default 0;
 }

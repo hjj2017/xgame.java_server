@@ -3,7 +3,7 @@ package com.game.part.tmpl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.game.part.tmpl.codeGen.Coder_R;
+import com.game.part.tmpl.codeGen.Coder;
 
 /**
  * Excel 解析器工厂类
@@ -48,7 +48,7 @@ final class XlsxParserFactory {
 		}
 
 		// 动态生成解析器
-		parserObj = Coder_R.OBJ.genPerser(byClazz);
+		parserObj = Coder.OBJ.genPerser(byClazz);
 
 		if (parserObj == null) {
 			// 如果解析器对象还是为空, 
