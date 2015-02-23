@@ -6,13 +6,13 @@ import com.game.part.utils.Assert;
 import com.game.part.utils.XSSFUtil;
 
 /**
- * Excel Int 字段
+ * Excel Lang 字段
  * 
  * @author hjj2019
  * @since 2015/2/23
  * 
  */
-public class XlsxLong extends PlainCol<Integer> {
+public class XlsxLong extends PlainCol<Long> {
 	/**
 	 * 类默认构造器
 	 * 
@@ -26,7 +26,7 @@ public class XlsxLong extends PlainCol<Integer> {
 	 * @param defaultVal
 	 * 
 	 */
-	public XlsxLong(Integer defaultVal) {
+	public XlsxLong(Long defaultVal) {
 		this._objVal = defaultVal;
 	}
 
@@ -93,6 +93,6 @@ public class XlsxLong extends PlainCol<Integer> {
 		}
 
 		// 更新数值
-		this._objVal = XSSFUtil.getIntCellVal(cell);
+		this._objVal = XSSFUtil.getLongCellVal(cell);
 	}
 }

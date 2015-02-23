@@ -6,18 +6,21 @@ import com.game.part.utils.Assert;
 import com.game.part.utils.XSSFUtil;
 
 /**
- * Excel Short 字段
+ * Excel Obj 字段
  * 
  * @author hjj2019
  * @since 2015/2/23
  * 
  */
-public class XlsxShort extends PlainCol<Short> {
+public class XlsxObj<T extends AbstractXlsxTmpl> extends AbstractXlsxCol<T> {
+	/** 对象数值 */
+	T _objVal = null;
+
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	public XlsxShort() {
+	public XlsxObj() {
 	}
 
 	/**
@@ -26,7 +29,7 @@ public class XlsxShort extends PlainCol<Short> {
 	 * @param defaultVal
 	 * 
 	 */
-	public XlsxShort(Short defaultVal) {
+	public XlsxObj(T defaultVal) {
 		this._objVal = defaultVal;
 	}
 
@@ -39,7 +42,11 @@ public class XlsxShort extends PlainCol<Short> {
 	 * @return
 	 * 
 	 */
-	public static XlsxShort updateOrCreate(XlsxShort objVal, XSSFCell cell, String xlsxFileName) {
+	public static<T extends AbstractXlsxTmpl> XlsxObj<T> updateOrCreate(
+		XlsxObj<T> objVal, 
+		Class<T> objType, 
+		XSSFCell cell, 
+		String xlsxFileName) {
 		if (objVal == null) {
 			return create(cell, xlsxFileName);
 		} else {
@@ -55,9 +62,9 @@ public class XlsxShort extends PlainCol<Short> {
 	 * @return
 	 * 
 	 */
-	public static XlsxShort create(XSSFCell cell, String xlsxFileName) {
+	public static<T extends AbstractXlsxTmpl> XlsxObj<T> create(XSSFCell cell, String xlsxFileName) {
 		// 创建并更新数值
-		return update(new XlsxShort(), cell, xlsxFileName);
+		return update(new XlsxObj<T>(), cell, xlsxFileName);
 	}
 
 	/**
@@ -69,7 +76,7 @@ public class XlsxShort extends PlainCol<Short> {
 	 * @return
 	 * 
 	 */
-	public static XlsxShort update(XlsxShort objVal, XSSFCell cell, String xlsxFileName) {
+	public static XlsxObj update(XlsxObj objVal, XSSFCell cell, String xlsxFileName) {
 		// 断言参数不为空
 		Assert.notNull(objVal, "objVal");
 		// 更新数值并返回
@@ -93,6 +100,6 @@ public class XlsxShort extends PlainCol<Short> {
 		}
 
 		// 更新数值
-		this._objVal = XSSFUtil.getShortCellVal(cell);
+		this._objVal = XSSFUtil.getIntCellVal(cell);
 	}
 }

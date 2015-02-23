@@ -20,6 +20,46 @@ public abstract class AbstractXlsxCol<T> {
 	int _colIndex = -1;
 
 	/**
+	 * 获取 Excel 文件名
+	 * 
+	 * @return
+	 * 
+	 */
+	public String getXlsxFileName() {
+		return this._xlsxFileName;
+	}
+
+	/**
+	 * 获取页签名称
+	 * 
+	 * @return 
+	 * 
+	 */
+	public String getSheetName() {
+		return this._sheetName;
+	}
+
+	/**
+	 * 获取行索引
+	 * 
+	 * @return 
+	 * 
+	 */
+	public int getRowIndex() {
+		return this._rowIndex;
+	}
+
+	/**
+	 * 获取列索引
+	 * 
+	 * @return 
+	 * 
+	 */
+	public int getColIndex() {
+		return this._colIndex;
+	}
+
+	/**
 	 * 验证字段的正确性
 	 * 
 	 * @return
