@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 分组规则
+ * 指定由哪个类进行打包
  * 
  * @author hjj2017
- * @since 2014/6/6
+ * @since 2014/6/24
  * 
  */
-@Target({ ElementType.METHOD })
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GroupRule {
-	/** 分组名称 */
-	String groupName();
+public @interface Packer {
+	/** 打包类 */
+	Class<?> clazz();
 }

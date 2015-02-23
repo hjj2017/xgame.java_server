@@ -1,12 +1,11 @@
 package com.game.part.tmpl.codeGen.impl;
 
-import com.game.part.tmpl.anno.ObjColumn;
+import java.lang.reflect.Field;
+
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.Coder;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
 import com.game.part.utils.Assert;
-
-import java.lang.reflect.Field;
 
 /**
  * 读取一个对象
@@ -34,14 +33,14 @@ public class Read_Obj implements IReadCodeGen {
 			return;
 		}
 
-		// 获取注解
-		ObjColumn objAnno = f.getAnnotation(ObjColumn.class);
-
-		if (objAnno == null) {
-			// 如果注解对象为空,
-			// 则直接退出!
-			return;
-		}
+//		// 获取注解
+//		ObjColumn objAnno = f.getAnnotation(ObjColumn.class);
+//
+//		if (objAnno == null) {
+//			// 如果注解对象为空,
+//			// 则直接退出!
+//			return;
+//		}
 
 		// 定义对象变量名称
 		final String objVarName = codeCtx._varName + "_" + f.getName() + "_O";

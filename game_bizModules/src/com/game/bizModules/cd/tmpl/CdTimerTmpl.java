@@ -3,10 +3,9 @@ package com.game.bizModules.cd.tmpl;
 import java.util.Map;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.part.tmpl.anno.Id;
-import com.game.part.tmpl.anno.IdMap;
 import com.game.part.tmpl.anno.ColName;
-import com.game.part.tmpl.anno.Validator;
+import com.game.part.tmpl.anno.Id;
+import com.game.part.tmpl.anno.Packer;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.utils.Assert;
 
@@ -18,7 +17,7 @@ import com.game.part.utils.Assert;
  * 
  */
 @XlsxTmpl(fileName = "cd.xlsx", sheetIndex = 0)
-@Validator(clazz = CdTimerTmpl_Validator.class)
+@Packer(clazz = CdTimerTmpl_Validator.class)
 public class CdTimerTmpl {
 	/** Cd 类型 Int */ @Id
 	@ColName("A")
@@ -28,7 +27,7 @@ public class CdTimerTmpl {
 	@ColName("B")
 	public Long _threshold = null;
 
-	/** Cd 字典 */ @IdMap
+	/** Cd 字典 */
 	public static Map<Integer, CdTimerTmpl> _IDMap = null;
 
 	/**

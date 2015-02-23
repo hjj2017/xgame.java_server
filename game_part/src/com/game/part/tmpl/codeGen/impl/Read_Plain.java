@@ -3,7 +3,6 @@ package com.game.part.tmpl.codeGen.impl;
 import java.lang.reflect.Field;
 
 import com.game.part.tmpl.XlsxTmplError;
-import com.game.part.tmpl.anno.ColName;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
 import com.game.part.utils.Assert;
@@ -22,19 +21,7 @@ public class Read_Plain implements IReadCodeGen {
 		Assert.notNull(f, "f");
 		Assert.notNull(codeCtx, "codeCtx");
 
-		// 定义列名称
-		String colName = null;
-		// 转型注解
-		ColName colNameAnno = f.getAnnotation(ColName.class);
-
-		if (colNameAnno != null) {
-			// 获取列名称, 类似 A, B, C, AA, AB, AZ 这种
-			// 注意 : 可以为空值
-			colName = colNameAnno.value();
-		}
-
-		// 更新列索引
-		if (!codeCtx.jumpNext(colName)) {
+		if (codeCtx.jumpNext(f)) {
 			// 如果更新列索引失败,
 			// 则抛出异常!
 			throw new XlsxTmplError(

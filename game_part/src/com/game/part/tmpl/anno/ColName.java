@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ColName {
-	/** Excel 列名称 A-Z,AA-ZZ */
+	/** Excel 列名称 A-Z, AA-ZZ */
 	String value() default "";
 }

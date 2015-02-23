@@ -1,7 +1,8 @@
 package com.game.bizModules.building.tmpl;
 
+import com.game.part.tmpl.anno.ElementNum;
 import com.game.part.tmpl.anno.Id;
-import com.game.part.tmpl.anno.Validator;
+import com.game.part.tmpl.anno.Packer;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.tmpl.type.XlsxInt;
 import com.game.part.tmpl.type.XlsxPlainList;
@@ -14,8 +15,8 @@ import com.game.part.tmpl.type.XlsxStr;
  * @since 2014/6/5
  * 
  */
-@XlsxTmpl(fileName = "Building.xlsx", sheetIndex = 0, startRow = 2)
-@Validator(clazz = BuildingTmpl_Validator.class)
+@XlsxTmpl(fileName = "Building.xlsx", sheetIndex = 0, startRowIndex = 2)
+@Packer(clazz = Pack_BuildingTmpl.class)
 public class BuildingTmpl {
 	/** ID */ @Id
 	public XlsxInt _id;
@@ -30,7 +31,9 @@ public class BuildingTmpl {
 	/** Y 坐标 */
 	public XlsxInt _posY;
 	/** 建筑类型 */
+	@ElementNum(2)
 	public XlsxPlainList<XlsxInt> _typeIdList;
+
 //	/** 功能列表 */ 
 //	@ElementCount(5)
 //	public XCol<List<FuncTmpl>> _funcList;

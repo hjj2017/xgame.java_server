@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
 
 import com.game.part.tmpl.XlsxTmplError;
-import com.game.part.tmpl.anno.ColName;
+import com.game.part.tmpl.anno.ElementNum;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
 import com.game.part.tmpl.type.XlsxPlainList;
@@ -25,19 +25,7 @@ public class Read_PlainList implements IReadCodeGen {
 		Assert.notNull(f, "f");
 		Assert.notNull(codeCtx, "codeCtx");
 
-		// 定义列名称
-		String colName = null;
-		// 转型注解
-		ColName colNameAnno = f.getAnnotation(ColName.class);
-
-		if (colNameAnno != null) {
-			// 获取列名称, 类似 A, B, C, AA, AB, AZ 这种
-			// 注意 : 可以为空值
-			colName = colNameAnno.value();
-		}
-
-		// 更新列索引
-		if (!codeCtx.jumpNext(colName)) {
+		if (codeCtx.jumpNext(f)) {
 			// 如果更新列索引失败,
 			// 则抛出异常!
 			throw new XlsxTmplError(
@@ -66,6 +54,9 @@ public class Read_PlainList implements IReadCodeGen {
 		codeCtx._importClazzSet.add(XlsxPlainList.class);
 		codeCtx._importClazzSet.add(aType);
 
+		// 获取列表中的元素数量
+		final int elemNum = getElementNum(f);
+
 		// 
 		// 生成如下代码 : 
 		// obj._funcIdList = XlsxPlainList.updateOrCreate(
@@ -89,7 +80,7 @@ public class Read_PlainList implements IReadCodeGen {
 			.append(".class, row, ")
 			.append(codeCtx._colIndex)
 			.append(", ")
-			.append(codeCtx._colIndex + 2)
+			.append(codeCtx._colIndex + elemNum - 1)
 			.append(", null);\n");
 
 		// 生成如下代码 : 
@@ -98,5 +89,38 @@ public class Read_PlainList implements IReadCodeGen {
 			.append(".")
 			.append(f.getName())
 			.append(".validate();\n");
+
+		// 跳转字段索引
+		codeCtx._colIndex = codeCtx._colIndex + elemNum;
+	}
+
+	/**
+	 * 获取列表中的元素数量
+	 * 
+	 * @param f
+	 * @return
+	 * 
+	 */
+	private static int getElementNum(Field f) {
+		// 断言参数不为空
+		Assert.notNull(f, "f");
+
+		// 获取元素个数注解
+		ElementNum elemNumAnno = f.getAnnotation(ElementNum.class);
+		// 定义元素数量默认值
+		int elemNum = 0;
+
+		if (elemNumAnno == null) {
+			// 如果没有标注注解, 
+			// 则抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"{0} 类 {1} 字段没有标注 {2} 注解",
+				f.getDeclaringClass().getName(), 
+				f.getName(), 
+				ElementNum.class.getName()
+			));
+		}
+
+		return elemNum;
 	}
 }

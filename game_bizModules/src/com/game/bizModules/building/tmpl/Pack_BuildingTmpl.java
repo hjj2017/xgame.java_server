@@ -1,13 +1,7 @@
 package com.game.bizModules.building.tmpl;
 
-import java.text.MessageFormat;
 import java.util.List;
 
-
-
-
-
-import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.utils.Assert;
 
 /**
@@ -17,14 +11,14 @@ import com.game.part.utils.Assert;
  * @since 2014/6/24
  * 
  */
-public class BuildingTmpl_Validator {
+public class Pack_BuildingTmpl {
 	/**
 	 * 验证数据列表
 	 * 
 	 * @param tl
 	 * 
 	 */
-	public static void validate(List<BuildingTmpl> tl) {
+	public static void pack(List<BuildingTmpl> tl) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(tl, "tl");
 //

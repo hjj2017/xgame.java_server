@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.game.part.tmpl.anno.Validator;
+import com.game.part.tmpl.anno.Packer;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.utils.Assert;
 import com.game.part.utils.Out;
@@ -225,8 +225,8 @@ public class XlsxTmplServ {
 	 * 
 	 * @param clazz 类参数. 
 	 * 
-	 * 该类一定标注有 {@link Validator} 注解!<br />并且, 
-	 * 在 {@link Validator} 注解中所制定的验证类, 
+	 * 该类一定标注有 {@link Packer} 注解!<br />并且, 
+	 * 在 {@link Packer} 注解中所制定的验证类, 
 	 * 一定含有 validate(List&lt;?&gt;) 静态函数!<br />
 	 * 即, 验证类一定是这样定义的 : 
 	 * 
@@ -238,7 +238,7 @@ public class XlsxTmplServ {
 	 * }
 	 * </pre>
 	 * 
-	 * @see Validator 
+	 * @see Packer 
 	 * 
 	 */
 	public void validateObjList(Class<?> clazz) {
@@ -247,7 +247,7 @@ public class XlsxTmplServ {
 
 		// 首先, 我们要找到 Validator 注解中指定的验证类!
 		// 获取验证器
-		Validator annoV = clazz.getAnnotation(Validator.class);
+		Packer annoV = clazz.getAnnotation(Packer.class);
 
 		if (annoV == null) {
 			// 如果没有指定验证器
@@ -255,7 +255,7 @@ public class XlsxTmplServ {
 			String warnMsg = MessageFormat.format(
 				"{0} 类没有标注验证器 {1}", 
 				clazz.getSimpleName(), 
-				Validator.class.getSimpleName()
+				Packer.class.getSimpleName()
 			);
 			XlsxTmplLog.LOG.warn(warnMsg);
 			return;

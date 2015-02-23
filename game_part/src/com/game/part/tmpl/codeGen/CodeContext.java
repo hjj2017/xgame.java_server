@@ -1,10 +1,12 @@
 package com.game.part.tmpl.codeGen;
 
-		import com.game.part.utils.Assert;
-import com.game.part.utils.XSSFUtil;
-
-		import java.util.HashSet;
+		import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Set;
+
+import com.game.part.tmpl.anno.ColName;
+import com.game.part.utils.Assert;
+import com.game.part.utils.XSSFUtil;
 
 /**
  * 代码上下文
@@ -66,5 +68,31 @@ public final class CodeContext {
 		}
 
 		return true;
+	}
+
+	/**
+	 * 根据字段跳转列索引
+	 * 
+	 * @param f
+	 * @return
+	 * 
+	 */
+	public boolean jumpNext(Field f) {
+		// 断言参数不为空
+		Assert.notNull(f, "f");
+
+		// 定义列名称
+		String colName = null;
+		// 转型注解
+		ColName colNameAnno = f.getAnnotation(ColName.class);
+
+		if (colNameAnno != null) {
+			// 获取列名称, 类似 A, B, C, AA, AB, AZ 这种
+			// 注意 : 可以为空值
+			colName = colNameAnno.value();
+		}
+
+		// 将索引跳转到指定列
+		return (!this.jumpNext(colName));
 	}
 }

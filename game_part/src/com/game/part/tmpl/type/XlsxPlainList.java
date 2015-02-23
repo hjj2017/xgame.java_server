@@ -1,6 +1,7 @@
 package com.game.part.tmpl.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -26,6 +27,47 @@ public class XlsxPlainList<T extends PlainCol<?>> extends AbstractXlsxCol<List<T
 	 * 
 	 */
 	public XlsxPlainList() {
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param tArr
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public XlsxPlainList(T ... tArr) {
+		if (tArr != null && 
+			tArr.length > 0) {
+			this._objValList = new ArrayList<T>(tArr.length);
+			Collections.addAll(this._objValList, tArr);
+		}
+	}
+
+	/**
+	 * 获取数值列表
+	 * 
+	 * @return
+	 * 
+	 */
+	public List<T> objValList() {
+		return this._objValList;
+	}
+
+	@Override
+	public void validate() {
+		if (this._objValList == null || 
+			this._objValList.isEmpty()) {
+			// 如果数值列表为空, 
+			// 则直接退出!
+			return;
+		}
+
+		this._objValList.forEach(o -> { 
+			if (o != null) { 
+				o.validate(); 
+			}
+		});
 	}
 
 	/**
