@@ -12,9 +12,9 @@ import javassist.CtNewMethod;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import com.game.part.tmpl.IXlsxParser;
-import com.game.part.tmpl.XCol;
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.XlsxTmplLog;
+import com.game.part.tmpl.type.AbstractXlsxCol;
 import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
 import com.game.part.utils.XSSFAssert;
@@ -58,7 +58,7 @@ public class Coder {
 		}
 
 		// 设置解析器名称
-		final String parserClazzName = byClazz.getPackage().getName() 
+		final String parserClazzName = byClazz.getName()
 			+ ".Parser_" 
 			+ byClazz.getSimpleName();
 
@@ -129,7 +129,7 @@ public class Coder {
 			// 添加方法
 			cc.addMethod(cm);
 
-			cc.writeFile("/D:/Temp_Test/");
+			cc.writeFile("/Data/Temp_Test/");
 			// 获取 JAVA 类
 			Class<?> javaClazz = cc.toClass();
 			// 创建解析器实例
@@ -158,9 +158,9 @@ public class Coder {
 
 		// 获取字段列表
 		List<Field> fl = ClazzUtil.listField(byClazz, f -> {
-			// 只过滤 XCol 类型的字段
+			// 只过滤 XlsxCol 类型的字段
 			return f != null 
-				&& f.getType().equals(XCol.class);
+				&& AbstractXlsxCol.class.isAssignableFrom(f.getType());
 		});
 
 		if (fl == null || 

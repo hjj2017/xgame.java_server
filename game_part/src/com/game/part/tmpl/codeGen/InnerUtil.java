@@ -1,8 +1,5 @@
 package com.game.part.tmpl.codeGen;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Set;
 
 import javassist.ClassPool;
@@ -71,60 +68,5 @@ public final class InnerUtil {
 		constructor.setBody("{}");
 		// 添加默认构造器
 		cc.addConstructor(constructor);
-	}
-
-	/**
-	 * 获取单元格数值
-	 * 
-	 * @param fType
-	 * @return 
-	 * 
-	 */
-	public static String getXCellVal(Class<?> fType) {
-		if (fType == null) {
-			return "null";
-		}
-
-		// 函数名称
-		String funcName = null;
-
-		if (String.class.equals(fType)) {
-			funcName = "Str";
-		} else
-		if (Integer.class.equals(fType)) {
-			funcName = "Int";
-		} else
-		if (Long.class.equals(fType)) {
-			funcName = "Long";
-		} else
-		if (Short.class.equals(fType)) {
-			funcName = "Short";
-		} else
-		if (Float.class.equals(fType)) {
-			funcName = "Float";
-		} else
-		if (Double.class.equals(fType)) {
-			funcName = "Double";
-		} else
-		if (Boolean.class.equals(fType)) {
-			funcName = "Bool";
-		} else
-		if (LocalDateTime.class.equals(fType)) {
-			funcName = "DateTime";
-		} else
-		if (LocalDate.class.equals(fType)) {
-			funcName = "Date";
-		} else
-		if (LocalTime.class.equals(fType)) {
-			funcName = "Time";
-		} else {
-			funcName = null;
-		}
-
-		if (funcName == null) {
-			return "null";
-		} else {
-			return "XSSFUtil.get" + funcName + "CellVal(cell)";
-		}
 	}
 }

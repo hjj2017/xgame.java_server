@@ -76,19 +76,14 @@ public class XlsxTmplServ {
 			List<?> objList = this.makeObjList(byClazz, sheet);
 			// 添加到字典列表
 			this._objListMap.put(byClazz, objList);
-		} catch (Exception ex) {
-			// 创建模板错误对象
-			XlsxTmplError err = new XlsxTmplError(
-				MessageFormat.format("加载 {0} 文件第 {1} 个页签错误, 具体原因为 : {2}", 
-					outExcelFileName.getVal(), 
-					outSheetIndex.getVal() + 1, 
-					ex.getMessage()
-				), ex
-			);
-
-			// 记录错误日志并向外抛出
+		} catch (XlsxTmplError err) {
+			// 抛出模板错误
 			XlsxTmplLog.LOG.error(err.getMessage(), err);
 			throw err;
+		} catch (Exception ex) {
+			// 抛出运行时异常
+			XlsxTmplLog.LOG.error(ex.getMessage(), ex);
+			throw new RuntimeException(ex);
 		}
 	}
 

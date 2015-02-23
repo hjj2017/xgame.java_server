@@ -1,19 +1,14 @@
 package com.game.part.tmpl.codeGen.impl;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
-import com.game.part.tmpl.XlsxTmplLog;
+import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.anno.ColName;
-import com.game.part.tmpl.anno.PlainListColumn;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
-import com.game.part.tmpl.codeGen.InnerUtil;
+import com.game.part.tmpl.type.XlsxPlainList;
 import com.game.part.utils.Assert;
 
 /**
@@ -30,110 +25,78 @@ public class Read_PlainList implements IReadCodeGen {
 		Assert.notNull(f, "f");
 		Assert.notNull(codeCtx, "codeCtx");
 
-		// 获取字段类型, 例如 :
-		// List<Integer>
-		final ParameterizedTypeImpl fType = (ParameterizedTypeImpl)f.getGenericType();
+		// 定义列名称
+		String colName = null;
+		// 转型注解
+		ColName colNameAnno = f.getAnnotation(ColName.class);
 
-		if (fType.getRawType().equals(List.class) == false || 
-			fType.getActualTypeArguments().length <= 0) {
-			// 如果不是 List 类型, 
+		if (colNameAnno != null) {
+			// 获取列名称, 类似 A, B, C, AA, AB, AZ 这种
+			// 注意 : 可以为空值
+			colName = colNameAnno.value();
+		}
+
+		// 更新列索引
+		if (!codeCtx.jumpNext(colName)) {
+			// 如果更新列索引失败,
+			// 则抛出异常!
+			throw new XlsxTmplError(
+				"可能存在重复读取的 Excel 列, 请保证类字段定义顺序和 Excel 列顺序是一致的"
+			);
+		}
+
+		// 获取泛型参数
+		ParameterizedType tType = (ParameterizedType)f.getGenericType();
+
+		if (tType.getRawType().equals(XlsxPlainList.class) == false || 
+			tType.getActualTypeArguments().length <= 0) {
+			// 如果不是 XlsxPlainList 类型, 
 			// 或者是不带有泛型参数, 
-			// 则直接退出!
-			XlsxTmplLog.LOG.error(MessageFormat.format(
-				"{0} 类 {1} 字段没有定义为 List 类型或者没有声明泛型类型, 应使用类似 List<Integer> fieldName; 这样的定义", 
+			// 则直接抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 XlsxPlainList<XlsxStr> _funcName; 这样的定义", 
 				f.getDeclaringClass().getName(), 
 				f.getName()
 			));
-			return;
 		}
 
-		// 获取泛型参数, 具体来说就是 :
-		// List<Integer> 中的 Integer 类型
-		Class<?> aType = (Class<?>)fType.getActualTypeArguments()[0];
-		// 转型注解
-		PlainListColumn plainListAnno = f.getAnnotation(PlainListColumn.class);
-		// 获取注解数组
-		ColName[] plainAnnoArr = plainListAnno.value();
-		// 列表变量名称, 
-		// 这里可以使用字段名称作为变量名, 
-		// 字段名称是不会重复定义的 ...
-		final String listVarName = f.getName() + "_L";
+		// 获取实际类型
+		Class<?> aType = (Class<?>)tType.getActualTypeArguments()[0];
+		// 添加到 import
+		codeCtx._importClazzSet.add(XlsxPlainList.class);
+		codeCtx._importClazzSet.add(aType);
 
-		// 构建如下代码 :
-		// List _funcIdList_L = new ArrayList(8);
-		codeCtx._codeText.append("List ")
-			.append(listVarName)
-			.append(" = new ArrayList(")
-			.append(plainAnnoArr.length)
-			.append(");\n");
-
-		// 循环注解列表
-		Arrays.asList(plainAnnoArr).forEach(
-			(plainAnno) -> {
-			// 读取单个单元格数值
-			readOneCell(listVarName, aType, plainAnno, codeCtx);
-		});
-
-		// 构建如下代码 : 
-		// obj._funcIdList = _funcIdList_L;
+		// 
+		// 生成如下代码 : 
+		// obj._funcIdList = XlsxPlainList.updateOrCreate(
+		//     obj._funcIdList, 
+		//     XlsxInt.class, 
+		//     row, 
+		//     startCellIndex, 
+		//     endCellIndex, 
+		//     null
+		// );
 		codeCtx._codeText.append(codeCtx._varName)
 			.append(".")
 			.append(f.getName())
 			.append(" = ")
-			.append(listVarName)
-			.append(";\n");
+			.append("XlsxPlainList.updateOrCreate(")
+			.append(codeCtx._varName)
+			.append(".")
+			.append(f.getName())
+			.append(", ")
+			.append(aType.getSimpleName())
+			.append(".class, row, ")
+			.append(codeCtx._colIndex)
+			.append(", ")
+			.append(codeCtx._colIndex + 2)
+			.append(", null);\n");
 
-		// 添加包含类
-		codeCtx._importClazzSet.add(List.class);
-		codeCtx._importClazzSet.add(ArrayList.class);
-	}
-
-	/**
-	 * 读取一个单元格中的数值, 主要是为了构建出如下代码 : <br />
-	 * <code><pre>
-	 * XSSFAssert.notNullCell(row, 0);
-	 * cell = row.getCell(0);
-	 * _funcList.add(XSSFUtil.getIntCellVal(cell));
-	 * </pre></code>
-	 * 
-	 * @param listVarName
-	 * @param elementType
-	 * @param anno
-	 * @param codeCtx
-	 * 
-	 */
-	static void readOneCell(String listVarName, Class<?> elementType, ColName anno, CodeContext codeCtx) {
-		// 断言参数不为空
-		Assert.notNullOrEmpty(listVarName, "listVarName");
-		Assert.notNull(elementType, "elementType");
-		Assert.notNull(anno, "anno");
-		Assert.notNull(codeCtx, "codeCtx");
-
-//		// 获取列名称 A ~ Z
-//		final String colName = anno.name();
-//		// 更新列索引
-//		if (!codeCtx.jumpNext(colName)) {
-//			// 如果更新列索引失败,
-//			// 则抛出异常!
-//		}
-//
-//		if (anno.nullable() == false) {
-//			// 如果不能为空值, 
-//			// 则增加检查!
-//			codeCtx._codeText.append("XSSFAssert.notNullCell(row, ").append(codeCtx._colIndex).append(");");
-//		}
-//
-//		// 生成如下代码 : 
-//		// cell = row.getCell(0);
-//		codeCtx._codeText.append("cell = row.getCell(")
-//			.append(codeCtx._colIndex)
-//			.append(");\n");
-//
-//		// 生成如下代码 :
-//		// _funcList.add(XSSFUtil.getIntCellVal(cell));
-//		codeCtx._codeText.append(listVarName)
-//			.append(".add(")
-//			.append(InnerUtil.getXCellVal(elementType))
-//			.append(");\n");
+		// 生成如下代码 : 
+		// obj._funcIdList.validate()
+		codeCtx._codeText.append(codeCtx._varName)
+			.append(".")
+			.append(f.getName())
+			.append(".validate();\n");
 	}
 }

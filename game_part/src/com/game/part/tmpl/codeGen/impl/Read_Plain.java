@@ -2,13 +2,10 @@ package com.game.part.tmpl.codeGen.impl;
 
 import java.lang.reflect.Field;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.anno.ColName;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
-import com.game.part.tmpl.codeGen.InnerUtil;
 import com.game.part.utils.Assert;
 
 /**
@@ -40,12 +37,16 @@ public class Read_Plain implements IReadCodeGen {
 		if (!codeCtx.jumpNext(colName)) {
 			// 如果更新列索引失败,
 			// 则抛出异常!
-			throw new XlsxTmplError("可能存在重复读取的 Excel 列, 请保证类字段定义顺序和 Excel 列顺序是一致的");
+			throw new XlsxTmplError(
+				"可能存在重复读取的 Excel 列, 请保证类字段定义顺序和 Excel 列顺序是一致的"
+			);
 		}
 
-		// 获取泛型参数
-		final ParameterizedTypeImpl TType = (ParameterizedTypeImpl)f.getGenericType();
+		// 获取字段类型
+		final Class<?> fType = f.getType();
 
+		// 添加到 import
+		codeCtx._importClazzSet.add(fType);
 		// 生成如下代码 : 
 		// cell = row.getCell(0);
 		codeCtx._codeText.append("cell = row.getCell(")
@@ -53,21 +54,23 @@ public class Read_Plain implements IReadCodeGen {
 			.append(");\n");
 
 		// 生成如下代码 : 
-		// obj._funcName._colIndex = 0;
+		// obj._funcId = XlsxInt.updateOrCreate(obj._funcId, cell, null);
 		codeCtx._codeText.append(codeCtx._varName)
 			.append(".")
 			.append(f.getName())
-			.append("._colIndex = ")
-			.append(codeCtx._colIndex)
-			.append(";\n");
+			.append(" = ")
+			.append(fType.getSimpleName())
+			.append(".updateOrCreate(")
+			.append(codeCtx._varName)
+			.append(".")
+			.append(f.getName())
+			.append(", cell, null);\n");
 
 		// 生成如下代码 : 
-		// obj._funcName._objVal = XSSFUtil.getStrCellVal(cell);
+		// obj._funcId.validate()
 		codeCtx._codeText.append(codeCtx._varName)
-			.append(".")
-			.append(f.getName())
-			.append("._objVal = ")
-			.append(InnerUtil.getXCellVal(TType.getRawType()))
-			.append(";\n");
+		.append(".")
+		.append(f.getName())
+		.append(".validate();\n");
 	}
 }

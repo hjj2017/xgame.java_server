@@ -1,13 +1,21 @@
 package com.game.part.tmpl.codeGen;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.codeGen.impl.Read_Plain;
+import com.game.part.tmpl.codeGen.impl.Read_PlainList;
+import com.game.part.tmpl.type.XlsxInt;
+import com.game.part.tmpl.type.XlsxPlainList;
+import com.game.part.tmpl.type.XlsxStr;
 import com.game.part.utils.Assert;
 
 /**
@@ -18,8 +26,16 @@ import com.game.part.utils.Assert;
  * 
  */
 class RegisteredReadCodeGen {
+	/** 基本类型数组 */
+	private static final Set<Class<?>> _basicTypeClazzSet = new HashSet<>(Arrays.asList(
+		XlsxInt.class 
+		, XlsxStr.class
+	));
+
 	/** 基本类型字段代码生成 */
 	private static final Read_Plain R_plain = new Read_Plain();
+	/** 基本类型列表字段代码生成 */
+	private static final Read_PlainList R_plainList = new Read_PlainList();
 
 	/**
 	 * 类默认构造器
@@ -39,15 +55,10 @@ class RegisteredReadCodeGen {
 		// 断言参数不为空
 		Assert.notNull(f, "f");
 
-		// 获取字段泛型类型, 例如 :
-		// Col<List<Integer>> f;
-		// 将取得 List<Integer> 这个类型
-		final ParameterizedTypeImpl TType = (ParameterizedTypeImpl)f.getGenericType();
-
-		if (isPlainField(f, TType)) {
+		if (isPlainField(f)) {
 			return R_plain;
-		} else if (isPlainListField(f, TType)) {
-		} else if (isObjField(f, TType)) {
+		} else if (isPlainListField(f)) {
+			return R_plainList;
 		}
 
 		return null;
@@ -57,83 +68,42 @@ class RegisteredReadCodeGen {
 	 * 是否为普通字段类型
 	 * 
 	 * @param f 
-	 * @param rawType
 	 * @return 
 	 * 
 	 */
-	public static boolean isPlainField(Field f, ParameterizedTypeImpl TType) {
-		if (f == null || 
-			TType == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return false;
-		}
-
-		// 获取原始类型
-		final Class<?> rawType = TType.getRawType();
-		// 是否为基本类型 ?
-		return isBasicType(rawType);
-	}
-
-	/**
-	 * 是否为基本类型
-	 * 
-	 * @param typeClazz
-	 * @return
-	 * 
-	 */
-	public static boolean isBasicType(Class<?> typeClazz) {
-		return typeClazz.equals(Integer.class) 
-			|| typeClazz.equals(Long.class) 
-			|| typeClazz.equals(Short.class)
-			|| typeClazz.equals(String.class)
-			|| typeClazz.equals(Boolean.class);
+	public static boolean isPlainField(Field f) {
+		return f != null && _basicTypeClazzSet.contains(f.getType());
 	}
 
 	/**
 	 * 是否为简单的列表型字段
 	 * 
 	 * @param f
-	 * @param TType
+	 * @param tType
 	 * @return 
 	 * 
 	 */
-	public static boolean isPlainListField(Field f, ParameterizedTypeImpl TType) {
-		if (isListField(f, TType)) {
-			// 如果不是列表型字段, 
-			// 则直接退出!
-			return false;
-		}
-
-		// 获取泛型类型
-		Class<?> aType = (Class<?>)TType.getActualTypeArguments()[0];
-		// 看看泛型参数是不是基本类型?
-		return isBasicType(aType);
+	public static boolean isPlainListField(Field f) {
+		return f != null && f.getType().equals(XlsxPlainList.class);
 	}
 
 	/**
 	 * 是否为列表字段
 	 * 
 	 * @param f
-	 * @param TType
+	 * @param tType
 	 * @return 
 	 * 
 	 */
-	public static boolean isListField(Field f, ParameterizedTypeImpl TType) {
+	public static boolean isListField(Field f, ParameterizedTypeImpl tType) {
 		if (f == null || 
-			TType == null) {
+			tType == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return false;
 		}
 
-		if (TType.getRawType().isAssignableFrom(List.class) == false) {
-			// 如果不是列表行字段, 
-			// 则直接退出!
-			return false;
-		}
-
-		if (TType.getActualTypeArguments().length <= 0) {
+		if (tType.getActualTypeArguments().length <= 0) {
 			// 如果不是 List 类型,
 			// 或者是不带有泛型参数,
 			// 则直接退出!
@@ -144,7 +114,22 @@ class RegisteredReadCodeGen {
 			));
 		}
 
-		return true;
+		// 获取真实类型
+		final Type aType = tType.getActualTypeArguments()[0];
+
+		if (!(aType instanceof ParameterizedTypeImpl) ||
+			((ParameterizedTypeImpl)aType).getActualTypeArguments().length <= 0) {
+			// 如果不是模板参数, 
+			// 则直接退出!
+			return false;
+		}
+
+		// 获取真实类型
+		final ParameterizedTypeImpl aaType = (ParameterizedTypeImpl)aType;
+		// 获取原始类型
+		final Class<?> rawType = aaType.getRawType();
+
+		return rawType.equals(List.class);
 	}
 
 	/**
@@ -156,14 +141,6 @@ class RegisteredReadCodeGen {
 	 * 
 	 */
 	public static boolean isObjField(Field f, ParameterizedTypeImpl TType) {
-		if (isPlainField(f, TType)) {
-			// 如果是普通类型的字段, 
-			// 则直接退出!
-			return false;
-		} else {
-			// 不能是列表类型字段
-			return TType != null 
-				&& TType.getRawType().isAssignableFrom(List.class) == false;
-		}
+		return false;
 	}
 }

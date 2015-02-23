@@ -1,19 +1,15 @@
-package com.game.part.tmpl;
+package com.game.part.tmpl.type;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
 
 /**
- * Excel 列
+ * 普通数值列
  * 
- * @author hjj2017
- * @since 2015/2/21
+ * @author hjj2019
+ * @param <T>
  * 
  */
-public class XCol<T> {
-	/** 所在 Xlsx 文件名称 */
-	String _xlsxFilename = null;
-	/** 所在页签索引 */
-	String _sheetIndex = null;
-	/** 列索引 */
-	int _colIndex = -1;
+public abstract class PlainCol<T> extends AbstractXlsxCol<T> {
 	/** 列值 */
 	T _objVal = null;
 
@@ -104,5 +100,45 @@ public class XCol<T> {
 			String strVal = this.strVal();
 			return strVal.equalsIgnoreCase("true") || strVal.equalsIgnoreCase("yes") || strVal.equalsIgnoreCase("y");
 		}
+	}
+
+	/**
+	 * 验证字段的正确性
+	 * 
+	 * @return
+	 * 
+	 */
+	public void validate() {
+	}
+
+	/**
+	 * 更新数值
+	 * 
+	 * @param cell
+	 * @param xlsxFileName
+	 * 
+	 */
+	abstract void update(XSSFCell cell, String xlsxFileName);
+
+	@Override
+	public String toString() {
+		// 创建字符串缓冲区
+		StringBuffer sb = new StringBuffer();
+		// 添加属性
+		sb.append(this.getClass().getSimpleName());
+		sb.append(" { ");
+		sb.append("_xlsxFileName = ");
+		sb.append(this._xlsxFileName);
+		sb.append(", _sheetName = ");
+		sb.append(this._sheetName);
+		sb.append(", _rowIndex = ");
+		sb.append(this._rowIndex);
+		sb.append(", _colIndex = ");
+		sb.append(this._colIndex);
+		sb.append(", _objVal = ");
+		sb.append(this._objVal);
+		sb.append(" }");
+		// 返回字符串
+		return sb.toString();
 	}
 }
