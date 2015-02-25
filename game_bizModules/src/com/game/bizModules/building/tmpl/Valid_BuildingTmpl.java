@@ -2,6 +2,7 @@ package com.game.bizModules.building.tmpl;
 
 import java.util.List;
 
+import com.game.part.tmpl.IXlsxValidator;
 import com.game.part.utils.Assert;
 
 /**
@@ -11,14 +12,14 @@ import com.game.part.utils.Assert;
  * @since 2014/6/24
  * 
  */
-public class Pack_BuildingTmpl {
+public class Valid_BuildingTmpl implements IXlsxValidator<BuildingTmpl> {
 	/**
 	 * 验证数据列表
 	 * 
 	 * @param tl
 	 * 
 	 */
-	public static void pack(List<BuildingTmpl> tl) {
+	public void validate(List<BuildingTmpl> tl) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(tl, "tl");
 //

@@ -5,14 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * ID
- * 
- * @author hjj2017
- * @since 2014/6/6
- * 
- */
-@Target({ ElementType.FIELD })
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Id {
+public @interface MapFunc {
+	/** 分组名称 */
+	String groupName();
 }

@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 指定由哪个类进行打包
+ * 数值唯一的字段
  * 
  * @author hjj2017
- * @since 2014/6/24
+ * @since 2014/6/6
  * 
  */
-@Target(ElementType.TYPE)
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Packer {
-	/** 打包类 */
-	Class<?> clazz();
+public @interface Uniqued {
+	/** 分组名称 */
+	String groupName();
 }

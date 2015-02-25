@@ -4,8 +4,8 @@ import java.util.Map;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.part.tmpl.anno.ColName;
-import com.game.part.tmpl.anno.Id;
-import com.game.part.tmpl.anno.Packer;
+import com.game.part.tmpl.anno.Uniqued;
+import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.utils.Assert;
 
@@ -17,10 +17,11 @@ import com.game.part.utils.Assert;
  * 
  */
 @XlsxTmpl(fileName = "cd.xlsx", sheetIndex = 0)
-@Packer(clazz = CdTimerTmpl_Validator.class)
+@Validator(clazz = CdTimerTmpl_Validator.class)
 public class CdTimerTmpl {
-	/** Cd 类型 Int */ @Id
+	/** Cd 类型 Int */
 	@ColName("A")
+	@Uniqued(groupName = "ID")
 	public Integer _cdTypeInt = null;
 
 	/** 阈值 */
