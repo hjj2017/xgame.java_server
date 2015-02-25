@@ -22,20 +22,10 @@ public class Valid_BuildingTmpl implements IXlsxValidator<BuildingTmpl> {
 	public void validate(List<BuildingTmpl> tl) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(tl, "tl");
-//
-//		tl.forEach(t -> {
-//			// 断言参数不为空
-//			Assert.notNull(t, "t");
-//
-//			if (t._posX == null || 
-//				t._posX < -1024 || 
-//				t._posX > +4096) {
-//				String errMsg = MessageFormat.format(
-//					"建筑坐标错误! ID = {0}", 
-//					t._posX
-//				);
-//				throw new XlsxTmplError(errMsg);
-//			}
-//		});
+
+		tl.forEach(t -> {
+			// 断言参数不为空
+			Assert.notNull(t, "t");
+		});
 	}
 }

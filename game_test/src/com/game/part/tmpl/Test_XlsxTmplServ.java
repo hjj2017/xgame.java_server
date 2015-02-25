@@ -18,6 +18,7 @@ public class Test_XlsxTmplServ {
 	public void test() {
 		XlsxTmplServ.OBJ._baseDir = "/data/temp_test/";
 		XlsxTmplServ.OBJ.loadTmplData(BuildingTmpl.class);
+		XlsxTmplServ.OBJ.validateAll();
 		
 		List<?> objList = XlsxTmplServ.OBJ.getObjList(BuildingTmpl.class);
 		System.out.println(objList);
