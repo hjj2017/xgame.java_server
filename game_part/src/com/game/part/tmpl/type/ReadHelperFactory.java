@@ -148,10 +148,7 @@ final class ReadHelperFactory {
 		Assert.notNull(codeCtx, "codeCtx");
 
 		// 函数头
-		codeCtx._codeText.append("public void readImpl(")
-			.append(byClazz.getSimpleName())
-			.append(" tmplObj, XSSFRowReadStream stream) {\n");
-
+		codeCtx._codeText.append("public void readImpl(AbstractXlsxTmpl tmplObj, XSSFRowReadStream stream) {\n");
 		// 增加空值判断
 		codeCtx._codeText.append("if (tmplObj == null || stream == null) { return; }\n");
 		// 定义大 O 参数避免转型问题
