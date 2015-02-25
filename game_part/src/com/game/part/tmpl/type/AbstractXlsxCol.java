@@ -111,7 +111,7 @@ public abstract class AbstractXlsxCol<T> {
 	 * @return
 	 * 
 	 */
-	protected static<T extends AbstractXlsxCol<?>> T ifNullThenCreate(T objVal, Class<T> objClazz) {
+	public static<T extends AbstractXlsxCol<?>> T ifNullThenCreate(T objVal, Class<T> objClazz) {
 		try {
 			if (objVal == null) {
 				// 创建对象
