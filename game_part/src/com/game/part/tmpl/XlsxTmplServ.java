@@ -79,12 +79,12 @@ public class XlsxTmplServ {
 			this._objListMap.put(byClazz, objList);
 		} catch (XlsxTmplError err) {
 			// 抛出模板错误
-			XlsxTmplLog.LOG.error(err.getMessage(), err);
+			XlsxTmplLog.LOG.error(null, err);
 			throw err;
 		} catch (Exception ex) {
 			// 抛出运行时异常
 			XlsxTmplLog.LOG.error(ex.getMessage(), ex);
-			throw new RuntimeException(ex);
+			throw new XlsxTmplError(ex);
 		}
 	}
 

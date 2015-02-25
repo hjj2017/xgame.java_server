@@ -31,8 +31,12 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
 			return;
-		} else {
-			this._objVal = stream.readInt();
+		}
+		
+		Integer newVal = stream.readInt();
+
+		if (newVal != null) {
+			this._objVal = newVal;
 		}
 	}
 }

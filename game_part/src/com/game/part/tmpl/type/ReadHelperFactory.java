@@ -220,21 +220,19 @@ final class ReadHelperFactory {
 					));
 				}
 
-				// 获取泛型参数
-				ParameterizedType tType = (ParameterizedType)f.getGenericType();
-
-				if (tType.getRawType().equals(XlsxArrayList.class) == false || 
-					tType.getActualTypeArguments().length <= 0) {
+				if (hasGenericType(f) == false) {
 					// 如果不是 XlsxPlainList 类型, 
 					// 或者是不带有泛型参数, 
 					// 则直接抛出异常!
 					throw new XlsxTmplError(MessageFormat.format(
-						"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 XlsxPlainList<XlsxStr> _funcName; 这样的定义", 
+						"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 XlsxArrayList<XlsxStr> _funcName; 这样的定义", 
 						f.getDeclaringClass().getName(), 
 						f.getName()
 					));
 				}
 
+				// 获取泛型参数
+				ParameterizedType tType = (ParameterizedType)f.getGenericType();
 				// 获取实际类型
 				Class<?> aType = (Class<?>)tType.getActualTypeArguments()[0];
 
@@ -268,6 +266,38 @@ final class ReadHelperFactory {
 				.append(f.getName())
 				.append(".readXSSFRow(stream);\n");
 		});
+	}
+
+	/**
+	 * 是否为泛型字段 ?
+	 * 
+	 * @param f
+	 * @return
+	 * 
+	 */
+	private static boolean hasGenericType(Field f) {
+		if (f == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return false;
+		}
+
+		if (!(f.getGenericType() instanceof ParameterizedType)) {
+			// 如果不是泛型类型, 
+			// 则直接退出!
+			return false;
+		}
+
+		// 获取泛型参数
+		ParameterizedType tType = (ParameterizedType)f.getGenericType();
+
+		if (tType.getActualTypeArguments().length <= 0) {
+			// 如果泛型参数太少, 
+			// 则直接退出!
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

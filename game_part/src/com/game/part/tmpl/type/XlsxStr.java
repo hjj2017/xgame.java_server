@@ -31,8 +31,12 @@ public class XlsxStr extends BasicTypeCol<String> {
 	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
 			return;
-		} else {
-			this._objVal = stream.readStr();
+		}
+
+		String newVal = stream.readStr();
+
+		if (newVal != null) {
+			this._objVal = newVal;
 		}
 	}
 }

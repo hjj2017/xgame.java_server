@@ -139,7 +139,14 @@ public final class XSSFRowReadStream {
 	 * 
 	 */
 	public Integer readInt() {
-		return XSSFUtil.getIntCellVal(this.readCell());
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getIntCellVal(cell);
+		}
 	}
 
 	/**
@@ -149,7 +156,14 @@ public final class XSSFRowReadStream {
 	 * 
 	 */
 	public Long readLong() {
-		return XSSFUtil.getLongCellVal(this.readCell());
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getLongCellVal(cell);
+		}
 	}
 
 	/**
@@ -159,7 +173,14 @@ public final class XSSFRowReadStream {
 	 * 
 	 */
 	public Short readShort() {
-		return XSSFUtil.getShortCellVal(this.readCell());
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getShortCellVal(cell);
+		}
 	}
 
 	/**
@@ -169,7 +190,14 @@ public final class XSSFRowReadStream {
 	 * 
 	 */
 	public String readStr() {
-		return XSSFUtil.getStrCellVal(this.readCell());
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getStrCellVal(cell);
+		}
 	}
 
 	/**
@@ -179,6 +207,13 @@ public final class XSSFRowReadStream {
 	 * 
 	 */
 	public Boolean readBool() {
-		return XSSFUtil.getBoolCellVal(this.readCell());
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getBoolCellVal(cell);
+		}
 	}
 }

@@ -31,8 +31,12 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
 			return;
-		} else {
-			this._objVal = stream.readShort();
+		}
+		
+		Short newVal = stream.readShort();
+
+		if (newVal != null) {
+			this._objVal = newVal;
 		}
 	}
 }

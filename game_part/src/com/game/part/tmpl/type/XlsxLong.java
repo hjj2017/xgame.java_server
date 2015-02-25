@@ -31,8 +31,12 @@ public class XlsxLong extends BasicTypeCol<Long> {
 	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
 			return;
-		} else {
-			this._objVal = stream.readLong();
+		}
+
+		Long newVal = stream.readLong();
+
+		if (newVal != null) {
+			this._objVal = newVal;
 		}
 	}
 }

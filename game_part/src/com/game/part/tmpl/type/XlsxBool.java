@@ -31,8 +31,12 @@ public class XlsxBool extends BasicTypeCol<Boolean> {
 	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
 			return;
-		} else {
-			this._objVal = stream.readBool();
+		}
+
+		Boolean newVal = stream.readBool();
+
+		if (newVal != null) {
+			this._objVal = newVal;
 		}
 	}
 }
