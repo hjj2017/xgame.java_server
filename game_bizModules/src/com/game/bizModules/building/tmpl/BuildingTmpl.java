@@ -54,6 +54,6 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 
 	@MapFunc(groupName = "0")
 	public Integer getTypeIdKey() {
-		return this._typeIdList.objValList().get(0).intVal();
+		return this._typeIdList.get(0).intVal();
 	}
 }

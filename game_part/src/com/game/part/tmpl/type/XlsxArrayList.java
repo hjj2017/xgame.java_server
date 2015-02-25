@@ -1,8 +1,11 @@
 package com.game.part.tmpl.type;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import com.game.part.tmpl.XSSFRowReadStream;
 import com.game.part.tmpl.XlsxTmplError;
@@ -15,16 +18,15 @@ import com.game.part.utils.Assert;
  * @since 2015/2/23
  * 
  */
-public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol<List<T>> {
+public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol<List<T>> implements List<T> {
 	/** 数值列表 */
-	private List<T> _objValList = null;
+	private final List<T> _objValList = new ArrayList<>();
 
 	/**
 	 * 类默认构造器
 	 * 
 	 */
 	public XlsxArrayList() {
-		this._objValList = new ArrayList<>();
 	}
 
 	/**
@@ -37,19 +39,8 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 	public XlsxArrayList(T ... tArr) {
 		if (tArr != null && 
 			tArr.length > 0) {
-			this._objValList = new ArrayList<T>(tArr.length);
 			Collections.addAll(this._objValList, tArr);
 		}
-	}
-
-	/**
-	 * 获取数值列表
-	 * 
-	 * @return
-	 * 
-	 */
-	public List<T> objValList() {
-		return this._objValList;
 	}
 
 	@Override
@@ -90,12 +81,12 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 		}
 
 		// 获取元素数量
-		final int COUNT = elementNum - objVal._objValList.size();
+		final int COUNT = elementNum - objVal.size();
 
 		try {
 			for (int i = 0; i < COUNT; i++) {
 				// 新建对象并添加到列表
-				objVal._objValList.add(elementType.newInstance());
+				objVal.add(elementType.newInstance());
 			}
 		} catch (Exception ex) {
 			// 抛出异常!
@@ -119,5 +110,167 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 				o.readXSSFRow(stream);
 			});
 		}
+	}
+
+	@Override
+	public int size() {
+		return this._objValList.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return this._objValList.isEmpty();
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		return this._objValList.contains(o);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return this._objValList.iterator();
+	}
+
+	@Override
+	public Object[] toArray() {
+		return this._objValList.toArray();
+	}
+
+	@Override
+	public<X> X[] toArray(X[] a) {
+		return this._objValList.toArray(a);
+	}
+
+	@Override
+	public boolean add(T e) {
+		if (e != null) {
+			return this._objValList.add(e);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean remove(Object e) {
+		if (e != null) {
+			return this._objValList.remove(e);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		if (c != null) {
+			return this._objValList.contains(c);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends T> c) {
+		if (c != null) {
+			return this._objValList.addAll(c);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends T> c) {
+		if (c != null) {
+			return this._objValList.addAll(index, c);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		if (c != null) {
+			return this._objValList.remove(c);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		if (c != null) {
+			return this._objValList.retainAll(c);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public void clear() {
+		this._objValList.clear();
+	}
+
+	@Override
+	public T get(int index) {
+		return this._objValList.get(index);
+	}
+
+	@Override
+	public T set(int index, T element) {
+		if (element != null) {
+			return this._objValList.set(index, element);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void add(int index, T element) {
+		if (element != null) {
+			this._objValList.add(index, element);
+		}
+	}
+
+	@Override
+	public T remove(int index) {
+		return this._objValList.remove(index);
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		if (o != null) {
+			return this._objValList.indexOf(o);
+		} else {
+			return -1;
+		}
+	}
+
+	@Override
+	public int lastIndexOf(Object o) {
+		if (o != null) {
+			return this._objValList.lastIndexOf(o);
+		} else {
+			return -1;
+		}
+	}
+
+	@Override
+	public ListIterator<T> listIterator() {
+		return this._objValList.listIterator();
+	}
+
+	@Override
+	public ListIterator<T> listIterator(
+		int index) {
+		return this._objValList.listIterator(index);
+	}
+
+	@Override
+	public List<T> subList(
+		int fromIndex, 
+		int toIndex) {
+		return this._objValList.subList(
+			fromIndex, toIndex
+		);
 	}
 }
