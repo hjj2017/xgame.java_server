@@ -20,4 +20,6 @@ public @interface XlsxTmpl {
 	int sheetIndex();
 	/** 起始行 */
 	int startRowIndex() default 1;
+	/** 起始列 */
+	int startColIndex() default 1;
 }

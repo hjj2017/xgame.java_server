@@ -13,7 +13,7 @@ import com.game.part.utils.XSSFUtil;
  * @since 2015/2/25
  * 
  */
-public final class XSSFRowStream {
+public final class XSSFRowReadStream {
 	/** Excel 数据行 */
 	private XSSFRow _row = null;
 	/** 所在 Xlsx 文件名称 */
@@ -28,7 +28,7 @@ public final class XSSFRowStream {
 	 * @param xlsxFileName 
 	 * 
 	 */
-	XSSFRowStream(XSSFRow row, String xlsxFileName) {
+	XSSFRowReadStream(XSSFRow row, String xlsxFileName) {
 		// 断言参数不为空
 		Assert.notNull(row, "row");
 		// 设置行数据

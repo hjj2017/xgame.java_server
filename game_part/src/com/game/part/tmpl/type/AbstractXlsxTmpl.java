@@ -1,10 +1,6 @@
 package com.game.part.tmpl.type;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import com.game.part.tmpl.XSSFRowStream;
-import com.game.part.utils.ClazzUtil;
+import com.game.part.tmpl.XSSFRowReadStream;
 
 /**
  * 模板类
@@ -15,28 +11,20 @@ import com.game.part.utils.ClazzUtil;
  */
 public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl> {
 	@Override
-	protected void readImpl(XSSFRowStream stream) {
+	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
+			// 如果数据流为空, 
+			// 则直接退出!
 			return;
 		}
 
-		Field[] fArr = this.getClass().getDeclaredFields();
+		// 创建帮助者对象
+		IReadHelper helper = ReadHelperFactory.createHelper(this.getClass());
 
-		for (Field f : fArr) {
-			try {
-				if (AbstractXlsxCol.class.isAssignableFrom(f.getType()) == false) {
-					continue;
-				}
-		
-				// 获取 readXSSFRow 函数
-				Method m = ClazzUtil.getMethod(f.getType(), "readXSSFRow");
-				// 获取字段值
-				AbstractXlsxCol<?> fObj = (AbstractXlsxCol<?>)f.get(this);
-	
-				m.invoke(fObj, stream);
-			} catch (Exception ex) {
-				throw new RuntimeException(ex);
-			}
+		if (helper != null) {
+			// 如果帮助者不为空, 
+			// 则读取数据...
+			helper.readImpl(this, stream);
 		}
 	}
 }

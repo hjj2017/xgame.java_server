@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.game.part.tmpl.XSSFRowStream;
+import com.game.part.tmpl.XSSFRowReadStream;
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.utils.Assert;
 
@@ -71,18 +71,28 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 	 * objVal 不能为空, 但如果真为空值, 则自动创建
 	 * 
 	 * @param objVal
-	 * @param cell
-	 * @param xlsxFileName
+	 * @param elementType
+	 * @param elementNum 
 	 * @return
 	 * 
 	 */
-	public static<T extends AbstractXlsxCol<?>> XlsxArrayList<T> ifNullThenCreate(XlsxArrayList<T> objVal, Class<T> elementType, int elementNum) {
+	public static<T extends AbstractXlsxCol<?>> XlsxArrayList<T> ifNullThenCreate(
+		XlsxArrayList<T> objVal, 
+		Class<T> elementType, 
+		int elementNum) {
+		// 断言参数不为空
+		Assert.notNull(elementType, "elementType");
+		Assert.isTrue(elementNum > 0, "elementNum <= 0");
+
 		if (objVal == null) {
 			objVal = new XlsxArrayList<T>();
 		}
 
+		// 获取元素数量
+		final int COUNT = elementNum - objVal._objValList.size();
+
 		try {
-			for (int i = 0; i < elementNum; i++) {
+			for (int i = 0; i < COUNT; i++) {
 				// 新建对象并添加到列表
 				objVal._objValList.add(elementType.newInstance());
 			}
@@ -95,7 +105,7 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 	}
 
 	@Override
-	protected void readImpl(XSSFRowStream stream) {
+	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null || 
 			this._objValList == null || 
 			this._objValList.isEmpty()) {

@@ -1,6 +1,6 @@
 package com.game.part.tmpl.type;
 
-import com.game.part.tmpl.XSSFRowStream;
+import com.game.part.tmpl.XSSFRowReadStream;
 
 /**
  * Excel Bool 字段
@@ -27,25 +27,8 @@ public class XlsxBool extends BasicTypeCol<Boolean> {
 		this._objVal = defaultVal;
 	}
 
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @param cell
-	 * @param xlsxFileName
-	 * @return
-	 * 
-	 */
-	public static XlsxBool ifNullThenCreate(XlsxBool objVal) {
-		if (objVal == null) {
-			objVal = new XlsxBool();
-		}
-
-		return objVal;
-	}
-
 	@Override
-	protected void readImpl(XSSFRowStream stream) {
+	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {
 			return;
 		} else {

@@ -1,8 +1,10 @@
 package com.game.bizModules.building.tmpl;
 
+import com.game.part.tmpl.XSSFRowReadStream;
 import com.game.part.tmpl.anno.Id;
 import com.game.part.tmpl.anno.Packer;
 import com.game.part.tmpl.anno.XlsxTmpl;
+import com.game.part.tmpl.type.AbstractXlsxCol;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.tmpl.type.XlsxInt;
 import com.game.part.tmpl.type.XlsxStr;
@@ -36,4 +38,12 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 //	/** 功能列表 */ 
 //	@ElementCount(5)
 //	public XCol<List<FuncTmpl>> _funcList;
+	
+	public void readImpl(BuildingTmpl tmplObj, XSSFRowReadStream stream) {
+		if (tmplObj == null || stream == null) { return; }
+		tmplObj._id = AbstractXlsxCol.ifNullThenCreate(tmplObj._id, com.game.part.tmpl.type.XlsxInt.class);
+		tmplObj._id.readXSSFRow(stream);
+		tmplObj._name = AbstractXlsxCol.ifNullThenCreate(tmplObj._name, com.game.part.tmpl.type.XlsxStr.class);
+		tmplObj._name.readXSSFRow(stream);
+		}
 }

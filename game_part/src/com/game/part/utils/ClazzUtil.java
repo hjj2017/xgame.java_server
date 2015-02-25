@@ -33,7 +33,7 @@ public final class ClazzUtil {
 	 * @return 
 	 * 
 	 */
-	public static boolean isDrivedClass(
+	public static boolean isDrivedClazz(
 		Class<?> clazzA, 
 		Class<?> clazzB) {
 		if (clazzA == null || 
@@ -59,7 +59,7 @@ public final class ClazzUtil {
 	public static boolean isConcreteDrivedClass(
 		Class<?> currClazz, 
 		Class<?> superClazz) {
-		if (!isDrivedClass(currClazz, superClazz)) {
+		if (!isDrivedClazz(currClazz, superClazz)) {
 			// 如果连派生类的条件都不满足, 
 			// 则直接返回 false
 			return false;
