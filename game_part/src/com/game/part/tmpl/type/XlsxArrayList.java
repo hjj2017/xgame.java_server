@@ -24,6 +24,7 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 	 * 
 	 */
 	public XlsxArrayList() {
+		this._objValList = new ArrayList<>();
 	}
 
 	/**

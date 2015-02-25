@@ -23,6 +23,13 @@ public abstract class AbstractXlsxCol<T> {
 	private int _colIndex = -1;
 
 	/**
+	 * 类默认构造器
+	 * 
+	 */
+	AbstractXlsxCol() {
+	}
+
+	/**
 	 * 获取 Excel 文件名
 	 * 
 	 * @return

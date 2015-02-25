@@ -1,11 +1,11 @@
 package com.game.bizModules.building.tmpl;
 
-import com.game.part.tmpl.XSSFRowReadStream;
+import com.game.part.tmpl.anno.ElementNum;
 import com.game.part.tmpl.anno.Id;
 import com.game.part.tmpl.anno.Packer;
 import com.game.part.tmpl.anno.XlsxTmpl;
-import com.game.part.tmpl.type.AbstractXlsxCol;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
+import com.game.part.tmpl.type.XlsxArrayList;
 import com.game.part.tmpl.type.XlsxInt;
 import com.game.part.tmpl.type.XlsxStr;
 
@@ -20,9 +20,9 @@ import com.game.part.tmpl.type.XlsxStr;
 @Packer(clazz = Pack_BuildingTmpl.class)
 public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** ID */ @Id
-	public XlsxInt _id = new XlsxInt(0);
+	public XlsxInt _ID;
 	/** 建筑名称 */
-	public XlsxStr _name = new XlsxStr("");
+	public XlsxStr _name;
 //	/** 说明 */
 //	public XCol<String> _desc;
 //	/** 图片 */
@@ -31,19 +31,10 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 //	public XlsxInt _posX;
 //	/** Y 坐标 */
 //	public XlsxInt _posY;
-//	/** 建筑类型 */
-//	@ElementNum(2)
-//	public XlsxArrayList<XlsxInt> _typeIdList;
-//
-//	/** 功能列表 */ 
-//	@ElementCount(5)
-//	public XCol<List<FuncTmpl>> _funcList;
-	
-	public void readImpl(BuildingTmpl tmplObj, XSSFRowReadStream stream) {
-		if (tmplObj == null || stream == null) { return; }
-		tmplObj._id = AbstractXlsxCol.ifNullThenCreate(tmplObj._id, com.game.part.tmpl.type.XlsxInt.class);
-		tmplObj._id.readXSSFRow(stream);
-		tmplObj._name = AbstractXlsxCol.ifNullThenCreate(tmplObj._name, com.game.part.tmpl.type.XlsxStr.class);
-		tmplObj._name.readXSSFRow(stream);
-		}
+	/** 建筑类型 */
+	@ElementNum(2)
+	public XlsxArrayList<XlsxInt> _typeIdList;
+	/** 功能 */
+	@ElementNum(2)
+	public XlsxArrayList<FuncTmpl> _mainFunc;
 }

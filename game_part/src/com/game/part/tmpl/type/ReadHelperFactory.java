@@ -246,8 +246,6 @@ final class ReadHelperFactory {
 					.append(" = XlsxArrayList.ifNullThenCreate(O.")
 					.append(f.getName())
 					.append(", ")
-					.append(f.getType().getName())
-					.append(".class, ")
 					.append(aType.getSimpleName())
 					.append(".class, ")
 					.append(elemNumAnno.value())

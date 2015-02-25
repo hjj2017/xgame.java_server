@@ -7,7 +7,7 @@ package com.game.part.tmpl.type;
  * @param <T>
  * 
  */
-public abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
+abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 	/** 列值 */
 	protected T _objVal = null;
 

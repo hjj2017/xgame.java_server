@@ -1,6 +1,8 @@
 package com.game.bizModules.building.tmpl;
 
-import com.game.part.tmpl.anno.ColName;
+import com.game.part.tmpl.type.AbstractXlsxTmpl;
+import com.game.part.tmpl.type.XlsxInt;
+import com.game.part.tmpl.type.XlsxStr;
 
 /**
  * 功能模板
@@ -9,14 +11,11 @@ import com.game.part.tmpl.anno.ColName;
  * @since 2014/6/6
  * 
  */
-public class FuncTmpl {
+public class FuncTmpl extends AbstractXlsxTmpl {
 	/** 功能 ID */
-    @ColName
-	public Integer _ID;
+	public XlsxInt _ID;
 	/** 名称 */
-    @ColName
-	public String _name;
+	public XlsxStr _name;
 	/** 说明 */
-    @ColName
-	public String _desc;
+	public XlsxStr _desc;
 }
