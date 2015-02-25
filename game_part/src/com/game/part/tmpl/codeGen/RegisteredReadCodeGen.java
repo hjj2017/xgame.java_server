@@ -13,8 +13,8 @@ import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.codeGen.impl.Read_Plain;
 import com.game.part.tmpl.codeGen.impl.Read_PlainList;
+import com.game.part.tmpl.type.XlsxArrayList;
 import com.game.part.tmpl.type.XlsxInt;
-import com.game.part.tmpl.type.XlsxPlainList;
 import com.game.part.tmpl.type.XlsxStr;
 import com.game.part.utils.Assert;
 
@@ -57,7 +57,7 @@ class RegisteredReadCodeGen {
 
 		if (isPlainField(f)) {
 			return R_plain;
-		} else if (isPlainListField(f)) {
+		} else if (isArrayListField(f)) {
 			return R_plainList;
 		}
 
@@ -83,8 +83,8 @@ class RegisteredReadCodeGen {
 	 * @return 
 	 * 
 	 */
-	public static boolean isPlainListField(Field f) {
-		return f != null && f.getType().equals(XlsxPlainList.class);
+	public static boolean isArrayListField(Field f) {
+		return f != null && f.getType().equals(XlsxArrayList.class);
 	}
 
 	/**

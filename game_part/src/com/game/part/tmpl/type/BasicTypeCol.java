@@ -1,17 +1,15 @@
 package com.game.part.tmpl.type;
 
-import org.apache.poi.xssf.usermodel.XSSFCell;
-
 /**
- * 普通数值列
+ * 基本类型数值列
  * 
  * @author hjj2019
  * @param <T>
  * 
  */
-public abstract class PlainCol<T> extends AbstractXlsxCol<T> {
+public abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 	/** 列值 */
-	T _objVal = null;
+	protected T _objVal = null;
 
 	/**
 	 * 获取对象值
@@ -111,15 +109,6 @@ public abstract class PlainCol<T> extends AbstractXlsxCol<T> {
 	public void validate() {
 	}
 
-	/**
-	 * 更新数值
-	 * 
-	 * @param cell
-	 * @param xlsxFileName
-	 * 
-	 */
-	abstract void update(XSSFCell cell, String xlsxFileName);
-
 	@Override
 	public String toString() {
 		// 创建字符串缓冲区
@@ -128,13 +117,13 @@ public abstract class PlainCol<T> extends AbstractXlsxCol<T> {
 		sb.append(this.getClass().getSimpleName());
 		sb.append(" { ");
 		sb.append("_xlsxFileName = ");
-		sb.append(this._xlsxFileName);
+		sb.append(this.getXlsxFileName());
 		sb.append(", _sheetName = ");
-		sb.append(this._sheetName);
+		sb.append(this.getSheetName());
 		sb.append(", _rowIndex = ");
-		sb.append(this._rowIndex);
+		sb.append(this.getRowIndex());
 		sb.append(", _colIndex = ");
-		sb.append(this._colIndex);
+		sb.append(this.getColIndex());
 		sb.append(", _objVal = ");
 		sb.append(this._objVal);
 		sb.append(" }");

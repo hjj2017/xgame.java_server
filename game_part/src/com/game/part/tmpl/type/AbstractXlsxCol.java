@@ -1,6 +1,7 @@
 package com.game.part.tmpl.type;
 
-import org.apache.poi.xssf.usermodel.XSSFCell;
+import com.game.part.tmpl.XSSFRowStream;
+import com.game.part.utils.Assert;
 
 /**
  * Excel 列
@@ -11,13 +12,13 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
  */
 public abstract class AbstractXlsxCol<T> {
 	/** 所在 Xlsx 文件名称 */
-	String _xlsxFileName = null;
+	private String _xlsxFileName = null;
 	/** 所在页签名称 */
-	String _sheetName = null;
+	private String _sheetName = null;
 	/** 行索引 */
-	int _rowIndex = -1;
+	private int _rowIndex = -1;
 	/** 列索引 */
-	int _colIndex = -1;
+	private int _colIndex = -1;
 
 	/**
 	 * 获取 Excel 文件名
@@ -60,42 +61,42 @@ public abstract class AbstractXlsxCol<T> {
 	}
 
 	/**
+	 * 从 Excel 行数据流中读取数据
+	 * 
+	 * @param stream 
+	 * 
+	 */
+	public void readXSSFRow(XSSFRowStream stream) {
+		// 断言参数不为空
+		Assert.notNull(stream, "stream");
+		// 设置 Excel 文件名
+		this._xlsxFileName = stream.getXlsxFileName();
+		// 页签名称
+		this._sheetName = stream.getSheetName();
+		// 设置所在行和列
+		this._rowIndex = stream.getRowIndex();
+		this._colIndex = stream.getCurrCellIndex();
+
+		// 调用真实实现
+		this.readImpl(stream);
+		// 读取完成之后进行验证
+		this.validate();
+	}
+
+	/**
+	 * 读取行数据, 需要子类进行实现
+	 * 
+	 * @param stream 
+	 * 
+	 */
+	protected abstract void readImpl(XSSFRowStream stream);
+
+	/**
 	 * 验证字段的正确性
 	 * 
 	 * @return
 	 * 
 	 */
-	public void validate() {
-	}
-
-	/**
-	 * 更新附加消息
-	 * 
-	 * @param xlsxCol
-	 * @param cell
-	 * @param xlsxFileName 
-	 * 
-	 */
-	static<T extends AbstractXlsxCol<?>> T updateExtraMsg(T xlsxCol, XSSFCell cell, String xlsxFileName) {
-		if (xlsxCol == null || 
-			cell == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return xlsxCol;
-		}
-
-		// 设置 Excel 文件名
-		xlsxCol._xlsxFileName = xlsxFileName;
-
-		if (cell.getSheet() != null) {
-			// 设置页签名称
-			xlsxCol._sheetName = cell.getSheet().getSheetName();
-		}
-
-		// 设置所在行和列
-		xlsxCol._rowIndex = cell.getRowIndex();
-		xlsxCol._colIndex = cell.getColumnIndex();
-
-		return xlsxCol;
+	protected void validate() {
 	}
 }

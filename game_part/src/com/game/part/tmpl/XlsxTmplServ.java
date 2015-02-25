@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.game.part.tmpl.anno.Packer;
 import com.game.part.tmpl.anno.XlsxTmpl;
+import com.game.part.tmpl.type.AbstractXlsxCol;
 import com.game.part.utils.Assert;
 import com.game.part.utils.Out;
 import com.game.part.utils.OutInt;
@@ -51,7 +52,7 @@ public class XlsxTmplServ {
 	 * @param byClazz
 	 * 
 	 */
-	public void loadTmplData(Class<?> byClazz) {
+	public void loadTmplData(Class<? extends AbstractXlsxCol<?>> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 
@@ -73,7 +74,7 @@ public class XlsxTmplServ {
 			);
 	
 			// 执行加载逻辑
-			List<?> objList = this.makeObjList(byClazz, sheet);
+			List<?> objList = this.makeObjList(byClazz, sheet, outExcelFileName.getVal());
 			// 添加到字典列表
 			this._objListMap.put(byClazz, objList);
 		} catch (XlsxTmplError err) {
@@ -157,11 +158,12 @@ public class XlsxTmplServ {
 	 * 
 	 * @param byClazz
 	 * @param fromSheet
+	 * @param xlsxFileName 
 	 * @return 
 	 * @throws Exception 
 	 * 
 	 */
-	private <T> List<T> makeObjList(Class<T> byClazz, XSSFSheet fromSheet) throws Exception {
+	private<T extends AbstractXlsxCol<?>> List<T> makeObjList(Class<T> byClazz, XSSFSheet fromSheet, String xlsxFileName) throws Exception {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		Assert.notNull(fromSheet, "fromSheet");
@@ -179,40 +181,23 @@ public class XlsxTmplServ {
 			return Collections.emptyList();
 		}
 
-		// 1. 获取解析器
-		IXlsxParser parserObj = XlsxParserFactory.create(byClazz);
-
-		if (parserObj == null) {
-			// 如果解析器为空, 
-			// 则抛出异常!
-			throw new XlsxTmplError(MessageFormat.format(
-				"根据 {0} 类创建了空的解析器", 
-				byClazz.getName()
-			));
-		}
-
 		// 创建列表对象
 		List<T> objList = new ArrayList<>(rowCount);
 
 		for (int i = 1; i <= rowCount; i++) {
 			// 获取行数据
 			XSSFRow row = fromSheet.getRow(i);
-			// 定义对象
-			@SuppressWarnings("unchecked")
-			T newObj = (T)parserObj.parse(row);
-
-			if (newObj == null) {
-				// 如果新对象为空, 
-				// 则抛出异常!
-				XlsxTmplLog.LOG.error(MessageFormat.format(
-					"从 {0} 页签第 {1} 行数据中创建的 {2} 类对象为空值", 
-					fromSheet.getSheetName(), 
-					String.valueOf(i),
-					byClazz.getName()
-				));
+			
+			if (row == null) {
+				// 如果行数据为空, 
+				// 则直接跳过!
 				continue;
 			}
 
+			// 创建模板对象
+			T newObj = byClazz.newInstance();
+			// 读取行数据
+			newObj.readXSSFRow(new XSSFRowStream(row, xlsxFileName));
 			// 添加对象到列表
 			objList.add(newObj);
 		}

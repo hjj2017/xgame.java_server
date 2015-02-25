@@ -1,9 +1,6 @@
 package com.game.part.tmpl.type;
 
-import org.apache.poi.xssf.usermodel.XSSFCell;
-
-import com.game.part.utils.Assert;
-import com.game.part.utils.XSSFUtil;
+import com.game.part.tmpl.XSSFRowStream;
 
 /**
  * Excel Bool 字段
@@ -12,7 +9,7 @@ import com.game.part.utils.XSSFUtil;
  * @since 2015/2/23
  * 
  */
-public class XlsxBool extends PlainCol<Boolean> {
+public class XlsxBool extends BasicTypeCol<Boolean> {
 	/**
 	 * 类默认构造器
 	 * 
@@ -31,7 +28,7 @@ public class XlsxBool extends PlainCol<Boolean> {
 	}
 
 	/**
-	 * 更新 XlsxInt 对象, 但如果其为空值, 则自动创建
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
 	 * 
 	 * @param objVal
 	 * @param cell
@@ -39,60 +36,20 @@ public class XlsxBool extends PlainCol<Boolean> {
 	 * @return
 	 * 
 	 */
-	public static XlsxBool updateOrCreate(XlsxBool objVal, XSSFCell cell, String xlsxFileName) {
+	public static XlsxBool ifNullThenCreate(XlsxBool objVal) {
 		if (objVal == null) {
-			return create(cell, xlsxFileName);
-		} else {
-			return update(objVal, cell, xlsxFileName);
+			objVal = new XlsxBool();
 		}
-	}
 
-	/**
-	 * 创建 XlsxInt 对象
-	 * 
-	 * @param cell
-	 * @param xlsxFileName
-	 * @return
-	 * 
-	 */
-	public static XlsxBool create(XSSFCell cell, String xlsxFileName) {
-		// 创建并更新数值
-		return update(new XlsxBool(), cell, xlsxFileName);
-	}
-
-	/**
-	 * 更新 XlsxInt 对象
-	 * 
-	 * @param objVal 
-	 * @param cell
-	 * @param xlsxFileName
-	 * @return
-	 * 
-	 */
-	public static XlsxBool update(XlsxBool objVal, XSSFCell cell, String xlsxFileName) {
-		// 断言参数不为空
-		Assert.notNull(objVal, "objVal");
-		// 更新数值并返回
-		objVal.update(cell, xlsxFileName);
 		return objVal;
 	}
 
 	@Override
-	void update(XSSFCell cell, String xlsxFileName) {
-		// 更新附加信息
-		AbstractXlsxCol.updateExtraMsg(
-			this, cell, 
-			xlsxFileName
-		);
-
-		if (cell == null || 
-			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
-			// 如果单元格为空, 
-			// 则直接退出!
+	protected void readImpl(XSSFRowStream stream) {
+		if (stream == null) {
 			return;
+		} else {
+			this._objVal = stream.readBool();
 		}
-
-		// 更新数值
-		this._objVal = XSSFUtil.getBoolCellVal(cell);
 	}
 }

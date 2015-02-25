@@ -16,7 +16,7 @@ import com.game.bizModules.building.tmpl.BuildingTmpl;
 public class Test_XlsxTmplServ {
 	@Test
 	public void test() {
-		XlsxTmplServ.OBJ._baseDir = "/Data/Temp_Test/";
+		XlsxTmplServ.OBJ._baseDir = "/data/temp_test/";
 		XlsxTmplServ.OBJ.loadTmplData(BuildingTmpl.class);
 		
 		List<?> objList = XlsxTmplServ.OBJ.getObjList(BuildingTmpl.class);

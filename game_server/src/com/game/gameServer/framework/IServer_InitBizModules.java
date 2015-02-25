@@ -3,13 +3,13 @@ package com.game.gameServer.framework;
 import java.text.MessageFormat;
 import java.util.Set;
 
-import com.game.gameServer.tmpl.AbstractXlsxTmpl;
 import com.game.part.Error;
 import com.game.part.handler.BaseHandler;
 import com.game.part.handler.HandlerObjMapper;
 import com.game.part.msg.BaseMsg;
 import com.game.part.msg.MsgObjMapper;
 import com.game.part.tmpl.XlsxTmplServ;
+import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
 import com.game.part.utils.PackageUtil;

@@ -8,7 +8,7 @@ import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.anno.ElementNum;
 import com.game.part.tmpl.codeGen.CodeContext;
 import com.game.part.tmpl.codeGen.IReadCodeGen;
-import com.game.part.tmpl.type.XlsxPlainList;
+import com.game.part.tmpl.type.XlsxArrayList;
 import com.game.part.utils.Assert;
 
 /**
@@ -36,7 +36,7 @@ public class Read_PlainList implements IReadCodeGen {
 		// 获取泛型参数
 		ParameterizedType tType = (ParameterizedType)f.getGenericType();
 
-		if (tType.getRawType().equals(XlsxPlainList.class) == false || 
+		if (tType.getRawType().equals(XlsxArrayList.class) == false || 
 			tType.getActualTypeArguments().length <= 0) {
 			// 如果不是 XlsxPlainList 类型, 
 			// 或者是不带有泛型参数, 
@@ -51,7 +51,7 @@ public class Read_PlainList implements IReadCodeGen {
 		// 获取实际类型
 		Class<?> aType = (Class<?>)tType.getActualTypeArguments()[0];
 		// 添加到 import
-		codeCtx._importClazzSet.add(XlsxPlainList.class);
+		codeCtx._importClazzSet.add(XlsxArrayList.class);
 		codeCtx._importClazzSet.add(aType);
 
 		// 获取列表中的元素数量
