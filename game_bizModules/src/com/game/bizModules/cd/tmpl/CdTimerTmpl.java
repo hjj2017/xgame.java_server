@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.part.tmpl.anno.ColName;
-import com.game.part.tmpl.anno.Uniqued;
+import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.utils.Assert;
@@ -21,7 +21,7 @@ import com.game.part.utils.Assert;
 public class CdTimerTmpl {
 	/** Cd 类型 Int */
 	@ColName("A")
-	@Uniqued(groupName = "ID")
+	@OneToMany(groupName = "ID")
 	public Integer _cdTypeInt = null;
 
 	/** 阈值 */

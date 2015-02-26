@@ -5,9 +5,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ ElementType.METHOD })
+/**
+ * 一个关键字对应一个模板对象
+ * 
+ * @author hjj2017
+ * @since 2015/2/27
+ * 
+ */
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MapFunc {
+public @interface OneToOne {
 	/** 分组名称 */
 	String groupName();
 }

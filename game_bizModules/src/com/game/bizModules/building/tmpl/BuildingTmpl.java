@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.game.part.tmpl.anno.ElementNum;
-import com.game.part.tmpl.anno.Uniqued;
-import com.game.part.tmpl.anno.UniquedMap;
-import com.game.part.tmpl.anno.MapFunc;
-import com.game.part.tmpl.anno.MapMap;
+import com.game.part.tmpl.anno.OneToMany;
+import com.game.part.tmpl.anno.OneToOne;
 import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
@@ -26,12 +24,11 @@ import com.game.part.tmpl.type.XlsxStr;
 @Validator(clazz = Valid_BuildingTmpl.class)
 public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** ID */ 
-	@Uniqued(groupName = "ID")
+	@OneToOne(groupName = "ID")
 	public XlsxInt _ID;
-	/** ID 字典 */ 
-	@UniquedMap(groupName = "ID")
-	public static Map<Integer, BuildingTmpl> _IDMap;
-
+	/** 所在城市 Id */
+	@OneToMany(groupName = "cityId")
+	public XlsxInt _cityId;
 	/** 建筑名称 */
 	public XlsxStr _name;
 //	/** 说明 */
@@ -49,11 +46,10 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 	@ElementNum(2)
 	public XlsxArrayList<FuncTmpl> _mainFunc;
 
-	@MapMap(groupName = "0")
-	public static Map<Integer, List<BuildingTmpl>> _buildingTypeMap;
-
-	@MapFunc(groupName = "0")
-	public Integer getTypeIdKey() {
-		return this._typeIdList.get(0).intVal();
-	}
+	/** ID 字典 */ 
+	@OneToOne(groupName = "ID")
+	public static Map<Integer, BuildingTmpl> _IDMap;
+	/** 城市建筑字典 */
+	@OneToMany(groupName = "cityId")
+	public static Map<Integer, List<BuildingTmpl>> _cityBuildingMap;
 }

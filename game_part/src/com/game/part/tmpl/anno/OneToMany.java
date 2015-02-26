@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 数值唯一的字段
+ * 一个关键字对应多个模板对象
  * 
  * @author hjj2017
- * @since 2014/6/6
+ * @since 2015/2/27
  * 
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Uniqued {
+public @interface OneToMany {
 	/** 分组名称 */
 	String groupName();
 }
