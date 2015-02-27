@@ -49,7 +49,14 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 			return;
 		}
 
-		targetMap.put(objKey, objVal);
+		if (objKey instanceof BasicTypeCol<?>) {
+			targetMap.put(
+				((BasicTypeCol<?>)objKey).objVal(), 
+				objVal
+			);
+		} else {
+			targetMap.put(objKey, objVal);
+		}
 	}
 
 	/**
@@ -76,8 +83,15 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 			// 如果模板列表为空, 
 			// 则新建列表!
 			tmplList = new ArrayList<>();
-			// 将列表添加到字典
-			targetMap.put(objKey, tmplList);
+			
+			if (objKey instanceof BasicTypeCol<?>) {
+				targetMap.put(
+					((BasicTypeCol<?>)objKey).objVal(), 
+					tmplList
+				);
+			} else {
+				targetMap.put(objKey, tmplList);
+			}
 		}
 
 		// 添加数值到列表

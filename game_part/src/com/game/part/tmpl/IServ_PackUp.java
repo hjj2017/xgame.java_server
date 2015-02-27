@@ -25,6 +25,8 @@ interface IServ_PackUp {
 
 		if (objList == null || 
 			objList.isEmpty()) {
+			// 如果模板列表为空, 
+			// 则直接退出!
 			return;
 		}
 

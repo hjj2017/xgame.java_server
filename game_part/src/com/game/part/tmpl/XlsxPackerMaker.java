@@ -1,29 +1,31 @@
 package com.game.part.tmpl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.game.part.tmpl.anno.OneToMany;
-import com.game.part.tmpl.anno.OneToOne;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtConstructor;
+import javassist.CtMethod;
+import javassist.CtNewMethod;
+
+import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.utils.Assert;
-import com.game.part.utils.ClazzUtil;
-import com.sun.javafx.collections.MappingChange.Map;
-
 
 /**
- * 打包工器构建者
+ * 打包器构建者
  * 
  * @author hjj2017
  * @since 2015/2/27
  * 
  */
-class XlsxPackerMaker {
+final class XlsxPackerMaker {
+	/** 打包器字典 */
+	private static Map<Class<?>, IXlsxPacker> _packerMap = new HashMap<>();
+
 	/**
 	 * 类默认构造器
 	 * 
@@ -34,193 +36,232 @@ class XlsxPackerMaker {
 	/**
 	 * 构建打包器
 	 * 
+	 * @param byClazz 
 	 * @return 
 	 * 
 	 */
-	public static IXlsxPacker make(Class<?> clazz) {
+	public static IXlsxPacker make(Class<?> byClazz) {
 		// 断言参数不为空
-		Assert.notNull(clazz, "clazz");
-		// 获取键值对列表
-		List<MyPair> pl = listAllPair(clazz);
+		Assert.notNull(byClazz, "clazz");
+		// 获取打包器
+		IXlsxPacker packer = _packerMap.get(byClazz);
 
-		return null;
-	}
-
-	/**
-	 * 列表出所有的 key 和 map 字段的配对
-	 * 
-	 * @param clazz
-	 * @return 
-	 * 
-	 */
-	private static List<MyPair> listAllPair(Class<?> clazz) {
-		if (clazz == null) {
-			// 如果参数对象为空, 
-			// 则返回空列表
-			return Collections.emptyList();
+		if (packer == null) {
+			try {
+				// 构建打包器类定义
+				Class<IXlsxPacker> pClazz = buildPackerClazz(byClazz);
+				// 创建对象
+				packer = pClazz.newInstance();
+				// 将打包器添加到字典
+				_packerMap.put(byClazz, packer);
+			} catch (Exception ex) {
+				// 抛出异常
+				throw new XlsxTmplError(ex);
+			}
 		}
 
-		// 收集分组名称
-		Set<String> groupNameSet = collectGroupName(clazz);
-
-		return groupNameSet.stream().map(
-			name -> new MyPair(findMember(clazz, name, false), findMember(clazz, name, true)
-		)).collect(Collectors.toList());
+		return packer;
 	}
 
 	/**
-	 * 收集分组名称
+	 * 构建打包器类定义
 	 * 
-	 * @param clazz
+	 * @param byClazz
 	 * @return 
 	 * 
 	 */
-	private static Set<String> collectGroupName(Class<?> clazz) {
+	static Class<IXlsxPacker> buildPackerClazz(Class<?> byClazz) {
 		// 断言参数不为空
-		Assert.notNull(clazz, "clazz");
+		Assert.notNull(byClazz, "byClazz");
 
-		// 找到标注 OneToOne 和 OneToMany 注解的字段
-		List<Field> fl = ClazzUtil.listField(clazz, c ->
-			c.getAnnotation(OneToOne.class) != null || c.getAnnotation(OneToMany.class) != null
-		);
+		// 设置解析器名称
+		final String helperClazzName = byClazz.getPackage().getName()
+			+ ".Packer_" 
+			+ byClazz.getSimpleName();
 
-		// 分组名称集合
-		Set<String> groupNameSet = new HashSet<>();
+		try {
+			// 获取类池
+			ClassPool pool = ClassPool.getDefault();
+			// 获取接口类
+			CtClass helperInterface = pool.getCtClass(IXlsxPacker.class.getName());
+			// 
+			// 创建解析器 JAVA 类
+			// 会生成如下代码 :
+			// public class Packer_BuildingTmpl implements IXlsxPacker 
+			CtClass cc = pool.makeClass(helperClazzName);
+			cc.addInterface(helperInterface);
+			// 
+			// 设置默认构造器
+			// 会生成如下代码 :
+			// Packer_BuildingTmpl() {}
+			putDefaultConstructor(cc);
 
-		fl.forEach(f -> {
-			// 获取 OneToOne 注解数组
-			OneToOne[] o2oAnnoArr = f.getAnnotationsByType(OneToOne.class);
+			// 创建代码上下文
+			CodeContext codeCtx = new CodeContext();
+			// 
+			// 将所有必须的类都导入进来, 
+			// 会生成如下代码 : 
+			// import byClazz;
+			codeCtx._importClazzSet.add(byClazz);
+			// 构建函数体
+			buildFuncText(byClazz, codeCtx);
 
-			for (OneToOne o2oAnno : o2oAnnoArr) {
-				if (o2oAnno != null) {
-					groupNameSet.add(o2oAnno.groupName());
-				}
-			}
+			// 生成方法之前先导入类
+			importPackage(pool, codeCtx._importClazzSet);
 
-			// 获取 OneToMany 注解数组
-			OneToMany[] o2mAnnoArr = f.getAnnotationsByType(OneToMany.class);
+			// 创建解析方法
+			CtMethod cm = CtNewMethod.make(
+				codeCtx._codeText.toString(), cc
+			);
 
-			for (OneToMany o2mAnno : o2mAnnoArr) {
-				if (o2mAnno != null) {
-					groupNameSet.add(o2mAnno.groupName());
-				}
+			// 添加方法
+			cc.addMethod(cm);
+
+			cc.writeFile("/data/temp_test/");
+			// 获取 JAVA 类
+			@SuppressWarnings("unchecked")
+			Class<IXlsxPacker> javaClazz = (Class<IXlsxPacker>)cc.toClass();
+			// 返回 JAVA 类
+			return javaClazz;
+		} catch (Exception ex) {
+			// 抛出异常
+			throw new XlsxTmplError(ex);
+		}
+	}
+
+	/**
+	 * 构建函数文本
+	 * 
+	 * @param byClazz
+	 * @param codeCtx
+	 * @return 
+	 * 
+	 */
+	private static void buildFuncText(Class<?> byClazz, CodeContext codeCtx) {
+		// 断言参数不为空
+		Assert.notNull(byClazz, "byClazz");
+		Assert.notNull(codeCtx, "codeCtx");
+
+		// 函数头
+		codeCtx._codeText.append("public void packUp(AbstractXlsxTmpl tmplObj) {\n");
+		// 增加空值判断
+		codeCtx._codeText.append("if (tmplObj == null) { return; }\n");
+		// 定义大 O 参数避免转型问题
+		codeCtx._codeText.append(byClazz.getSimpleName())
+			.append(" O = (")
+			.append(byClazz.getSimpleName())
+			.append(")tmplObj;\n");
+
+		// 将模板对象添加到字典
+		buildMapText(byClazz, codeCtx);
+		// 函数脚
+		codeCtx._codeText.append("}\n;");
+	}
+
+	/**
+	 * 构建字段赋值文本
+	 * 
+	 * @param byClazz
+	 * @param codeCtx
+	 * 
+	 */
+	private static void buildMapText(Class<?> byClazz, CodeContext codeCtx) {
+		// 断言参数不为空
+		Assert.notNull(byClazz, "byClazz");
+		Assert.notNull(codeCtx, "codeCtx");
+
+		List<OneToXDefPair> pl = OneToXDefPair.listAll(byClazz);
+
+		if (pl == null || 
+			pl.isEmpty()) {
+			// 如果键值对列表为空, 
+			// 则直接退出!
+			return;
+		}
+
+		pl.forEach(p -> {
+			if (p._oneToOne) {
+				// 如果是一对一, 则构建如下代码 :
+				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O._IdMap);
+				codeCtx._codeText
+					.append("AbstractXlsxTmpl.packOneToOne(O.")
+					.append(p._keyDef.getName())
+					.append(", O, O.")
+					.append(p._mapDef.getName())
+					.append(");\n");
+			} else {
+				// 如果是一对一, 则构建如下代码 :
+				// AbstractXlsxTmpl.packOneToMany(O._cityId, O, O._cityMap);
+				codeCtx._codeText
+					.append("AbstractXlsxTmpl.packOneToMany(O.")
+					.append(p._keyDef.getName())
+					.append(", O, O.")
+					.append(p._mapDef.getName())
+					.append(");\n");
 			}
 		});
 
-		return groupNameSet;
+		// 添加 import
+		codeCtx._importClazzSet.add(AbstractXlsxTmpl.class);
 	}
 
 	/**
-	 * 获取关键字字段
+	 * 添加 import 代码
 	 * 
-	 * @param fromClazz
-	 * @param groupName
-	 * @param isMap 
-	 * @return
+	 * @param pool
+	 * @param importClazzSet 
 	 * 
 	 */
-	private static Member findMember(Class<?> fromClazz, String groupName, boolean isMap) {
-		// 断言参数对象不为空
-		Assert.notNull(fromClazz, "fromClazz");
-		Assert.notNullOrEmpty(groupName, "groupName");
-
-		// 找到字段定义
-		Field foundF = ClazzUtil.getField(
-			fromClazz, 
-			f -> hasOneToXAnno(f, groupName)
-		);
-
-		if (foundF != null && 
-			Map.class.isAssignableFrom(foundF.getType()) == isMap) {
-			return foundF;
-		}
-
-		// 如果没有符合条件的字段, 
-		// 那么就查找函数
-		Method foundM = ClazzUtil.getMethod(
-			fromClazz, 
-			f -> hasOneToXAnno(f, groupName)
-		);
-
-		if (foundM != null &&
-			Map.class.isAssignableFrom(foundM.getReturnType()) == isMap) {
-			return foundM;
-		}
-
-		return null;
-	}
-
-	/**
-	 * 判断字段或函数是否标注了 OneToOne 或者 OneToMany 注解, 并且分组名为指定名称
-	 * 
-	 * @param m
-	 * @param groupName
-	 * @return 
-	 * 
-	 */
-	private static boolean hasOneToXAnno(Member m, String groupName) {
-		if (m == null || 
-			groupName == null || 
-			groupName.isEmpty()) {
+	private static void importPackage(ClassPool pool, Set<Class<?>> importClazzSet) {
+		if (pool == null || 
+			importClazzSet == null || 
+			importClazzSet.isEmpty()) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			return false;
+			return;
 		}
 
-		// 定义 OneToOne 注解数组
-		OneToOne[] o2oAnnoArr = null;
-		// 定义 OneToMany 注解数组
-		OneToMany[] o2mAnnoArr = null;
-
-		if (m instanceof Field) {
-			// 获取字段上的注解
-			o2oAnnoArr = ((Field)m).getAnnotationsByType(OneToOne.class);
-			o2mAnnoArr = ((Field)m).getAnnotationsByType(OneToMany.class);
-		} else if (m instanceof Method) {
-			// 获取方法上的注解
-			o2oAnnoArr = ((Method)m).getAnnotationsByType(OneToOne.class);
-			o2mAnnoArr = ((Method)m).getAnnotationsByType(OneToMany.class);
-		} else {
-			return false;
-		}
-
-		for (OneToOne o2oAnno : o2oAnnoArr) {
-			if (o2oAnno.groupName().equals(groupName)) {
-				return true;
-			}
-		}
-
-		for (OneToMany o2mAnno : o2mAnnoArr) {
-			if (o2mAnno.groupName().equals(groupName)) {
-				return true;
-			}
-		}
-
-		return false;
+		importClazzSet.forEach((c) -> {
+			// 导入要用到的类
+			pool.importPackage(c.getPackage().getName());
+		});
 	}
 
 	/**
-	 * 自定义配对, 主要用来匹配 key 和 map 的字段
+	 * 设置默认构造器, 会生成如下代码 : 
+	 * <pre>
+	 * Parser_Building() {}
+	 * </pre>
 	 * 
-	 * @author hjj2017
-	 * @since 2015/2/27
+	 * @param cc
+	 * @throws Exception 
 	 * 
 	 */
-	private static class MyPair {
-		/** 关键字定义 */
-		private final Member _keyDef;
-		/** 字典的字段定义 */
-		private final Member _mapDef;
-
-		/**
-		 * 类参数构造器
-		 * 
-		 * @param keyDef
-		 * @param mapDef
-		 */
-		public MyPair(Member keyDef, Member mapDef) {
-			this._keyDef = keyDef;
-			this._mapDef = mapDef;
+	private static void putDefaultConstructor(CtClass cc) throws Exception {
+		if (cc == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
 		}
+
+		// 创建默认构造器
+		CtConstructor constructor = new CtConstructor(new CtClass[0], cc);
+		// 空函数体
+		constructor.setBody("{}");
+		// 添加默认构造器
+		cc.addConstructor(constructor);
+	}
+
+	/**
+	 * 代码上下文
+	 * 
+	 * @author hjj2017
+	 * 
+	 */
+	private static class CodeContext {
+		/** 引用类集合 */
+		private final Set<Class<?>> _importClazzSet = new HashSet<>();
+		/** 用于输出的代码文本 */
+		private final StringBuilder _codeText = new StringBuilder();
 	}
 }
