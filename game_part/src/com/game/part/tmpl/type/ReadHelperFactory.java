@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtConstructor;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 
@@ -97,7 +98,7 @@ final class ReadHelperFactory {
 			// 设置默认构造器
 			// 会生成如下代码 :
 			// ReadHelper_BuildingTmpl() {}
-			InnerUtil.putDefaultConstructor(cc);
+			putDefaultConstructor(cc);
 
 			// 创建代码上下文
 			CodeContext codeCtx = new CodeContext();			
@@ -112,7 +113,7 @@ final class ReadHelperFactory {
 			buildFuncText(byClazz, codeCtx);
 
 			// 生成方法之前先导入类
-			InnerUtil.importPackage(pool, codeCtx._importClazzSet);
+			importPackage(pool, codeCtx._importClazzSet);
 
 			// 创建解析方法
 			CtMethod cm = CtNewMethod.make(
@@ -298,6 +299,53 @@ final class ReadHelperFactory {
 		}
 
 		return true;
+	}
+
+	/**
+	 * 添加 import 代码
+	 * 
+	 * @param pool
+	 * @param importClazzSet 
+	 * 
+	 */
+	private static void importPackage(ClassPool pool, Set<Class<?>> importClazzSet) {
+		if (pool == null || 
+			importClazzSet == null || 
+			importClazzSet.isEmpty()) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		importClazzSet.forEach((c) -> {
+			// 导入要用到的类
+			pool.importPackage(c.getPackage().getName());
+		});
+	}
+
+	/**
+	 * 设置默认构造器, 会生成如下代码 : 
+	 * <pre>
+	 * Parser_Building() {}
+	 * </pre>
+	 * 
+	 * @param cc
+	 * @throws Exception 
+	 * 
+	 */
+	private static void putDefaultConstructor(CtClass cc) throws Exception {
+		if (cc == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		// 创建默认构造器
+		CtConstructor constructor = new CtConstructor(new CtClass[0], cc);
+		// 空函数体
+		constructor.setBody("{}");
+		// 添加默认构造器
+		cc.addConstructor(constructor);
 	}
 
 	/**
