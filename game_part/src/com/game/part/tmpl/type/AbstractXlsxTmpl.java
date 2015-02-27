@@ -1,10 +1,13 @@
 package com.game.part.tmpl.type;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.game.part.tmpl.XSSFRowReadStream;
+import com.game.part.tmpl.XlsxTmplLog;
+import com.game.part.utils.Assert;
 
 /**
  * 模板类
@@ -40,23 +43,37 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 	 * @param targetMap 
 	 * 
 	 */
-	public static void packOneToOne(Object objKey, AbstractXlsxTmpl objVal, Map<Object, AbstractXlsxTmpl> targetMap) {
+	public static void packOneToOne(
+		Object objKey, AbstractXlsxTmpl objVal, Map<Object, AbstractXlsxTmpl> targetMap) {
 		if (objKey == null || 
-			objVal == null || 
-			targetMap == null) {
+			objVal == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
 		}
 
+		// 断言参数不为空
+		Assert.notNull(targetMap, "targetMap");
+		// 定义真实关键字
+		Object realKey = objKey;
+
 		if (objKey instanceof BasicTypeCol<?>) {
-			targetMap.put(
-				((BasicTypeCol<?>)objKey).objVal(), 
-				objVal
-			);
-		} else {
-			targetMap.put(objKey, objVal);
+			// 如果是基本类型字段, 
+			// 则获取真实关键字!
+			realKey = ((BasicTypeCol<?>)objKey).objVal();
 		}
+
+		if (realKey == null) {
+			// 如果关键字为空, 
+			// 则直接退出!
+			XlsxTmplLog.LOG.warn(MessageFormat.format(
+				"无法添加 {0} 类的一个对象到字典, 因为关键字为空", 
+				objVal.getClass().getName()
+			));
+			return;
+		}
+
+		targetMap.put(realKey, objVal);
 	}
 
 	/**
@@ -67,31 +84,44 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 	 * @param targetMap 
 	 * 
 	 */
-	public static void packOneToMany(Object objKey, AbstractXlsxTmpl objVal, Map<Object, List<AbstractXlsxTmpl>> targetMap) {
+	public static void packOneToMany(
+		Object objKey, AbstractXlsxTmpl objVal, Map<Object, List<AbstractXlsxTmpl>> targetMap) {
 		if (objKey == null || 
-			objVal == null || 
-			targetMap == null) {
+			objVal == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
 		}
 
+		// 断言参数不为空
+		Assert.notNull(targetMap, "targetMap");
+		// 定义真实关键字
+		Object realKey = objKey;
+
+		if (objKey instanceof BasicTypeCol<?>) {
+			// 如果是基本类型字段, 
+			// 则获取真实关键字!
+			realKey = ((BasicTypeCol<?>)objKey).objVal();
+		}
+
+		if (realKey == null) {
+			// 如果关键字为空, 
+			// 则直接退出!
+			XlsxTmplLog.LOG.warn(MessageFormat.format(
+				"无法添加 {0} 类的一个对象到字典, 因为关键字为空", 
+				objVal.getClass().getName()
+			));
+			return;
+		}
+
 		// 获取模板列表
-		List<AbstractXlsxTmpl> tmplList = targetMap.get(objKey);
+		List<AbstractXlsxTmpl> tmplList = targetMap.get(realKey);
 
 		if (tmplList == null) {
 			// 如果模板列表为空, 
 			// 则新建列表!
 			tmplList = new ArrayList<>();
-			
-			if (objKey instanceof BasicTypeCol<?>) {
-				targetMap.put(
-					((BasicTypeCol<?>)objKey).objVal(), 
-					tmplList
-				);
-			} else {
-				targetMap.put(objKey, tmplList);
-			}
+			targetMap.put(realKey, tmplList);
 		}
 
 		// 添加数值到列表

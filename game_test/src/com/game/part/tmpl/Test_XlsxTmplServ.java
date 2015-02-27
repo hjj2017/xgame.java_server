@@ -25,5 +25,6 @@ public class Test_XlsxTmplServ {
 		
 		System.out.println(objList);
 		System.out.println(BuildingTmpl._IDMap.get(1));
+		System.out.println(BuildingTmpl._cityBuildingMap.values());
 	}
 }

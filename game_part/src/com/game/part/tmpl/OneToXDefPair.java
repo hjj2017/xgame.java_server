@@ -5,6 +5,8 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ final class OneToXDefPair {
 	/** 关键字定义 */
 	final Member _keyDef;
 	/** 字典的字段定义 */
-	final Field _mapDef;
+	final Member _mapDef;
 	/** 是否为一对一 */
 	final boolean _oneToOne;
 
@@ -39,7 +41,7 @@ final class OneToXDefPair {
 	 * @param oneToOne 
 	 * 
 	 */
-	private OneToXDefPair(Member keyDef, Field mapDef, boolean oneToOne) {
+	private OneToXDefPair(Member keyDef, Member mapDef, boolean oneToOne) {
 		// 断言参数对象不为空
 		Assert.notNull(keyDef, "keyDef");
 		Assert.notNull(mapDef, "mapDef");
@@ -93,6 +95,10 @@ final class OneToXDefPair {
 		ClazzUtil.listField(
 			clazz, f -> {
 				putToMap(
+					f.getAnnotationsByType(OneToOne.class), 
+					annoMap
+				);
+				putToMap(
 					f.getAnnotationsByType(OneToMany.class), 
 					annoMap
 				); return true;
@@ -102,6 +108,10 @@ final class OneToXDefPair {
 		// 找到标注 OneToOne 和 OneToMany 注解的函数
 		ClazzUtil.listMethod(
 			clazz, m -> {
+				putToMap(
+					m.getAnnotationsByType(OneToOne.class), 
+					annoMap
+				);
 				putToMap(
 					m.getAnnotationsByType(OneToMany.class), 
 					annoMap
@@ -144,6 +154,12 @@ final class OneToXDefPair {
 				targetMap.put(
 					((OneToMany)anno).groupName(), anno
 				);
+			} else {
+				// 抛出异常!
+				throw new XlsxTmplError(MessageFormat.format(
+					"不支持的注解类型 {0}", 
+					anno.getClass().getName()
+				));
 			}
 		}
 	}
@@ -185,7 +201,7 @@ final class OneToXDefPair {
 	 * @return 
 	 * 
 	 */
-	private static Field findMapDef(Class<?> fromClazz, Annotation anno) {
+	private static Member findMapDef(Class<?> fromClazz, Annotation anno) {
 		// 断言参数不为空
 		Assert.notNull(fromClazz, "fromClazz");
 		Assert.notNull(anno, "anno");
@@ -205,7 +221,69 @@ final class OneToXDefPair {
 			fromClazz, groupName, true
 		);
 
-		return (Field)m;
+		if (m instanceof Method) {
+			if ((m.getModifiers() & Modifier.PUBLIC) == 0 ||
+				(m.getModifiers() & Modifier.STATIC) == 0) {
+				// 如果不是公共的静态方法, 
+				// 则抛出异常!
+				throw new XlsxTmplError(MessageFormat.format(
+					"{0} 类方法 {1} 不是公共的、静态的, 这是不允许的!, 请使用 public static {2} {1}() { return ...; } 这样的代码", 
+					fromClazz.getName(), 
+					m.getName(),
+					((Method)m).getReturnType().getSimpleName()
+				));
+			}
+
+			try {
+				// 获取函数返回值
+				Object obj = ((Method)m).invoke(m.getDeclaringClass());
+	
+				if (obj == null) {
+					// 如果返回值为空, 
+					// 则抛出异常!
+					throw new XlsxTmplError(MessageFormat.format(
+						"{0} 类静态方法 {1} 返回值为空, 这是不允许的!", 
+						fromClazz.getName(), 
+						m.getName()
+					));
+				}
+			} catch (Exception ex) {
+				// 抛出异常
+				throw new XlsxTmplError(ex);
+			}
+		} else if (m instanceof Field) {
+			if ((m.getModifiers() & Modifier.PUBLIC) == 0 ||
+				(m.getModifiers() & Modifier.STATIC) == 0) {
+				// 如果返回值为空, 
+				// 则抛出异常!
+				throw new XlsxTmplError(MessageFormat.format(
+					"{0} 类字段 {1} 不是公共的、静态的, 这是不允许的!, 请使用 public static {2} {1} = new HashMap<>(); 这样的代码", 
+					fromClazz.getName(), 
+					m.getName(), 
+					((Field)m).getType().getSimpleName()
+				));
+			}
+
+			try {
+				// 获取字段值
+				Object obj = ((Field)m).get(fromClazz);
+				
+				if (obj == null) {
+					// 如果返回值为空, 
+					// 则抛出异常!
+					throw new XlsxTmplError(MessageFormat.format(
+						"{0} 类静态字段 {1} 为空值, 这是不允许的!", 
+						fromClazz.getName(), 
+						m.getName()
+					));
+				}
+			} catch (Exception ex) {
+				// 抛出异常
+				throw new XlsxTmplError(ex);
+			}
+		}
+
+		return m;
 	}
 
 	/**
@@ -323,7 +401,6 @@ final class OneToXDefPair {
 			return false;
 		}
 
-		
 		// 定义 OneToMany 注解数组
 		final OneToMany[] annoArr;
 		

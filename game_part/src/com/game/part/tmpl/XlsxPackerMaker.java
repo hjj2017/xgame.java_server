@@ -1,5 +1,6 @@
 package com.game.part.tmpl;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import javassist.CtNewMethod;
 
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.utils.Assert;
+
 
 /**
  * 打包器构建者
@@ -182,22 +184,38 @@ final class XlsxPackerMaker {
 		pl.forEach(p -> {
 			if (p._oneToOne) {
 				// 如果是一对一, 则构建如下代码 :
-				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O._IdMap);
+				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O._IdMap); 或者是 : 
+				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O.getIdMap());
 				codeCtx._codeText
 					.append("AbstractXlsxTmpl.packOneToOne(O.")
 					.append(p._keyDef.getName())
 					.append(", O, O.")
-					.append(p._mapDef.getName())
-					.append(");\n");
+					.append(p._mapDef.getName());
+	
+				if (p._mapDef instanceof Method) {
+					// 如果是函数, 
+					// 就增加一对括号 
+					codeCtx._codeText.append("()");
+				}
+
+				codeCtx._codeText.append(");\n");
 			} else {
 				// 如果是一对一, 则构建如下代码 :
-				// AbstractXlsxTmpl.packOneToMany(O._cityId, O, O._cityMap);
+				// AbstractXlsxTmpl.packOneToMany(O._cityId, O, O._cityBuildingMap); 或者是 : 
+				// AbstractXlsxTmpl.packOneToMany(O._cityId, O, O.getCityBuildingMap());
 				codeCtx._codeText
 					.append("AbstractXlsxTmpl.packOneToMany(O.")
 					.append(p._keyDef.getName())
 					.append(", O, O.")
-					.append(p._mapDef.getName())
-					.append(");\n");
+					.append(p._mapDef.getName());
+				
+				if (p._mapDef instanceof Method) {
+					// 如果是函数, 
+					// 就增加一对括号 
+					codeCtx._codeText.append("()");
+				}
+
+				codeCtx._codeText.append(");\n");
 			}
 		});
 
