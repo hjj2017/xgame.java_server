@@ -68,13 +68,16 @@ final class OneToXDefPair {
 		// 收集分组名称
 		Map<String, Annotation> annoMap = collectOneToXAnno(clazz);
 		// 返回配对列表
-		return annoMap.values().stream().map(V ->
-			new OneToXDefPair(
-				findKeyDef(clazz, V), 
-				findMapDef(clazz, V), 
-				V instanceof OneToOne
-			)
-		).collect(Collectors.toList());
+		return annoMap.values().stream().map(anno -> {
+			// 获取键值定义
+			final Member kDef = findKeyDef(clazz, anno);
+			final Member vDef = findMapDef(clazz, anno);
+
+			return new OneToXDefPair(
+				kDef, vDef, 
+				anno instanceof OneToOne
+			);
+		}).collect(Collectors.toList());
 	}
 
 	/**
@@ -188,9 +191,11 @@ final class OneToXDefPair {
 			return null;
 		}
 
-		return findMember(
-			fromClazz, groupName, false
+		Member m = findMember(
+			fromClazz, anno.annotationType(), groupName, false
 		);
+
+		return m;
 	}
 
 	/**
@@ -218,7 +223,7 @@ final class OneToXDefPair {
 		}
 
 		Member m = findMember(
-			fromClazz, groupName, true
+			fromClazz, anno.annotationType(), groupName, true
 		);
 
 		if (m instanceof Method) {
@@ -295,7 +300,8 @@ final class OneToXDefPair {
 	 * @return
 	 * 
 	 */
-	private static Member findMember(Class<?> fromClazz, String groupName, boolean findMap) {
+	private static Member findMember(
+		Class<?> fromClazz, Class<? extends Annotation> annoClazz, String groupName, boolean findMap) {
 		// 断言参数对象不为空
 		Assert.notNull(fromClazz, "fromClazz");
 		Assert.notNullOrEmpty(groupName, "groupName");
@@ -303,8 +309,38 @@ final class OneToXDefPair {
 		// 找到字段定义
 		List<Field> foundFL = ClazzUtil.listField(
 			fromClazz, 
-			f -> hasOneToXAnno(f, groupName)
+			f -> hasOneToXAnno(f, annoClazz, groupName)
 		);
+
+		// 再找到函数定义
+		List<Method> foundML = ClazzUtil.listMethod(
+			fromClazz, 
+			f -> hasOneToXAnno(f, annoClazz, groupName)
+		);
+
+		int annoNum = 0;
+		if (foundFL != null) { annoNum += foundFL.size(); }
+		if (foundML != null) { annoNum += foundML.size(); }
+
+		if (annoNum == 1) {
+			// 如果不是成对儿出现, 
+			// 则抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"{0} 类中 @{1}(groupName = \"{2}\") 这个注解不是成对儿出现的!", 
+				fromClazz.getSimpleName(), 
+				annoClazz.getSimpleName(),
+				groupName
+			));
+		} else if (annoNum > 2) {
+			// 如果重复定义, 
+			// 则抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"{0} 类中 @{1}(groupName = \"{2}\") 这个注解重复定义, 这是不允许的!", 
+				fromClazz.getSimpleName(), 
+				annoClazz.getSimpleName(),
+				groupName
+			));
+		}
 
 		if (foundFL != null) {
 			for (Field F : foundFL) {
@@ -314,13 +350,6 @@ final class OneToXDefPair {
 				}
 			};
 		}
-
-		// 如果没有符合条件的字段, 
-		// 那么就查找函数
-		List<Method> foundML = ClazzUtil.listMethod(
-			fromClazz, 
-			f -> hasOneToXAnno(f, groupName)
-		);
 
 		if (foundML != null) {
 			for (Method M : foundML) {
@@ -338,14 +367,24 @@ final class OneToXDefPair {
 	 * 判断字段或函数是否标注了 OneToOne 或者 OneToMany 注解, 并且分组名为指定名称
 	 * 
 	 * @param member
+	 * @param annoClazz, 
 	 * @param groupName
 	 * @return 
 	 * 
 	 */
 	private static boolean hasOneToXAnno(
 		Member member, 
+		Class<?> annoClazz, 
 		String groupName) {
-		return hasOneToOne(member, groupName) || hasOneToMany(member, groupName);
+		if (annoClazz.equals(OneToOne.class)) {
+			// 看看有没有标注 OnToOne 的
+			return hasOneToOne(member, groupName);
+		} else if (annoClazz.equals(OneToMany.class)) {
+			// 看看有没有标注 OneToMany 的
+			return hasOneToMany(member, groupName);
+		} else {
+			return false;
+		}
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.OneToOne;
 import com.game.part.tmpl.anno.Validator;
@@ -27,24 +28,13 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 	public XlsxInt _ID;
 	/** 所在城市 Id */
 	@OneToMany(groupName = "cityId")
-	public XlsxInt _cityId = new XlsxInt(0);
-
+	public XlsxInt _cityId;
 	/** 建筑名称 */
 	public XlsxStr _name;
-//	/** 说明 */
-//	public XCol<String> _desc;
-//	/** 图片 */
-//	public XCol<String> _img;
-//	/** X 坐标 */
-//	public XlsxInt _posX;
-//	/** Y 坐标 */
-//	public XlsxInt _posY;
-//	/** 建筑类型 */
-//	@ElementNum(3)
-//	public XlsxArrayList<XlsxInt> _typeIdList;
-//	/** 功能 */
-//	@ElementNum(2)
-//	public XlsxArrayList<FuncTmpl> _mainFunc;
+	/** X 坐标 */
+	public XlsxInt _posX;
+	/** Y 坐标 */
+	public XlsxInt _posY;
 
 	/** ID 字典 */ 
 	@OneToOne(groupName = "ID")
