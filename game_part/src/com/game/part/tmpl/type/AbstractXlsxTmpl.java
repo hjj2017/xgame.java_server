@@ -26,7 +26,7 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 		}
 
 		// 创建帮助者对象
-		IReadHelper helper = ReadHelperFactory.createHelper(this.getClass());
+		IReadHelper helper = ReadHelperMaker.makeHelper(this.getClass());
 
 		if (helper != null) {
 			// 如果帮助者不为空, 

@@ -3,7 +3,6 @@ package com.game.bizModules.cd.tmpl;
 import java.util.Map;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.part.tmpl.anno.ColName;
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.anno.XlsxTmpl;
@@ -20,12 +19,10 @@ import com.game.part.utils.Assert;
 @Validator(clazz = CdTimerTmpl_Validator.class)
 public class CdTimerTmpl {
 	/** Cd 类型 Int */
-	@ColName("A")
 	@OneToMany(groupName = "ID")
 	public Integer _cdTypeInt = null;
 
 	/** 阈值 */
-	@ColName("B")
 	public Long _threshold = null;
 
 	/** Cd 字典 */

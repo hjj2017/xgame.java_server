@@ -22,13 +22,13 @@ import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
 
 /**
- * 帮助者工厂
+ * 读取帮助器构建者
  * 
  * @author hjj2017
  * @since 2015/2/25
  * 
  */
-final class ReadHelperFactory {
+final class ReadHelperMaker {
 	/** 帮助者字典 */
 	private static final Map<Class<?>, IReadHelper> _helperMap = new HashMap<>();
 
@@ -36,7 +36,7 @@ final class ReadHelperFactory {
 	 * 类默认构造器
 	 * 
 	 */
-	private ReadHelperFactory() {
+	private ReadHelperMaker() {
 	}
 
 	/**
@@ -46,7 +46,7 @@ final class ReadHelperFactory {
 	 * @return
 	 * 
 	 */
-	static IReadHelper createHelper(Class<?> byClazz) {
+	static IReadHelper makeHelper(Class<?> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		// 获取帮助者
