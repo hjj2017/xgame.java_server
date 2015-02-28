@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.OneToOne;
 import com.game.part.tmpl.anno.Validator;
@@ -36,7 +35,7 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** Y 坐标 */
 	public XlsxInt _posY;
 
-	/** ID 字典 */ 
+	/** ID 字典 */
 	@OneToOne(groupName = "ID")
 	public static Map<Integer, BuildingTmpl> _IDMap = new HashMap<>();
 	/** 城市建筑字典 */

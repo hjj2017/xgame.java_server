@@ -2,11 +2,8 @@ package com.game.part.tmpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
 import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -66,16 +63,19 @@ final class OneToXDefPair {
 		}
 
 		// 收集分组名称
-		Map<String, Annotation> annoMap = collectOneToXAnno(clazz);
+		Map<String, OneToXDefPair_X> pairXMap = collectOneToXAnno(clazz);
 		// 返回配对列表
-		return annoMap.values().stream().map(anno -> {
+		return pairXMap.values().stream().map(pairX -> {
+			// 执行验证过程
+			pairX.validate();
+
 			// 获取键值定义
-			final Member kDef = findKeyDef(clazz, anno);
-			final Member vDef = findMapDef(clazz, anno);
+			final Member keyDef = pairX.getKeyDef();
+			final Member mapDef = pairX.getMapDef();
 
 			return new OneToXDefPair(
-				kDef, vDef, 
-				anno instanceof OneToOne
+				keyDef, mapDef, 
+				pairX._annoClazz.equals(OneToOne.class)
 			);
 		}).collect(Collectors.toList());
 	}
@@ -87,42 +87,30 @@ final class OneToXDefPair {
 	 * @return 
 	 * 
 	 */
-	private static Map<String, Annotation> collectOneToXAnno(Class<?> clazz) {
+	private static Map<String, OneToXDefPair_X> collectOneToXAnno(Class<?> clazz) {
 		// 断言参数不为空
 		Assert.notNull(clazz, "clazz");
 
 		// 创建注解字典
-		Map<String, Annotation> annoMap = new HashMap<>();
+		Map<String, OneToXDefPair_X> xMap = new HashMap<>();
 
 		// 找到标注 OneToOne 和 OneToMany 注解的字段
 		ClazzUtil.listField(
 			clazz, f -> {
-				putToMap(
-					f.getAnnotationsByType(OneToOne.class), 
-					annoMap
-				);
-				putToMap(
-					f.getAnnotationsByType(OneToMany.class), 
-					annoMap
-				); return true;
+				putToMap(f, xMap); 
+				return true;
 			}
 		);
 
 		// 找到标注 OneToOne 和 OneToMany 注解的函数
 		ClazzUtil.listMethod(
 			clazz, m -> {
-				putToMap(
-					m.getAnnotationsByType(OneToOne.class), 
-					annoMap
-				);
-				putToMap(
-					m.getAnnotationsByType(OneToMany.class), 
-					annoMap
-				); return true;
+				putToMap(m, xMap);
+				return true;
 			}
 		);
 
-		return annoMap;
+		return xMap;
 	}
 
 	/**
@@ -133,336 +121,50 @@ final class OneToXDefPair {
 	 * 
 	 */
 	private static void putToMap(
-		Annotation[] annoArr, Map<String, Annotation> targetMap) {
-		if (annoArr == null || 
-			annoArr.length <= 0 || 
+		Member m, Map<String, OneToXDefPair_X> targetMap) {
+		if (m == null ||  
 			targetMap == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
 		}
 
-		for (Annotation anno : annoArr) {
-			if (anno == null) {
-				// 如果注解为空, 
-				// 则直接跳过!
-				continue;
-			}
+		List<Annotation> annoList = new ArrayList<>();
+
+		if (m instanceof AccessibleObject) {
+			// 添加 OneToOne 注解到列表
+			Collections.addAll(
+				annoList, ((AccessibleObject)m).getAnnotationsByType(OneToOne.class)
+			);
+
+			// 添加 OneToMany 注解到列表
+			Collections.addAll(
+				annoList, ((AccessibleObject)m).getAnnotationsByType(OneToMany.class)
+			);
+		}
+
+		annoList.forEach(anno -> {
+			// 分组名称
+			final String groupName;
 
 			if (anno instanceof OneToOne) {
-				targetMap.put(
-					((OneToOne)anno).groupName(), anno
-				);
-			} else if (anno instanceof OneToMany) {
-				targetMap.put(
-					((OneToMany)anno).groupName(), anno
-				);
-			} else {
-				// 抛出异常!
-				throw new XlsxTmplError(MessageFormat.format(
-					"不支持的注解类型 {0}", 
-					anno.getClass().getName()
-				));
-			}
-		}
-	}
-
-	/**
-	 * 查找 key 字段定义
-	 * 
-	 * @param fromClazz
-	 * @param groupName
-	 * @return 
-	 * 
-	 */
-	private static Member findKeyDef(Class<?> fromClazz, Annotation anno) {
-		// 断言参数不为空
-		Assert.notNull(fromClazz, "fromClazz");
-		Assert.notNull(anno, "anno");
-
-		// 分组名称
-		final String groupName;
-
-		if (anno instanceof OneToOne) {
-			groupName = ((OneToOne)anno).groupName();
-		} else if (anno instanceof OneToMany) {
-			groupName = ((OneToMany)anno).groupName();
-		} else {
-			return null;
-		}
-
-		Member m = findMember(
-			fromClazz, anno.annotationType(), groupName, false
-		);
-
-		return m;
-	}
-
-	/**
-	 * 查找 map 字段定义
-	 * 
-	 * @param fromClazz
-	 * @param groupName
-	 * @return 
-	 * 
-	 */
-	private static Member findMapDef(Class<?> fromClazz, Annotation anno) {
-		// 断言参数不为空
-		Assert.notNull(fromClazz, "fromClazz");
-		Assert.notNull(anno, "anno");
-
-		// 分组名称
-		final String groupName;
-
-		if (anno instanceof OneToOne) {
-			groupName = ((OneToOne)anno).groupName();
-		} else if (anno instanceof OneToMany) {
-			groupName = ((OneToMany)anno).groupName();
-		} else {
-			return null;
-		}
-
-		Member m = findMember(
-			fromClazz, anno.annotationType(), groupName, true
-		);
-
-		if (m instanceof Method) {
-			if ((m.getModifiers() & Modifier.PUBLIC) == 0 ||
-				(m.getModifiers() & Modifier.STATIC) == 0) {
-				// 如果不是公共的静态方法, 
-				// 则抛出异常!
-				throw new XlsxTmplError(MessageFormat.format(
-					"{0} 类方法 {1} 不是公共的、静态的, 这是不允许的!, 请使用 public static {2} {1}() { return ...; } 这样的代码", 
-					fromClazz.getName(), 
-					m.getName(),
-					((Method)m).getReturnType().getSimpleName()
-				));
+				groupName = ((OneToOne)anno).groupName();
+			} else/* if (anno instanceof OneToMany) */{
+				groupName = ((OneToMany)anno).groupName();
 			}
 
-			try {
-				// 获取函数返回值
-				Object obj = ((Method)m).invoke(m.getDeclaringClass());
+			// 获取临时对象
+			OneToXDefPair_X pairX = targetMap.get(groupName);
 	
-				if (obj == null) {
-					// 如果返回值为空, 
-					// 则抛出异常!
-					throw new XlsxTmplError(MessageFormat.format(
-						"{0} 类静态方法 {1} 返回值为空, 这是不允许的!", 
-						fromClazz.getName(), 
-						m.getName()
-					));
-				}
-			} catch (Exception ex) {
-				// 抛出异常
-				throw new XlsxTmplError(ex);
-			}
-		} else if (m instanceof Field) {
-			if ((m.getModifiers() & Modifier.PUBLIC) == 0 ||
-				(m.getModifiers() & Modifier.STATIC) == 0) {
-				// 如果返回值为空, 
-				// 则抛出异常!
-				throw new XlsxTmplError(MessageFormat.format(
-					"{0} 类字段 {1} 不是公共的、静态的, 这是不允许的!, 请使用 public static {2} {1} = new HashMap<>(); 这样的代码", 
-					fromClazz.getName(), 
-					m.getName(), 
-					((Field)m).getType().getSimpleName()
-				));
+			if (pairX == null) {
+				pairX = new OneToXDefPair_X();
+				pairX._annoClazz = anno.annotationType();
+				pairX._groupName = groupName;
+				// 添加到字典
+				targetMap.put(groupName, pairX);
 			}
 
-			try {
-				// 获取字段值
-				Object obj = ((Field)m).get(fromClazz);
-				
-				if (obj == null) {
-					// 如果返回值为空, 
-					// 则抛出异常!
-					throw new XlsxTmplError(MessageFormat.format(
-						"{0} 类静态字段 {1} 为空值, 这是不允许的!", 
-						fromClazz.getName(), 
-						m.getName()
-					));
-				}
-			} catch (Exception ex) {
-				// 抛出异常
-				throw new XlsxTmplError(ex);
-			}
-		}
-
-		return m;
-	}
-
-	/**
-	 * 获取关键字字段
-	 * 
-	 * @param fromClazz
-	 * @param groupName
-	 * @param isMap 
-	 * @return
-	 * 
-	 */
-	private static Member findMember(
-		Class<?> fromClazz, Class<? extends Annotation> annoClazz, String groupName, boolean findMap) {
-		// 断言参数对象不为空
-		Assert.notNull(fromClazz, "fromClazz");
-		Assert.notNullOrEmpty(groupName, "groupName");
-
-		// 找到字段定义
-		List<Field> foundFL = ClazzUtil.listField(
-			fromClazz, 
-			f -> hasOneToXAnno(f, annoClazz, groupName)
-		);
-
-		// 再找到函数定义
-		List<Method> foundML = ClazzUtil.listMethod(
-			fromClazz, 
-			f -> hasOneToXAnno(f, annoClazz, groupName)
-		);
-
-		int annoNum = 0;
-		if (foundFL != null) { annoNum += foundFL.size(); }
-		if (foundML != null) { annoNum += foundML.size(); }
-
-		if (annoNum == 1) {
-			// 如果不是成对儿出现, 
-			// 则抛出异常!
-			throw new XlsxTmplError(MessageFormat.format(
-				"{0} 类中 @{1}(groupName = \"{2}\") 这个注解不是成对儿出现的!", 
-				fromClazz.getSimpleName(), 
-				annoClazz.getSimpleName(),
-				groupName
-			));
-		} else if (annoNum > 2) {
-			// 如果重复定义, 
-			// 则抛出异常!
-			throw new XlsxTmplError(MessageFormat.format(
-				"{0} 类中 @{1}(groupName = \"{2}\") 这个注解重复定义, 这是不允许的!", 
-				fromClazz.getSimpleName(), 
-				annoClazz.getSimpleName(),
-				groupName
-			));
-		}
-
-		if (foundFL != null) {
-			for (Field F : foundFL) {
-				if (F != null && 
-					Map.class.isAssignableFrom(F.getType()) == findMap) {
-					return F;
-				}
-			};
-		}
-
-		if (foundML != null) {
-			for (Method M : foundML) {
-				if (M != null && 
-					Map.class.isAssignableFrom(M.getReturnType()) == findMap) {
-					return M;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * 判断字段或函数是否标注了 OneToOne 或者 OneToMany 注解, 并且分组名为指定名称
-	 * 
-	 * @param member
-	 * @param annoClazz, 
-	 * @param groupName
-	 * @return 
-	 * 
-	 */
-	private static boolean hasOneToXAnno(
-		Member member, 
-		Class<?> annoClazz, 
-		String groupName) {
-		if (annoClazz.equals(OneToOne.class)) {
-			// 看看有没有标注 OnToOne 的
-			return hasOneToOne(member, groupName);
-		} else if (annoClazz.equals(OneToMany.class)) {
-			// 看看有没有标注 OneToMany 的
-			return hasOneToMany(member, groupName);
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * 是否有 OneToOne 注解
-	 * 
-	 * @param m
-	 * @param groupName
-	 * @return
-	 * 
-	 */
-	private static boolean hasOneToOne(Member m, String groupName) {
-		if (m == null || 
-			groupName == null || 
-			groupName.isEmpty()) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return false;
-		}
-
-		// 定义 OneToOne 注解数组
-		final OneToOne[] annoArr;
-		
-		if (m instanceof AccessibleObject) {
-			// 获取 OneToOne 注解数组
-			annoArr = ((AccessibleObject)m).getAnnotationsByType(OneToOne.class);
-		} else {
-			annoArr = null;
-		}
-
-		for (OneToOne anno : annoArr) {
-			if (anno.groupName().equals(groupName)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * 是否有 OneToMany 注解
-	 * 
-	 * @param m
-	 * @param groupName
-	 * @return 
-	 * 
-	 */
-	private static boolean hasOneToMany(Member m, String groupName) {
-		if (m == null || 
-			groupName == null || 
-			groupName.isEmpty()) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return false;
-		}
-
-		// 定义 OneToMany 注解数组
-		final OneToMany[] annoArr;
-		
-		if (m instanceof AccessibleObject) {
-			// 获取 OneToMany 注解数组
-			annoArr = ((AccessibleObject)m).getAnnotationsByType(OneToMany.class);
-		} else {
-			annoArr = null;
-		}
-
-		if (annoArr == null || 
-			annoArr.length <= 0) {
-			// 如果没有 OneToOne, OneToMany 注解, 
-			// 则直接退出!
-			return false;
-		}
-
-		for (OneToMany anno : annoArr) {
-			if (anno.groupName().equals(groupName)) {
-				return true;
-			}
-		}
-
-		return false;
+			pairX._memberSet.add(m);
+		});
 	}
 }
