@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.game.part.tmpl.XSSFRowReadStream;
 import com.game.part.tmpl.XlsxTmplLog;
 import com.game.part.utils.Assert;
@@ -126,5 +128,10 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 
 		// 添加数值到列表
 		tmplList.add(objVal);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

@@ -178,26 +178,4 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 			throw new XlsxTmplError(this, "对象值为空");
 		}
 	}
-
-	@Override
-	public String toString() {
-		// 创建字符串缓冲区
-		StringBuffer sb = new StringBuffer();
-		// 添加属性
-		sb.append(this.getClass().getSimpleName());
-		sb.append(" { ");
-		sb.append("_xlsxFileName = ");
-		sb.append(this.getXlsxFileName());
-		sb.append(", _sheetName = ");
-		sb.append(this.getSheetName());
-		sb.append(", _rowIndex = ");
-		sb.append(this.getRowIndex());
-		sb.append(", _colIndex = ");
-		sb.append(this.getColIndex());
-		sb.append(", _objVal = ");
-		sb.append(this._objVal);
-		sb.append(" }");
-		// 返回字符串
-		return sb.toString();
-	}
 }

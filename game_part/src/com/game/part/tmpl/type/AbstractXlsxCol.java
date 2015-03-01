@@ -1,5 +1,7 @@
 package com.game.part.tmpl.type;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.game.part.tmpl.XSSFRowReadStream;
 import com.game.part.tmpl.XlsxTmplError;
 import com.game.part.tmpl.XlsxTmplLog;
@@ -131,5 +133,10 @@ public abstract class AbstractXlsxCol<T> {
 			XlsxTmplLog.LOG.error(ex.getMessage(), ex);
 			throw new XlsxTmplError(ex);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }
