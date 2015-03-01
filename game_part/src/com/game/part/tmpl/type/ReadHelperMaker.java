@@ -17,6 +17,7 @@ import javassist.CtNewMethod;
 
 import com.game.part.tmpl.XSSFRowReadStream;
 import com.game.part.tmpl.XlsxTmplError;
+import com.game.part.tmpl.XlsxTmplServ;
 import com.game.part.tmpl.anno.ElementNum;
 import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
@@ -123,7 +124,13 @@ final class ReadHelperMaker {
 			// 添加方法
 			cc.addMethod(cm);
 
-			cc.writeFile("/data/temp_test/");
+			if (XlsxTmplServ.OBJ._outputClazzToDir != null &&
+				XlsxTmplServ.OBJ._outputClazzToDir.isEmpty() == false) {
+				// 如果输出目录不为空, 
+				// 则写出类文件用作调试
+				cc.writeFile(XlsxTmplServ.OBJ._outputClazzToDir);
+			}
+
 			// 获取 JAVA 类
 			@SuppressWarnings("unchecked")
 			Class<IReadHelper> javaClazz = (Class<IReadHelper>)cc.toClass();

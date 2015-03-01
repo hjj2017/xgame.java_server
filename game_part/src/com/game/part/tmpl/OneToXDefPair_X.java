@@ -87,6 +87,8 @@ class OneToXDefPair_X {
 	/**
 	 * 验证
 	 * 
+	 * @throws XlsxTmplError
+	 * 
 	 */
 	void validate() {
 		if (this._annoClazzSet.isEmpty() || 

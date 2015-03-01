@@ -18,6 +18,8 @@ public class XlsxTmplServ implements IServ_LoadTmplData, IServ_PackUp, IServ_Val
 	public static final XlsxTmplServ OBJ = new XlsxTmplServ();
 	/** 基础目录 */
 	public String _baseDir = null;
+	/** 输出类文件到目标目录 */
+	public String _outputClazzToDir = null;
 	/** 对象列表字典 */
 	final ConcurrentHashMap<Class<?>, List<?>> _objListMap = new ConcurrentHashMap<>();
 

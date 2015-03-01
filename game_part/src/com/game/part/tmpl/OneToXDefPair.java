@@ -66,17 +66,23 @@ final class OneToXDefPair {
 		Map<String, OneToXDefPair_X> pairXMap = collectOneToXAnno(clazz);
 		// 返回配对列表
 		return pairXMap.values().stream().map(pairX -> {
-			// 执行验证过程
-			pairX.validate();
-
-			// 获取键值定义
-			final Member keyDef = pairX.getKeyDef();
-			final Member mapDef = pairX.getMapDef();
-
-			return new OneToXDefPair(
-				keyDef, mapDef, 
-				pairX.isOneToOne()
-			);
+			try {
+				// 执行验证过程
+				pairX.validate();
+	
+				// 获取键值定义
+				final Member keyDef = pairX.getKeyDef();
+				final Member mapDef = pairX.getMapDef();
+	
+				return new OneToXDefPair(
+					keyDef, mapDef, 
+					pairX.isOneToOne()
+				);
+			} catch (XlsxTmplError ex) {
+				// 记录错误日志
+				XlsxTmplLog.LOG.error(ex.getMessage(), ex);
+				throw ex;
+			}
 		}).collect(Collectors.toList());
 	}
 
