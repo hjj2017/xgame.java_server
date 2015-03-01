@@ -24,7 +24,7 @@ import com.game.part.tmpl.type.XlsxStr;
 public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** ID */ 
 	@OneToOne(groupName = "ID")
-	public XlsxInt _ID;
+	public XlsxInt _ID = new XlsxInt(false);
 	/** 所在城市 Id */
 	@OneToMany(groupName = "cityId")
 	public XlsxInt _cityId;

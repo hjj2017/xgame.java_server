@@ -75,7 +75,7 @@ final class OneToXDefPair {
 
 			return new OneToXDefPair(
 				keyDef, mapDef, 
-				pairX._annoClazz.equals(OneToOne.class)
+				pairX.isOneToOne()
 			);
 		}).collect(Collectors.toList());
 	}
@@ -157,13 +157,13 @@ final class OneToXDefPair {
 			OneToXDefPair_X pairX = targetMap.get(groupName);
 	
 			if (pairX == null) {
-				pairX = new OneToXDefPair_X();
-				pairX._annoClazz = anno.annotationType();
-				pairX._groupName = groupName;
+				pairX = new OneToXDefPair_X(groupName, m.getDeclaringClass());
 				// 添加到字典
 				targetMap.put(groupName, pairX);
 			}
 
+			// 添加注解类和成员到集合
+			pairX._annoClazzSet.add(anno.annotationType());
 			pairX._memberSet.add(m);
 		});
 	}

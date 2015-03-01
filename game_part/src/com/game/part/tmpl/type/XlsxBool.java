@@ -15,28 +15,34 @@ public class XlsxBool extends BasicTypeCol<Boolean> {
 	 * 
 	 */
 	public XlsxBool() {
+		super();
 	}
 
 	/**
 	 * 类参数构造器
 	 * 
+	 * @param nullable
+	 * 
+	 */
+	public XlsxBool(boolean nullable) {
+		super(nullable);
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
 	 * @param defaultVal
 	 * 
 	 */
-	public XlsxBool(Boolean defaultVal) {
-		this._objVal = defaultVal;
+	public XlsxBool(boolean nullable, boolean defaultVal) {
+		super(nullable, defaultVal);
 	}
 
 	@Override
 	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream == null) {
-			return;
-		}
-
-		Boolean newVal = stream.readBool();
-
-		if (newVal != null) {
-			this._objVal = newVal;
+		if (stream != null) {
+			super.setObjVal(stream.readBool());
 		}
 	}
 }

@@ -15,6 +15,28 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 	 * 
 	 */
 	public XlsxInt() {
+		super();
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * 
+	 */
+	public XlsxInt(boolean nullable) {
+		super(nullable);
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * @param defaultVal
+	 * 
+	 */
+	public XlsxInt(boolean nullable, int defaultVal) {
+		super(nullable, defaultVal);
 	}
 
 	/**
@@ -23,20 +45,14 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 	 * @param defaultVal
 	 * 
 	 */
-	public XlsxInt(Integer defaultVal) {
-		this._objVal = defaultVal;
+	public XlsxInt(int defaultVal) {
+		super(defaultVal);
 	}
 
 	@Override
 	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream == null) {
-			return;
-		}
-		
-		Integer newVal = stream.readInt();
-
-		if (newVal != null) {
-			this._objVal = newVal;
+		if (stream != null) {
+			super.setObjVal(stream.readInt());
 		}
 	}
 }

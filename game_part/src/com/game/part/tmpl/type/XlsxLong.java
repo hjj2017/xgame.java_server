@@ -15,6 +15,28 @@ public class XlsxLong extends BasicTypeCol<Long> {
 	 * 
 	 */
 	public XlsxLong() {
+		super();
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * 
+	 */
+	public XlsxLong(boolean nullable) {
+		super(nullable);
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * @param defaultVal
+	 * 
+	 */
+	public XlsxLong(boolean nullable, long defaultVal) {
+		super(nullable, defaultVal);
 	}
 
 	/**
@@ -23,20 +45,14 @@ public class XlsxLong extends BasicTypeCol<Long> {
 	 * @param defaultVal
 	 * 
 	 */
-	public XlsxLong(Long defaultVal) {
-		this._objVal = defaultVal;
+	public XlsxLong(long defaultVal) {
+		super(defaultVal);
 	}
 
 	@Override
 	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream == null) {
-			return;
-		}
-
-		Long newVal = stream.readLong();
-
-		if (newVal != null) {
-			this._objVal = newVal;
+		if (stream != null) {
+			super.setObjVal(stream.readLong());
 		}
 	}
 }

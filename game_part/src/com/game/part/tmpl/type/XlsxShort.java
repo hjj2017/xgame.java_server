@@ -15,6 +15,28 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	 * 
 	 */
 	public XlsxShort() {
+		super();
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * 
+	 */
+	public XlsxShort(boolean nullable) {
+		super(nullable);
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * @param defaultVal
+	 * 
+	 */
+	public XlsxShort(boolean nullable, short defaultVal) {
+		super(nullable, defaultVal);
 	}
 
 	/**
@@ -23,20 +45,14 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	 * @param defaultVal
 	 * 
 	 */
-	public XlsxShort(Short defaultVal) {
-		this._objVal = defaultVal;
+	public XlsxShort(short defaultVal) {
+		super(defaultVal);
 	}
 
 	@Override
 	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream == null) {
-			return;
-		}
-		
-		Short newVal = stream.readShort();
-
-		if (newVal != null) {
-			this._objVal = newVal;
+		if (stream != null) {
+			super.setObjVal(stream.readShort());
 		}
 	}
 }

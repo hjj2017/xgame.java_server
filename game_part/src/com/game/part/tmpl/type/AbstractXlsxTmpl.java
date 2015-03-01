@@ -60,7 +60,7 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 		if (objKey instanceof BasicTypeCol<?>) {
 			// 如果是基本类型字段, 
 			// 则获取真实关键字!
-			realKey = ((BasicTypeCol<?>)objKey).objVal();
+			realKey = ((BasicTypeCol<?>)objKey).getObjVal();
 		}
 
 		if (realKey == null) {
@@ -101,7 +101,7 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl>
 		if (objKey instanceof BasicTypeCol<?>) {
 			// 如果是基本类型字段, 
 			// 则获取真实关键字!
-			realKey = ((BasicTypeCol<?>)objKey).objVal();
+			realKey = ((BasicTypeCol<?>)objKey).getObjVal();
 		}
 
 		if (realKey == null) {

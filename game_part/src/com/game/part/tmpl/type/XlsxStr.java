@@ -15,6 +15,28 @@ public class XlsxStr extends BasicTypeCol<String> {
 	 * 
 	 */
 	public XlsxStr() {
+		super();
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * 
+	 */
+	public XlsxStr(boolean nullable) {
+		super(nullable);
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param nullable
+	 * @param defaultVal
+	 * 
+	 */
+	public XlsxStr(boolean nullable, String defaultVal) {
+		super(nullable, defaultVal);
 	}
 
 	/**
@@ -24,19 +46,13 @@ public class XlsxStr extends BasicTypeCol<String> {
 	 * 
 	 */
 	public XlsxStr(String defaultVal) {
-		this._objVal = defaultVal;
+		super(defaultVal);
 	}
 
 	@Override
 	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream == null) {
-			return;
-		}
-
-		String newVal = stream.readStr();
-
-		if (newVal != null) {
-			this._objVal = newVal;
+		if (stream != null) {
+			super.setObjVal(stream.readStr());
 		}
 	}
 }
