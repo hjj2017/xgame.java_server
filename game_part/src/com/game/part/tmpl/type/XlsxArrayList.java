@@ -273,4 +273,21 @@ public class XlsxArrayList<T extends AbstractXlsxCol<?>> extends AbstractXlsxCol
 			fromIndex, toIndex
 		);
 	}
+
+	@Override
+	public String toString() {
+		// 创建字符串缓冲区
+		StringBuffer sb = new StringBuffer();
+		sb.append("[ ");
+
+		for (T val : this) {
+			// 添加子对象
+			sb.append(val);
+			sb.append(", ");
+		}
+
+		sb.append("]");
+		// 返回字符串
+		return sb.toString();
+	}
 }

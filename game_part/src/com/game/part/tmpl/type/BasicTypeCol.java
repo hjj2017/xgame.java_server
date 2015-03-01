@@ -175,7 +175,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 			// 如果不能为空值, 
 			// 但对象值它就是空值, 
 			// 则抛出异常!
-			throw new XlsxTmplError("对象值为空");
+			throw new XlsxTmplError(this, "对象值为空");
 		}
 	}
 

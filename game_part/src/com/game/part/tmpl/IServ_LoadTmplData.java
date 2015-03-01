@@ -40,11 +40,13 @@ interface IServ_LoadTmplData {
 		// 输出参数 : Excel 文件名称, 页签索引
 		OutStr outExcelFileName = new OutStr();
 		OutInt outSheetIndex = new OutInt();
+		// 从第几行开始读取
+		OutInt outStartFromRowIndex= new OutInt();
 
 		try {
 			// 获取 Excel 文件名和页签索引
 			getExcelFileNameAndSheetIndex(
-				byClazz, outExcelFileName, outSheetIndex
+				byClazz, outExcelFileName, outSheetIndex, outStartFromRowIndex
 			);
 			// 获取工作表单
 			XSSFSheet sheet = getWorkSheet(
@@ -53,7 +55,11 @@ interface IServ_LoadTmplData {
 			);
 
 			// 执行加载逻辑
-			List<?> objList = makeObjList(byClazz, sheet, outExcelFileName.getVal());
+			List<?> objList = makeObjList(
+				byClazz, sheet, outStartFromRowIndex.getVal(), 
+				outExcelFileName.getVal()
+			);
+
 			// 添加到字典列表
 			XlsxTmplServ.OBJ._objListMap.put(byClazz, objList);
 		} catch (XlsxTmplError err) {
@@ -73,10 +79,15 @@ interface IServ_LoadTmplData {
 	 * @param byClazz
 	 * @param outExcelFileName
 	 * @param outSheetIndex
+	 * @param outStartFromRowIndex 
 	 * @throws Exception 
 	 * 
 	 */
-	static void getExcelFileNameAndSheetIndex(Class<?> byClazz, OutStr outExcelFileName, OutInt outSheetIndex) throws Exception {
+	static void getExcelFileNameAndSheetIndex(
+		Class<?> byClazz, 
+		OutStr outExcelFileName, 
+		OutInt outSheetIndex, 
+		OutInt outStartFromRowIndex) throws Exception {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 
@@ -98,6 +109,12 @@ interface IServ_LoadTmplData {
 		// 获取 Excel 文件名和页签索引
 		Out.putVal(outExcelFileName, annoXlsxTmpl.fileName());
 		Out.putVal(outSheetIndex, annoXlsxTmpl.sheetIndex());
+
+		// 从第几行开始读取
+		Out.putVal(
+			outStartFromRowIndex, 
+			annoXlsxTmpl.startRowIndex()
+		);
 	}
 
 	/**
@@ -137,15 +154,21 @@ interface IServ_LoadTmplData {
 	 * 
 	 * @param byClazz
 	 * @param fromSheet
+	 * @param startFromRowIndex 
 	 * @param xlsxFileName 
 	 * @return 
 	 * @throws Exception 
 	 * 
 	 */
-	static<T extends AbstractXlsxCol<?>> List<T> makeObjList(Class<T> byClazz, XSSFSheet fromSheet, String xlsxFileName) throws Exception {
+	static<T extends AbstractXlsxCol<?>> List<T> makeObjList(
+		Class<T> byClazz, 
+		XSSFSheet fromSheet, 
+		int startFromRowIndex, 
+		String xlsxFileName) throws Exception {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		Assert.notNull(fromSheet, "fromSheet");
+		Assert.notNull(startFromRowIndex, "startRowIndex");
 
 		// 获取最后行数
 		final int rowCount = fromSheet.getLastRowNum();
@@ -163,10 +186,10 @@ interface IServ_LoadTmplData {
 		// 创建列表对象
 		List<T> objList = new ArrayList<>(rowCount);
 
-		for (int i = 1; i <= rowCount; i++) {
+		for (int i = startFromRowIndex; i <= rowCount; i++) {
 			// 获取行数据
 			XSSFRow row = fromSheet.getRow(i);
-			
+
 			if (row == null) {
 				// 如果行数据为空, 
 				// 则直接跳过!
