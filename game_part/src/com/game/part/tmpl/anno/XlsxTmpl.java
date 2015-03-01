@@ -19,7 +19,5 @@ public @interface XlsxTmpl {
 	/** 页签索引 */
 	int sheetIndex();
 	/** 起始行 */
-	int startRowIndex() default 1;
-	/** 起始列 */
-	int startColIndex() default 1;
+	int startFromRowIndex() default 1;
 }

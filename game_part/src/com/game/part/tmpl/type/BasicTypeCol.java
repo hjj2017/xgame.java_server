@@ -1,5 +1,8 @@
 package com.game.part.tmpl.type;
 
+import java.time.Instant;
+import java.time.temporal.Temporal;
+
 import com.game.part.tmpl.XlsxTmplError;
 
 /**
@@ -100,6 +103,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 			return 0;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).intValue();
+		} else if (this._objVal instanceof Temporal) {
+			return (int)Instant.from((Temporal)this._objVal).toEpochMilli();
 		} else {
 			return 0;
 		}
@@ -116,6 +121,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 			return 0L;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).longValue();
+		} else if (this._objVal instanceof Temporal) {
+			return Instant.from((Temporal)this._objVal).toEpochMilli();
 		} else {
 			return 0L;
 		}
@@ -132,8 +139,46 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 			return 0;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).shortValue();
+		} else if (this._objVal instanceof Temporal) {
+			return (short)Instant.from((Temporal)this._objVal).toEpochMilli();
 		} else {
 			return 0;
+		}
+	}
+
+	/**
+	 * 获取 float 数值
+	 * 
+	 * @return 
+	 * 
+	 */
+	public float getFloatVal() {
+		if (this._objVal == null) {
+			return 0.0f;
+		} else if (this._objVal instanceof Number) {
+			return ((Number)this._objVal).floatValue();
+		} else if (this._objVal instanceof Temporal) {
+			return (float)Instant.from((Temporal)this._objVal).toEpochMilli();
+		} else {
+			return 0.0f;
+		}
+	}
+
+	/**
+	 * 获取 double 数值
+	 * 
+	 * @return 
+	 * 
+	 */
+	public double getDoubleVal() {
+		if (this._objVal == null) {
+			return 0.0;
+		} else if (this._objVal instanceof Number) {
+			return ((Number)this._objVal).doubleValue();
+		} else if (this._objVal instanceof Temporal) {
+			return Instant.from((Temporal)this._objVal).toEpochMilli();
+		} else {
+			return 0.0;
 		}
 	}
 
@@ -162,6 +207,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol<T> {
 			return false;
 		} else if (this._objVal instanceof Number) {
 			return this.getIntVal() == 1;
+		} else if (this._objVal instanceof Temporal) {
+			return true;
 		} else {
 			String strVal = this.getStrVal();
 			return strVal.equalsIgnoreCase("true") || strVal.equalsIgnoreCase("yes") || strVal.equalsIgnoreCase("y");

@@ -113,7 +113,7 @@ interface IServ_LoadTmplData {
 		// 从第几行开始读取
 		Out.putVal(
 			outStartFromRowIndex, 
-			annoXlsxTmpl.startRowIndex()
+			annoXlsxTmpl.startFromRowIndex()
 		);
 	}
 

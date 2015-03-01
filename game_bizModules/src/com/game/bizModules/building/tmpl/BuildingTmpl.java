@@ -19,7 +19,7 @@ import com.game.part.tmpl.type.XlsxStr;
  * @since 2014/6/5
  * 
  */
-@XlsxTmpl(fileName = "building.xlsx", sheetIndex = 0, startRowIndex = 2)
+@XlsxTmpl(fileName = "building.xlsx", sheetIndex = 0, startFromRowIndex = 2)
 @Validator(clazz = Valid_BuildingTmpl.class)
 public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** ID */ 

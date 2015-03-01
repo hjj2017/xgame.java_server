@@ -1,5 +1,6 @@
 package com.game.part.tmpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -25,7 +26,7 @@ class OneToXDefPair_X {
 	/** 来自于哪个类 ? */
 	private Class<?> _fromClazz;
 	/** 注解类集合 */
-	final Set<Class<?>> _annoClazzSet = new HashSet<>();
+	final Set<Class<? extends Annotation>> _annoClazzSet = new HashSet<>();
 	/** 成员集合 */
 	final Set<Member> _memberSet = new HashSet<>();
 	/** 关键字定义 */
