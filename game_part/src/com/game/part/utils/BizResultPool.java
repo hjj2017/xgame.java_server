@@ -1,6 +1,5 @@
 package com.game.part.utils;
 
-
 /**
  * 业务结果对象池, 所有的业务返回结果, 从对象池里借出即可, 不需要自己 new!
  * 
