@@ -1,5 +1,9 @@
 package com.game.part.tmpl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
@@ -213,6 +217,91 @@ public final class XSSFRowReadStream {
 			return null;
 		} else {
 			return XSSFUtil.getBoolCellVal(cell);
+		}
+	}
+
+	/**
+	 * 读取 Float 数值
+	 * 
+	 * @return
+	 * 
+	 */
+	public Float readFloat() {
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getFloatCellVal(cell);
+		}
+	}
+
+	/**
+	 * 读取 Double 数值
+	 * 
+	 * @return
+	 * 
+	 */
+	public Double readDouble() {
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getDoubleCellVal(cell);
+		}
+	}
+
+	/**
+	 * 读取 Date 数值
+	 * 
+	 * @return 
+	 * 
+	 */
+	public LocalDate readDate() {
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getDateCellVal(cell);
+		}
+	}
+
+	/**
+	 * 读取 Time 数值
+	 * 
+	 * @return 
+	 * 
+	 */
+	public LocalTime readTime() {
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getTimeCellVal(cell);
+		}
+	}
+
+	/**
+	 * 读取 DateTime 数值
+	 * 
+	 * @return 
+	 * 
+	 */
+	public LocalDateTime readDateTime() {
+		final XSSFCell cell = this.readCell();
+
+		if (cell == null || 
+			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		} else {
+			return XSSFUtil.getDateTimeCellVal(cell);
 		}
 	}
 }
