@@ -2,7 +2,7 @@ package com.game.gameServer.framework;
 
 import com.game.gameServer.io.IoOperThreadEnum;
 import com.game.part.io.IoOperServ;
-import com.game.part.msg.MsgDispatcher;
+import com.game.part.msg.MsgServ;
 
 /**
  * 网关服务器内核类
@@ -43,8 +43,7 @@ public class App_GameServer implements IServer_InitBizModules, IServer_ListenCSM
 		FrameworkLog.LOG.info(":: init");
 
 		// 添加消息接收器
-		MsgDispatcher.OBJ.addMsgReceiver(new ChatScene());
-		MsgDispatcher.OBJ.addMsgReceiver(new GameScene());
+		MsgServ.OBJ.addMsgReceiver(new GameScene());
 		// 创建 IO 操作服务
 		this._ioOperServ = new IoOperServ<IoOperThreadEnum>(
 			true, IoOperThreadEnum.values()

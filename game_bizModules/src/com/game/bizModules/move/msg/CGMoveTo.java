@@ -1,6 +1,6 @@
 package com.game.bizModules.move.msg;
 
-import com.game.gameServer.msg.AbstractGameMsg;
+import com.game.gameServer.msg.AbstractCGMsgObj;
 
 /**
  * 移动消息
@@ -8,7 +8,7 @@ import com.game.gameServer.msg.AbstractGameMsg;
  * @author hjj2017
  *
  */
-public class CGMoveTo extends AbstractGameMsg {
+public class CGMoveTo extends AbstractCGMsgObj {
 	/** 消息类型 ID */
 	private static final short MSG_TYPE_ID = 1002;
 
@@ -18,7 +18,7 @@ public class CGMoveTo extends AbstractGameMsg {
 	public int _y = -1;
 
 	@Override
-	public short getMsgTypeId() {
+	public short getMsgTypeDef() {
 		return MSG_TYPE_ID;
 	}
 }

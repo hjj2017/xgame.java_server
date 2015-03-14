@@ -3,11 +3,8 @@ package com.game.gameServer.framework;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.Error;
-import com.game.part.handler.BaseHandler;
-import com.game.part.handler.HandlerObjMapper;
-import com.game.part.msg.BaseMsg;
-import com.game.part.msg.MsgObjMapper;
 import com.game.part.tmpl.XlsxTmplServ;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.utils.Assert;
@@ -58,25 +55,25 @@ interface IServer_InitBizModules {
 		}
 
 		allClazzSet.forEach(currClazz -> {
-			if (ClazzUtil.isConcreteDrivedClass(
-				currClazz, 
-				BaseMsg.class)) {
-				// 如果是消息类, 
-				// 则注册到消息字典
-				Class<? extends BaseMsg> msgClazzDef = (Class<BaseMsg>)currClazz;
-				registerMsg(msgClazzDef);
-				return;
-			}
-
-			if (ClazzUtil.isConcreteDrivedClass(
-				currClazz, 
-				BaseHandler.class)) {
-				// 如果是行为类, 
-				// 则注册到行为字典
-				Class<? extends BaseHandler<?>> handlerClazzDef = (Class<BaseHandler<?>>)currClazz;
-				registerHandler(handlerClazzDef);
-				return;
-			}
+//			if (ClazzUtil.isConcreteDrivedClass(
+//				currClazz, 
+//				AbstractExternalMsg.class)) {
+//				// 如果是消息类, 
+//				// 则注册到消息字典
+//				Class<? extends AbstractExternalMsg> msgClazzDef = (Class<AbstractExternalMsg>)currClazz;
+//				registerMsg(msgClazzDef);
+//				return;
+//			}
+//
+//			if (ClazzUtil.isConcreteDrivedClass(
+//				currClazz, 
+//				BaseHandler.class)) {
+//				// 如果是行为类, 
+//				// 则注册到行为字典
+//				Class<? extends BaseHandler<?>> handlerClazzDef = (Class<BaseHandler<?>>)currClazz;
+//				registerHandler(handlerClazzDef);
+//				return;
+//			}
 
 			if (ClazzUtil.isConcreteDrivedClass(
 				currClazz, 
@@ -112,54 +109,7 @@ interface IServer_InitBizModules {
 	 * @param clazzDef
 	 * 
 	 */
-	static void registerMsg(Class<? extends BaseMsg> clazzDef) {
-		// 断言参数对象不为空
-		Assert.notNull(clazzDef);
-
-		try {
-			// 创建消息实例
-			BaseMsg msgObj = clazzDef.newInstance();
-			// 添加消息到字典
-			MsgObjMapper.OBJ.add(msgObj);
-			
-			// 记录消息注册日志
-			FrameworkLog.LOG.info(MessageFormat.format(
-				":::: 注册消息类 = {0}", 
-				clazzDef.getName()
-			));
-		} catch (Exception ex) {
-			// 抛出异常
-			FrameworkLog.LOG.error(ex.getMessage(), ex);
-			throw new Error(ex);
-		}
-	}
-
-	/**
-	 * 注册消息行为
-	 * 
-	 * @param clazzDef
-	 * 
-	 */
-	static void registerHandler(Class<? extends BaseHandler<?>> clazzDef) {
-		// 断言参数不为空
-		Assert.notNull(clazzDef);
-
-		try {
-			// 创建消息行为对象
-			BaseHandler<?> handlerObj = clazzDef.newInstance();
-			// 添加消息行为到字典
-			HandlerObjMapper.OBJ.add(handlerObj);
-
-			// 记录消息行为注册日志
-			FrameworkLog.LOG.info(MessageFormat.format(
-				":::: 注册行为类 = {0}", 
-				clazzDef.getName()
-			));
-		} catch (Exception ex) {
-			// 抛出异常
-			FrameworkLog.LOG.error(ex.getMessage(), ex);
-			throw new Error(ex);
-		}
+	static void registerMsg(Class<? extends AbstractCGMsgObj<?>> clazzDef) {
 	}
 
 	/**

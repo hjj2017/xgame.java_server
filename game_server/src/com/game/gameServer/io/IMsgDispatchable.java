@@ -1,7 +1,7 @@
 package com.game.gameServer.io;
 
-import com.game.part.msg.BaseMsg;
-import com.game.part.msg.MsgDispatcher;
+import com.game.part.msg.IMsgObj;
+import com.game.part.msg.MsgServ;
 
 /**
  * 消息派发接口
@@ -16,12 +16,12 @@ interface IMsgDispatchable {
 	 * 该函数只是一个快捷方式
 	 * 
 	 * @param msgObj 
-	 * @see MsgDispatcher#dispatch(BaseMsg)
+	 * @see MsgServ#post(AbstractExternalMsg)
 	 * 
 	 */
-	default void msgDispatch(BaseMsg msgObj) {
+	default void msgDispatch(IMsgObj msgObj) {
 		if (msgObj != null) {
-			MsgDispatcher.OBJ.dispatch(msgObj);
+			MsgServ.OBJ.post(msgObj);
 		}
 	}
 }

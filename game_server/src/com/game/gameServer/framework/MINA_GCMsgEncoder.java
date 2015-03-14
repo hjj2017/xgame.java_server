@@ -10,12 +10,12 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
  * @author hjj2017
  *
  */
-class MINA_S2CMsgEncoder extends ProtocolEncoderAdapter {
+class MINA_GCMsgEncoder extends ProtocolEncoderAdapter {
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	public MINA_S2CMsgEncoder() {
+	public MINA_GCMsgEncoder() {
 	}
 
 	@Override

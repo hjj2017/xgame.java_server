@@ -27,11 +27,11 @@ class MINA_MsgCodecFactory implements ProtocolCodecFactory {
 
 	@Override
 	public ProtocolDecoder getDecoder(IoSession sessionObj) {
-		return new MINA_C2SMsgDecoder();
+		return new MINA_CGMsgDecoder();
 	}
 
 	@Override
 	public ProtocolEncoder getEncoder(IoSession sessionObj) {
-		return new MINA_S2CMsgEncoder();
+		return new MINA_GCMsgEncoder();
 	}
 }

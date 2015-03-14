@@ -4,7 +4,7 @@ import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.bizModules.cd.msg.CGKillCdTimeMsg;
 import com.game.bizModules.cd.serv.CdServ;
 import com.game.bizModules.cd.serv.Result_KillCdTime;
-import com.game.gameServer.framework.SimpleHandler;
+import com.game.part.msg.IMsgHandler;
 import com.game.part.utils.Assert;
 
 /**
@@ -14,7 +14,7 @@ import com.game.part.utils.Assert;
  * @since 2014/6/24
  * 
  */
-public class Handler_CGKillCdTime extends SimpleHandler<CGKillCdTimeMsg> {
+public class Handler_CGKillCdTime implements IMsgHandler<CGKillCdTimeMsg> {
 	@Override
 	public void handle(CGKillCdTimeMsg cgMSG) {
 		// 断言参数不为空

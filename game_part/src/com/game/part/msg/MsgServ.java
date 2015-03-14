@@ -2,9 +2,8 @@ package com.game.part.msg;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.game.part.scene.MyScene;
-import com.game.part.utils.OutBool;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 主消息分派
@@ -13,15 +12,24 @@ import com.game.part.utils.OutBool;
  * @since 2014/5/2
  * 
  */
-public class MsgDispatcher {
+public class MsgServ implements IServ_RegMsgClazz {
 	/** 单例对象 */
-	public static final MsgDispatcher OBJ = new MsgDispatcher();
+	public static final MsgServ OBJ = new MsgServ();
+	/** 消息类字典 */
+	final Map<Short, Class<? extends IMsgObj>> _msgClazzMap = new ConcurrentHashMap<>();
 	/** 消息接收者列表 */
-	private List<IMsgReceiver> _msgRecvList = null;
+	private final List<IMsgReceiver> _msgRecvList = new ArrayList<>();
 
 	/**
+	 * 类默认构造器
+	 * 
+	 */
+	private MsgServ() {
+	}
+	
+	/**
 	 * 添加消息接收者, 
-	 * 消息接收者一般是场景对象 {@link MyScene}.
+	 * 消息接收者一般是场景, 
 	 * 但是这里使用的是一个接口 {@link IMsgReceiver}, 
 	 * 其目的是将消息分派者与具体的消息接收者分离!
 	 * 否则, 就需要在消息包里包含场景包, 
@@ -32,17 +40,11 @@ public class MsgDispatcher {
 	 * @return 
 	 * 
 	 */
-	public MsgDispatcher addMsgReceiver(IMsgReceiver value) {
+	public MsgServ addMsgReceiver(IMsgReceiver value) {
 		if (value == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return this;
-		}
-
-		if (this._msgRecvList == null) {
-			// 如果接收者列表为空, 
-			// 则创建列表
-			this._msgRecvList = new ArrayList<>();
 		}
 
 		// 添加接收者
@@ -51,25 +53,30 @@ public class MsgDispatcher {
 	}
 
 	/**
-	 * 分派消息
+	 * 发送消息给各个接收者
 	 * 
 	 * @param msgObj 
+	 * @param <T>
 	 * 
 	 */
-	public void dispatch(BaseMsg msgObj) {
+	public <T extends IMsgObj> void post(T msgObj) {
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
 			return;
 		}
 
-		// 是否向下执行
-		OutBool nextRecv = new OutBool();
-		nextRecv.setVal(true);
+		this._msgRecvList.forEach(r -> r.tryReceive(msgObj));
+	}
 
-		this._msgRecvList.forEach((r) -> {
-			// 接收消息
-			r.tryReceive(msgObj);
-		});
+	/**
+	 * 获取消息对象
+	 * 
+	 * @param msgTypeDef
+	 * @return
+	 * 
+	 */
+	public <T extends IMsgObj> T getMsgObj(short msgTypeDef) {
+		return null;
 	}
 }

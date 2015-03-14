@@ -1,6 +1,6 @@
 package com.game.bizModules.login.msg;
 
-import com.game.gameServer.msg.AbstractGameMsg;
+import com.game.gameServer.msg.AbstractCGMsgObj;
 
 
 /**
@@ -10,12 +10,12 @@ import com.game.gameServer.msg.AbstractGameMsg;
  * @since 2014/9/10
  * 
  */
-public class GGLoginAuthResult extends AbstractGameMsg {
+public class GGLoginAuthResult extends AbstractCGMsgObj {
 	/** 成功标志 */
 	public boolean _success = false;
 
 	@Override
-	public short getMsgTypeId() {
+	public short getMsgTypeDef() {
 		return 0;
 	}
 }

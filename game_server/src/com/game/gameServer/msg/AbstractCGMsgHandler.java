@@ -1,4 +1,4 @@
-package com.game.gameServer.framework;
+package com.game.gameServer.msg;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -6,27 +6,38 @@ import java.util.Set;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.game.part.handler.BaseHandler;
-import com.game.part.msg.BaseMsg;
+import com.game.gameServer.framework.FrameworkLog;
+import com.game.gameServer.framework.OnlineSessionManager;
+import com.game.gameServer.framework.Player;
 
 /**
- * 消息处理器
+ * 抽象的消息处理器
  * 
- * @author hjj2019
- * @since 2015/01/25
- * @param <TMsg>
+ * @author hjj2017
+ * @param <TMsgObj>
  * 
  */
-public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TMsg> implements IIoOperExecutable {
+public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> {
+	/** 会话 Id */
+	public long _sessionId;
+
+	/**
+	 * 处理消息对象
+	 * 
+	 * @param msgObj 
+	 * 
+	 */
+	public abstract void handle(TMsgObj msgObj);
+
 	/**
 	 * 发送消息给客户端
 	 * 
 	 * @param msgObj
 	 * 
 	 */
-	protected void sendMsgToClient(BaseMsg msgObj) {
+	protected void sendMsgToClient(AbstractGCMsgObj msgObj) {
 		this.sendMsgToClient(
-			msgObj, msgObj._sessionId
+			msgObj, this._sessionId
 		);
 	}
 
@@ -37,7 +48,7 @@ public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TM
 	 * @param p
 	 * 
 	 */
-	protected void sendMsgToClient(BaseMsg msgObj, Player p) {
+	protected void sendMsgToClient(AbstractGCMsgObj msgObj, Player p) {
 		if (msgObj == null || 
 			p == null) {
 			// 如果消息对象为空, 
@@ -56,7 +67,7 @@ public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TM
 	 * @param toSessionId
 	 * 
 	 */
-	protected void sendMsgToClient(BaseMsg msgObj, long toSessionId) {
+	protected void sendMsgToClient(AbstractGCMsgObj msgObj, long toSessionId) {
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
@@ -188,7 +199,7 @@ public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TM
 	 * @param msgObj 
 	 * 
 	 */
-	protected void broadcast(BaseMsg msgObj) {
+	protected void broadcast(AbstractGCMsgObj msgObj) {
 		if (msgObj == null) {
 			return;
 		}
@@ -214,7 +225,7 @@ public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TM
 	 * @param pl 
 	 * 
 	 */
-	protected void broadcast(BaseMsg msgObj, List<Player> pl) {
+	protected void broadcast(AbstractGCMsgObj msgObj, List<Player> pl) {
 		if (msgObj == null || 
 			pl == null || 
 			pl.size() <= 0) {
@@ -235,7 +246,7 @@ public abstract class SimpleHandler<TMsg extends BaseMsg> extends BaseHandler<TM
 	 * @param toSessionIdArr 
 	 * 
 	 */
-	protected void broadcast(BaseMsg msgObj, long[] toSessionIdArr) {
+	protected void broadcast(AbstractGCMsgObj msgObj, long[] toSessionIdArr) {
 		if (msgObj == null || 
 			toSessionIdArr == null || 
 			toSessionIdArr.length <= 0) {

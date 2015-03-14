@@ -18,5 +18,5 @@ public interface IMsgReceiver {
 	 * @param msgObj 消息对象
 	 * 
 	 */
-	public void tryReceive(BaseMsg msgObj);
+	public void tryReceive(IMsgObj msgObj);
 }

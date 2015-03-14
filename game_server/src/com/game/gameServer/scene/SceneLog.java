@@ -1,4 +1,4 @@
-package com.game.part.scene;
+package com.game.gameServer.scene;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,6 @@
 package com.game.gameServer.framework;
 
-import com.game.gameServer.msg.AbstractGameMsg;
-import com.game.part.msg.BaseMsg;
-import com.game.part.scene.MyScene;
+import com.game.gameServer.scene.DefaultScene;
 
 /**
  * 游戏场景
@@ -11,21 +9,12 @@ import com.game.part.scene.MyScene;
  * @since 2015/01/24
  *
  */
-class GameScene extends MyScene {
+class GameScene extends DefaultScene {
 	/**
 	 * 类默认构造器
 	 * 
 	 */
 	public GameScene() {
 		super(GameScene.class.getSimpleName());
-	}
-
-	@Override
-	protected boolean canRecevie(BaseMsg msgObj) {
-		if (msgObj == null) {
-			return false;
-		} else {
-			return (msgObj instanceof AbstractGameMsg);
-		}
 	}
 }

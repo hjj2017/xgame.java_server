@@ -3,8 +3,10 @@ package com.game.gameServer.framework;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.part.msg.BaseMsg;
-import com.game.part.msg.MsgDispatcher;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
+import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.part.msg.IMsgObj;
+import com.game.part.msg.MsgServ;
 import com.game.part.utils.Assert;
 
 /**
@@ -15,7 +17,6 @@ import com.game.part.utils.Assert;
  *
  */
 class MINA_IoHandler extends IoHandlerAdapter {
-	
 	@Override
 	public void sessionCreated(IoSession sessionObj) {
 		// 断言参数对象不为空
@@ -30,7 +31,20 @@ class MINA_IoHandler extends IoHandlerAdapter {
 		// 断言参数对象不为空
 		Assert.notNull(sessionObj);
 		Assert.notNull(obj);
+
+		if (obj instanceof AbstractCGMsgObj) {
+			// 转型为 CGMsg
+			AbstractCGMsgObj<?> cgMsgObj = (AbstractCGMsgObj<?>)obj;
+			// 设置消息处理器
+			AbstractCGMsgHandler<?> handler = cgMsgObj.getSelfHandler();
+
+			if (handler != null) {
+				// 设置会话 Id
+				handler._sessionId = sessionObj.getId();
+			}
+		}
+
 		// 分派消息对象
-		MsgDispatcher.OBJ.dispatch((BaseMsg)obj);
+		MsgServ.OBJ.post((IMsgObj)obj);
 	}
 }

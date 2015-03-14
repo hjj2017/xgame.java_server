@@ -12,7 +12,7 @@ import org.apache.mina.core.session.IoSession;
  * @author hjj2019
  * 
  */
-final class OnlineSessionManager {
+public final class OnlineSessionManager {
 	/** 单例对象 */
 	public static final OnlineSessionManager OBJ = new OnlineSessionManager();
 	/** 玩家数据 */

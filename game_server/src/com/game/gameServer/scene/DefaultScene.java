@@ -1,4 +1,4 @@
-package com.game.part.scene;
+package com.game.gameServer.scene;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -10,9 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.game.part.ThreadNamingFactory;
-import com.game.part.handler.BaseHandler;
-import com.game.part.handler.HandlerObjMapper;
-import com.game.part.msg.BaseMsg;
+import com.game.part.msg.IMsgObj;
 import com.game.part.msg.IMsgReceiver;
 
 
@@ -23,11 +21,11 @@ import com.game.part.msg.IMsgReceiver;
  * @since 2014/5/2
  * 
  */
-public class MyScene implements IMsgReceiver {
+public class DefaultScene implements IMsgReceiver {
 	/** 提交线程 */
-	private static final String THREAD_NAME_POST_SERV = MyScene.class.getName() + "#postServ";
+	private static final String THREAD_NAME_POST_SERV = DefaultScene.class.getName() + "#postServ";
 	/** 执行线程 */
-	private static final String THREAD_NAME_EXEC_SERV = MyScene.class.getName() + "#execServ";
+	private static final String THREAD_NAME_EXEC_SERV = DefaultScene.class.getName() + "#execServ";
 	/** 每次执行消息数量 */
 	private static final int MSG_COUNT = 16;
 	/** 心跳毫秒数 */
@@ -38,7 +36,7 @@ public class MyScene implements IMsgReceiver {
 	/** 场景名称 */
 	private String _name = null;
 	/** 消息字典 */
-	private Map<Long, Queue<BaseMsg>> _msgMap = null;
+	private Map<Long, Queue<IMsgObj>> _msgMap = null;
 	/** 提交服务 */
 	private ExecutorService _postServ = null;
 	/** 执行服务 */
@@ -52,7 +50,7 @@ public class MyScene implements IMsgReceiver {
 	 * @param name 场景名称
 	 * 
 	 */
-	public MyScene(String name) {
+	public DefaultScene(String name) {
 		// 设置场景名称
 		this._name = name;
 		// 初始化默认场景
@@ -99,7 +97,7 @@ public class MyScene implements IMsgReceiver {
 	}
 
 	@Override
-	public final void tryReceive(BaseMsg msgObj) {
+	public final void tryReceive(IMsgObj msgObj) {
 		if (msgObj == null) {
 			// 如果参数对象为空, 
 			// 则直接跳过!
@@ -107,21 +105,10 @@ public class MyScene implements IMsgReceiver {
 			return;
 		}
 
-		if (this.canRecevie(msgObj) == false) {
-			// 如果消息不能被接收, 
-			// 则直接退出!
-			SceneLog.LOG.debug(MessageFormat.format(
-				"{0} 消息不能被 {1} 场景接收", 
-				msgObj.getClass().getSimpleName(), 
-				this.getName()
-			));
-			return;
-		}
-
 		// 获取会话 ID
-		final long sessionId = msgObj._sessionId;
+		final long sessionId = 0L;
 		// 获取消息队列
-		Queue<BaseMsg> msgQ = this._msgMap.get(sessionId);
+		Queue<IMsgObj> msgQ = this._msgMap.get(sessionId);
 
 		if (msgQ == null) {
 			// 创建消息队列并添加到字典
@@ -132,17 +119,6 @@ public class MyScene implements IMsgReceiver {
 
 		// 添加消息对象到队列
 		msgQ.offer(msgObj);
-	}
-
-	/**
-	 * 是否可以接收消息对象
-	 * 
-	 * @param msgObj
-	 * @return 
-	 * 
-	 */
-	protected boolean canRecevie(BaseMsg msgObj) {
-		return true;
 	}
 
 	/**
@@ -182,7 +158,7 @@ public class MyScene implements IMsgReceiver {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	private void postOnePlayer(long sessionUUID, Queue<BaseMsg> msgQ) {
+	private void postOnePlayer(long sessionUUID, Queue<IMsgObj> msgQ) {
 		if (msgQ == null || 
 			msgQ.isEmpty()) {
 			// 如果消息队列为空, 
@@ -192,7 +168,7 @@ public class MyScene implements IMsgReceiver {
 
 		for (int i = 0; i < MSG_COUNT; i++) {
 			// 获取消息对象
-			BaseMsg msgObj = msgQ.poll();
+			IMsgObj msgObj = msgQ.poll();
 
 			if (msgObj == null) {
 				// 如果消息对象为空, 
@@ -202,9 +178,8 @@ public class MyScene implements IMsgReceiver {
 
 			this._execServ.submit(() -> {
 				// 获取行为对象
-				BaseHandler<BaseMsg> handlerObj = (BaseHandler<BaseMsg>)HandlerObjMapper.OBJ.getByMsgClazz(msgObj.getClass());
 				// 执行消息
-				handlerObj.handle(msgObj);
+				msgObj.exec();
 				// 执行消息完成后, 
 				// 令计数器 -1
 				this._counter.decrementAndGet();
