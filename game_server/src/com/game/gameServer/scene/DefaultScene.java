@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.game.part.ThreadNamingFactory;
-import com.game.part.msg.IMsgObj;
 import com.game.part.msg.IMsgReceiver;
+import com.game.part.msg.type.AbstractMsgObj;
 
 
 /**
@@ -36,7 +36,7 @@ public class DefaultScene implements IMsgReceiver {
 	/** 场景名称 */
 	private String _name = null;
 	/** 消息字典 */
-	private Map<Long, Queue<IMsgObj>> _msgMap = null;
+	private Map<Long, Queue<AbstractMsgObj>> _msgMap = null;
 	/** 提交服务 */
 	private ExecutorService _postServ = null;
 	/** 执行服务 */
@@ -97,7 +97,7 @@ public class DefaultScene implements IMsgReceiver {
 	}
 
 	@Override
-	public final void tryReceive(IMsgObj msgObj) {
+	public final void tryReceive(AbstractMsgObj msgObj) {
 		if (msgObj == null) {
 			// 如果参数对象为空, 
 			// 则直接跳过!
@@ -108,7 +108,7 @@ public class DefaultScene implements IMsgReceiver {
 		// 获取会话 ID
 		final long sessionId = 0L;
 		// 获取消息队列
-		Queue<IMsgObj> msgQ = this._msgMap.get(sessionId);
+		Queue<AbstractMsgObj> msgQ = this._msgMap.get(sessionId);
 
 		if (msgQ == null) {
 			// 创建消息队列并添加到字典
@@ -158,7 +158,7 @@ public class DefaultScene implements IMsgReceiver {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	private void postOnePlayer(long sessionUUID, Queue<IMsgObj> msgQ) {
+	private void postOnePlayer(long sessionUUID, Queue<AbstractMsgObj> msgQ) {
 		if (msgQ == null || 
 			msgQ.isEmpty()) {
 			// 如果消息队列为空, 
@@ -168,7 +168,7 @@ public class DefaultScene implements IMsgReceiver {
 
 		for (int i = 0; i < MSG_COUNT; i++) {
 			// 获取消息对象
-			IMsgObj msgObj = msgQ.poll();
+			AbstractMsgObj msgObj = msgQ.poll();
 
 			if (msgObj == null) {
 				// 如果消息对象为空, 

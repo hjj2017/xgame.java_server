@@ -1,4 +1,4 @@
-package com.game.part.tmpl.type;
+package com.game.part.msg.type;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -15,10 +15,11 @@ import javassist.CtConstructor;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 
-import com.game.part.tmpl.XSSFRowReadStream;
-import com.game.part.tmpl.XlsxTmplError;
-import com.game.part.tmpl.XlsxTmplServ;
-import com.game.part.tmpl.anno.ElementNum;
+import org.apache.mina.core.buffer.IoBuffer;
+
+import com.game.part.msg.MsgError;
+import com.game.part.msg.MsgLog;
+import com.game.part.msg.MsgServ;
 import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
 
@@ -26,7 +27,7 @@ import com.game.part.utils.ClazzUtil;
  * 读取帮助器构建者
  * 
  * @author hjj2017
- * @since 2015/2/25
+ * @since 2015/3/15
  * 
  */
 final class ReadHelperMaker {
@@ -34,20 +35,13 @@ final class ReadHelperMaker {
 	private static final Map<Class<?>, IReadHelper> _helperMap = new ConcurrentHashMap<>();
 
 	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private ReadHelperMaker() {
-	}
-
-	/**
-	 * 创建帮助者
+	 * 构建帮助器
 	 * 
 	 * @param byClazz
 	 * @return
 	 * 
 	 */
-	static IReadHelper makeHelper(Class<?> byClazz) {
+	public static IReadHelper make(Class<?> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		// 获取帮助者
@@ -60,12 +54,13 @@ final class ReadHelperMaker {
 				helper = clazz.newInstance();
 				// 缓存到字典
 				_helperMap.put(byClazz, helper);
-			} catch (XlsxTmplError err) {
+			} catch (MsgError err) {
 				// 直接抛出异常
 				throw err;
 			} catch (Exception ex) {
 				// 抛出异常
-				throw new XlsxTmplError(ex);
+				MsgLog.LOG.error(ex.getMessage(), ex);
+				throw new MsgError(ex);
 			}
 		}
 
@@ -95,13 +90,13 @@ final class ReadHelperMaker {
 			// 
 			// 创建解析器 JAVA 类
 			// 会生成如下代码 :
-			// public class ReadHelper_BuildingTmpl implements IReadHelper 
+			// public class ReadHelper_CGUpgradeBuilding implements IReadHelper 
 			CtClass cc = pool.makeClass(helperClazzName);
 			cc.addInterface(helperInterface);
 			// 
 			// 设置默认构造器
 			// 会生成如下代码 :
-			// ReadHelper_BuildingTmpl() {}
+			// ReadHelper_CGUpgradeBuilding() {}
 			putDefaultConstructor(cc);
 
 			// 创建代码上下文
@@ -109,9 +104,9 @@ final class ReadHelperMaker {
 			// 
 			// 将所有必须的类都导入进来, 
 			// 会生成如下代码 : 
-			// import com.game.part.tmpl.XSSFRowStream;
+			// import org.apache.mina.core.buffer.IoBuffer;
 			// import byClazz;
-			codeCtx._importClazzSet.add(XSSFRowReadStream.class);
+			codeCtx._importClazzSet.add(IoBuffer.class);
 			codeCtx._importClazzSet.add(byClazz);
 			// 构建函数体
 			buildFuncText(byClazz, codeCtx);
@@ -127,11 +122,11 @@ final class ReadHelperMaker {
 			// 添加方法
 			cc.addMethod(cm);
 
-			if (XlsxTmplServ.OBJ._outputClazzToDir != null &&
-				XlsxTmplServ.OBJ._outputClazzToDir.isEmpty() == false) {
+			if (MsgServ.OBJ._outputClazzToDir != null &&
+				MsgServ.OBJ._outputClazzToDir.isEmpty() == false) {
 				// 如果输出目录不为空, 
 				// 则写出类文件用作调试
-				cc.writeFile(XlsxTmplServ.OBJ._outputClazzToDir);
+				cc.writeFile(MsgServ.OBJ._outputClazzToDir);
 			}
 
 			// 获取 JAVA 类
@@ -141,7 +136,7 @@ final class ReadHelperMaker {
 			return javaClazz;
 		} catch (Exception ex) {
 			// 抛出异常
-			throw new XlsxTmplError(ex);
+			throw new MsgError(ex);
 		}
 	}
 
@@ -159,14 +154,14 @@ final class ReadHelperMaker {
 		Assert.notNull(codeCtx, "codeCtx");
 
 		// 函数头
-		codeCtx._codeText.append("public void readImpl(AbstractXlsxTmpl tmplObj, XSSFRowReadStream stream) {\n");
+		codeCtx._codeText.append("public void readBuff(AbstractMsgObj msgObj, IoBuffer buff) {\n");
 		// 增加空值判断
-		codeCtx._codeText.append("if (tmplObj == null || stream == null) { return; }\n");
+		codeCtx._codeText.append("if (msgObj == null || stream == buff) { return; }\n");
 		// 定义大 O 参数避免转型问题
 		codeCtx._codeText.append(byClazz.getSimpleName())
 			.append(" O = (")
 			.append(byClazz.getSimpleName())
-			.append(")tmplObj;\n");
+			.append(")msgObj;\n");
 
 		// 构建字段赋值文本
 		buildFieldAssignText(byClazz, codeCtx);
@@ -190,7 +185,7 @@ final class ReadHelperMaker {
 		// 获取类型为 AbstractXlsxCol 字段, 
 		// 子类字段也算上
 		List<Field> fl = ClazzUtil.listField(
-			byClazz, f -> AbstractXlsxCol.class.isAssignableFrom(f.getType())
+			byClazz, f -> AbstractMsgField.class.isAssignableFrom(f.getType())
 		);
 
 		if (fl == null || 
@@ -199,70 +194,67 @@ final class ReadHelperMaker {
 		}
 
 		fl.forEach(f -> {
-			if (ClazzUtil.isDrivedClazz(f.getType(), BasicTypeCol.class) || 
-				ClazzUtil.isDrivedClazz(f.getType(), AbstractXlsxTmpl.class)) {
-				// 如果是普通字段或者是模板字段,
-				// 生成如下代码 : 
-				// tmplObj._funcId = (XlsxInt)AbstractXlsxCol.ifNullThenCreate(tmplObj._funcId, XlsxInt.class);
+			if (ClazzUtil.isDrivedClazz(f.getType(), BasicTypeField.class)) {
+				// 如果是普通字段, 生成如下代码 : 
+				// msgObj._funcId = MsgInt.ifNullThenCreate(msgObj._funcId);
+				// msgObj._worker = MsgStr.ifNullThenCreate(msgObj._worker);
 				codeCtx._codeText.append("O.")
 					.append(f.getName())
-					.append(" = (")
+					.append(" = ")
 					.append(f.getType().getSimpleName())
-					.append(")(AbstractXlsxCol.ifNullThenCreate(O.")
+					.append(".ifNullThenCreate(O.")
 					.append(f.getName())
-					.append(", ")
-					.append(f.getType().getSimpleName())
-					.append(".class));\n");
-
-				// 添加到 import
-				codeCtx._importClazzSet.add(AbstractXlsxCol.class);
-			} else if (f.getType().equals(XlsxArrayList.class)) {
-				// 获取元素数量注解
-				ElementNum elemNumAnno = f.getAnnotation(ElementNum.class);
-
-				if (elemNumAnno == null) {
-					// 如果没有标注注解, 
-					// 则抛出异常!
-					throw new XlsxTmplError(MessageFormat.format(
-						"{0} 类 {1} 字段没有标注 {2} 注解",
-						f.getDeclaringClass().getName(), 
-						f.getName(), 
-						ElementNum.class.getName()
-					));
-				}
-
+					.append(");\n");
+			} else if (f.getType().equals(MsgArrayList.class)) {
 				if (hasGenericType(f) == false) {
-					// 如果不是 XlsxPlainList 类型, 
-					// 或者是不带有泛型参数, 
+					// 如果是 MsgArrayList 类型, 
+					// 但如果不带有泛型参数, 
 					// 则直接抛出异常!
-					throw new XlsxTmplError(MessageFormat.format(
-						"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 XlsxArrayList<XlsxInt> _funcIdList; 这样的定义", 
+					throw new MsgError(MessageFormat.format(
+						"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 MsgArrayList<MsgInt> _funcIdList; 这样的定义", 
 						f.getDeclaringClass().getName(), 
 						f.getName()
 					));
 				}
+
+				// 如果是列表字段
+				// 生成如下代码 : 
+				// tmplObj._funcIdList = MsgArrayList.ifNullThenCreate(tmplObj._funcIdList);
+				codeCtx._codeText.append("O.")
+					.append(f.getName())
+					.append(" = MsgArrayList.ifNullThenCreate(O.")
+					.append(f.getName())
+					.append(");\n");
 
 				// 获取泛型参数
 				ParameterizedType tType = (ParameterizedType)f.getGenericType();
 				// 获取实际类型
 				Class<?> aType = (Class<?>)tType.getActualTypeArguments()[0];
 
-				// 如果是列表字段
-				// 生成如下代码 : 
-				// tmplObj._funcIdList = XlsxArrayList.ifNullThenCreate(tmplObj._funcId, XlsxInt.class, 3);
+				// 添加到 import
+				codeCtx._importClazzSet.add(MsgArrayList.class);
+				codeCtx._importClazzSet.add(aType);
+			} else if (ClazzUtil.isDrivedClazz(f.getType(), AbstractMsgObj.class)) {
+				// 
+				// 如果是嵌套的消息体, 生成如下代码 : 
+				// if (msgObj._userInfo == null) {
+				//     msgObj._userInfo = new UserInfo();
+				// }
+				// 
+				// 先判断是否为空 ?
+				codeCtx._codeText.append("if (O.")
+					.append(f.getName())
+					.append(" == null) {\n");
+
+				// 如果为空则创建新对象
 				codeCtx._codeText.append("O.")
 					.append(f.getName())
-					.append(" = XlsxArrayList.ifNullThenCreate(O.")
-					.append(f.getName())
-					.append(", ")
-					.append(aType.getSimpleName())
-					.append(".class, ")
-					.append(elemNumAnno.value())
-					.append(");\n");
+					.append(" = new ")
+					.append(f.getType().getSimpleName())
+					.append("();\n");
 
-				// 添加到 import
-				codeCtx._importClazzSet.add(XlsxArrayList.class);
-				codeCtx._importClazzSet.add(aType);
+				// 结束代码段
+				codeCtx._codeText.append("}\n");
 			} else {
 				// 如果即不是 XlsxInt, XlsxStr ..., XlsxArrayList, 
 				// 也不是 AbstractXlsxTmpl, 
@@ -272,10 +264,10 @@ final class ReadHelperMaker {
 
 			codeCtx._importClazzSet.add(f.getType());
 			// 生成如下代码 : 
-			// tmplObj._funcId.readXSSFRow(stream);
+			// msgObj._funcId.readBuff(buff);
 			codeCtx._codeText.append("O.")
 				.append(f.getName())
-				.append(".readXSSFRow(stream);\n");
+				.append(".readBuff(buff);\n");
 		});
 	}
 

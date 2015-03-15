@@ -61,7 +61,7 @@ public class XlsxTmplError extends RuntimeException {
 	 * @param msg
 	 * 
 	 */
-	public XlsxTmplError(AbstractXlsxCol<?> col, String msg) {
+	public XlsxTmplError(AbstractXlsxCol col, String msg) {
 		super(MessageFormat.format(
 			"文件 {0} 页签 {1} 第 {2} 行, 第 {3} ( {4} ) 列错误! 具体原因为 : {5}",
 			col.getXlsxFileName(), 

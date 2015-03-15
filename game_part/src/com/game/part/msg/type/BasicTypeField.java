@@ -1,53 +1,25 @@
-package com.game.part.tmpl.type;
+package com.game.part.msg.type;
 
 import java.time.Instant;
 import java.time.temporal.Temporal;
 
-import com.game.part.tmpl.XlsxTmplError;
-
 /**
- * 基本类型数值列
+ * 基本类型字段
  * 
- * @author hjj2019
+ * @author hjj2017
  * @param <T>
  * 
  */
-abstract class BasicTypeCol<T> extends AbstractXlsxCol {
-	/** 是否可以为空值 */
-	private boolean _nullable = true;
-	/** 列值 */
+abstract class BasicTypeField<T> extends AbstractMsgField {
+	/** 字段值 */
 	private T _objVal = null;
 
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	public BasicTypeCol() {
-		this._nullable  = true;
+	public BasicTypeField() {
 		this._objVal = null;
-	}
-
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param nullable 
-	 * 
-	 */
-	public BasicTypeCol(boolean nullable) {
-		this._nullable = nullable;
-		this._objVal = null;
-	}
-
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param nullable
-	 * @param defaultVal 
-	 * 
-	 */
-	public BasicTypeCol(boolean nullable, T defaultVal) {
-		this._nullable = nullable;
-		this._objVal = defaultVal;
 	}
 
 	/**
@@ -56,8 +28,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	 * @param objVal 
 	 * 
 	 */
-	public BasicTypeCol(T objVal) {
-		this._nullable = true;
+	public BasicTypeField(T objVal) {
 		this._objVal = objVal;
 	}
 
@@ -78,18 +49,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	 * 
 	 */
 	void setObjVal(T value) {
-		if (value != null) {
-			// 如果参数不是空值, 
-			// 直接赋值就好了
-			this._objVal = value;
-		} else {
-			// 但如果参数是空值, 
-			// 那么看看是否允许为空值?
-			// 如果允许, 则赋值
-			if (this._nullable) {
-				this._objVal = value;
-			}
-		}
+		this._objVal = value;
 	}
 
 	/**
@@ -212,17 +172,6 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 		} else {
 			String strVal = this.getStrVal();
 			return strVal.equalsIgnoreCase("true") || strVal.equalsIgnoreCase("yes") || strVal.equalsIgnoreCase("y");
-		}
-	}
-
-	@Override
-	public void validate() {
-		if (this._nullable == false && 
-			this._objVal == null) {
-			// 如果不能为空值, 
-			// 但对象值它就是空值, 
-			// 则抛出异常!
-			throw new XlsxTmplError(this, "对象值为空");
 		}
 	}
 }

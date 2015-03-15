@@ -33,7 +33,7 @@ interface IServ_LoadTmplData {
 	 * @param byClazz
 	 * 
 	 */
-	default void loadTmplData(Class<? extends AbstractXlsxCol<?>> byClazz) {
+	default void loadTmplData(Class<? extends AbstractXlsxCol> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 
@@ -160,7 +160,7 @@ interface IServ_LoadTmplData {
 	 * @throws Exception 
 	 * 
 	 */
-	static<T extends AbstractXlsxCol<?>> List<T> makeObjList(
+	static<T extends AbstractXlsxCol> List<T> makeObjList(
 		Class<T> byClazz, 
 		XSSFSheet fromSheet, 
 		int startFromRowIndex, 

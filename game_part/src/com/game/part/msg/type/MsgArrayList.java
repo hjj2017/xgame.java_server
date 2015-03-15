@@ -1,4 +1,4 @@
-package com.game.part.tmpl.type;
+package com.game.part.msg.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,18 +7,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.game.part.tmpl.XSSFRowReadStream;
-import com.game.part.tmpl.XlsxTmplError;
-import com.game.part.utils.Assert;
+import org.apache.mina.core.buffer.IoBuffer;
 
 /**
- * 列表字段
+ * 消息数组列表
  * 
- * @author hjj2019
- * @since 2015/2/23
+ * @author hjj2017
+ * @param <T>
  * 
  */
-public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol implements List<T> {
+public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField implements List<T> {
 	/** 数值列表 */
 	private final List<T> _objValList = new ArrayList<>();
 
@@ -26,7 +24,7 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
 	 * 类默认构造器
 	 * 
 	 */
-	public XlsxArrayList() {
+	public MsgArrayList() {
 	}
 
 	/**
@@ -36,7 +34,7 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public XlsxArrayList(T ... tArr) {
+	public MsgArrayList(T ... tArr) {
 		if (tArr != null && 
 			tArr.length > 0) {
 			Collections.addAll(this._objValList, tArr);
@@ -44,72 +42,11 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
 	}
 
 	@Override
-	public void validate() {
-		if (this._objValList == null || 
-			this._objValList.isEmpty()) {
-			// 如果数值列表为空, 
-			// 则直接退出!
-			return;
-		}
-
-		this._objValList.forEach(o -> { 
-			if (o != null) { 
-				o.validate(); 
-			}
-		});
-	}
-
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @param elementType
-	 * @param elementNum 
-	 * @return
-	 * 
-	 */
-	public static<T extends AbstractXlsxCol> XlsxArrayList<T> ifNullThenCreate(
-		XlsxArrayList<T> objVal, 
-		Class<T> elementType, 
-		int elementNum) {
-		// 断言参数不为空
-		Assert.notNull(elementType, "elementType");
-		Assert.isTrue(elementNum > 0, "elementNum <= 0");
-
-		if (objVal == null) {
-			objVal = new XlsxArrayList<T>();
-		}
-
-		// 获取元素数量
-		final int COUNT = elementNum - objVal.size();
-
-		try {
-			for (int i = 0; i < COUNT; i++) {
-				// 新建对象并添加到列表
-				objVal.add(elementType.newInstance());
-			}
-		} catch (Exception ex) {
-			// 抛出异常!
-			throw new XlsxTmplError(ex.getMessage(), ex);
-		}
-
-		return objVal;
+	public void readBuff(IoBuffer buff) {
 	}
 
 	@Override
-	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream == null || 
-			this._objValList == null || 
-			this._objValList.isEmpty()) {
-			return;
-		} else {
-			this._objValList.forEach(o -> {
-				// 断言参数不为空
-				Assert.notNull(o, "o");
-				// 读取行数据
-				o.readXSSFRow(stream);
-			});
-		}
+	public void writeBuff(IoBuffer buff) {
 	}
 
 	@Override
@@ -272,5 +209,22 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
 		return this._objValList.subList(
 			fromIndex, toIndex
 		);
+	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @param <T>
+	 * @return
+	 * 
+	 */
+	static<T extends AbstractMsgField> MsgArrayList<T> ifNullThenCreate(MsgArrayList<T> objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new MsgArrayList<T>();
+		}
+
+		return objVal;
 	}
 }

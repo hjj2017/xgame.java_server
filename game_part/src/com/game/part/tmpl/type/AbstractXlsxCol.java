@@ -14,7 +14,7 @@ import com.game.part.utils.Assert;
  * @since 2015/2/21
  * 
  */
-public abstract class AbstractXlsxCol<T> {
+public abstract class AbstractXlsxCol {
 	/** 所在 Xlsx 文件名称 */
 	private String _xlsxFileName = null;
 	/** 所在页签名称 */
@@ -120,7 +120,7 @@ public abstract class AbstractXlsxCol<T> {
 	 * @return
 	 * 
 	 */
-	public static<T extends AbstractXlsxCol<?>> T ifNullThenCreate(T objVal, Class<T> objClazz) {
+	public static<T extends AbstractXlsxCol> T ifNullThenCreate(T objVal, Class<T> objClazz) {
 		try {
 			if (objVal == null) {
 				// 创建对象

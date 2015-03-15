@@ -1,6 +1,6 @@
 package com.game.gameServer.msg;
 
-import com.game.part.msg.IMsgObj;
+import com.game.part.msg.type.AbstractMsgObj;
 
 /**
  * 抽象的 GC 的消息
@@ -9,5 +9,5 @@ import com.game.part.msg.IMsgObj;
  * @since 2015/01/25
  *
  */
-public abstract class AbstractGCMsgObj implements IMsgObj {
+public abstract class AbstractGCMsgObj extends AbstractMsgObj {
 }

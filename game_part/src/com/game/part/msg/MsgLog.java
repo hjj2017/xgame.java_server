@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MsgLog {
 	/** 单例对象 */
-	static final Logger LOG = LoggerFactory.getLogger(MsgLog.class);
+	public static final Logger LOG = LoggerFactory.getLogger(MsgLog.class);
 	
 	/**
 	 * 类默认构造器

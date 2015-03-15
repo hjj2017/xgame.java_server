@@ -1,5 +1,7 @@
 package com.game.part.msg;
 
+import com.game.part.msg.type.AbstractMsgObj;
+
 /**
  * 消息句柄
  * 
@@ -18,5 +20,5 @@ public interface IMsgReceiver {
 	 * @param msgObj 消息对象
 	 * 
 	 */
-	public void tryReceive(IMsgObj msgObj);
+	public void tryReceive(AbstractMsgObj msgObj);
 }

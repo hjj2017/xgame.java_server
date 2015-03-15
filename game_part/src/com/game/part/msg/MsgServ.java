@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.game.part.msg.type.AbstractMsgObj;
+
 /**
  * 主消息分派
  * 
@@ -12,11 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2014/5/2
  * 
  */
-public class MsgServ implements IServ_RegMsgClazz {
+public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 	/** 单例对象 */
 	public static final MsgServ OBJ = new MsgServ();
+	/** 输出类文件到目标目录 */
+	public String _outputClazzToDir = null;
 	/** 消息类字典 */
-	final Map<Short, Class<? extends IMsgObj>> _msgClazzMap = new ConcurrentHashMap<>();
+	final Map<Short, Class<? extends AbstractMsgObj>> _msgClazzMap = new ConcurrentHashMap<>();
 	/** 消息接收者列表 */
 	private final List<IMsgReceiver> _msgRecvList = new ArrayList<>();
 
@@ -59,24 +63,16 @@ public class MsgServ implements IServ_RegMsgClazz {
 	 * @param <T>
 	 * 
 	 */
-	public <T extends IMsgObj> void post(T msgObj) {
+	public<T extends AbstractMsgObj> void post(T msgObj) {
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
 			return;
 		}
 
-		this._msgRecvList.forEach(r -> r.tryReceive(msgObj));
-	}
-
-	/**
-	 * 获取消息对象
-	 * 
-	 * @param msgTypeDef
-	 * @return
-	 * 
-	 */
-	public <T extends IMsgObj> T getMsgObj(short msgTypeDef) {
-		return null;
+		this._msgRecvList.forEach(r -> {
+			// 尝试接收消息
+			r.tryReceive(msgObj);
+		});
 	}
 }

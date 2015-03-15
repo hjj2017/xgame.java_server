@@ -1,6 +1,6 @@
 package com.game.gameServer.msg;
 
-import com.game.part.msg.IMsgObj;
+import com.game.part.msg.type.AbstractMsgObj;
 
 /**
  * 抽象的 CG 的消息
@@ -9,7 +9,7 @@ import com.game.part.msg.IMsgObj;
  * @since 2015/01/25
  *
  */
-public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>> implements IMsgObj {
+public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>> extends AbstractMsgObj {
 	@Override
 	public void exec() {
 		@SuppressWarnings("unchecked")

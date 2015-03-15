@@ -1,7 +1,7 @@
 package com.game.gameServer.io;
 
-import com.game.part.msg.IMsgObj;
 import com.game.part.msg.MsgServ;
+import com.game.part.msg.type.AbstractMsgObj;
 
 /**
  * 消息派发接口
@@ -19,7 +19,7 @@ interface IMsgDispatchable {
 	 * @see MsgServ#post(AbstractExternalMsg)
 	 * 
 	 */
-	default void msgDispatch(IMsgObj msgObj) {
+	default void msgDispatch(AbstractMsgObj msgObj) {
 		if (msgObj != null) {
 			MsgServ.OBJ.post(msgObj);
 		}

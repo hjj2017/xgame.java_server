@@ -5,8 +5,8 @@ import org.apache.mina.core.session.IoSession;
 
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
-import com.game.part.msg.IMsgObj;
 import com.game.part.msg.MsgServ;
+import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.utils.Assert;
 
 /**
@@ -45,6 +45,6 @@ class MINA_IoHandler extends IoHandlerAdapter {
 		}
 
 		// 分派消息对象
-		MsgServ.OBJ.post((IMsgObj)obj);
+		MsgServ.OBJ.post((AbstractMsgObj)obj);
 	}
 }

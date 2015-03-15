@@ -18,7 +18,7 @@ import com.game.part.utils.Assert;
  * @since 2015/2/23
  *
  */
-public abstract class AbstractXlsxTmpl extends AbstractXlsxCol<AbstractXlsxTmpl> {
+public abstract class AbstractXlsxTmpl extends AbstractXlsxCol {
 	@Override
 	protected void readImpl(XSSFRowReadStream stream) {
 		if (stream == null) {

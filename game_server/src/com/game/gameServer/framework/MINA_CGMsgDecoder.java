@@ -37,7 +37,7 @@ class MINA_CGMsgDecoder extends ProtocolDecoderAdapter {
 		// 获取消息定义
 		short msgTypeDef = (short)0;
 		// 获取消息对象
-		AbstractCGMsgObj<?> msgObj = MsgServ.OBJ.getMsgObj(msgTypeDef);
+		AbstractCGMsgObj<?> msgObj = MsgServ.OBJ.newMsgObj(msgTypeDef);
 
 		if (msgObj == null) {
 			// 如果消息对象为空, 
@@ -50,7 +50,7 @@ class MINA_CGMsgDecoder extends ProtocolDecoderAdapter {
 		}
 
 		// 令消息读取数据
-		msgObj.read(buff);
+		msgObj.readBuff(buff);
 		// 向下处理
 		output.write(msgObj);
 	}
