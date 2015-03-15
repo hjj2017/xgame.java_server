@@ -2,7 +2,7 @@ package com.game.part.msg.type;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
-import com.game.part.msg.IoBufferUtil;
+import com.game.part.msg.IoBuffUtil;
 
 /**
  * 消息中的 Boolean 类型字段
@@ -14,12 +14,12 @@ import com.game.part.msg.IoBufferUtil;
 public class MsgBool extends BasicTypeField<Boolean> {
 	@Override
 	public void readBuff(IoBuffer buff) {
-		this.setObjVal(IoBufferUtil.readBool(buff));
+		this.setObjVal(IoBuffUtil.readBool(buff));
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
-		IoBufferUtil.writeBool(buff, this.getBoolVal());
+		IoBuffUtil.writeBool(this.getBoolVal(), buff);
 	}
 
 	/**

@@ -2,7 +2,7 @@ package com.game.part.msg.type;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
-import com.game.part.msg.IoBufferUtil;
+import com.game.part.msg.IoBuffUtil;
 
 /**
  * 消息中的 Byte 类型字段
@@ -14,12 +14,12 @@ import com.game.part.msg.IoBufferUtil;
 public class MsgByte extends BasicTypeField<Byte> {
 	@Override
 	public void readBuff(IoBuffer buff) {
-		this.setObjVal(IoBufferUtil.readByte(buff));
+		this.setObjVal(IoBuffUtil.readByte(buff));
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
-		IoBufferUtil.writeByte(buff, this.getByteVal());
+		IoBuffUtil.writeByte(this.getByteVal(), buff);
 	}
 
 	/**

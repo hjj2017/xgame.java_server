@@ -11,12 +11,12 @@ import org.apache.mina.core.buffer.IoBuffer;
  * @since 2014/4/2
  *
  */
-public final class IoBufferUtil {
+public final class IoBuffUtil {
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	private IoBufferUtil() {
+	private IoBuffUtil() {
 	}
 
 	/**
@@ -188,12 +188,15 @@ public final class IoBufferUtil {
 	/**
 	 * 写出布尔值
 	 * 
-	 * @param buff
 	 * @param val
+	 * @param buff
 	 * 
 	 */
-	public static void writeBool(IoBuffer buff, boolean val) {
-		writeByte(buff, val ? (byte)1 : (byte)0);
+	public static void writeBool(boolean val, IoBuffer buff) {
+		writeByte(
+			val ? (byte)1 : (byte)0, 
+			buff
+		);
 	}
 
 	/**
@@ -219,11 +222,11 @@ public final class IoBufferUtil {
 	/**
 	 * 写入一个字节
 	 * 
-	 * @param buff
-	 * @param val 
+	 * @param val
+	 * @param buff 
 	 * 
 	 */
-	public static void writeByte(IoBuffer buff, byte val) {
+	public static void writeByte(byte val, IoBuffer buff) {
 		if (buff != null) {
 			buff.put(val);
 		}
@@ -249,11 +252,11 @@ public final class IoBufferUtil {
 	/**
 	 * 写入整数数值
 	 * 
-	 * @param buff
 	 * @param val
+	 * @param buff
 	 * 
 	 */
-	public static void writeInt(IoBuffer buff, int val) {
+	public static void writeInt(int val, IoBuffer buff) {
 		if (buff != null) {
 			buff.putInt(val);
 		}
@@ -295,24 +298,27 @@ public final class IoBufferUtil {
 	/**
 	 * 写出字符串, Charset = utf-8
 	 * 
-	 * @param buff
 	 * @param val
+	 * @param buff
 	 * 
 	 */
-	public static void writeStr(IoBuffer buff, String val) {
+	public static void writeStr(String val, IoBuffer buff) {
 		// 写出字符串
-		writeStr(buff, val, Charset.forName("utf-8"));
+		writeStr(
+			val, Charset.forName("utf-8"), 
+			buff
+		);
 	}
 
 	/**
 	 * 写出字符串
 	 * 
-	 * @param buff
 	 * @param val
 	 * @param charset
+	 * @param buff
 	 * 
 	 */
-	public static void writeStr(IoBuffer buff, String val, Charset charset) {
+	public static void writeStr(String val, Charset charset, IoBuffer buff) {
 		if (buff == null) {
 			// 如果 buff 对象为空, 
 			// 则直接退出!

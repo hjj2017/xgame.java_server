@@ -2,7 +2,7 @@ package com.game.part.msg.type;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
-import com.game.part.msg.IoBufferUtil;
+import com.game.part.msg.IoBuffUtil;
 
 /**
  * 消息中的 String 类型字段
@@ -14,12 +14,12 @@ import com.game.part.msg.IoBufferUtil;
 public class MsgStr extends BasicTypeField<String> {
 	@Override
 	public void readBuff(IoBuffer buff) {
-		this.setObjVal(IoBufferUtil.readStr(buff));
+		this.setObjVal(IoBuffUtil.readStr(buff));
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
-		IoBufferUtil.writeStr(buff, this.getStrVal());
+		IoBuffUtil.writeStr(this.getStrVal(), buff);
 	}
 
 	/**

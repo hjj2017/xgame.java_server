@@ -9,6 +9,9 @@ import java.util.ListIterator;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
+import com.game.part.msg.IoBuffUtil;
+import com.game.part.utils.Assert;
+
 /**
  * 消息数组列表
  * 
@@ -19,30 +22,27 @@ import org.apache.mina.core.buffer.IoBuffer;
 public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField implements List<T> {
 	/** 数值列表 */
 	private final List<T> _objValList = new ArrayList<>();
+	/** 列表项目创建器 */
+	private final IItemCreator<T> _creator;
 
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	public MsgArrayList() {
-	}
-
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param tArr
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	public MsgArrayList(T ... tArr) {
-		if (tArr != null && 
-			tArr.length > 0) {
-			Collections.addAll(this._objValList, tArr);
-		}
+	public MsgArrayList(IItemCreator<T> creator) {
+		Assert.notNull(creator);
+		this._creator = creator;
 	}
 
 	@Override
 	public void readBuff(IoBuffer buff) {
+		int len = IoBuffUtil.readInt(buff);
+
+		for (int i = 0; i < len; i++) {
+			T item = this._creator.create();
+			item.readBuff(buff);
+			this.add(item);
+		}
 	}
 
 	@Override
@@ -222,9 +222,14 @@ public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField i
 	static<T extends AbstractMsgField> MsgArrayList<T> ifNullThenCreate(MsgArrayList<T> objVal) {
 		if (objVal == null) {
 			// 创建对象
-			objVal = new MsgArrayList<T>();
+			objVal = new MsgArrayList<T>(() -> null);
 		}
 
 		return objVal;
+	}
+
+	@FunctionalInterface
+	public static interface IItemCreator<T> {
+		public T create();
 	}
 }
