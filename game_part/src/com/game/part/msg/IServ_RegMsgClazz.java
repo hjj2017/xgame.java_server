@@ -3,6 +3,7 @@ package com.game.part.msg;
 import java.text.MessageFormat;
 
 import com.game.part.msg.type.AbstractMsgObj;
+import com.game.part.msg.type.ReadHelperMaker;
 import com.game.part.utils.ClazzUtil;
 
 /**
@@ -29,7 +30,8 @@ public interface IServ_RegMsgClazz {
 		}
 
 		if (ClazzUtil.isConcreteDrivedClass(
-			newMsgClazz, AbstractMsgObj.class)) {
+			newMsgClazz, 
+			AbstractMsgObj.class)) {
 			// 如果消息类不是 IMsgObj 接口的具体实现类,
 			// 则直接退出!
 			MsgLog.LOG.error(MessageFormat.format(
@@ -55,6 +57,8 @@ public interface IServ_RegMsgClazz {
 					msgTypeDef, 
 					newMsgClazz
 				);
+				// 实现构建好读取帮助器
+				ReadHelperMaker.make(newMsgClazz);
 				return;
 			}
 	

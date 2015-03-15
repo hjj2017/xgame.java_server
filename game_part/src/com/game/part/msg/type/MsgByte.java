@@ -11,14 +11,15 @@ import com.game.part.msg.IoBufferUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgByte extends BasicTypeField<String> {
+public class MsgByte extends BasicTypeField<Byte> {
 	@Override
 	public void readBuff(IoBuffer buff) {
-		this.setObjVal(IoBufferUtil.readString(buff));
+		this.setObjVal(IoBufferUtil.readByte(buff));
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
+		IoBufferUtil.writeByte(buff, this.getByteVal());
 	}
 
 	/**

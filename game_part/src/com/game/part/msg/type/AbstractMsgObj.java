@@ -39,6 +39,17 @@ public abstract class AbstractMsgObj extends AbstractMsgField {
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
+		if (buff == null) {
+			return;
+		}
+
+		IWriteHelper helper = WriteHelperMaker.make(this.getClass());
+		
+		if (helper != null) {
+			// 如果帮助器不为空, 
+			// 则写出数据...
+			helper.writeBuff(this, buff);
+		}
 	}
 
 	/**

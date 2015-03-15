@@ -1,5 +1,7 @@
 package com.game.part.msg;
 
+import java.nio.charset.Charset;
+
 import org.apache.mina.core.buffer.IoBuffer;
 
 /**
@@ -172,7 +174,63 @@ public final class IoBufferUtil {
 	}
 
 	/**
-	 * 获取整数数值
+	 * 从 Buff 中读取布尔值
+	 * 
+	 * @param buff
+	 * @return 
+	 * @throws MsgError 当 buff 对象为空或者字节数不够时
+	 * 
+	 */
+	public static boolean readBool(IoBuffer buff) {
+		return readByte(buff) == (byte)1;
+	}
+
+	/**
+	 * 写出布尔值
+	 * 
+	 * @param buff
+	 * @param val
+	 * 
+	 */
+	public static void writeBool(IoBuffer buff, boolean val) {
+		writeByte(buff, val ? (byte)1 : (byte)0);
+	}
+
+	/**
+	 * 从 Buff 中读取一个字节
+	 * 
+	 * @param buff
+	 * @return 
+	 * @throws MsgError 当 buff 对象为空或者字节数不够时
+	 * 
+	 */
+	public static byte readByte(IoBuffer buff) {
+		if (buff == null || 
+			buff.remaining() < 1) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 1");
+		}
+
+		// 读取一个字节
+		return buff.get();
+	}
+
+	/**
+	 * 写入一个字节
+	 * 
+	 * @param buff
+	 * @param val 
+	 * 
+	 */
+	public static void writeByte(IoBuffer buff, byte val) {
+		if (buff != null) {
+			buff.put(val);
+		}
+	}
+
+	/**
+	 * 读取整数数值
 	 * 
 	 * @param buff
 	 * @return 
@@ -189,6 +247,19 @@ public final class IoBufferUtil {
 	}
 
 	/**
+	 * 写入整数数值
+	 * 
+	 * @param buff
+	 * @param val
+	 * 
+	 */
+	public static void writeInt(IoBuffer buff, int val) {
+		if (buff != null) {
+			buff.putInt(val);
+		}
+	}
+
+	/**
 	 * 从 Buff 中读取字符串
 	 * 
 	 * @param buff
@@ -196,7 +267,7 @@ public final class IoBufferUtil {
 	 * @throws MsgError 当 buff 对象为空或者字节数不够时
 	 * 
 	 */
-	public static String readString(IoBuffer buff) {
+	public static String readStr(IoBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 2) {
 			// 如果参数对象为空, 
@@ -219,5 +290,46 @@ public final class IoBufferUtil {
 			MsgLog.LOG.error(ex.getMessage(), ex);
 			return null;
 		}
+	}
+
+	/**
+	 * 写出字符串, Charset = utf-8
+	 * 
+	 * @param buff
+	 * @param val
+	 * 
+	 */
+	public static void writeStr(IoBuffer buff, String val) {
+		// 写出字符串
+		writeStr(buff, val, Charset.forName("utf-8"));
+	}
+
+	/**
+	 * 写出字符串
+	 * 
+	 * @param buff
+	 * @param val
+	 * @param charset
+	 * 
+	 */
+	public static void writeStr(IoBuffer buff, String val, Charset charset) {
+		if (buff == null) {
+			// 如果 buff 对象为空, 
+			// 则直接退出!
+			return;
+		}
+		
+		if (val == null || 
+			val.isEmpty()) {
+			// 写出长度为 0
+			buff.putShort((short)0);
+			return;
+		}
+
+		// 活取字符串的字节数组
+		byte[] byteArr = val.getBytes(charset);
+		// 设置字节数组
+		buff.putShort((short)byteArr.length);
+		buff.put(byteArr);
 	}
 }

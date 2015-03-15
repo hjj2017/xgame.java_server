@@ -11,14 +11,15 @@ import com.game.part.msg.IoBufferUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgBool extends BasicTypeField<String> {
+public class MsgBool extends BasicTypeField<Boolean> {
 	@Override
 	public void readBuff(IoBuffer buff) {
-		this.setObjVal(IoBufferUtil.readString(buff));
+		this.setObjVal(IoBufferUtil.readBool(buff));
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
+		IoBufferUtil.writeBool(buff, this.getBoolVal());
 	}
 
 	/**

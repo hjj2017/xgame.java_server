@@ -1,5 +1,6 @@
 package com.game.part.msg.type;
 
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.time.temporal.Temporal;
 
@@ -172,6 +173,31 @@ abstract class BasicTypeField<T> extends AbstractMsgField {
 		} else {
 			String strVal = this.getStrVal();
 			return strVal.equalsIgnoreCase("true") || strVal.equalsIgnoreCase("yes") || strVal.equalsIgnoreCase("y");
+		}
+	}
+
+	/**
+	 * 活取 byte 值
+	 * 
+	 * @return
+	 * 
+	 */
+	public byte getByteVal() {
+		if (this._objVal == null) {
+			return (byte)0;
+		} else if (this._objVal instanceof Number) {
+			return (byte)this.getShortVal();
+		} else if (this._objVal instanceof Temporal) {
+			return (byte)this.getShortVal();
+		} else if (this._objVal instanceof Boolean) {
+			return this.getBoolVal() ? (byte)1 : (byte)0;
+		} else {
+			// 活取字符串数制
+			String strVal = this.getStrVal();
+			// 活取字节数组
+			byte[] byteArr = strVal.getBytes(Charset.forName("utf-8"));
+			// 返回第一个字节
+			return byteArr[0];
 		}
 	}
 }

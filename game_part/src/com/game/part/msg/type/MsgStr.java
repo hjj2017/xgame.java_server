@@ -14,11 +14,12 @@ import com.game.part.msg.IoBufferUtil;
 public class MsgStr extends BasicTypeField<String> {
 	@Override
 	public void readBuff(IoBuffer buff) {
-		this.setObjVal(IoBufferUtil.readString(buff));
+		this.setObjVal(IoBufferUtil.readStr(buff));
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
+		IoBufferUtil.writeStr(buff, this.getStrVal());
 	}
 
 	/**

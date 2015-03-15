@@ -19,6 +19,7 @@ public class MsgInt extends BasicTypeField<Integer> {
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
+		IoBufferUtil.writeInt(buff, this.getIntVal());
 	}
 
 	/**

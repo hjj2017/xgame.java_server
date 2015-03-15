@@ -30,9 +30,9 @@ import com.game.part.utils.ClazzUtil;
  * @since 2015/3/15
  * 
  */
-public final class ReadHelperMaker {
+public final class WriteHelperMaker {
 	/** 帮助者字典 */
-	private static final Map<Class<?>, IReadHelper> _helperMap = new ConcurrentHashMap<>();
+	private static final Map<Class<?>, IWriteHelper> _helperMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 构建帮助器
@@ -41,16 +41,16 @@ public final class ReadHelperMaker {
 	 * @return
 	 * 
 	 */
-	public static IReadHelper make(Class<?> byClazz) {
+	public static IWriteHelper make(Class<?> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		// 获取帮助者
-		IReadHelper helper = _helperMap.get(byClazz);
+		IWriteHelper helper = _helperMap.get(byClazz);
 
 		if (helper == null) {
 			try {
 				// 构建帮助者类并创建对象
-				Class<IReadHelper> clazz = buildHelperClazz(byClazz);
+				Class<IWriteHelper> clazz = buildHelperClazz(byClazz);
 				helper = clazz.newInstance();
 				// 缓存到字典
 				_helperMap.put(byClazz, helper);
@@ -74,7 +74,7 @@ public final class ReadHelperMaker {
 	 * @return
 	 * 
 	 */
-	private static Class<IReadHelper> buildHelperClazz(Class<?> byClazz) {
+	private static Class<IWriteHelper> buildHelperClazz(Class<?> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		// 设置解析器名称
@@ -131,7 +131,7 @@ public final class ReadHelperMaker {
 
 			// 获取 JAVA 类
 			@SuppressWarnings("unchecked")
-			Class<IReadHelper> javaClazz = (Class<IReadHelper>)cc.toClass();
+			Class<IWriteHelper> javaClazz = (Class<IWriteHelper>)cc.toClass();
 			// 返回 JAVA 类
 			return javaClazz;
 		} catch (Exception ex) {
