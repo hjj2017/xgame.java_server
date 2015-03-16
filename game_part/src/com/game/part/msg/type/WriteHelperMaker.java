@@ -154,7 +154,7 @@ public final class WriteHelperMaker {
 		// 函数头
 		codeCtx._codeText.append("public void writeBuff(AbstractMsgObj msgObj, IoBuffer buff) {\n");
 		// 增加空值判断
-		codeCtx._codeText.append("if (msgObj == null || stream == buff) { return; }\n");
+		codeCtx._codeText.append("if (msgObj == null || buff == null) { return; }\n");
 		// 定义大 O 参数避免转型问题
 		codeCtx._codeText.append(byClazz.getSimpleName())
 			.append(" O = (")

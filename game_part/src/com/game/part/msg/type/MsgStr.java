@@ -12,6 +12,13 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public class MsgStr extends BasicTypeField<String> {
+	public MsgStr() {
+	}
+
+	public MsgStr(String val) {
+		this.setObjVal(val);
+	}
+
 	@Override
 	public void readBuff(IoBuffer buff) {
 		this.setObjVal(IoBuffUtil.readStr(buff));
@@ -29,7 +36,7 @@ public class MsgStr extends BasicTypeField<String> {
 	 * @return
 	 * 
 	 */
-	static MsgStr ifNullThenCreate(MsgStr objVal) {
+	public static MsgStr ifNullThenCreate(MsgStr objVal) {
 		if (objVal == null) {
 			// 创建对象
 			objVal = new MsgStr();

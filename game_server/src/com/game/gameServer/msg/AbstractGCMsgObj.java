@@ -10,4 +10,7 @@ import com.game.part.msg.type.AbstractMsgObj;
  *
  */
 public abstract class AbstractGCMsgObj extends AbstractMsgObj {
+	@Override
+	public void exec() {
+	}
 }

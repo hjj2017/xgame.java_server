@@ -13,9 +13,12 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 	@Override
 	public void exec() {
 		@SuppressWarnings("unchecked")
-		AbstractCGMsgHandler<AbstractCGMsgObj<?>> handler = (AbstractCGMsgHandler<AbstractCGMsgObj<?>>)this.getSelfHandler();
+		AbstractCGMsgHandler<AbstractCGMsgObj<?>> 
+			handler = (AbstractCGMsgHandler<AbstractCGMsgObj<?>>)this.getSelfHandler();
 
 		if (handler == null) {
+			// 如果处理器为空, 
+			// 则直接退出!
 			return;
 		}
 

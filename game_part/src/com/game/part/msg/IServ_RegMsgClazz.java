@@ -15,7 +15,7 @@ import com.game.part.utils.ClazzUtil;
  * @since 2015/3/14
  * 
  */
-public interface IServ_RegMsgClazz {
+interface IServ_RegMsgClazz {
 	/**
 	 * 注册消息类
 	 * 
@@ -30,13 +30,11 @@ public interface IServ_RegMsgClazz {
 			return;
 		}
 
-		if (ClazzUtil.isConcreteDrivedClass(
-			newMsgClazz, 
-			AbstractMsgObj.class)) {
+		if (ClazzUtil.isConcreteDrivedClass(newMsgClazz, AbstractMsgObj.class) == false) {
 			// 如果消息类不是 IMsgObj 接口的具体实现类,
 			// 则直接退出!
 			MsgLog.LOG.error(MessageFormat.format(
-				"{0} 类不是 {2} 的具体实现类, 不能注册到消息服务!", 
+				"{0} 类不是 {1} 的具体实现类, 不能注册到消息服务!", 
 				newMsgClazz.getName(), 
 				AbstractMsgObj.class.getName()
 			));

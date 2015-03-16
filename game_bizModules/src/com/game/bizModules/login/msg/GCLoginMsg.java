@@ -1,6 +1,6 @@
 package com.game.bizModules.login.msg;
 
-import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.AbstractGCMsgObj;
 
 /**
  * 登陆完成
@@ -9,7 +9,7 @@ import com.game.gameServer.msg.AbstractCGMsgObj;
  * @since 2014/9/15
  * 
  */
-public class GCLogin extends AbstractCGMsgObj {
+public class GCLoginMsg extends AbstractGCMsgObj {
 	/** 消息类型 ID */
 	private static final short MSG_TYPE_ID = 1001;
 	/** 是否成功 ? */
@@ -19,7 +19,7 @@ public class GCLogin extends AbstractCGMsgObj {
 	 * 类默认构造器
 	 * 
 	 */
-	public GCLogin() {
+	public GCLoginMsg() {
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class GCLogin extends AbstractCGMsgObj {
 	 * @param success 
 	 * 
 	 */
-	public GCLogin(boolean success) {
+	public GCLoginMsg(boolean success) {
 		this._success = success;
 	}
 

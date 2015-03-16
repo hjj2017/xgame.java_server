@@ -12,6 +12,23 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public class MsgInt extends BasicTypeField<Integer> {
+	/**
+	 * 类默认构造器
+	 * 
+	 */
+	public MsgInt() {		
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param val
+	 * 
+	 */
+	public MsgInt(int val) {
+		this.setObjVal(val);
+	}
+
 	@Override
 	public void readBuff(IoBuffer buff) {
 		this.setObjVal(IoBuffUtil.readInt(buff));
@@ -23,13 +40,13 @@ public class MsgInt extends BasicTypeField<Integer> {
 	}
 
 	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * objVal 不能为 null, 但如果真为 null, 则自动创建并返回
 	 * 
 	 * @param objVal
 	 * @return
 	 * 
 	 */
-	static MsgInt ifNullThenCreate(MsgInt objVal) {
+	public static MsgInt ifNullThenCreate(MsgInt objVal) {
 		if (objVal == null) {
 			// 创建对象
 			objVal = new MsgInt();

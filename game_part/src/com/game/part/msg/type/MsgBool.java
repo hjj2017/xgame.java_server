@@ -12,6 +12,13 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public class MsgBool extends BasicTypeField<Boolean> {
+	public MsgBool() {
+	}
+
+	public MsgBool(boolean val) {
+		this.setObjVal(val);
+	}
+
 	@Override
 	public void readBuff(IoBuffer buff) {
 		this.setObjVal(IoBuffUtil.readBool(buff));
@@ -29,7 +36,7 @@ public class MsgBool extends BasicTypeField<Boolean> {
 	 * @return
 	 * 
 	 */
-	static MsgBool ifNullThenCreate(MsgBool objVal) {
+	public static MsgBool ifNullThenCreate(MsgBool objVal) {
 		if (objVal == null) {
 			// 创建对象
 			objVal = new MsgBool();

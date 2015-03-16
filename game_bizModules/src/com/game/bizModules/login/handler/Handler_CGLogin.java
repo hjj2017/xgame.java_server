@@ -1,8 +1,7 @@
 package com.game.bizModules.login.handler;
 
-import com.game.bizModules.login.io.IoOper_Validate;
-import com.game.bizModules.login.msg.CGLogin;
-import com.game.gameServer.framework.SimpleHandler;
+import com.game.bizModules.login.msg.CGLoginMsg;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 
 /**
  * 进入场景
@@ -10,17 +9,11 @@ import com.game.gameServer.framework.SimpleHandler;
  * @author hjj2019
  * 
  */
-public class Handler_CGLogin extends SimpleHandler<CGLogin> {
+public class Handler_CGLogin extends AbstractCGMsgHandler<CGLoginMsg> {
 	@Override
-	public void handle(CGLogin msg) {
+	public void handle(CGLoginMsg msg) {
 		if (msg == null) {
 			return;
 		}
-
-		// 接到登陆消息后, 
-		// 使用异步方式执行验证逻辑
-		this.execute(new IoOper_Validate(
-			msg._loginStr
-		));
 	}
 }
