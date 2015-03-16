@@ -182,7 +182,7 @@ public final class ReadHelperMaker {
 		Assert.notNull(codeCtx, "codeCtx");
 
 		// 
-		// 获取类型为 AbstractXlsxCol 字段, 
+		// 获取类型为 AbstractMsgField 字段, 
 		// 子类字段也算上
 		List<Field> fl = ClazzUtil.listField(
 			byClazz, f -> AbstractMsgField.class.isAssignableFrom(f.getType())
@@ -217,23 +217,18 @@ public final class ReadHelperMaker {
 					));
 				}
 
-				// 如果是列表字段
-				// 生成如下代码 : 
-				// tmplObj._funcIdList = MsgArrayList.ifNullThenCreate(tmplObj._funcIdList);
-				codeCtx._codeText.append("O.")
+				// 如果是列表字段, 生成如下代码 : 
+				// MsgArrayList.readBuff(msgObj._funcIdList, buff);
+				codeCtx._codeText.append("MsgArrayList.readBuff(O.")
 					.append(f.getName())
-					.append(" = MsgArrayList.ifNullThenCreate(O.")
-					.append(f.getName())
-					.append(");\n");
-
-				// 获取泛型参数
-				ParameterizedType tType = (ParameterizedType)f.getGenericType();
-				// 获取实际类型
-				Class<?> aType = (Class<?>)tType.getActualTypeArguments()[0];
+					.append(", buff);\n");
 
 				// 添加到 import
 				codeCtx._importClazzSet.add(MsgArrayList.class);
-				codeCtx._importClazzSet.add(aType);
+				// 直接退出, 不要再继续向下生成 : 
+				// msgObj._funcIdList.readBuff(buff);
+				// 这样的代码了...
+				return;
 			} else if (ClazzUtil.isDrivedClazz(f.getType(), AbstractMsgObj.class)) {
 				// 
 				// 如果是嵌套的消息体, 生成如下代码 : 
@@ -256,8 +251,8 @@ public final class ReadHelperMaker {
 				// 结束代码段
 				codeCtx._codeText.append("}\n");
 			} else {
-				// 如果即不是 XlsxInt, XlsxStr ..., XlsxArrayList, 
-				// 也不是 AbstractXlsxTmpl, 
+				// 如果即不是 MsgInt, MsgStr ..., MsgArrayList, 
+				// 也不是 AbstractMsgObj, 
 				// 则直接退出!
 				return;
 			}

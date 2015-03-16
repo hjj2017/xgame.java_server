@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.msg.type.ReadHelperMaker;
+import com.game.part.msg.type.WriteHelperMaker;
 import com.game.part.utils.ClazzUtil;
 
 /**
@@ -57,8 +58,9 @@ public interface IServ_RegMsgClazz {
 					msgTypeDef, 
 					newMsgClazz
 				);
-				// 实现构建好读取帮助器
+				// 事先构建好读取帮助器和写入帮助器
 				ReadHelperMaker.make(newMsgClazz);
+				WriteHelperMaker.make(newMsgClazz);
 				return;
 			}
 	

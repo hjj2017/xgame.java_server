@@ -338,4 +338,33 @@ public final class IoBuffUtil {
 		buff.putShort((short)byteArr.length);
 		buff.put(byteArr);
 	}
+
+	/**
+	 * 从 Buff 中读取短整型数值
+	 * 
+	 * @param buff
+	 * @return 
+	 * 
+	 */
+	public static short readShort(IoBuffer buff) {
+		if (buff == null || 
+			buff.remaining() < 2) {
+			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 2");
+		} else {
+			return buff.getShort();
+		}
+	}
+
+	/**
+	 * 将短整型数值写入到 Buff 中
+	 * 
+	 * @param val
+	 * @param buff
+	 * 
+	 */
+	public static void writeShort(short val, IoBuffer buff) {
+		if (buff != null) {
+			buff.putShort(val);
+		}
+	}
 }

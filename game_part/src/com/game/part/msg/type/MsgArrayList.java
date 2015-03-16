@@ -2,7 +2,6 @@ package com.game.part.msg.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -26,27 +25,53 @@ public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField i
 	private final IItemCreator<T> _creator;
 
 	/**
-	 * 类默认构造器
+	 * 类参数构造器
+	 * 
+	 * @param creator
 	 * 
 	 */
 	public MsgArrayList(IItemCreator<T> creator) {
-		Assert.notNull(creator);
+		// 断言参数不为空
+		Assert.notNull(creator, "条目创建者为空, 这是不允许的");
+		// 设置条目创建者
 		this._creator = creator;
 	}
 
 	@Override
 	public void readBuff(IoBuffer buff) {
-		int len = IoBuffUtil.readInt(buff);
+		// 事先读取长度
+		int len = IoBuffUtil.readShort(buff);
 
 		for (int i = 0; i < len; i++) {
-			T item = this._creator.create();
-			item.readBuff(buff);
-			this.add(item);
+			// 创建新条目
+			T newItem = this._creator.create();
+
+			if (newItem != null) {
+				// 如果新条目不为空, 
+				// 则令新条目读取 Buff 中的数据
+				newItem.readBuff(buff);
+				this.add(newItem);
+			}
 		}
 	}
 
 	@Override
 	public void writeBuff(IoBuffer buff) {
+		if (buff == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		// 获取列表长度
+		short len = (short)this.size();
+		// 写出列表长度
+		IoBuffUtil.writeShort(len, buff);
+
+		for (T currItem : this._objValList) {
+			// 写出条目到 Buff
+			currItem.writeBuff(buff);
+		}
 	}
 
 	@Override
@@ -212,24 +237,65 @@ public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField i
 	}
 
 	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 读入消息数组列表, 会做 null 断言
 	 * 
-	 * @param objVal
-	 * @param <T>
-	 * @return
+	 * @param arrayList
+	 * @param buff
 	 * 
 	 */
-	static<T extends AbstractMsgField> MsgArrayList<T> ifNullThenCreate(MsgArrayList<T> objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new MsgArrayList<T>(() -> null);
+	public static void readBuff(MsgArrayList<?> arrayList, IoBuffer buff) {
+		if (buff == null) {
+			// 如果 buff 对象为空, 
+			// 则直接退出!
+			return;
 		}
 
-		return objVal;
+		// 断言参数不为空
+		Assert.notNull(arrayList, "消息数组列表为 null");
+		// 从 buff 中读取数据
+		arrayList.readBuff(buff);
 	}
 
+	/**
+	 * 写出消息数组列表, 会做 null 判断
+	 * 
+	 * @param arrayList
+	 * @param buff
+	 * 
+	 */
+	public static void writeBuff(MsgArrayList<?> arrayList, IoBuffer buff) {
+		if (buff == null) {
+			// 如果 buff 对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		if (arrayList == null || 
+			arrayList.isEmpty()) {
+			// 如果数组列表为空, 
+			// 则只写出一个 0
+			IoBuffUtil.writeShort((short)0, buff);
+		} else {
+			// 写出整个列表
+			arrayList.writeBuff(buff);
+		}
+	}
+
+	/**
+	 * 条目创建器接口
+	 * 
+	 * @author hjj2017
+	 * @param <T>
+	 * 
+	 */
 	@FunctionalInterface
 	public static interface IItemCreator<T> {
+		/**
+		 * 创建一个条目
+		 * 
+		 * @return
+		 * 
+		 */
 		public T create();
 	}
 }
