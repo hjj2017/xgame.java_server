@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -334,37 +333,5 @@ public final class ClazzUtil {
 				return m != null && m.getName().equals(methodName);
 			});
 		}
-	}
-
-	/**
-	 * 判断字段是否含有泛型类型
-	 * 
-	 * @param f
-	 * @return
-	 * 
-	 */
-	public static boolean hasGenericType(Field f) {
-		if (f == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return false;
-		}
-
-		if (!(f.getGenericType() instanceof ParameterizedType)) {
-			// 如果不是泛型类型, 
-			// 则直接退出!
-			return false;
-		}
-
-		// 获取泛型参数
-		ParameterizedType tType = (ParameterizedType)f.getGenericType();
-
-		if (tType.getActualTypeArguments().length <= 0) {
-			// 如果泛型参数太少, 
-			// 则直接退出!
-			return false;
-		}
-
-		return true;
 	}
 }

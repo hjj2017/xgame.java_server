@@ -3,7 +3,6 @@ package com.game.part.msg;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.MessageFormat;
 import java.util.List;
@@ -13,6 +12,7 @@ import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.msg.type.MsgArrayList;
 import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
+import com.game.part.utils.FieldUtil;
 
 /**
  * 类定义验证器
@@ -129,8 +129,12 @@ class ClazzDefValidator {
 
 			if (MsgArrayList.class.isAssignableFrom(fType)) {
 				// 如果字段是 MsgArrayList 类型, 
-				// 则判断其是否含有泛型字段 ?
-				if (ClazzUtil.hasGenericType(f) == false) {
+				// 获取泛型类型中的真实类型
+				Type aType = FieldUtil.getGenericTypeA(f);
+
+				if (aType == null) {
+					// 如果没有定义真实类型, 
+					// 则直接抛出异常!
 					throw new MsgError(MessageFormat.format(
 						"类 {0} 字段 {1} 为 MsgArrayList 类型, 但是没有定义泛型参数! {2}", 
 						msgClazz.getName(), 
@@ -138,11 +142,6 @@ class ClazzDefValidator {
 						CODE_HINT_msgArrayList
 					));
 				}
-
-				// 获取泛型参数
-				ParameterizedType tType = (ParameterizedType)f.getGenericType();
-				// 获取真实类型
-				Type aType = tType.getActualTypeArguments()[0];
 
 				if (AbstractMsgObj.class.isAssignableFrom((Class<?>)aType)) {
 					// 如果真实类型是 AbstractMsgObj 的子类, 
