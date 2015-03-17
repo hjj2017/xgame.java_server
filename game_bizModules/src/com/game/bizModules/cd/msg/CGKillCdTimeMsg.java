@@ -26,7 +26,7 @@ public class CGKillCdTimeMsg extends AbstractCGMsgObj<Handler_CGKillCdTime> {
 	public TestObj _testObj;
 
 	@Override
-	public short getMsgTypeDef() {
+	public short getSerialUId() {
 		return 100;
 	}
 

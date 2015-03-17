@@ -16,7 +16,7 @@ public class CGLoginMsg extends AbstractCGMsgObj<Handler_CGLogin> {
 	public String _loginStr = null;
 
 	@Override
-	public short getMsgTypeDef() {
+	public short getSerialUId() {
 		return MSG_TYPE_ID;
 	}
 

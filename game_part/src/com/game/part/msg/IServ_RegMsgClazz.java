@@ -45,7 +45,7 @@ interface IServ_RegMsgClazz {
 			// 创建消息对象
 			AbstractMsgObj newMsgObj = newMsgClazz.newInstance();
 			// 活取消息类型定义
-			short msgTypeDef = newMsgObj.getMsgTypeDef();
+			short msgTypeDef = newMsgObj.getSerialUId();
 	
 			// 获取已经注册的消息类
 			Class<?> oldMsgClazz = MsgServ.OBJ._msgClazzMap.get(msgTypeDef);

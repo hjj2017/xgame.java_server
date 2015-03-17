@@ -33,7 +33,7 @@ public class GCLoginMsg extends AbstractGCMsgObj {
 	}
 
 	@Override
-	public short getMsgTypeDef() {
+	public short getSerialUId() {
 		return MSG_TYPE_ID;
 	}
 }

@@ -13,12 +13,12 @@ import com.game.part.msg.IoBuffUtil;
  */
 public abstract class AbstractMsgObj extends AbstractMsgField {
 	/**
-	 * 获取消息类型定义, 也就是消息 Id
+	 * 获取消息序列号 Id, 也就是消息 ( 类型 ) Id
 	 * 
 	 * @return 
 	 * 
 	 */
-	public abstract short getMsgTypeDef();
+	public abstract short getSerialUId();
 
 	@Override
 	public void readBuff(IoBuffer buff) {
@@ -50,7 +50,7 @@ public abstract class AbstractMsgObj extends AbstractMsgField {
 		}
 
 		// 先写出 msgTypeDef
-		IoBuffUtil.writeShort(getMsgTypeDef(), buff);
+		IoBuffUtil.writeShort(getSerialUId(), buff);
 		// 创建帮助者对象
 		IWriteHelper helper = WriteHelperMaker.make(this.getClass());
 		

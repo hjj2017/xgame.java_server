@@ -11,7 +11,7 @@ public class TestObj extends AbstractMsgObj {
 	public MsgStr _testName;
 
 	@Override
-	public short getMsgTypeDef() {
+	public short getSerialUId() {
 		return 0;
 	}
 }
