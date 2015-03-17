@@ -49,7 +49,7 @@ abstract class BasicTypeField<T> extends AbstractMsgField {
 	 * @param value 
 	 * 
 	 */
-	void setObjVal(T value) {
+	public void setObjVal(T value) {
 		this._objVal = value;
 	}
 

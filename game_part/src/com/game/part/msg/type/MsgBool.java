@@ -12,11 +12,22 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public class MsgBool extends BasicTypeField<Boolean> {
+	/**
+	 * 类默认构造器
+	 * 
+	 */
 	public MsgBool() {
+		this(false);
 	}
 
-	public MsgBool(boolean val) {
-		this.setObjVal(val);
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param value
+	 * 
+	 */
+	public MsgBool(boolean value) {
+		this.setObjVal(value);
 	}
 
 	@Override

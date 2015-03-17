@@ -12,11 +12,22 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public class MsgStr extends BasicTypeField<String> {
+	/**
+	 * 类参数构造器
+	 * 
+	 */
 	public MsgStr() {
+		this(null);
 	}
 
-	public MsgStr(String val) {
-		this.setObjVal(val);
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param value
+	 * 
+	 */
+	public MsgStr(String value) {
+		this.setObjVal(value);
 	}
 
 	@Override

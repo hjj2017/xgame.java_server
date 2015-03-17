@@ -16,17 +16,18 @@ public class MsgInt extends BasicTypeField<Integer> {
 	 * 类默认构造器
 	 * 
 	 */
-	public MsgInt() {		
+	public MsgInt() {
+		this(0);
 	}
 
 	/**
 	 * 类参数构造器
 	 * 
-	 * @param val
+	 * @param value
 	 * 
 	 */
-	public MsgInt(int val) {
-		this.setObjVal(val);
+	public MsgInt(int value) {
+		this.setObjVal(value);
 	}
 
 	@Override

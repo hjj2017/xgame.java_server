@@ -12,6 +12,24 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public class MsgByte extends BasicTypeField<Byte> {
+	/**
+	 * 类默认构造器
+	 * 
+	 */
+	public MsgByte() {
+		this((byte)0);
+	}
+
+	/**
+	 * 类参数构造器
+	 * 
+	 * @param value
+	 * 
+	 */
+	public MsgByte(byte value) {
+		this.setObjVal(value);
+	}
+
 	@Override
 	public void readBuff(IoBuffer buff) {
 		this.setObjVal(IoBuffUtil.readByte(buff));
