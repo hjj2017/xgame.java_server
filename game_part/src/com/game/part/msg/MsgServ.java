@@ -72,7 +72,7 @@ public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 
 		this._msgRecvList.forEach(r -> {
 			// 尝试接收消息
-			r.tryReceive(msgObj);
+			r.receive(msgObj);
 		});
 	}
 }

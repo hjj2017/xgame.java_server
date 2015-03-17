@@ -60,10 +60,4 @@ public abstract class AbstractMsgObj extends AbstractMsgField {
 			helper.writeBuff(this, buff);
 		}
 	}
-
-	/**
-	 * 执行自身
-	 * 
-	 */
-	public abstract void exec();
 }

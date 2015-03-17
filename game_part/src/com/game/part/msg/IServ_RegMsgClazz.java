@@ -56,6 +56,10 @@ interface IServ_RegMsgClazz {
 					msgTypeDef, 
 					newMsgClazz
 				);
+
+				// 在生成读写代码之前先验证类
+				ClazzDefValidator.validate(newMsgClazz);
+
 				// 事先构建好读取帮助器和写入帮助器
 				ReadHelperMaker.make(newMsgClazz);
 				WriteHelperMaker.make(newMsgClazz);

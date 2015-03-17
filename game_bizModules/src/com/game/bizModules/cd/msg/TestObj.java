@@ -14,8 +14,4 @@ public class TestObj extends AbstractMsgObj {
 	public short getMsgTypeDef() {
 		return 0;
 	}
-
-	@Override
-	public void exec() {		
-	}
 }

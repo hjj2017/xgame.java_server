@@ -25,7 +25,7 @@ public class Test_MsgServ {
 		buff.setAutoExpand(true);
 		
 		CGKillCdTimeMsg cgMsg = new CGKillCdTimeMsg();
-		cgMsg._cdTypeDef = new MsgInt(1);
+//		cgMsg._cdTypeDef = new MsgInt(1);
 		cgMsg._cdTypeName = new MsgStr("hello");
 		cgMsg._canKill = new MsgBool(true);
 		cgMsg._funcIdList.add(new MsgInt(1));
@@ -40,7 +40,7 @@ public class Test_MsgServ {
 		CGKillCdTimeMsg _2 = new CGKillCdTimeMsg();
 		_2.readBuff(buff);
 
-		System.out.println(_2._cdTypeDef.getIntVal());
+//		System.out.println(_2._cdTypeDef.getIntVal());
 		System.out.println(_2._cdTypeName.getStrVal());
 		System.out.println(_2._canKill.getBoolVal());
 

@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.game.gameServer.msg.AbstractExecutableMsgObj;
 import com.game.part.ThreadNamingFactory;
 import com.game.part.msg.IMsgReceiver;
 import com.game.part.msg.type.AbstractMsgObj;
@@ -36,7 +37,7 @@ public class DefaultScene implements IMsgReceiver {
 	/** 场景名称 */
 	private String _name = null;
 	/** 消息字典 */
-	private Map<Long, Queue<AbstractMsgObj>> _msgMap = null;
+	private Map<Long, Queue<AbstractExecutableMsgObj>> _msgMap = null;
 	/** 提交服务 */
 	private ExecutorService _postServ = null;
 	/** 执行服务 */
@@ -97,28 +98,50 @@ public class DefaultScene implements IMsgReceiver {
 	}
 
 	@Override
-	public final void tryReceive(AbstractMsgObj msgObj) {
+	public final void receive(AbstractMsgObj msgObj) {
 		if (msgObj == null) {
 			// 如果参数对象为空, 
-			// 则直接跳过!
+			// 则直接退出!
 			SceneLog.LOG.error("参数对象为空");
 			return;
 		}
 
-		// 获取会话 ID
+		if (isExecutable(msgObj) == false) {
+			// 如果不是可执行消息, 
+			// 则直接退出!
+			SceneLog.LOG.error("消息不是可执行消息");
+			return;
+		}
+
+		// 获取可执行消息对象
+		AbstractExecutableMsgObj execMsgObj = (AbstractExecutableMsgObj)msgObj;
+		// 获取会话 Id
 		final long sessionId = 0L;
 		// 获取消息队列
-		Queue<AbstractMsgObj> msgQ = this._msgMap.get(sessionId);
+		Queue<AbstractExecutableMsgObj> execMsgQ = this._msgMap.get(sessionId);
 
-		if (msgQ == null) {
+		if (execMsgQ == null) {
 			// 创建消息队列并添加到字典
-			msgQ = this._msgMap.putIfAbsent(
-				sessionId, new ConcurrentLinkedQueue<>()
+			execMsgQ = this._msgMap.putIfAbsent(
+				sessionId, 
+				new ConcurrentLinkedQueue<>()
 			);
 		}
 
 		// 添加消息对象到队列
-		msgQ.offer(msgObj);
+		execMsgQ.offer(execMsgObj);
+	}
+
+	/**
+	 * 是否为可执行的消息
+	 * 
+	 * @param msgObj
+	 * @return
+	 * 
+	 */
+	private static boolean isExecutable(
+		AbstractMsgObj msgObj) {
+		return msgObj != null && msgObj instanceof AbstractExecutableMsgObj;
 	}
 
 	/**
@@ -157,8 +180,7 @@ public class DefaultScene implements IMsgReceiver {
 	 * @param msgQ 
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
-	private void postOnePlayer(long sessionUUID, Queue<AbstractMsgObj> msgQ) {
+	private void postOnePlayer(long sessionUUID, Queue<AbstractExecutableMsgObj> msgQ) {
 		if (msgQ == null || 
 			msgQ.isEmpty()) {
 			// 如果消息队列为空, 
@@ -168,7 +190,7 @@ public class DefaultScene implements IMsgReceiver {
 
 		for (int i = 0; i < MSG_COUNT; i++) {
 			// 获取消息对象
-			AbstractMsgObj msgObj = msgQ.poll();
+			AbstractExecutableMsgObj msgObj = msgQ.poll();
 
 			if (msgObj == null) {
 				// 如果消息对象为空, 
