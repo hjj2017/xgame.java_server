@@ -17,7 +17,7 @@ public class MsgDouble extends BasicTypeField<Double> {
 	 * 
 	 */
 	public MsgDouble() {
-		this(0);
+		this(0.0);
 	}
 
 	/**
