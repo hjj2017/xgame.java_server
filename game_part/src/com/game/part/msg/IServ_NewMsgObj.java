@@ -19,7 +19,7 @@ interface IServ_NewMsgObj {
 	 * 
 	 */
 	default<T extends AbstractMsgObj> T newMsgObj(short msgSerialUId) {
-		// 活取消息类
+		// 获取消息类
 		@SuppressWarnings("unchecked")
 		Class<T> msgClazz = (Class<T>)MsgServ.OBJ._msgClazzMap.get(msgSerialUId);
 

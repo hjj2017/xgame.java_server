@@ -73,7 +73,7 @@ class ClazzDefValidator {
 		Assert.notNull(msgClazz, "msgClazz");
 		
 		try {
-			// 活取构造器数组
+			// 获取构造器数组
 			Constructor<?>[] cArr = msgClazz.getConstructors();
 			// 是否 OK ?
 			boolean ok = false;

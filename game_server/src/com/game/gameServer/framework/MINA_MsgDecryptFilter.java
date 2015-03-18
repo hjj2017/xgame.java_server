@@ -8,7 +8,8 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.msg.CoreMsgSerialUId;
+import com.game.gameServer.msg.SpecialMsgSerialUId;
+import com.game.part.msg.IoBuffUtil;
 import com.game.part.utils.BytesUtil;
 import com.game.part.utils.MD5Util;
 
@@ -66,20 +67,20 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 			return;
 		}
 
-		// 获取会话 UUID
-		long sessionUUID = sess.getId();
+		// 获取会话 UUId
+		long sessionUUId = sess.getId();
 
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null msgObj, sessionUUID = " + sessionUUID);
+			FrameworkLog.LOG.error("null msgObj, sessionUUId = " + sessionUUId);
 			return;
 		}
 
 		if (!(msgObj instanceof IoBuffer)) {
 			// 如果消息对象不是 ByteBuff, 
 			// 则直接向下传递!
-			FrameworkLog.LOG.warn("msgObj is not a ByteBuff, sessionUUID = " + sessionUUID);
+			FrameworkLog.LOG.warn("msgObj is not a ByteBuff, sessionUUId = " + sessionUUId);
 			super.messageReceived(nextFilter, sess, msgObj);
 		}
 
@@ -89,7 +90,7 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		buff.position(0);
 
 		if (buff.hasRemaining() && 
-			validateBuffContent(buff, sessionUUID) == false) {
+			validateBuffContent(buff, sessionUUId) == false) {
 			// 如果验证 Buff 失败, 
 			// 则直接退出!
 			sess.close(true);
@@ -104,11 +105,11 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 	 * 验证 Buff 对象
 	 * 
 	 * @param buff 
-	 * @param fromSessionUUID 
+	 * @param fromSessionUUId 
 	 * @return 
 	 * 
 	 */
-	private static boolean validateBuffContent(IoBuffer buff, long fromSessionUUID) {
+	private static boolean validateBuffContent(IoBuffer buff, long fromSessionUUId) {
 		if (buff == null || 
 			buff.hasRemaining() == false) {
 			// 如果参数对象为空, 
@@ -119,14 +120,14 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		// 原始位置
 		final int origPos = buff.position();
 		// 创建消息结构
-		MsgStruct msg = createMsgStruct(buff, fromSessionUUID);
+		MsgStruct msg = createMsgStruct(buff, fromSessionUUId);
 		// 恢复到原始位置
 		buff.position(origPos);
 
 		if (msg == null) {
 			// 消息对象无法识别, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null msg, sessionUUID = " + fromSessionUUID);
+			FrameworkLog.LOG.error("null msg, sessionUUId = " + fromSessionUUId);
 			return false;
 		}
 
@@ -140,14 +141,14 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		if (!validateTS(msg)) {
 			// 如果时间戳验证失败, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("msg.ts error, sessionUUID = " + fromSessionUUID);
+			FrameworkLog.LOG.error("msg.ts error, sessionUUId = " + fromSessionUUId);
 			return false;
 		}
 
 		if (!validateMD5(msg)) {
 			// 如果 MD5 验证失败, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("msg._md5 error, sessionUUID = " + fromSessionUUID);
+			FrameworkLog.LOG.error("msg._md5 error, sessionUUId = " + fromSessionUUId);
 			return false;
 		}
 
@@ -159,17 +160,17 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 	 * <font color="#990000">注意 : 创建过程中会修改 buff 的 position 值</font>
 	 * 
 	 * @param buff
-	 * @param fromSessionUUID 
+	 * @param fromSessionUUId 
 	 * @return 
 	 * 
 	 */
-	private static MsgStruct createMsgStruct(IoBuffer buff, long fromSessionUUID) {
+	private static MsgStruct createMsgStruct(IoBuffer buff, long fromSessionUUId) {
 		if (buff == null || 
 			buff.remaining() < 4) {
 			// 如果参数对象为空, 
 			// 或者剩余字节数 < 4 ( 没法分析出消息长度和类型 )
 			// 则直接退出!
-			FrameworkLog.LOG.error("null buff or remaining < 4, sessionUUID = " + fromSessionUUID);
+			FrameworkLog.LOG.error("null buff or remaining < 4, sessionUUId = " + fromSessionUUId);
 			return null;
 		}
 
@@ -177,15 +178,15 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		buff.position(0);
 		// 创建消息结构
 		MsgStruct msg = new MsgStruct();
-		// 来自会话 UUID
-		msg._sessionUUId = fromSessionUUID;
+		// 来自会话 UUId
+		msg._sessionUUId = fromSessionUUId;
 		// 获取消息长度
-		msg._len = readShort(buff);
+		msg._len = IoBuffUtil.readShort(buff);
 		// 获取消息类型
-		msg._serialUId = readShort(buff);
+		msg._serialUId = IoBuffUtil.readShort(buff);
 
-		if (msg._serialUId == CoreMsgSerialUId.CG_FLASH_POLICY || 
-			msg._serialUId == CoreMsgSerialUId.CG_QQ_TGW) {
+		if (msg._serialUId == SpecialMsgSerialUId.CG_FLASH_POLICY || 
+			msg._serialUId == SpecialMsgSerialUId.CG_QQ_TGW) {
 			// 如果是 Flash 安全策略消息或者是 QQ 网关消息, 
 			// 则设置为免检并返回!
 			msg._exemption = true;
@@ -193,15 +194,15 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		}
 
 		// 获取时间戳
-		msg._ts = readInt(buff);
+		msg._ts = IoBuffUtil.readInt(buff);
 		// 获取 MD5 字符串
-		msg._md5 = readString(buff);
+		msg._md5 = IoBuffUtil.readStr(buff);
 
 		if (msg._md5 == null || 
 			msg._md5.isEmpty()) {
 			// 如果 MD5 字符串为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null or empty md5, sessionUUID " + fromSessionUUID);
+			FrameworkLog.LOG.error("null or empty md5, sessionUUId " + fromSessionUUId);
 			return null;
 		}
 
@@ -213,7 +214,7 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 			// 则直接退出!
 			FrameworkLog.LOG.error(
 				"bodyLen < 0, msgTypeID = " + msg._serialUId 
-				+ ", sessionUUID = " + fromSessionUUID
+				+ ", sessionUUId = " + fromSessionUUId
 			);
 			return null;
 		}
@@ -295,73 +296,6 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		// 注意 : 消息中的 MD5 字符串是一个子集 ...
 		// 所以要用包含来验证
 		return str_md5.contains(msg._md5);
-	}
-
-	/**
-	 * 读取短整形数值
-	 * 
-	 * @param buff
-	 * @return 
-	 * 
-	 */
-	private static short readShort(IoBuffer buff) {
-		if (buff == null || 
-			buff.remaining() < 2) {
-			FrameworkLog.LOG.error("null buff or remaining < 2");
-			return -1;
-		} else {
-			return buff.getShort();
-		}
-	}
-
-	/**
-	 * 获取整数数值
-	 * 
-	 * @param buff
-	 * @return 
-	 * 
-	 */
-	private static int readInt(IoBuffer buff) {
-		if (buff == null || 
-			buff.remaining() < 4) {
-			FrameworkLog.LOG.error("null buff or remaining < 4");
-			return -1;
-		} else {
-			return buff.getInt();
-		}
-	}
-
-	/**
-	 * 从 Buff 中读取字符串
-	 * 
-	 * @param buff
-	 * @return 
-	 * 
-	 */
-	private static String readString(IoBuffer buff) {
-		if (buff == null || 
-			buff.remaining() < 2) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			FrameworkLog.LOG.error("null buff or remaining < 2");
-			return null;
-		}
-
-		// 获取字符串长度
-		short len = buff.getShort();
-		// 创建字节数组
-		byte[] byteArr = new byte[len];
-		// 从 Buff 对象中获取字节数组
-		buff.get(byteArr);
-
-		try {
-			// 返回字符串
-			return new String(byteArr, "utf-8");
-		} catch (Exception ex) {
-			// 记录异常信息
-			FrameworkLog.LOG.error(ex.getMessage(), ex);
-			return null;
-		}
 	}
 
 	/**

@@ -8,8 +8,7 @@ import com.game.part.msg.type.WriteHelperMaker;
 import com.game.part.utils.ClazzUtil;
 
 /**
- * 注册消息类, 注意: 
- * 相同 msgSerialUId 不能注册不同的消息类!
+ * 注册消息类
  * 
  * @author hjj2017
  * @since 2015/3/14
@@ -17,7 +16,8 @@ import com.game.part.utils.ClazzUtil;
  */
 interface IServ_RegMsgClazz {
 	/**
-	 * 注册消息类
+	 * 注册消息类, 注意: 
+	 * 相同 msgSerialUId 不能注册不同的消息类!
 	 * 
 	 * @param msgSerialUId 
 	 * @param newMsgClazz

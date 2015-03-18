@@ -6,7 +6,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.msg.CoreMsgSerialUId;
+import com.game.gameServer.msg.SpecialMsgSerialUId;
 
 /**
  * 消息粘包处理
@@ -54,13 +54,13 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			return;
 		}
 
-		// 获取会话 UUID
-		long sessionUUID = sess.getId();
+		// 获取会话 UUId
+		long sessionUUId = sess.getId();
 
 		if (!(msgObj instanceof IoBuffer)) {
 			// 如果消息对象不是 ByteBuff, 
 			// 则直接向下传递!
-			FrameworkLog.LOG.warn("msgObj is not a IoBuff, sessionUUID = " + sessionUUID);
+			FrameworkLog.LOG.warn("msgObj is not a IoBuff, sessionUUId = " + sessionUUId);
 			super.messageReceived(nextFilter, sess, msgObj);
 		}
 
@@ -70,7 +70,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 		if (!inBuff.hasRemaining()) {
 			// 如果没有剩余内容, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("inBuff has not remaining, sessionUUID = " + sessionUUID);
+			FrameworkLog.LOG.error("inBuff has not remaining, sessionUUId = " + sessionUUId);
 			return;
 		} else if (inBuff.remaining() <= 8) {
 			// 如果 <= 8 字节, 
@@ -125,8 +125,8 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			return;
 		}
 
-		// 获取会话 UUID
-		long sessionUUID = sess.getId();
+		// 获取会话 UUId
+		long sessionUUId = sess.getId();
 		// 获取容器 Buff
 		IoBuffer containerBuff = getContainerBuff(sess);
 
@@ -150,7 +150,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			if (containerBuff.remaining() < 4) {
 				// 
 				// 如果剩余字节数 < 4, 
-				// 这样根本无法识别出消息类型 msgTypeDef ...
+				// 这样根本无法识别出消息类型 msgSerialUId ...
 				// 直接退出!
 				// 在退出前, 
 				// 准备好接收下一次消息!
@@ -163,20 +163,20 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			final int oldPos = containerBuff.position();
 			// 获取消息长度和类型
 			final int msgSize = containerBuff.getShort();
-			final int msgTypeDef = containerBuff.getShort();
+			final int msgSerialUId = containerBuff.getShort();
 
 //			// 记录调试信息
 //			KernalLog.LOG.debug(
 //				"i = " + i 
 //				+ "\nmsgSize = " + msgSize
-//				+ "\nmsgTypeDef = " + msgTypeDef
+//				+ "\nmsgSerialUId = " + msgSerialUId
 //			);
 
 			// 还原原始位置
 			containerBuff.position(oldPos);
 
-			if (msgTypeDef == CoreMsgSerialUId.CG_FLASH_POLICY || 
-				msgTypeDef == CoreMsgSerialUId.CG_QQ_TGW) {
+			if (msgSerialUId == SpecialMsgSerialUId.CG_FLASH_POLICY || 
+				msgSerialUId == SpecialMsgSerialUId.CG_QQ_TGW) {
 				// 
 				// 如果是 Flash 安全策略消息, 
 				// 或者是腾讯网关消息, 
@@ -216,7 +216,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 				// 这种情况可能是消息已经乱套了 ...
 				// 还是重新来过吧!
 				// 
-				FrameworkLog.LOG.error("i = " + i + ", msgSize = " + msgSize + ", sessionUUID = " + sessionUUID);
+				FrameworkLog.LOG.error("i = " + i + ", msgSize = " + msgSize + ", sessionUUId = " + sessionUUId);
 				// 将容器 Buff 内容清空
 				containerBuff.position(0);
 				containerBuff.flip();
@@ -235,7 +235,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 					"i = " + i
 					+ ", msgSize = " + msgSize 
 					+ ", containerBuff.remaining = " + containerBuff.remaining()
-					+ ", sessionUUID = " + sessionUUID
+					+ ", sessionUUId = " + sessionUUId
 				);
 
 				// 准备接受下一次消息
@@ -253,7 +253,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 				// 这种情况可能也是消息乱套了 ...
 				// 记录一下错误信息
 				// 
-				FrameworkLog.LOG.error("i = " + i + ", null realBuff, sessionUUID = " + sessionUUID);
+				FrameworkLog.LOG.error("i = " + i + ", null realBuff, sessionUUId = " + sessionUUId);
 			} else {
 //				// 记录调试信息
 //				KernalLog.LOG.debug(
@@ -290,10 +290,10 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			return null;
 		}
 
-		// 获取会话 UUID
-		long sessionUUID = sess.getId();
+		// 获取会话 UUId
+		long sessionUUId = sess.getId();
 		// 获取容器 Buff
-		IoBuffer containerBuff = _containerBuffMap.get(sessionUUID);
+		IoBuffer containerBuff = _containerBuffMap.get(sessionUUId);
 
 		if (containerBuff == null) {
 			// 创建缓存 Buff
@@ -303,7 +303,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			containerBuff.position(0);
 			containerBuff.flip();
 			// 缓存  Buff 对象
-			Object oldVal = _containerBuffMap.putIfAbsent(sessionUUID, containerBuff);
+			Object oldVal = _containerBuffMap.putIfAbsent(sessionUUId, containerBuff);
 
 			if (oldVal != null) {
 				FrameworkLog.LOG.warn("exists oldVal");
@@ -326,10 +326,10 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			return;
 		}
 
-		// 获取会话 UUID
-		long sessionUUID = sess.getId();
+		// 获取会话 UUId
+		long sessionUUId = sess.getId();
 		// 获取容器 Buff
-		IoBuffer containerBuff = _containerBuffMap.get(sessionUUID);
+		IoBuffer containerBuff = _containerBuffMap.get(sessionUUId);
 
 		if (containerBuff != null) {
 			// 是否所占资源
@@ -337,7 +337,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 		}
 
 		// 移除玩家的 Buff 对象
-		_containerBuffMap.remove(sessionUUID);
+		_containerBuffMap.remove(sessionUUId);
 	}
 
 	/**
@@ -360,7 +360,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 		if (containerBuff == null) {
 			// 如果容器为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null containerBuff, sessionUUID = " + sess.getId());
+			FrameworkLog.LOG.error("null containerBuff, sessionUUId = " + sess.getId());
 			return false;
 		} else {
 			// 如果当前位置和极限值都为 0, 

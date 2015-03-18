@@ -1,6 +1,8 @@
-package com.game.gameServer.msg;
+package com.game.bizModules.flashPolicy.msg;
 
-import com.game.gameServer.handler.Handler_CGFlashPolicyMsg;
+import com.game.bizModules.flashPolicy.handler.Handler_CGFlashPolicyMsg;
+import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.SpecialMsgSerialUId;
 
 /**
  * Flash 安全安全策略文件
@@ -18,6 +20,6 @@ public class CGFlashPolicyMsg extends AbstractCGMsgObj<Handler_CGFlashPolicyMsg>
 
 	@Override
 	public short getSerialUId() {
-		return CoreMsgSerialUId.CG_FLASH_POLICY;
+		return SpecialMsgSerialUId.CG_FLASH_POLICY;
 	}
 }

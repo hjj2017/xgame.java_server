@@ -1,7 +1,7 @@
-package com.game.gameServer.handler;
+package com.game.bizModules.flashPolicy.handler;
 
+import com.game.bizModules.flashPolicy.msg.CGFlashPolicyMsg;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
-import com.game.gameServer.msg.CGFlashPolicyMsg;
 
 /**
  * 消息处理器
@@ -12,6 +12,6 @@ import com.game.gameServer.msg.CGFlashPolicyMsg;
  */
 public class Handler_CGFlashPolicyMsg extends AbstractCGMsgHandler<CGFlashPolicyMsg> {
 	@Override
-	public void handle(CGFlashPolicyMsg msgObj) {	
+	public void handle(CGFlashPolicyMsg msgObj) {
 	}
 }

@@ -8,6 +8,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderAdapter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
 import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.part.msg.IoBuffUtil;
 import com.game.part.msg.MsgServ;
 
 /**
@@ -34,17 +35,17 @@ class MINA_CGMsgDecoder extends ProtocolDecoderAdapter {
 			return;
 		}
 
-		// 获取消息定义
-		short msgTypeDef = (short)0;
+		// 获取消息序列化 Id
+		short msgSerialUId = IoBuffUtil.readShort(buff);
 		// 获取消息对象
-		AbstractCGMsgObj<?> msgObj = MsgServ.OBJ.newMsgObj(msgTypeDef);
+		AbstractCGMsgObj<?> msgObj = MsgServ.OBJ.newMsgObj(msgSerialUId);
 
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
 			FrameworkLog.LOG.error(MessageFormat.format(
-				"无法取得消息对象, msgTypeDef = {0}", 
-				String.valueOf(msgTypeDef)
+				"无法取得消息对象, msgSerialUId = {0}", 
+				String.valueOf(msgSerialUId)
 			));
 			return;
 		}

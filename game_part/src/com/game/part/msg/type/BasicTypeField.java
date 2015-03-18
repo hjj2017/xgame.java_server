@@ -177,7 +177,7 @@ abstract class BasicTypeField<T> extends AbstractMsgField {
 	}
 
 	/**
-	 * 活取 byte 值
+	 * 获取 byte 值
 	 * 
 	 * @return
 	 * 
@@ -192,9 +192,9 @@ abstract class BasicTypeField<T> extends AbstractMsgField {
 		} else if (this._objVal instanceof Boolean) {
 			return this.getBoolVal() ? (byte)1 : (byte)0;
 		} else {
-			// 活取字符串数制
+			// 获取字符串数制
 			String strVal = this.getStrVal();
-			// 活取字节数组
+			// 获取字节数组
 			byte[] byteArr = strVal.getBytes(Charset.forName("utf-8"));
 			// 返回第一个字节
 			return byteArr[0];

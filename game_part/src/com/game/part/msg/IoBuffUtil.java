@@ -332,7 +332,7 @@ public final class IoBuffUtil {
 			return;
 		}
 
-		// 活取字符串的字节数组
+		// 获取字符串的字节数组
 		byte[] byteArr = val.getBytes(charset);
 		// 设置字节数组
 		buff.putShort((short)byteArr.length);
