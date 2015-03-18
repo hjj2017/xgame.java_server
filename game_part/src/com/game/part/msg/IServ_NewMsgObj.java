@@ -1,6 +1,5 @@
 package com.game.part.msg;
 
-import com.game.part.msg.anno.MsgSerialUId;
 import com.game.part.msg.type.AbstractMsgObj;
 
 /**

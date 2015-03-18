@@ -9,9 +9,4 @@ public class TestObj extends AbstractMsgObj {
 	public MsgInt _testId;
 	/** 测试名称 */
 	public MsgStr _testName;
-
-	@Override
-	public short getSerialUId() {
-		return 0;
-	}
 }

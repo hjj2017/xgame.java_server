@@ -4,7 +4,6 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.junit.Test;
 
 import com.game.bizModules.cd.msg.CGKillCdTimeMsg;
-import com.game.bizModules.cd.msg.TestObj;
 import com.game.part.msg.type.MsgBool;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgStr;
@@ -19,12 +18,13 @@ import com.game.part.msg.type.MsgStr;
 public class Test_MsgServ {
 	@Test
 	public void test() {
-		MsgServ.OBJ.regMsgClazz(CGKillCdTimeMsg.class);
+		CGKillCdTimeMsg cgMsg = new CGKillCdTimeMsg();
+		MsgServ.OBJ.regMsgClazz(cgMsg.getSerialUId(), cgMsg.getClass());
 
 		IoBuffer buff = IoBuffer.allocate(256);
 		buff.setAutoExpand(true);
 		
-		CGKillCdTimeMsg cgMsg = new CGKillCdTimeMsg();
+		
 //		cgMsg._cdTypeDef = new MsgInt(1);
 		cgMsg._cdTypeName = new MsgStr("hello");
 		cgMsg._canKill = new MsgBool(true);
