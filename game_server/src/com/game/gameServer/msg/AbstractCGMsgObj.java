@@ -1,6 +1,5 @@
 package com.game.gameServer.msg;
 
-
 /**
  * 抽象的 CG 的消息
  * 

@@ -6,7 +6,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.msg.CoreMsgTypeDef;
+import com.game.gameServer.msg.CoreMsgSerialUId;
 
 /**
  * 消息粘包处理
@@ -175,8 +175,8 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			// 还原原始位置
 			containerBuff.position(oldPos);
 
-			if (msgTypeDef == CoreMsgTypeDef.CG_FLASH_POLICY || 
-				msgTypeDef == CoreMsgTypeDef.CG_QQ_TGW) {
+			if (msgTypeDef == CoreMsgSerialUId.CG_FLASH_POLICY || 
+				msgTypeDef == CoreMsgSerialUId.CG_QQ_TGW) {
 				// 
 				// 如果是 Flash 安全策略消息, 
 				// 或者是腾讯网关消息, 

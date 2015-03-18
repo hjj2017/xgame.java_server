@@ -2,8 +2,6 @@ package com.game.part.msg.type;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
-import com.game.part.msg.IoBuffUtil;
-
 /**
  * 抽象消息
  * 
@@ -12,14 +10,6 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public abstract class AbstractMsgObj extends AbstractMsgField {
-	/**
-	 * 获取消息序列号 Id, 也就是消息 ( 类型 ) Id
-	 * 
-	 * @return 
-	 * 
-	 */
-	public abstract short getSerialUId();
-
 	@Override
 	public void readBuff(IoBuffer buff) {
 		if (buff == null || 
@@ -29,8 +19,6 @@ public abstract class AbstractMsgObj extends AbstractMsgField {
 			return;
 		}
 
-		// 先读掉开头的 msgTypeDef
-		IoBuffUtil.readShort(buff);
 		// 创建帮助者对象
 		IReadHelper helper = ReadHelperMaker.make(this.getClass());
 
@@ -49,8 +37,6 @@ public abstract class AbstractMsgObj extends AbstractMsgField {
 			return;
 		}
 
-		// 先写出 msgTypeDef
-		IoBuffUtil.writeShort(getSerialUId(), buff);
 		// 创建帮助者对象
 		IWriteHelper helper = WriteHelperMaker.make(this.getClass());
 		

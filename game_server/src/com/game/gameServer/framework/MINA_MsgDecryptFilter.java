@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.msg.CoreMsgTypeDef;
+import com.game.gameServer.msg.CoreMsgSerialUId;
 import com.game.part.utils.BytesUtil;
 import com.game.part.utils.MD5Util;
 
@@ -178,14 +178,14 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		// 创建消息结构
 		MsgStruct msg = new MsgStruct();
 		// 来自会话 UUID
-		msg._sessionUUID = fromSessionUUID;
+		msg._sessionUUId = fromSessionUUID;
 		// 获取消息长度
 		msg._len = readShort(buff);
 		// 获取消息类型
-		msg._typeDef = readShort(buff);
+		msg._serialUId = readShort(buff);
 
-		if (msg._typeDef == CoreMsgTypeDef.CG_FLASH_POLICY || 
-			msg._typeDef == CoreMsgTypeDef.CG_QQ_TGW) {
+		if (msg._serialUId == CoreMsgSerialUId.CG_FLASH_POLICY || 
+			msg._serialUId == CoreMsgSerialUId.CG_QQ_TGW) {
 			// 如果是 Flash 安全策略消息或者是 QQ 网关消息, 
 			// 则设置为免检并返回!
 			msg._exemption = true;
@@ -212,7 +212,7 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 			// 如果消息长度不够, 
 			// 则直接退出!
 			FrameworkLog.LOG.error(
-				"bodyLen < 0, msgTypeID = " + msg._typeDef 
+				"bodyLen < 0, msgTypeID = " + msg._serialUId 
 				+ ", sessionUUID = " + fromSessionUUID
 			);
 			return null;
@@ -249,7 +249,7 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		// 获取消息时间戳
 		int newTS = msg._ts;
 		// 获取旧时间戳
-		Integer oldTS = _tsMap.get(msg._sessionUUID);
+		Integer oldTS = _tsMap.get(msg._sessionUUId);
 
 		if (oldTS == null) {
 			oldTS = Integer.MIN_VALUE;
@@ -262,7 +262,7 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 		}
 
 		// 更新时间戳
-		_tsMap.put(msg._sessionUUID, newTS);
+		_tsMap.put(msg._sessionUUId, newTS);
 		return true;
 	}
 
@@ -371,12 +371,12 @@ class MINA_MsgDecryptFilter extends IoFilterAdapter {
 	 *
 	 */
 	private static class MsgStruct {
-		/** 会话 UUID */
-		private long _sessionUUID = -1L;
+		/** 会话 UUId */
+		private long _sessionUUId = -1L;
 		/** 消息长度 */
 		private short _len = -1;
-		/** 消息类型 ID */
-		private short _typeDef = -1;
+		/** 消息序列化 Id */
+		private short _serialUId = -1;
 		/** 免检消息 ? */
 		private boolean _exemption = false;
 		/** 时间戳 */

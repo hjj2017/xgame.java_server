@@ -1,5 +1,6 @@
 package com.game.part.msg;
 
+import com.game.part.msg.anno.MsgSerialUId;
 import com.game.part.msg.type.AbstractMsgObj;
 
 /**
@@ -11,16 +12,17 @@ import com.game.part.msg.type.AbstractMsgObj;
  */
 interface IServ_NewMsgObj {
 	/**
-	 * 获取消息对象
+	 * 根据消息序列化 Id 获取消息对象
 	 * 
-	 * @param msgTypeDef
+	 * @param msgSerialUId
 	 * @return
+	 * @see MsgSerialUId
 	 * 
 	 */
-	default<T extends AbstractMsgObj> T newMsgObj(short msgTypeDef) {
+	default<T extends AbstractMsgObj> T newMsgObj(short msgSerialUId) {
 		// 活取消息类
 		@SuppressWarnings("unchecked")
-		Class<T> msgClazz = (Class<T>)MsgServ.OBJ._msgClazzMap.get(msgTypeDef);
+		Class<T> msgClazz = (Class<T>)MsgServ.OBJ._msgClazzMap.get(msgSerialUId);
 
 		if (msgClazz == null) {
 			// 如果没有找到类定义, 
