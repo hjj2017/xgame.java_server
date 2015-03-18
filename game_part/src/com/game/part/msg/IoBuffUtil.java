@@ -367,4 +367,91 @@ public final class IoBuffUtil {
 			buff.putShort(val);
 		}
 	}
+
+	/**
+	 * 从 Buff 中读取长整型数值
+	 * 
+	 * @param buff
+	 * @return 
+	 * 
+	 */
+	public static long readLong(IoBuffer buff) {
+		if (buff == null || 
+			buff.remaining() < 8) {
+			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 8");
+		} else {
+			return buff.getLong();
+		}
+	}
+
+	/**
+	 * 将长整型数值写入到 Buff 中
+	 * 
+	 * @param val
+	 * @param buff
+	 * 
+	 */
+	public static void writeLong(long val, IoBuffer buff) {
+		if (buff != null) {
+			buff.putLong(val);
+		}
+	}
+
+	/**
+	 * 从 Buff 中读取单精度型数值
+	 * 
+	 * @param buff
+	 * @return 
+	 * 
+	 */
+	public static float readFloat(IoBuffer buff) {
+		if (buff == null || 
+			buff.remaining() < 4) {
+			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 4");
+		} else {
+			return buff.getFloat();
+		}
+	}
+
+	/**
+	 * 将单精度型数值写入到 Buff 中
+	 * 
+	 * @param val
+	 * @param buff
+	 * 
+	 */
+	public static void writeFloat(float val, IoBuffer buff) {
+		if (buff != null) {
+			buff.putFloat(val);
+		}
+	}
+
+	/**
+	 * 从 Buff 中读取双精度型数值
+	 * 
+	 * @param buff
+	 * @return 
+	 * 
+	 */
+	public static double readDouble(IoBuffer buff) {
+		if (buff == null || 
+			buff.remaining() < 8) {
+			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 8");
+		} else {
+			return buff.getDouble();
+		}
+	}
+
+	/**
+	 * 将双精度型数值写入到 Buff 中
+	 * 
+	 * @param val
+	 * @param buff
+	 * 
+	 */
+	public static void writeDouble(double val, IoBuffer buff) {
+		if (buff != null) {
+			buff.putDouble(val);
+		}
+	}
 }
