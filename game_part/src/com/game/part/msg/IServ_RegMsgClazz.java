@@ -31,8 +31,9 @@ interface IServ_RegMsgClazz {
 		}
 
 		if (ClazzUtil.isConcreteDrivedClass(newMsgClazz, AbstractMsgObj.class) == false) {
-			// 如果消息类不是 IMsgObj 接口的具体实现类,
-			// 则直接退出!
+			// 如果消息类不是 
+			// AbstractMsgObj 的具体实现类,
+			// 则抛出异常!
 			MsgLog.LOG.error(MessageFormat.format(
 				"{0} 类不是 {1} 的具体实现类, 不能注册到消息服务!", 
 				newMsgClazz.getName(), 
