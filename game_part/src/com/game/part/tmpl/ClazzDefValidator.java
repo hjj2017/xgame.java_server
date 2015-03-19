@@ -49,7 +49,10 @@ class ClazzDefValidator {
 
 		fl.forEach(f -> {
 			if (f.getType().equals(XlsxArrayList.class)) {
-				// 获取实际类型
+				// 如果字段类型是 XlsxArrayList 类型, 
+				// 首先, 获取泛型参数的真实类型
+				// 例如: XlsxArrayList<XlsxInt> 类型, 
+				// 我们将取到尖括号中的 XlsxInt
 				Class<?> aType = (Class<?>)FieldUtil.getGenericTypeA(f);
 
 				if (aType == null) {

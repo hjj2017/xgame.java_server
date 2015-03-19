@@ -15,12 +15,12 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgLocalTime extends BasicTypeField<LocalTime> {
+public class MsgTime extends BasicTypeField<LocalTime> {
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	public MsgLocalTime() {
+	public MsgTime() {
 		this(LocalTime.now());
 	}
 
@@ -30,7 +30,7 @@ public class MsgLocalTime extends BasicTypeField<LocalTime> {
 	 * @param value
 	 * 
 	 */
-	public MsgLocalTime(LocalTime value) {
+	public MsgTime(LocalTime value) {
 		this.setObjVal(value);
 	}
 
@@ -59,10 +59,10 @@ public class MsgLocalTime extends BasicTypeField<LocalTime> {
 	 * @return
 	 * 
 	 */
-	public static MsgLocalTime ifNullThenCreate(MsgLocalTime objVal) {
+	public static MsgTime ifNullThenCreate(MsgTime objVal) {
 		if (objVal == null) {
 			// 创建对象
-			objVal = new MsgLocalTime();
+			objVal = new MsgTime();
 		}
 
 		return objVal;

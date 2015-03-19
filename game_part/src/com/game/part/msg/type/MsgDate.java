@@ -1,7 +1,7 @@
 package com.game.part.msg.type;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -15,13 +15,13 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgLocalDateTime extends BasicTypeField<LocalDateTime> {
+public class MsgDate extends BasicTypeField<LocalDate> {
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	public MsgLocalDateTime() {
-		this(LocalDateTime.now());
+	public MsgDate() {
+		this(LocalDate.now());
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class MsgLocalDateTime extends BasicTypeField<LocalDateTime> {
 	 * @param value
 	 * 
 	 */
-	public MsgLocalDateTime(LocalDateTime value) {
+	public MsgDate(LocalDate value) {
 		this.setObjVal(value);
 	}
 
@@ -41,10 +41,10 @@ public class MsgLocalDateTime extends BasicTypeField<LocalDateTime> {
 			IoBuffUtil.readLong(buff)
 		);
 
-		// 创建本地日期时间
-		LocalDateTime ldt = inst.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		// 创建本地日期
+		LocalDate ld = inst.atZone(ZoneId.systemDefault()).toLocalDate();
 		// 设置数值
-		this.setObjVal(ldt);
+		this.setObjVal(ld);
 	}
 
 	@Override
@@ -59,10 +59,10 @@ public class MsgLocalDateTime extends BasicTypeField<LocalDateTime> {
 	 * @return
 	 * 
 	 */
-	public static MsgLocalDateTime ifNullThenCreate(MsgLocalDateTime objVal) {
+	public static MsgDate ifNullThenCreate(MsgDate objVal) {
 		if (objVal == null) {
 			// 创建对象
-			objVal = new MsgLocalDateTime();
+			objVal = new MsgDate();
 		}
 
 		return objVal;

@@ -109,8 +109,7 @@ class OneToXDefPair_X {
 			// 则直接抛出异常!
 			throw new XlsxTmplError(MessageFormat.format(
 				"{0} 类中 groupName = \"{1}\" 的注解类型不一致! 一个是 OneToOne 而另一个是 OneToMany", 
-				this._fromClazz.getSimpleName(), 
-				annoClazz.getSimpleName(),
+				this._fromClazz.getName(), 
 				this._groupName
 			));
 		}
@@ -123,7 +122,7 @@ class OneToXDefPair_X {
 			// 则抛出异常!
 			throw new XlsxTmplError(MessageFormat.format(
 				"{0} 类中 @{1}(groupName = \"{2}\") 这个注解不是成对儿出现的!", 
-				this._fromClazz.getSimpleName(), 
+				this._fromClazz.getName(), 
 				annoClazz.getSimpleName(),
 				this._groupName
 			));
@@ -132,7 +131,7 @@ class OneToXDefPair_X {
 			// 则抛出异常!
 			throw new XlsxTmplError(MessageFormat.format(
 				"{0} 类中 @{1}(groupName = \"{2}\") 这个注解重复定义, 这是不允许的!", 
-				this._fromClazz.getSimpleName(), 
+				this._fromClazz.getName(), 
 				annoClazz.getSimpleName(),
 				this._groupName
 			));
@@ -195,7 +194,7 @@ class OneToXDefPair_X {
 			// 则抛出异常!
 			throw new XlsxTmplError(MessageFormat.format(
 				"{0} 类中没有 ( 非 Map 类型的 ) 字段或方法标注 @{1}(groupName = \"{2}\") 注解", 
-				this._fromClazz.getSimpleName(), 
+				this._fromClazz.getName(), 
 				annoClazz.getSimpleName(), 
 				this._groupName
 			));
@@ -217,7 +216,7 @@ class OneToXDefPair_X {
 			// 则抛出异常!
 			throw new XlsxTmplError(MessageFormat.format(
 				"{0} 类中没有 ( Map 类型的 ) 字段或方法标注 @{1}(groupName = \"{2}\") 注解", 
-				this._fromClazz.getSimpleName(), 
+				this._fromClazz.getName(), 
 				annoClazz.getSimpleName(), 
 				this._groupName
 			));
@@ -230,14 +229,20 @@ class OneToXDefPair_X {
 				// 则抛出异常!
 				throw new XlsxTmplError(MessageFormat.format(
 					"{0} 类方法 {1} 不是公共的、静态的, 这是不允许的!, 请使用 public static {2} {1}() { return ...; } 这样的代码", 
-					this._fromClazz.getSimpleName(), 
+					this._fromClazz.getName(), 
 					m.getName(),
 					((Method)m).getReturnType().getSimpleName()
 				));
 			}
 
 			if (Map.class.isAssignableFrom(((Method)m).getReturnType()) == false) {
-				throw new XlsxTmplError("不是 Map 类型");
+				// 如果字段不是 Map 类型的, 
+				// 则抛出异常!
+				throw new XlsxTmplError(MessageFormat.format(
+					"类 {0} 方法 {1} 返回值不是 Map 类型", 
+					this._fromClazz.getName(), 
+					m.getName()
+				));
 			}
 
 			try {
@@ -249,7 +254,7 @@ class OneToXDefPair_X {
 					// 则抛出异常!
 					throw new XlsxTmplError(MessageFormat.format(
 						"{0} 类静态方法 {1} 返回值为空, 这是不允许的!", 
-						this._fromClazz.getSimpleName(), 
+						this._fromClazz.getName(), 
 						m.getName()
 					));
 				}
@@ -264,14 +269,20 @@ class OneToXDefPair_X {
 				// 则抛出异常!
 				throw new XlsxTmplError(MessageFormat.format(
 					"{0} 类字段 {1} 不是公共的、静态的, 这是不允许的!, 请使用 public static {2} {1} = new HashMap<>(); 这样的代码", 
-					this._fromClazz.getSimpleName(), 
+					this._fromClazz.getName(), 
 					m.getName(), 
 					((Field)m).getType().getSimpleName()
 				));
 			}
 
 			if (Map.class.isAssignableFrom(((Field)m).getType()) == false) {
-				throw new XlsxTmplError("不是 Map 类型");
+				// 如果字段不是 Map 类型的, 
+				// 则抛出异常!
+				throw new XlsxTmplError(MessageFormat.format(
+					"类 {0} 字段 {1} 不是 Map 类型", 
+					this._fromClazz.getName(), 
+					m.getName()
+				));
 			}
 			
 			try {
@@ -283,7 +294,7 @@ class OneToXDefPair_X {
 					// 则抛出异常!
 					throw new XlsxTmplError(MessageFormat.format(
 						"{0} 类静态字段 {1} 为空值, 这是不允许的!", 
-						this._fromClazz.getSimpleName(), 
+						this._fromClazz.getName(), 
 						m.getName()
 					));
 				}
