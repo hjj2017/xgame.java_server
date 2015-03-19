@@ -1,6 +1,11 @@
 package com.game.part.tmpl.type;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 
 import com.game.part.msg.type.MsgBool;
@@ -222,6 +227,75 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 		} else {
 			String strVal = this.getStrVal();
 			return strVal.equalsIgnoreCase("true") || strVal.equalsIgnoreCase("yes") || strVal.equalsIgnoreCase("y");
+		}
+	}
+
+	/**
+	 * 获取 date 值, 
+	 * 注意 : 如果原始类型是字符串类型, 
+	 * 字符串值必须是格式 = "2015-01-01", 
+	 * 才能转换为日期时间型!
+	 * 
+	 * @return
+	 * 
+	 */
+	public LocalDate getDateVal() {
+		if (this._objVal == null) {
+			return null;
+		} else if (this._objVal instanceof Number) {
+			return Instant.ofEpochMilli(this.getLongVal()).atZone(ZoneId.systemDefault()).toLocalDate();
+		} else if (this._objVal instanceof Temporal) {
+			return Instant.from((Temporal)this._objVal).atZone(ZoneId.systemDefault()).toLocalDate();
+		} else if (this._objVal instanceof String) {
+			return LocalDate.parse(this.getStrVal());
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 获取 time 值, 
+	 * 注意 : 如果原始类型是字符串类型, 
+	 * 字符串值必须是格式 = "10:00:00", 
+	 * 才能转换为日期时间型!
+	 * 
+	 * @return
+	 * 
+	 */
+	public LocalTime getTimeVal() {
+		if (this._objVal == null) {
+			return null;
+		} else if (this._objVal instanceof Number) {
+			return Instant.ofEpochMilli(this.getLongVal()).atZone(ZoneId.systemDefault()).toLocalTime();
+		} else if (this._objVal instanceof Temporal) {
+			return Instant.from((Temporal)this._objVal).atZone(ZoneId.systemDefault()).toLocalTime();
+		} else if (this._objVal instanceof String) {
+			return LocalTime.parse(this.getStrVal());
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 获取 time 值, 
+	 * 注意 : 如果原始类型是字符串类型, 
+	 * 字符串值必须是格式 = "2015-01-01 10:00:00", 
+	 * 才能转换为日期时间型!
+	 * 
+	 * @return
+	 * 
+	 */
+	public LocalDateTime getDateTimeVal() {
+		if (this._objVal == null) {
+			return null;
+		} else if (this._objVal instanceof Number) {
+			return Instant.ofEpochMilli(this.getLongVal()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+		} else if (this._objVal instanceof Temporal) {
+			return Instant.from((Temporal)this._objVal).atZone(ZoneId.systemDefault()).toLocalDateTime();
+		} else if (this._objVal instanceof String) {
+			return LocalDateTime.parse(this.getStrVal(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		} else {
+			return null;
 		}
 	}
 
