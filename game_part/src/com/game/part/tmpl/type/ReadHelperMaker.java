@@ -1,7 +1,6 @@
 package com.game.part.tmpl.type;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +20,7 @@ import com.game.part.tmpl.XlsxTmplServ;
 import com.game.part.tmpl.anno.ElementNum;
 import com.game.part.utils.Assert;
 import com.game.part.utils.ClazzUtil;
+import com.game.part.utils.FieldUtil;
 
 /**
  * 读取帮助器构建者
@@ -231,21 +231,8 @@ final class ReadHelperMaker {
 					));
 				}
 
-				if (hasGenericType(f) == false) {
-					// 如果不是 XlsxPlainList 类型, 
-					// 或者是不带有泛型参数, 
-					// 则直接抛出异常!
-					throw new XlsxTmplError(MessageFormat.format(
-						"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 XlsxArrayList<XlsxInt> _funcIdList; 这样的定义", 
-						f.getDeclaringClass().getName(), 
-						f.getName()
-					));
-				}
-
-				// 获取泛型参数
-				ParameterizedType tType = (ParameterizedType)f.getGenericType();
 				// 获取实际类型
-				Class<?> aType = (Class<?>)tType.getActualTypeArguments()[0];
+				Class<?> aType = (Class<?>)FieldUtil.getGenericTypeA(f);
 
 				// 如果是列表字段
 				// 生成如下代码 : 
@@ -277,38 +264,6 @@ final class ReadHelperMaker {
 				.append(f.getName())
 				.append(".readXSSFRow(stream);\n");
 		});
-	}
-
-	/**
-	 * 是否为泛型字段 ?
-	 * 
-	 * @param f
-	 * @return
-	 * 
-	 */
-	private static boolean hasGenericType(Field f) {
-		if (f == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return false;
-		}
-
-		if (!(f.getGenericType() instanceof ParameterizedType)) {
-			// 如果不是泛型类型, 
-			// 则直接退出!
-			return false;
-		}
-
-		// 获取泛型参数
-		ParameterizedType tType = (ParameterizedType)f.getGenericType();
-
-		if (tType.getActualTypeArguments().length <= 0) {
-			// 如果泛型参数太少, 
-			// 则直接退出!
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
