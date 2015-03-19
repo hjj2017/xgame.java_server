@@ -23,6 +23,8 @@ import com.game.part.utils.ClazzUtil;
  * 
  */
 final class OneToXDefPair {
+	/** 已验证的类列表 */
+	private static final Map<Class<?>, List<OneToXDefPair_X>> _validatedClazzMap = new HashMap<>();
 	/** 关键字定义 */
 	final Member _keyDef;
 	/** 字典的字段定义 */
@@ -49,6 +51,33 @@ final class OneToXDefPair {
 	}
 
 	/**
+	 * 验证类
+	 * 
+	 * @param clazz
+	 * 
+	 */
+	static void validate(Class<?> clazz) {
+		// 断言参数不为空
+		Assert.notNull(clazz, "clazz");
+
+		if (_validatedClazzMap.containsKey(clazz)) {
+			// 已经验证过的类, 
+			// 就不要重复验证了了了...
+			return;
+		}
+
+		// 收集分组名称
+		Map<String, OneToXDefPair_X> pairXMap = collectOneToXAnno(clazz);
+		// 返回配对列表
+		List<OneToXDefPair_X> xl = new ArrayList<>(pairXMap.values());
+		// 逐一验证每个配对
+		xl.forEach(x -> x.validate());
+
+		// 添加到已验证的字典
+		_validatedClazzMap.put(clazz, xl);
+	}
+
+	/**
 	 * 列表出所有的 key 和 map 字段的配对, 包括 OneToOne, OneToMany
 	 * 
 	 * @param clazz
@@ -56,20 +85,20 @@ final class OneToXDefPair {
 	 * 
 	 */
 	public static List<OneToXDefPair> listAll(Class<?> clazz) {
-		if (clazz == null) {
-			// 如果参数对象为空, 
-			// 则返回空列表
+		// 断言参数不为空
+		Assert.notNull(clazz, "clazz");
+		// 获取已验证的列表
+		List<OneToXDefPair_X> xl = _validatedClazzMap.get(clazz);
+
+		if (xl == null || 
+			xl.isEmpty()) {
+			// 如果列表为空, 
+			// 则直接退出!
 			return Collections.emptyList();
 		}
 
-		// 收集分组名称
-		Map<String, OneToXDefPair_X> pairXMap = collectOneToXAnno(clazz);
-		// 返回配对列表
-		return pairXMap.values().stream().map(pairX -> {
+		return xl.stream().map(pairX -> {
 			try {
-				// 执行验证过程
-				pairX.validate();
-	
 				// 获取键值定义
 				final Member keyDef = pairX.getKeyDef();
 				final Member mapDef = pairX.getMapDef();
@@ -97,13 +126,13 @@ final class OneToXDefPair {
 		// 断言参数不为空
 		Assert.notNull(clazz, "clazz");
 
-		// 创建注解字典
-		Map<String, OneToXDefPair_X> xMap = new HashMap<>();
+		// 创建辅助字典
+		Map<String, OneToXDefPair_X> assistMap = new HashMap<>();
 
 		// 找到标注 OneToOne 和 OneToMany 注解的字段
 		ClazzUtil.listField(
 			clazz, f -> {
-				putToMap(f, xMap); 
+				putToMap(f, assistMap); 
 				return true;
 			}
 		);
@@ -111,12 +140,12 @@ final class OneToXDefPair {
 		// 找到标注 OneToOne 和 OneToMany 注解的函数
 		ClazzUtil.listMethod(
 			clazz, m -> {
-				putToMap(m, xMap);
+				putToMap(m, assistMap);
 				return true;
 			}
 		);
 
-		return xMap;
+		return assistMap;
 	}
 
 	/**

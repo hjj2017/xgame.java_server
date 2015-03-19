@@ -34,8 +34,8 @@ interface IServ_LoadTmplData {
 	 * 
 	 */
 	default void loadTmplData(Class<? extends AbstractXlsxCol> byClazz) {
-		// 断言参数不为空
-		Assert.notNull(byClazz, "byClazz");
+		// 加载数据前, 先验证类
+		ClazzDefValidator.validate(byClazz);
 
 		// 输出参数 : Excel 文件名称, 页签索引
 		OutStr outExcelFileName = new OutStr();

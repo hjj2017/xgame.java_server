@@ -47,7 +47,7 @@ final class ReadHelperMaker {
 	 * @return
 	 * 
 	 */
-	static IReadHelper makeHelper(Class<?> byClazz) {
+	static IReadHelper make(Class<?> byClazz) {
 		// 断言参数不为空
 		Assert.notNull(byClazz, "byClazz");
 		// 获取帮助者
