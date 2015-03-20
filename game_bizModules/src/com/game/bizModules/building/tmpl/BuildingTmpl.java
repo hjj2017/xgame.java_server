@@ -36,7 +36,7 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 	public XlsxInt _posY;
 
 	/** ID 字典 */
-	@OneToMany(groupName = "ID")
+	@OneToOne(groupName = "ID")
 	public static Map<Integer, BuildingTmpl> _IDMap = new HashMap<>();
 	/** 城市建筑字典 */
 	@OneToMany(groupName = "cityId")
