@@ -7,6 +7,7 @@ import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
 import com.game.gameServer.msg.SpecialMsgSerialUId;
+import com.game.part.msg.IoBuffUtil;
 
 /**
  * 消息粘包处理
@@ -131,7 +132,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 		IoBuffer containerBuff = getContainerBuff(sess);
 
 		// 添加新 Buff 到容器 Buff 的末尾
-		IoBufferUtil.append(containerBuff, inBuff);
+		IoBuffUtil.append(containerBuff, inBuff);
 		// 令 position = 0
 		containerBuff.position(0);
 
@@ -155,7 +156,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 				// 在退出前, 
 				// 准备好接收下一次消息!
 				// 
-				IoBufferUtil.readyToNext(containerBuff);
+				IoBuffUtil.readyToNext(containerBuff);
 				return;
 			}
 
@@ -182,25 +183,25 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 				// 或者是腾讯网关消息, 
 				// 则尝试找一下 0 字节的位置 ...
 				// 
-				int pos0 = IoBufferUtil.indexOf(containerBuff, (byte)0);
+				int pos0 = IoBuffUtil.indexOf(containerBuff, (byte)0);
 
 				if (pos0 <= -1) {
 					// 如果找不到 0 字节的位置, 
 					// 则说明消息还没接收完, 
 					// 准备接受下次消息并直接退出!
-					IoBufferUtil.readyToNext(containerBuff);
+					IoBuffUtil.readyToNext(containerBuff);
 					return;
 				}
 
 				// 复制 Buff 内容
 				containerBuff.position(0);
-				IoBuffer realBuff = IoBufferUtil.copy(containerBuff, pos0);
+				IoBuffer realBuff = IoBuffUtil.copy(containerBuff, pos0);
 
 				// 更新 Buff 位置
 				final int newPos = containerBuff.position() + pos0;
 				containerBuff.position(newPos);
 				// 压缩容器 Buff
-				IoBufferUtil.compact(containerBuff);
+				IoBuffUtil.compact(containerBuff);
 
 				// 向下传递
 				super.messageReceived(
@@ -221,7 +222,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 				containerBuff.position(0);
 				containerBuff.flip();
 				// 压缩容器 Buff
-				IoBufferUtil.compact(containerBuff);
+				IoBuffUtil.compact(containerBuff);
 				return;
 			}
 
@@ -239,12 +240,12 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 				);
 
 				// 准备接受下一次消息
-				IoBufferUtil.readyToNext(containerBuff);
+				IoBuffUtil.readyToNext(containerBuff);
 				return;
 			}
 
 			// 创建新 Buff 并复制字节内容
-			IoBuffer realBuff = IoBufferUtil.copy(containerBuff, msgSize);
+			IoBuffer realBuff = IoBuffUtil.copy(containerBuff, msgSize);
 
 			if (realBuff == null) {
 				// 
@@ -272,7 +273,7 @@ class MINA_MsgCumulativeFilter extends IoFilterAdapter {
 			// 更新位置
 			containerBuff.position(containerBuff.position() + msgSize);
 			// 压缩容器 Buff
-			IoBufferUtil.compact(containerBuff);
+			IoBuffUtil.compact(containerBuff);
 		}
 	}
 	
