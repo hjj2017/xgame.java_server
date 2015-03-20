@@ -55,4 +55,20 @@ public class XlsxDouble extends BasicTypeCol<Double> {
 			super.setObjVal(stream.readDouble());
 		}
 	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @return
+	 * 
+	 */
+	public static XlsxDouble ifNullThenCreate(XlsxDouble objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new XlsxDouble();
+		}
+
+		return objVal;
+	}
 }

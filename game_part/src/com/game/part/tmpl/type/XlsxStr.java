@@ -55,4 +55,20 @@ public class XlsxStr extends BasicTypeCol<String> {
 			super.setObjVal(stream.readStr());
 		}
 	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @return
+	 * 
+	 */
+	public static XlsxStr ifNullThenCreate(XlsxStr objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new XlsxStr();
+		}
+
+		return objVal;
+	}
 }

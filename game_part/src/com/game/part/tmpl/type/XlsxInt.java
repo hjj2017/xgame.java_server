@@ -55,4 +55,20 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 			super.setObjVal(stream.readInt());
 		}
 	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @return
+	 * 
+	 */
+	public static XlsxInt ifNullThenCreate(XlsxInt objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new XlsxInt();
+		}
+
+		return objVal;
+	}
 }

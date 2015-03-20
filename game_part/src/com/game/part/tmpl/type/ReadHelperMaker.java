@@ -199,23 +199,17 @@ final class ReadHelperMaker {
 		}
 
 		fl.forEach(f -> {
-			if (ClazzUtil.isDrivedClazz(f.getType(), BasicTypeCol.class) || 
-				ClazzUtil.isDrivedClazz(f.getType(), AbstractXlsxTmpl.class)) {
+			if (ClazzUtil.isDrivedClazz(f.getType(), BasicTypeCol.class)) {
 				// 如果是普通字段或者是模板字段,
 				// 生成如下代码 : 
-				// tmplObj._funcId = (XlsxInt)AbstractXlsxCol.ifNullThenCreate(tmplObj._funcId, XlsxInt.class);
+				// tmplObj._funcId = XlsxInt.ifNullThenCreate(tmplObj._funcId);
 				codeCtx._codeText.append("O.")
 					.append(f.getName())
-					.append(" = (")
+					.append(" = ")
 					.append(f.getType().getSimpleName())
-					.append(")(AbstractXlsxCol.ifNullThenCreate(O.")
+					.append(".ifNullThenCreate(O.")
 					.append(f.getName())
-					.append(", ")
-					.append(f.getType().getSimpleName())
-					.append(".class));\n");
-
-				// 添加到 import
-				codeCtx._importClazzSet.add(AbstractXlsxCol.class);
+					.append(");\n");
 			} else if (f.getType().equals(XlsxArrayList.class)) {
 				// 获取元素数量注解
 				ElementNum elemNumAnno = f.getAnnotation(ElementNum.class);
@@ -250,6 +244,28 @@ final class ReadHelperMaker {
 				// 添加到 import
 				codeCtx._importClazzSet.add(XlsxArrayList.class);
 				codeCtx._importClazzSet.add(aType);
+				
+			} else if (ClazzUtil.isConcreteDrivedClass(f.getType(), AbstractXlsxTmpl.class)) {
+				// 
+				// 如果是嵌套的消息体, 生成如下代码 : 
+				// if (tmplObj._buildingInfo == null) {
+				//     tmplObj._buildingInfo = new BuildingInfo();
+				// }
+				// 
+				// 先判断是否为空 ?
+				codeCtx._codeText.append("if (O.")
+					.append(f.getName())
+					.append(" == null) {\n");
+
+				// 如果为空则创建新对象
+				codeCtx._codeText.append("O.")
+					.append(f.getName())
+					.append(" = new ")
+					.append(f.getType().getSimpleName())
+					.append("();\n");
+
+				// 结束代码段
+				codeCtx._codeText.append("}\n");
 			} else {
 				// 如果即不是 XlsxInt, XlsxStr ..., XlsxArrayList, 
 				// 也不是 AbstractXlsxTmpl, 

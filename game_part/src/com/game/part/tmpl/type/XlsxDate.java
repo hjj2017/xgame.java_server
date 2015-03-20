@@ -57,4 +57,20 @@ public class XlsxDate extends BasicTypeCol<LocalDate> {
 			super.setObjVal(stream.readDate());
 		}
 	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @return
+	 * 
+	 */
+	public static XlsxDate ifNullThenCreate(XlsxDate objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new XlsxDate();
+		}
+
+		return objVal;
+	}
 }

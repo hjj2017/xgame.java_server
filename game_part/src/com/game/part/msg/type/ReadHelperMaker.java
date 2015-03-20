@@ -229,7 +229,7 @@ public final class ReadHelperMaker {
 				// msgObj._funcIdList.readBuff(buff);
 				// 这样的代码了...
 				return;
-			} else if (ClazzUtil.isDrivedClazz(f.getType(), AbstractMsgObj.class)) {
+			} else if (ClazzUtil.isConcreteDrivedClass(f.getType(), AbstractMsgObj.class)) {
 				// 
 				// 如果是嵌套的消息体, 生成如下代码 : 
 				// if (msgObj._userInfo == null) {

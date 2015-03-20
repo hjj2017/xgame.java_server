@@ -3,8 +3,6 @@ package com.game.part.tmpl.type;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.game.part.tmpl.XSSFRowReadStream;
-import com.game.part.tmpl.XlsxTmplError;
-import com.game.part.tmpl.XlsxTmplLog;
 import com.game.part.utils.Assert;
 
 /**
@@ -109,30 +107,6 @@ public abstract class AbstractXlsxCol {
 	 * 
 	 */
 	protected void validate() {
-	}
-
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @param cell
-	 * @param xlsxFileName
-	 * @return
-	 * 
-	 */
-	public static<T extends AbstractXlsxCol> T ifNullThenCreate(T objVal, Class<T> objClazz) {
-		try {
-			if (objVal == null) {
-				// 创建对象
-				objVal = objClazz.newInstance();
-			}
-
-			return objVal;
-		} catch (Exception ex) {
-			// 抛出异常
-			XlsxTmplLog.LOG.error(ex.getMessage(), ex);
-			throw new XlsxTmplError(ex);
-		}
 	}
 
 	@Override

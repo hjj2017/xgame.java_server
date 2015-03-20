@@ -55,4 +55,20 @@ public class XlsxLong extends BasicTypeCol<Long> {
 			super.setObjVal(stream.readLong());
 		}
 	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @return
+	 * 
+	 */
+	public static XlsxLong ifNullThenCreate(XlsxLong objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new XlsxLong();
+		}
+
+		return objVal;
+	}
 }

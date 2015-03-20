@@ -42,7 +42,20 @@ class ClazzDefValidator {
 		// 断言参数不为空
 		Assert.notNull(msgClazz, "msgClazz");
 
-		// 验证构造器
+		if (ClazzUtil.isConcreteDrivedClass(msgClazz, AbstractMsgObj.class) == false) {
+			// 1: 看看 msgClazz 是不是 AbstractMsgObj 的具体子类, 
+			// 如果不是, 
+			// 则直接抛出异常!
+			throw new MsgError(MessageFormat.format(
+				"类 {0} 不是 {1} 的具体子类, 要么 {2} 是抽象类, 要么根本不是继承自 {3}", 
+				msgClazz.getName(), 
+				AbstractMsgObj.class.getName(), 
+				msgClazz.getSimpleName(), 
+				AbstractMsgObj.class.getSimpleName()
+			));
+		}
+
+		// 2: 验证构造器
 		validateConstructor(msgClazz);
 
 		// 获取字段列表
@@ -58,7 +71,7 @@ class ClazzDefValidator {
 			return;
 		}
 
-		// 逐一验证每个字段
+		// 3: 逐一验证每个字段
 		fl.forEach(f -> validateField(f));
 	}
 

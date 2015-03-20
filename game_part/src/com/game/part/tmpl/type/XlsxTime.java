@@ -57,4 +57,20 @@ public class XlsxTime extends BasicTypeCol<LocalTime> {
 			super.setObjVal(stream.readTime());
 		}
 	}
+
+	/**
+	 * objVal 不能为空, 但如果真为空值, 则自动创建
+	 * 
+	 * @param objVal
+	 * @return
+	 * 
+	 */
+	public static XlsxTime ifNullThenCreate(XlsxTime objVal) {
+		if (objVal == null) {
+			// 创建对象
+			objVal = new XlsxTime();
+		}
+
+		return objVal;
+	}
 }
