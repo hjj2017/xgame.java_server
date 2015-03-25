@@ -29,6 +29,9 @@ interface IDao_ExecNativeSQL {
 			return -1;
 		}
 
+		// 检查线程 Id
+		CommDao.OBJ.checkThreadId();
+
 		// 获取实体管理器
 		EntityManager em = CommDao.OBJ._emf.createEntityManager();
 

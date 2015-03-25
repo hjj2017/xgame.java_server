@@ -26,6 +26,9 @@ interface IDao_Save {
 			return;
 		}
 
+		// 检查线程 Id
+		CommDao.OBJ.checkThreadId();
+
 		// 获取实体管理器
 		EntityManager em = CommDao.OBJ._emf.createEntityManager();
 
@@ -64,6 +67,9 @@ interface IDao_Save {
 			// 则直接退出!
 			return;
 		}
+
+		// 检查线程 Id
+		CommDao.OBJ.checkThreadId();
 
 		// 获取实体管理器
 		EntityManager em = CommDao.OBJ._emf.createEntityManager();

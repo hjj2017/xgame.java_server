@@ -40,6 +40,9 @@ interface IDao_Del {
 			return;
 		}
 
+		// 检查线程 Id
+		CommDao.OBJ.checkThreadId();
+
 		// 获取实体管理器
 		EntityManager em = CommDao.OBJ._emf.createEntityManager();
 

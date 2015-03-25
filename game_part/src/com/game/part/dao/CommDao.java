@@ -1,5 +1,8 @@
 package com.game.part.dao;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -15,6 +18,9 @@ import com.game.part.utils.Assert;
 public class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_GetSingleResult, IDao_ExecNativeSQL {
 	/** 单例对象 */
 	public static final CommDao OBJ = new CommDao();
+
+	/** 非法线程 Id 集合 */
+	private Set<Long> _illegalThreadIdSet = null;
 	/** 实体管理器工厂 */
 	EntityManagerFactory _emf = null;
 
@@ -45,6 +51,33 @@ public class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_Ge
 	}
 
 	/**
+	 * 设置非法的线程 Id, 
+	 * 即调用 CommDao 时当前线程 Id 不能出现在非法线程列表里...
+	 * 
+	 * @param threadId
+	 * @return
+	 * 
+	 */
+	public CommDao putIllegalThreadId(long ... threadId) {
+		if (threadId == null || 
+			threadId.length <= 0) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return this;
+		}
+
+		if (this._illegalThreadIdSet == null) {
+			this._illegalThreadIdSet = new HashSet<>();
+		}
+
+		for (long illegalThreadId : threadId) {
+			this._illegalThreadIdSet.add(illegalThreadId);
+		}
+
+		return this;
+	}
+
+	/**
 	 * 查找数据库实体
 	 * 
 	 * @param <TEntity> 
@@ -61,6 +94,9 @@ public class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_Ge
 			return null;
 		}
 
+		// 检查线程 Id
+		this.checkThreadId();
+
 		// 获取实体管理器
 		EntityManager em = this._emf.createEntityManager();
 
@@ -72,5 +108,21 @@ public class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_Ge
 
 		// 保存实体
 		return em.find(clazz, id);
+	}
+
+	/**
+	 * 检查线程 Id
+	 * 
+	 */
+	void checkThreadId() {
+		// 获取当前线程 Id
+		final long threadId = Thread.currentThread().getId();
+
+		if (this._illegalThreadIdSet != null && 
+			this._illegalThreadIdSet.contains(threadId)) {
+			// 如果是在非法线程中执行操作, 
+			// 则直接抛出异常!
+			throw new DaoError("在非法线程中使用 CommDao 这是不允许的");
+		}
 	}
 }
