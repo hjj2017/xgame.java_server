@@ -2,7 +2,6 @@ package com.game.part.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-
 /**
  * MD5 加密编码工具类
  *
