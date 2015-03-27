@@ -3,7 +3,7 @@ package com.game.part.tmpl.type;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.game.part.tmpl.XSSFRowReadStream;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * Excel 列

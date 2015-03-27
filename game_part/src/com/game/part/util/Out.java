@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 /**
  * 输出参数
@@ -38,7 +38,7 @@ public class Out<T> {
 	 * @param val
 	 * 
 	 */
-	public static <T> void putVal(Out<T> out, T val) {
+	public static<T> void putVal(Out<T> out, T val) {
 		if (out != null) {
 			out.setVal(val);
 		}

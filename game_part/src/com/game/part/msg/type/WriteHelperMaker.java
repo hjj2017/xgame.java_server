@@ -18,8 +18,8 @@ import org.apache.mina.core.buffer.IoBuffer;
 import com.game.part.msg.MsgError;
 import com.game.part.msg.MsgLog;
 import com.game.part.msg.MsgServ;
-import com.game.part.utils.Assert;
-import com.game.part.utils.ClazzUtil;
+import com.game.part.util.Assert;
+import com.game.part.util.ClazzUtil;
 
 /**
  * 读取帮助器构建者

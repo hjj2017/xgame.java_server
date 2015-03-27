@@ -10,9 +10,9 @@ import java.util.List;
 import com.game.part.msg.type.AbstractMsgField;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.msg.type.MsgArrayList;
-import com.game.part.utils.Assert;
-import com.game.part.utils.ClazzUtil;
-import com.game.part.utils.FieldUtil;
+import com.game.part.util.Assert;
+import com.game.part.util.ClazzUtil;
+import com.game.part.util.FieldUtil;
 
 /**
  * 类定义验证器

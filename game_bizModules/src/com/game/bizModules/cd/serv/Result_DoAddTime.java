@@ -1,6 +1,6 @@
 package com.game.bizModules.cd.serv;
 
-import com.game.part.utils.BizResult;
+import com.game.part.util.BizResultObj;
 
 /**
  * 增加 Cd 时间
@@ -9,7 +9,7 @@ import com.game.part.utils.BizResult;
  * @since 2014/6/23
  * 
  */
-public class Result_DoAddTime extends BizResult {
+public class Result_DoAddTime extends BizResultObj {
 	@Override
 	protected void clearContent() {
 	}

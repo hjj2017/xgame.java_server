@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.game.bizModules.utils.ChangedRecordableObject;
-import com.game.part.utils.Assert;
-import com.game.part.utils.KeyValPair;
+import com.game.part.util.Assert;
+import com.game.part.util.KeyValPair;
 
 /**
  * 角色属性对象, 注意 : 该属性对象与 BattlePropsObj 不同!

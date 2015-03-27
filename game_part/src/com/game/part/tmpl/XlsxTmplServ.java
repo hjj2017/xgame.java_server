@@ -3,7 +3,7 @@ package com.game.part.tmpl;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 
 /**

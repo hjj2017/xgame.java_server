@@ -1,6 +1,6 @@
 package com.game.bizModules.login.serv;
 
-import com.game.part.utils.BizResult;
+import com.game.part.util.BizResultObj;
 
 /**
  * 登陆验证结果
@@ -9,7 +9,7 @@ import com.game.part.utils.BizResult;
  * @since 2014/9/10
  * 
  */
-public class Result_Auth extends BizResult {
+public class Result_Auth extends BizResultObj {
 	/** 验证成功 */
 	public boolean _success = false;
 

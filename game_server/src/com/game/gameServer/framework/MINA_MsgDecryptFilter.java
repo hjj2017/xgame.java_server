@@ -10,8 +10,8 @@ import org.apache.mina.core.session.IoSession;
 
 import com.game.gameServer.msg.SpecialMsgSerialUId;
 import com.game.part.msg.IoBuffUtil;
-import com.game.part.utils.BytesUtil;
-import com.game.part.utils.MD5Util;
+import com.game.part.util.BytesUtil;
+import com.game.part.util.MD5Util;
 
 /**
  * 消息解密, 该类负责三件事情:

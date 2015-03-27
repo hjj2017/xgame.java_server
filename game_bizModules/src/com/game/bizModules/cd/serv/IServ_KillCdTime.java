@@ -1,8 +1,8 @@
 package com.game.bizModules.cd.serv;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.part.utils.Assert;
-import com.game.part.utils.BizResultPool;
+import com.game.part.util.Assert;
+import com.game.part.util.BizResultPool;
 
 /**
  * 清除 Cd

@@ -6,7 +6,7 @@ import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.anno.XlsxTmpl;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * Cd 计时器模板

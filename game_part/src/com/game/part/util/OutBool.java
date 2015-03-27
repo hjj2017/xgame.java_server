@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 /**
  * 输出型 Boolean 参数

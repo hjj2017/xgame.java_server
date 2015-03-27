@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 /**
  * 业务结果对象池, 所有的业务返回结果, 从对象池里借出即可, 不需要自己 new!
@@ -15,7 +15,7 @@ public class BizResultPool {
 	 * @return
 	 * 
 	 */
-	public static <T extends BizResult> T borrow(Class<T> clazz) {
+	public static <T extends BizResultObj> T borrow(Class<T> clazz) {
 		// 断言参数不为空
 		Assert.notNull(clazz, "clazz");
 		// 获取线程本地对象并清理内容

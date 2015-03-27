@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.OneToOne;
-import com.game.part.utils.Assert;
-import com.game.part.utils.ClazzUtil;
+import com.game.part.util.Assert;
+import com.game.part.util.ClazzUtil;
 
 /**
  * OneToOne, OneToMany 关键字及字典对应关系定义

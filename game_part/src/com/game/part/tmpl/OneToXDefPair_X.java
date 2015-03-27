@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.game.part.tmpl.anno.OneToOne;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * OneToXDefPair_X

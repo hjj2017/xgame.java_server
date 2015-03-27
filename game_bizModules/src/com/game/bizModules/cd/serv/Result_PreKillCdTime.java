@@ -1,7 +1,7 @@
 package com.game.bizModules.cd.serv;
 
 import com.game.bizModules.cd.model.CdTypeEnum;
-import com.game.part.utils.BizResult;
+import com.game.part.util.BizResultObj;
 
 /**
  * 预杀死 CD 时间
@@ -10,7 +10,7 @@ import com.game.part.utils.BizResult;
  * @since 2013/6/8
  * 
  */
-public class Result_PreKillCdTime extends BizResult {
+public class Result_PreKillCdTime extends BizResultObj {
 	/** CD 类型 */
 	private CdTypeEnum _cdType = null;
 	/** 剩余 CD 时间 */

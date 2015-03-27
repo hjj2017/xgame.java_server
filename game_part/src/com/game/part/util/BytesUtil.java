@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 /**
  * 字节实用工具类

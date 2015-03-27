@@ -1,6 +1,6 @@
 package com.game.part.io;
 
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * IO 操作处理器

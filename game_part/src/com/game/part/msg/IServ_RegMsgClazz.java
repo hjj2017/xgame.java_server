@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.msg.type.ReadHelperMaker;
 import com.game.part.msg.type.WriteHelperMaker;
-import com.game.part.utils.ClazzUtil;
+import com.game.part.util.ClazzUtil;
 
 /**
  * 注册消息类

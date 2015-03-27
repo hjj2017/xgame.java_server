@@ -8,7 +8,7 @@ import com.game.gameServer.io.AbstractPlatformIoOper;
 import com.game.gameServer.io.IBindUUIDIoOper;
 import com.game.gameServer.io.IoOperThreadEnum;
 import com.game.gameServer.io.IoOperThreadEnum.GroupEnum;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 可执行 IO 操作的接口

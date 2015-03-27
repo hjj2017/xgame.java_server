@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 验证

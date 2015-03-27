@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.game.part.ThreadNamingFactory;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 import com.sun.istack.internal.NotNull;
 
 /**

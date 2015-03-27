@@ -5,7 +5,7 @@ import com.game.bizModules.cd.msg.CGKillCdTimeMsg;
 import com.game.bizModules.cd.serv.CdServ;
 import com.game.bizModules.cd.serv.Result_KillCdTime;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 清除 Cd 

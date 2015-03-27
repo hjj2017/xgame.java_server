@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import org.apache.mina.core.buffer.IoBuffer;
 
 import com.game.part.msg.IoBuffUtil;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 消息数组列表

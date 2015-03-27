@@ -7,7 +7,7 @@ import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 消息 IO 处理器

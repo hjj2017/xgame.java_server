@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

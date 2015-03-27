@@ -5,8 +5,8 @@ import net.sf.json.JSONObject;
 import com.game.bizModules.login.serv.auth.Auth_ByPasswd;
 import com.game.bizModules.login.serv.auth.Auth_BySigninServer;
 import com.game.bizModules.login.serv.auth.IAuthorize;
-import com.game.part.utils.Assert;
-import com.game.part.utils.BizResultPool;
+import com.game.part.util.Assert;
+import com.game.part.util.BizResultPool;
 
 /**
  * 验证登陆字符串

@@ -3,7 +3,7 @@ package com.game.bizModules.building.tmpl;
 import java.util.List;
 
 import com.game.part.tmpl.IXlsxValidator;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 验证器

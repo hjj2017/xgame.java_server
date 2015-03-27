@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 /**
  * 枚举帮着类
@@ -16,7 +16,7 @@ public final class EnumHelper {
 	 * @return 
 	 * 
 	 */
-	public static <T extends ICustomEnum> T parse(int intVal, T[] enums) {
+	public static<T extends ICustomEnum> T parse(int intVal, T[] enums) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(enums, "null enums");
 
@@ -37,7 +37,7 @@ public final class EnumHelper {
 	 * @return 
 	 * 
 	 */
-	public static <T extends ICustomEnum> T parse(String strVal, T[] enums) {
+	public static<T extends ICustomEnum> T parse(String strVal, T[] enums) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(enums, "enums is null or empty");
 

@@ -14,7 +14,7 @@ import javassist.CtMethod;
 import javassist.CtNewMethod;
 
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 
 /**

@@ -4,7 +4,7 @@ import com.game.bizModules.cd.CdLangDef;
 import com.game.bizModules.cd.model.CdTimer;
 import com.game.bizModules.cd.model.CdTypeEnum;
 import com.game.bizModules.cd.tmpl.CdTimerTmpl;
-import com.game.part.utils.BizResultPool;
+import com.game.part.util.BizResultPool;
 
 /**
  * 是否可以增加 Cd 时间

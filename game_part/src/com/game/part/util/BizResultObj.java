@@ -1,4 +1,4 @@
-package com.game.part.utils;
+package com.game.part.util;
 
 import java.util.Set;
 
@@ -11,7 +11,7 @@ import org.apache.mina.util.ConcurrentHashSet;
  * @since 2013/3/19
  * 
  */
-public abstract class BizResult {
+public abstract class BizResultObj {
 	/** 错误代码 */
 	public int _errorCode = -1;
 	/** 警告集合 */
@@ -21,7 +21,7 @@ public abstract class BizResult {
 	 * 类默认构造器
 	 * 
 	 */
-	public BizResult() {
+	public BizResultObj() {
 	}
 
 	/**

@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.game.part.utils.Assert;
+import com.game.part.util.Assert;
 
 /**
  * 通用 DAO
