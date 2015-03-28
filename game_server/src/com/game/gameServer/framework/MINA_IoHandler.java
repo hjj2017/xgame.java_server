@@ -5,8 +5,8 @@ import org.apache.mina.core.session.IoSession;
 
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.SpecialMsgSerialUId;
 import com.game.part.msg.MsgServ;
-import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.util.Assert;
 
 /**
@@ -21,6 +21,11 @@ class MINA_IoHandler extends IoHandlerAdapter {
 	public void sessionCreated(IoSession sessionObj) {
 		// 断言参数对象不为空
 		Assert.notNull(sessionObj);
+
+		// 获取消息对象
+		AbstractCGMsgObj<?> cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_OPENED);
+		// 发送消息
+		this.postMsg(sessionObj, cgMsgObj);
 	}
 
 	@Override
@@ -30,24 +35,47 @@ class MINA_IoHandler extends IoHandlerAdapter {
 		Assert.notNull(obj);
 
 		if (obj instanceof AbstractCGMsgObj) {
-			// 转型为 CGMsg
-			AbstractCGMsgObj<?> cgMsgObj = (AbstractCGMsgObj<?>)obj;
-			// 设置消息处理器
-			AbstractCGMsgHandler<?> handler = cgMsgObj.getSelfHandler();
-
-			if (handler != null) {
-				// 设置会话 Id
-				handler._sessionId = sessionObj.getId();
-			}
+			// 发送消息
+			this.postMsg(sessionObj, (AbstractCGMsgObj<?>)obj);
 		}
-
-		// 分派消息对象
-		MsgServ.OBJ.post((AbstractMsgObj)obj);
 	}
 
 	@Override
 	public void sessionClosed(IoSession sessionObj) {
 		// 断言参数对象不为空
 		Assert.notNull(sessionObj);
+
+		// 获取消息对象
+		AbstractCGMsgObj<?> cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_CLOSED);
+		// 发送消息
+		this.postMsg(sessionObj, cgMsgObj);
+	}
+
+	/**
+	 * 发送消息对象
+	 * 
+	 * @param fromSessionObj
+	 * @param cgMsgObj
+	 * 
+	 */
+	private void postMsg(
+		IoSession fromSessionObj, AbstractCGMsgObj<?> cgMsgObj) {
+		if (fromSessionObj == null || 
+			cgMsgObj == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		// 设置消息处理器
+		AbstractCGMsgHandler<?> handler = cgMsgObj.getSelfHandler();
+
+		if (handler != null) {
+			// 设置会话 Id
+			handler._sessionId = fromSessionObj.getId();
+		}
+
+		// 分派消息对象
+		MsgServ.OBJ.post(cgMsgObj);
 	}
 }
