@@ -9,11 +9,18 @@ package com.game.part.lazySaving;
  */
 @FunctionalInterface
 public interface ILazySavingPredication {
-	/** 无条件保存所有数据 */
+	/**
+	 * 无条件保存所有数据,
+	 * 可以用这个条件来完成停服前的数据保存操作...
+	 * 代码示例:
+	 * <pre>
+	 * LazySavingHelper.OBJ.execUpdate(ILazySavingPredication.unreserved);
+	 * </pre>
+	 * 
+	 */
 	public static final ILazySavingPredication unreserved = new ILazySavingPredication() {
 		@Override
-		public boolean predicate(
-			ILazySavingObj<?> po) {
+		public boolean predicate(ILazySavingObj<?, ?> lso) {
 			return true;
 		}
 	};
@@ -25,5 +32,5 @@ public interface ILazySavingPredication {
 	 * @return
 	 * 
 	 */
-	boolean predicate(ILazySavingObj<?> lso);
+	boolean predicate(ILazySavingObj<?, ?> lso);
 }

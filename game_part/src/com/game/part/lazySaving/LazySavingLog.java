@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @since 2015/3/30
  * 
  */
-public class LazySavingLog {
+class LazySavingLog {
 	/** 日志对象 */
 	final static Logger LOG = LoggerFactory.getLogger(LazySavingLog.class);
 
