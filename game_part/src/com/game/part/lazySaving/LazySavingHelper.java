@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.game.part.io.IoOperServ;
+
 /**
  * 数据更新器
  * 
@@ -24,6 +26,8 @@ public final class LazySavingHelper {
 	private final AtomicBoolean _isUpdating = new AtomicBoolean(false);
 	/** 当数据对象空闲超过指定时间后才真正执行更新操作 */
 	public long _idelToUpdate = 2L * 60L * 1000L;
+	/** IO 服务 */
+	public IoOperServ<?> _ioServ = null;
 
 	/**
 	 * 类默认构造器
@@ -39,7 +43,7 @@ public final class LazySavingHelper {
 	 * @return 
 	 * 
 	 */
-	public boolean addUpdate(ILazySavingObj<?> lso) {
+	public boolean addUpdate(ILazySavingObj<?, ?> lso) {
 		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -123,7 +127,7 @@ public final class LazySavingHelper {
 	 * @return 
 	 * 
 	 */
-	public boolean addDel(ILazySavingObj<?> lso) {
+	public boolean addDel(ILazySavingObj<?, ?> lso) {
 		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!

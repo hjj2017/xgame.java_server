@@ -17,7 +17,9 @@ public interface IIoOper {
 	 * </ul>
 	 * 
 	 */
-	boolean doInit();
+	default boolean doInit() {
+		return true;
+	}
 
 	/**
 	 * 执行异步过程, <font color='#990000'>该操作会在异步线程中执行</font>

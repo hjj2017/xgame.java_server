@@ -15,7 +15,7 @@ public class LifeCycle {
 	/** 当前状态, 默认为冬眠状态 */
 	LifeCycleStateEnum _currState = LifeCycleStateEnum.hibernate;
 	/** 所指向的业务对象 */
-	final ILazySavingObj<?> _lazySavingObj;
+	final ILazySavingObj<?, ?> _lazySavingObj;
 
 	/**
 	 * 类参数构造器
@@ -23,7 +23,7 @@ public class LifeCycle {
 	 * @param lso
 	 * 
 	 */
-	public LifeCycle(ILazySavingObj<?> lso) {
+	public LifeCycle(ILazySavingObj<?, ?> lso) {
 		// 断言参数对象不为空
 		Assert.notNull(lso, "lso");
 		// 设置业务对象
