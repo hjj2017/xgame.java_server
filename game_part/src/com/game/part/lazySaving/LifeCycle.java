@@ -50,7 +50,7 @@ public class LifeCycle {
 
 	/**
 	 * 令对象进入冬眠状态, 
-	 * 此时该对象将不参与保存操作
+	 * 此时该对象将不参与保存或删除操作
 	 * 
 	 */
 	public void hibernate() {
