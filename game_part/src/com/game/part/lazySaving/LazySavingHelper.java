@@ -58,7 +58,8 @@ public final class LazySavingHelper {
 	 * 
 	 */
 	public boolean addUpdate(LifeCycle lc) {
-		if (lc == null) {
+		if (lc == null || 
+			lc._currState != LifeCycleStateEnum.active) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return false;
@@ -135,7 +136,8 @@ public final class LazySavingHelper {
 	 * 
 	 */
 	public boolean addDel(LifeCycle lc) {
-		if (lc == null) {
+		if (lc == null || 
+			lc._currState != LifeCycleStateEnum.active) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return false;
