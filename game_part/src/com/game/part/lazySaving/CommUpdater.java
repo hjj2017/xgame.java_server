@@ -50,15 +50,28 @@ class CommUpdater {
 			return;
 		}
 
-		// 通过 IO 服务执行保存操作
-		LazySavingHelper.OBJ._ioServ.execute(new IIoOper() {
-			@Override
-			public boolean doIo() {
-				// 保存到数据库
-				CommDao.OBJ.save(entity);
-				return true;
-			}
-		}, this.getThreadEnum(lso));
+		if (LazySavingHelper.OBJ._ioServ == null) {
+			// 
+			// 如果没有设置 IO 服务, 
+			// 则直接在当前线程执行保存/更新操作...
+			// 注意 : 这会阻塞当前线程!
+			LazySavingLog.LOG.warn(MessageFormat.format(
+				"没有设置 IO 服务, 在当前线程 {0} 中执行保存/更新操作! 业务对象 UId = {1}", 
+				Thread.currentThread().getName(), 
+				lso.getUId()
+			));
+			CommDao.OBJ.save(entity);
+		} else {
+			// 通过 IO 服务执行保存操作
+			LazySavingHelper.OBJ._ioServ.execute(new IIoOper() {
+				@Override
+				public boolean doIo() {
+					// 保存到数据库
+					CommDao.OBJ.save(entity);
+					return true;
+				}
+			}, this.getThreadEnum(lso));
+		}
 	}
 
 	/**
@@ -81,7 +94,7 @@ class CommUpdater {
 	/**
 	 * 删除业务对象
 	 * 
-	 * @param po 
+	 * @param lso 
 	 * 
 	 */
 	void del(ILazySavingObj<?, ?> lso) {
@@ -110,11 +123,11 @@ class CommUpdater {
 			// 则直接在当前线程执行删除操作...
 			// 注意 : 这会阻塞当前线程!
 			LazySavingLog.LOG.warn(MessageFormat.format(
-				"没有设置 IO 服务, 在当前线程 {0} 执行删除操作! 业务对象 UId = {1}", 
+				"没有设置 IO 服务, 在当前线程 {0} 中执行删除操作! 业务对象 UId = {1}", 
 				Thread.currentThread().getName(), 
 				lso.getUId()
 			));
-			CommDao.OBJ.del(entity.getClass(), "");
+			CommDao.OBJ.del(entity);
 		} else {
 			// 
 			// 如果已经设置了 IO 服务, 
@@ -123,7 +136,7 @@ class CommUpdater {
 				@Override
 				public boolean doIo() {
 					// 从数据库中删除
-					CommDao.OBJ.del(entity.getClass(), "");
+					CommDao.OBJ.del(entity);
 					return true;
 				}
 			}, this.getThreadEnum(lso));

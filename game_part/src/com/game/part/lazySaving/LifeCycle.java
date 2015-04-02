@@ -70,7 +70,7 @@ public class LifeCycle {
 	 * 销毁对象, 此时对象将被删除
 	 * 
 	 */
-	public void destroy() {
+	void destroy() {
 		this._currState = LifeCycleStateEnum.destoryed;
 	}
 

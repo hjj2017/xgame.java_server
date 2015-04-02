@@ -28,11 +28,50 @@ interface IDao_Del {
 	/**
 	 * 删除数据实体
 	 * 
+	 * @param entity
+	 * 
+	 */
+	default void del(Object entity) {
+		if (entity == null) {
+			return;
+		}
+
+		// 检查线程 Id
+		CommDao.OBJ.checkThreadId();
+
+		// 获取实体管理器
+		EntityManager em = CommDao.OBJ._emf.createEntityManager();
+
+		if (em == null) {
+			// 如果实体管理器为空, 
+			// 则直接退出!
+			return;
+		}
+
+		try {
+			// 创建数据库事务
+			EntityTransaction tranx = em.getTransaction();
+			// 开始事务过程
+			tranx.begin();
+			// 删除实体数据
+			em.remove(entity);
+			em.flush();
+			// 提交事务
+			tranx.commit();
+		} catch (Exception ex) {
+			// 记录错误日志
+			DaoLog.LOG.error(ex.getMessage(), ex);
+		}
+	}
+
+	/**
+	 * 删除数据实体
+	 * 
 	 * @param clazz
 	 * @param id
 	 * 
 	 */
-	default void del(Class<?> clazz, Object id) {
+	default <T> void del(Class<T> clazz, Object id) {
 		if (clazz == null || 
 			id == null) {
 			// 如果参数对象为空, 

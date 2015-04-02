@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.game.part.io.IoOperServ;
 
@@ -22,8 +21,6 @@ public final class LazySavingHelper {
 
 	/** 变化的数据列表 */
 	private final Map<Serializable, UpdateEntry> _changeObjMap = new ConcurrentHashMap<>();
-	/** 是否正在执行Update操作 */
-	private final AtomicBoolean _isUpdating = new AtomicBoolean(false);
 	/** 当数据对象空闲超过指定时间后才真正执行更新操作 */
 	public long _idelToUpdate = 2L * 60L * 1000L;
 	/** IO 服务 */
@@ -64,13 +61,6 @@ public final class LazySavingHelper {
 		if (lc == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			return false;
-		}
-
-		if (this._isUpdating.get()) {
-			// 如果正在更新中, 
-			// 则直接退出!
-			LazySavingLog.LOG.error("正在执行更新操作, 无法添加新对象");
 			return false;
 		}
 
@@ -224,15 +214,6 @@ public final class LazySavingHelper {
 	 * 
 	 */
 	public final void execUpdate(ILazySavingPredication pred) {
-		if (this._isUpdating.get()) {
-			// 如果正在更新中, 
-			// 则直接退出!
-			LazySavingLog.LOG.error("正在更新中, 所以忽略此次操作");
-			return;
-		}
-
-		// 将更新标识设置为 true
-		this._isUpdating.set(true);
 		// 获取当前时间
 		long nowTime = this.nowTime();
 		// 开始时间
@@ -284,13 +265,15 @@ public final class LazySavingHelper {
 
 			try {
 				if (entry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
-					// 执行更新操作
-					this.doSaveOrUpdate(lc);
+					// 执行保存或更新操作
+					CommUpdater.OBJ.saveOrUpdate(lc._lazySavingObj);
 				} else {
 					// 执行删除操作
-					this.doDel(lc);
+					CommUpdater.OBJ.del(lc._lazySavingObj);
+					// 在这里销毁业务对象!
+					lc.destroy();
 				}
-				
+
 				// 从字典中移除对象
 				it.remove();
 			} catch (Exception ex) {
@@ -309,43 +292,5 @@ public final class LazySavingHelper {
 			"更新消耗时间 = {0}(ms)", 
 			String.valueOf(costTime)
 		));
-
-		// 更新已完成
-		this._isUpdating.set(false);
-	}
-
-	/**
-	 * 执行插入或更新操作
-	 * 
-	 * @param lc 
-	 * 
-	 */
-	private void doSaveOrUpdate(LifeCycle lc) {
-		if (lc == null || 
-			lc._lazySavingObj == null) {
-			// 如果对象参数为空,
-			// 则直接退出!
-			return;
-		} else {
-			// 执行保存或更新操作
-			CommUpdater.OBJ.saveOrUpdate(lc._lazySavingObj);
-		}
-	}
-
-	/**
-	 * 执行删除操作
-	 * 
-	 * @param lc 
-	 * 
-	 */
-	private void doDel(LifeCycle lc) {
-		if (lc == null) {
-			// 如果对象参数为空,
-			// 则直接退出!
-			return;
-		} else {
-			// 执行删除操作
-			CommUpdater.OBJ.del(lc._lazySavingObj);
-		}
 	}
 }
