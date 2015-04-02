@@ -1,42 +1,40 @@
-package com.game.gameServer.common.db;
+package com.game.part.lazySaving;
 
-import java.io.Serializable;
-
-import com.game.core.orm.IBaseEntity;
-import com.game.core.persistance.IPOUpdater;
-import com.game.core.persistance.IPersistanceObject;
-import com.game.db.dao.CommDao;
+import com.game.part.dao.CommDao;
 
 /**
- * 通用的 PO 更新器
+ * 通用的 LSO 更新器
  * 
  * @author hjj2017
  * @since 2015/3/31
  * 
  */
-public class CommPOUpdater implements IPOUpdater {
-	/** 单例对象 */
-	public static final CommPOUpdater OBJ = new CommPOUpdater();
-	/** 通用的 DAO */
-	public CommDao _commDao = null;
+class CommUpdater {
+	/** 通用的更新器 */
+	static final CommUpdater OBJ = new CommUpdater();
 
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	private CommPOUpdater() {
+	private CommUpdater() {
 	}
 
-	@Override
-	public void save(IPersistanceObject<?, ?> po) {
-		if (po == null) {
+	/**
+	 * 保存或者更新业务对象
+	 * 
+	 * @param lso 
+	 * 
+	 */
+	void saveOrUpdate(ILazySavingObj<?> lso) {
+		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
 		}
 
-		@SuppressWarnings("unchecked")
-		IBaseEntity<Serializable> entity = (IBaseEntity<Serializable>)po.toEntity();
+		// 获取数据库实体
+		Object entity = lso.toEntity();
 
 		if (entity == null) {
 			// 如果实体数据为空, 
@@ -45,19 +43,24 @@ public class CommPOUpdater implements IPOUpdater {
 		}
 
 		// 保存到数据库
-		this._commDao.saveOrUpdate(entity);
+		CommDao.OBJ.save(entity);
 	}
 
-	@Override
-	public void delete(IPersistanceObject<?, ?> po) {
-		if (po == null) {
+	/**
+	 * 删除业务对象
+	 * 
+	 * @param po 
+	 * 
+	 */
+	void del(ILazySavingObj<?> lso) {
+		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
 		}
 
-		@SuppressWarnings("unchecked")
-		IBaseEntity<Serializable> entity = (IBaseEntity<Serializable>)po.toEntity();
+		// 获取数据库实体
+		Object entity = lso.toEntity();
 
 		if (entity == null) {
 			// 如果实体数据为空, 
@@ -65,7 +68,7 @@ public class CommPOUpdater implements IPOUpdater {
 			return;
 		}
 
-		// 保存到数据库
-		this._commDao.delete(entity);
+		// 从数据库中删除
+		CommDao.OBJ.del(entity.getClass(), "");
 	}
 }

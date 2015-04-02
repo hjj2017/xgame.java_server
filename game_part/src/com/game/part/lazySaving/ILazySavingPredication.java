@@ -1,28 +1,29 @@
-package com.game.core.persistance;
+package com.game.part.lazySaving;
 
 /**
- * PO 断言
+ * 延迟保存断言
  * 
  * @author hjj2017
  * @since 2015/3/31
  * 
  */
-public interface IPOPredication {
+@FunctionalInterface
+public interface ILazySavingPredication {
 	/** 无条件保存所有数据 */
-	public static final IPOPredication unreserved = new IPOPredication() {
+	public static final ILazySavingPredication unreserved = new ILazySavingPredication() {
 		@Override
 		public boolean predicate(
-			IPersistanceObject<?, ?> po) {
+			ILazySavingObj<?> po) {
 			return true;
 		}
 	};
 
 	/**
-	 * 断言 PO, 主要用于判断 PO 是否需要更新
+	 * 断言 LSO, 主要用于判断业务对象是否需要保存?
 	 * 
-	 * @param po
+	 * @param lso
 	 * @return
 	 * 
 	 */
-	boolean predicate(IPersistanceObject<?, ?> po);
+	boolean predicate(ILazySavingObj<?> lso);
 }

@@ -1,23 +1,23 @@
-package com.game.core.persistance;
+package com.game.part.lazySaving;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 持久层 LOG
+ * 延迟保存 LOG
  * 
  * @author hjj2017
  * @since 2015/3/30
  * 
  */
-public class PersistanceLog {
+public class LazySavingLog {
 	/** 日志对象 */
-	final static Logger LOG = LoggerFactory.getLogger(PersistanceLog.class);
+	final static Logger LOG = LoggerFactory.getLogger(LazySavingLog.class);
 
 	/**
 	 * 类参数构造器
 	 * 
 	 */
-	private PersistanceLog() {
+	private LazySavingLog() {
 	}
 }

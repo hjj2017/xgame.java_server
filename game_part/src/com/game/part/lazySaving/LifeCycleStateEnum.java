@@ -1,21 +1,21 @@
-package com.game.core.persistance;
+package com.game.part.lazySaving;
 
 /**
  * 对象实例的生命状态
  * 
- * @author Unknown
+ * @author hjj2017
  * @since 2015/3/31
  * 
  */
 enum LifeCycleStateEnum {
 	/** 
-	 * 非活动状态,
+	 * 冬眠状态,
 	 * 如果一个对象还不存在于游戏世界中, 
 	 * 即, 还未参与到游戏的逻辑中, 
 	 * 必须处于该状态
 	 * 
 	 */
-	deactive,
+	hibernate,
 
 	/** 
 	 * 活动状态,

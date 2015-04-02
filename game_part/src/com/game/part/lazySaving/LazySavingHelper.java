@@ -1,14 +1,11 @@
-package com.game.core.persistance;
+package com.game.part.lazySaving;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.game.core.time.ITimeService;
 
 /**
  * 数据更新器
@@ -17,42 +14,38 @@ import com.game.core.time.ITimeService;
  * @since 2015/3/30
  * 
  */
-public final class PersistanceHelper {
+public final class LazySavingHelper {
 	/** 单例对象 */
-	public static final PersistanceHelper OBJ = new PersistanceHelper();
+	public static final LazySavingHelper OBJ = new LazySavingHelper();
 
 	/** 变化的数据列表 */
 	private final Map<Serializable, UpdateEntry> _changeObjMap = new ConcurrentHashMap<>();
 	/** 是否正在执行Update操作 */
 	private final AtomicBoolean _isUpdating = new AtomicBoolean(false);
-	/** 时间服务 */
-	public ITimeService _timeServ;
 	/** 当数据对象空闲超过指定时间后才真正执行更新操作 */
-	public long _idelToUpdate = 5000L;
-	/** 更新操作字典, 主要是 PO 类与 IPOUpdater 之间的对应关系 */
-	public final Map<Class<? extends IPersistanceObject<?, ?>>, IPOUpdater> _updaterMap = new ConcurrentHashMap<>();
+	public long _idelToUpdate = 2L * 60L * 1000L;
 
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	private PersistanceHelper() {
+	private LazySavingHelper() {
 	}
 
 	/**
 	 * 增加要被更新的对象
 	 * 
-	 * @param po
+	 * @param lso
 	 * @return 
 	 * 
 	 */
-	public boolean addUpdate(IPersistanceObject<?, ?> po) {
-		if (po == null) {
+	public boolean addUpdate(ILazySavingObj<?> lso) {
+		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return false;
 		} else {
-			return this.addUpdate(po.getLifeCycle());
+			return this.addUpdate(lso.getLifeCycle());
 		}
 	}
 
@@ -63,7 +56,7 @@ public final class PersistanceHelper {
 	 * @return
 	 * 
 	 */
-	public boolean addUpdate(ILifeCycle lc) {
+	public boolean addUpdate(LifeCycle lc) {
 		if (lc == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -73,27 +66,27 @@ public final class PersistanceHelper {
 		if (this._isUpdating.get()) {
 			// 如果正在更新中, 
 			// 则直接退出!
-			PersistanceLog.LOG.error("正在执行更新操作, 无法添加新对象");
+			LazySavingLog.LOG.error("正在执行更新操作, 无法添加新对象");
 			return false;
 		}
 
-		// 获取关键字
-		final Serializable key = lc.getKey();
+		// 获取业务对象 UId
+		final String lsoUId = lc.getUId();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = this._changeObjMap.get(key);
+		UpdateEntry oldEntry = this._changeObjMap.get(lsoUId);
 		// 获取当前时间
 		long nowTime = this.nowTime();
 
 		do {
 			if (oldEntry != null) {
-				if (UpdateEntry.isInsertOrUpdateOper(oldEntry) == false) {
+				if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
 					// 如果已有的入口是删除操作,
 					// 我擦, 那到底是删除还是更新啊...
 					// 放弃已有的删除操作, 
 					// 改为更新操作...
-					PersistanceLog.LOG.error(MessageFormat.format(
+					LazySavingLog.LOG.error(MessageFormat.format(
 						"准备将对象标记为更新操作, 但是已存在一个 key ( = {0} ) 相同的删除操作, 所以放弃删除操作改为更新操作", 
-						key
+						lsoUId
 					));
 					break;
 				}
@@ -101,7 +94,7 @@ public final class PersistanceHelper {
 				if (oldEntry._lifeCycle != lc) {
 					// 如果 LifeCycle 不是同一个对象, 
 					// 则直接退出!
-					PersistanceLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的"); 
+					LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的"); 
 					return false;
 				} else {
 					// 如果是同一对象, 
@@ -114,27 +107,29 @@ public final class PersistanceHelper {
 		} while (false);
 
 		// 创建新的进入点
-		UpdateEntry newEntry = UpdateEntry.createInsertOrUpdateEntry(lc, nowTime);
+		UpdateEntry newEntry = new UpdateEntry(lc, UpdateEntry.OPT_saveOrUpdate);
+		// 设置最后修改时间
+		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典中
-		this._changeObjMap.put(key, newEntry);
+		this._changeObjMap.put(lsoUId, newEntry);
 
 		return true;
 	}
 
 	/**
-	 * 增加要被更新的对象
+	 * 增加要被删除的对象
 	 * 
 	 * @param po
 	 * @return 
 	 * 
 	 */
-	public boolean addDelete(IPersistanceObject<?, ?> po) {
-		if (po == null) {
+	public boolean addDel(ILazySavingObj<?> lso) {
+		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return false;
 		} else {
-			return this.addDelete(po.getLifeCycle());
+			return this.addDel(lso.getLifeCycle());
 		}
 	}
 
@@ -145,25 +140,25 @@ public final class PersistanceHelper {
 	 * @return
 	 * 
 	 */
-	public boolean addDelete(ILifeCycle lc) {
+	public boolean addDel(LifeCycle lc) {
 		if (lc == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return false;
 		}
 
-		// 获取关键字
-		final Serializable key = lc.getKey();
+		// 获取业务对象 UId
+		final String lsoUId = lc.getUId();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = this._changeObjMap.get(key);
+		UpdateEntry oldEntry = this._changeObjMap.get(lsoUId);
 
 		if (oldEntry != null) {
-			if (UpdateEntry.isInsertOrUpdateOper(oldEntry)) {
+			if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
 				// 如果已有的入口是更新操作,
 				// 我擦, 那到底是删除还是更新啊...
-				PersistanceLog.LOG.error(MessageFormat.format(
+				LazySavingLog.LOG.error(MessageFormat.format(
 					"准备将对象标记为删除操作, 但是已存在一个 key ( = {0} ) 相同的更新操作, 所以本次删除操作被忽略", 
-					key
+					lsoUId
 				));
 				return false;
 			}
@@ -171,7 +166,7 @@ public final class PersistanceHelper {
 			if (oldEntry._lifeCycle != lc) {
 				// 如果 LifeCycle 不是同一个对象, 
 				// 则直接退出!
-				PersistanceLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的");
+				LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的");
 				return false;
 			} else {
 				// 如果是同一对象, 
@@ -180,12 +175,17 @@ public final class PersistanceHelper {
 			}
 		}
 
+		// 
 		// 创建新的进入点
 		// 注意 : 删除对象时会立即执行! 所以, 
 		// 在这里的时间戳会设置为 0
-		UpdateEntry newEntry = UpdateEntry.createDeleteEntry(lc, 0L);
+		// 
+		// 创建新的进入点
+		UpdateEntry newEntry = new UpdateEntry(lc, UpdateEntry.OPT_saveOrUpdate);
+		// 设置最后修改时间
+		newEntry._lastModifiedTime = 0L;
 		// 添加到字典
-		this._changeObjMap.put(key, newEntry);
+		this._changeObjMap.put(lsoUId, newEntry);
 
 		return true;
 	}
@@ -197,13 +197,8 @@ public final class PersistanceHelper {
 	 * 
 	 */
 	private long nowTime() {
-		if (this._timeServ != null) {
-			// 获取当前时间戳
-			return this._timeServ.now();
-		} else {
-			// 获取系统时间
-			return System.currentTimeMillis();
-		}
+		// 获取系统时间
+		return System.currentTimeMillis();
 	}
 
 	/**
@@ -222,23 +217,22 @@ public final class PersistanceHelper {
 	 * 空闲时间参数由 {@link #_idelToUpdate} 指定
 	 * 
 	 * @param pred
-	 * @see _idelToUpdate
 	 * 
 	 */
-	public final void execUpdate(IPOPredication pred) {
+	public final void execUpdate(ILazySavingPredication pred) {
 		if (this._isUpdating.get()) {
 			// 如果正在更新中, 
 			// 则直接退出!
-			PersistanceLog.LOG.error("正在更新中, 所以忽略此次操作");
+			LazySavingLog.LOG.error("正在更新中, 所以忽略此次操作");
 			return;
 		}
 
 		// 将更新标识设置为 true
 		this._isUpdating.set(true);
-		// 开始时间
-		long startTime = System.currentTimeMillis();
 		// 获取当前时间
 		long nowTime = this.nowTime();
+		// 开始时间
+		long startTime = nowTime;
 
 		// 获取迭代器
 		Iterator<UpdateEntry> it = this._changeObjMap.values().iterator();
@@ -256,21 +250,21 @@ public final class PersistanceHelper {
 			}
 
 			// 获取 LifeCycle
-			ILifeCycle lc = entry._lifeCycle;
+			LifeCycle lc = entry._lifeCycle;
 
-			if (lc.isActive() == false) {
+			if (lc._currState != LifeCycleStateEnum.active) {
 				// 如果 LifeCycle 尚未激活, 
 				// 则直接跳过!
-				PersistanceLog.LOG.error(MessageFormat.format(
+				LazySavingLog.LOG.error(MessageFormat.format(
 					"尚未激活 LifeCycle, key = {0}", 
-					lc.getKey()
+					lc.getUId()
 				));
 				it.remove();
 				continue;
 			}
 
 			if (pred != null) {
-				if (pred.predicate(lc.getPO()) == false) {
+				if (pred.predicate(lc._lazySavingObj) == false) {
 					// 如果有断言对象, 
 					// 并且当前 PO 不满足条件, 
 					// 则直接退出!
@@ -285,29 +279,29 @@ public final class PersistanceHelper {
 			}
 
 			try {
-				if (UpdateEntry.isInsertOrUpdateOper(entry)) {
+				if (entry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
 					// 执行更新操作
-					this.doInsertOrUpdate(lc);
+					this.doSaveOrUpdate(lc);
 				} else {
 					// 执行删除操作
-					this.doDelete(lc);
+					this.doDel(lc);
 				}
 				
 				// 从字典中移除对象
 				it.remove();
 			} catch (Exception ex) {
 				// 记录异常日志
-				PersistanceLog.LOG.error(ex.getMessage(), ex);
+				LazySavingLog.LOG.error(ex.getMessage(), ex);
 			}
 		}
 
 		// 获取结束时间
-		long endTime = System.currentTimeMillis();
+		long endTime = this.nowTime();
 		// 获取花费时间
 		long costTime = endTime - startTime;
 
 		// 记录调试信息
-		PersistanceLog.LOG.debug(MessageFormat.format(
+		LazySavingLog.LOG.debug(MessageFormat.format(
 			"更新消耗时间 = {0}(ms)", 
 			String.valueOf(costTime)
 		));
@@ -322,37 +316,16 @@ public final class PersistanceHelper {
 	 * @param lc 
 	 * 
 	 */
-	private void doInsertOrUpdate(ILifeCycle lc) {
+	private void doSaveOrUpdate(LifeCycle lc) {
 		if (lc == null || 
-			lc.getPO() == null) {
+			lc._lazySavingObj == null) {
 			// 如果对象参数为空,
 			// 则直接退出!
 			return;
+		} else {
+			// 执行保存或更新操作
+			CommUpdater.OBJ.saveOrUpdate(lc._lazySavingObj);
 		}
-
-		// 获取要被保存的对象
-		IPersistanceObject<?, ?> po = lc.getPO();
-		// 获取更新器
-		IPOUpdater updater = this._updaterMap.get(po.getClass());
-
-		if (updater == null) {
-			// 如果更新器为空, 
-			// 则直接抛出运行时异常!
-			throw new RuntimeException(MessageFormat.format(
-				"未找到与类 {0} 相对应的更新器", 
-				po.getClass().getName()
-			));
-		}
-
-		// 记录调试日志
-		PersistanceLog.LOG.debug(MessageFormat.format(
-			"准备保存数据 poClazz = {0}, key = {1}", 
-			po.getClass().getName(), 
-			lc.getKey()
-		));
-
-		// 执行插入或更新操作
-		updater.save(po);
 	}
 
 	/**
@@ -361,48 +334,14 @@ public final class PersistanceHelper {
 	 * @param lc 
 	 * 
 	 */
-	private void doDelete(ILifeCycle lc) {
+	private void doDel(LifeCycle lc) {
 		if (lc == null) {
 			// 如果对象参数为空,
 			// 则直接退出!
 			return;
+		} else {
+			// 执行删除操作
+			CommUpdater.OBJ.del(lc._lazySavingObj);
 		}
-
-		// 获取要被保存的对象
-		IPersistanceObject<?, ?> po = lc.getPO();
-		// 获取更新器
-		IPOUpdater updater = this._updaterMap.get(po.getClass());
-
-		if (updater == null) {
-			// 如果更新器为空, 
-			// 则直接抛出运行时异常!
-			throw new RuntimeException(MessageFormat.format(
-				"未找到与类 {0} 相对应的更新器", 
-				po.getClass().getName()
-			));
-		}
-
-		// 记录调试日志
-		PersistanceLog.LOG.debug(MessageFormat.format(
-			"准备删除数据 poClazz = {0}, key = {1}", 
-			po.getClass().getName(), 
-			lc.getKey()
-		));
-
-		// 执行删除操作
-		updater.delete(po);
-	}
-
-	/**
-	 * 返回改变的对象
-	 * 
-	 * @return
-	 * 
-	 */
-	public Map<Serializable, UpdateEntry> getChangedObjMap() {
-		// 获取对象字典
-		return Collections.unmodifiableMap(
-			this._changeObjMap
-		);
 	}
 }
