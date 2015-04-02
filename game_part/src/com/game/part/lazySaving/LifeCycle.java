@@ -15,7 +15,7 @@ public class LifeCycle {
 	/** 当前状态, 默认为冬眠状态 */
 	LifeCycleStateEnum _currState = LifeCycleStateEnum.hibernate;
 	/** 所指向的业务对象 */
-	final ILazySavingObj<?, ?> _lazySavingObj;
+	ILazySavingObj<?, ?> _lazySavingObj;
 
 	/**
 	 * 类参数构造器

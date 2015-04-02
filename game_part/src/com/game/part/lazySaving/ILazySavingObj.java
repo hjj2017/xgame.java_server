@@ -20,12 +20,14 @@ public interface ILazySavingObj<TEntity, TThreadEnum extends Enum<TThreadEnum>> 
 	String getUId();
 
 	/**
-	 * 取得分组 UId
+	 * 获取分组 UId
 	 * 
 	 * @return
 	 * 
 	 */
-	String getGroupUId();
+	default String getGroupUId() {
+		return null;
+	}
 
 	/**
 	 * 将业务对象转为数据库实体对象
@@ -56,6 +58,7 @@ public interface ILazySavingObj<TEntity, TThreadEnum extends Enum<TThreadEnum>> 
 	 * 
 	 */
 	default void saveOrUpdate() {
+		// 通过帮助类执行更新操作
 		LazySavingHelper.OBJ.addUpdate(this);
 	}
 
@@ -64,6 +67,7 @@ public interface ILazySavingObj<TEntity, TThreadEnum extends Enum<TThreadEnum>> 
 	 * 
 	 */
 	default void del() {
+		// 通过帮助类执行删除操作
 		LazySavingHelper.OBJ.addDel(this);
 	}
 }
