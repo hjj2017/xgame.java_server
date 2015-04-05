@@ -1,10 +1,11 @@
 package com.game.part.lazySaving;
 
-import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.game.part.io.IoOperServ;
 
@@ -19,8 +20,24 @@ public final class LazySavingHelper {
 	/** 单例对象 */
 	public static final LazySavingHelper OBJ = new LazySavingHelper();
 
-	/** 变化的数据列表 */
-	private final Map<Serializable, UpdateEntry> _changeObjMap = new ConcurrentHashMap<>();
+	/** 
+	 * 变化的数据字典 0, 主字典!
+	 * 当处于更新过程中的时候, 主字典会与外界隔绝...
+	 * 
+	 */
+	private final Map<String, UpdateEntry> _changeObjMap0 = new ConcurrentHashMap<>();
+
+	/** 
+	 * 变化的数据字典 1, 辅助字典!
+	 * 当处于更新过程中的时候,  
+	 * 相应的数据会塞到辅助字典里...
+	 * 
+	 */
+	private final Map<String, UpdateEntry> _changeObjMap1 = new ConcurrentHashMap<>();
+
+	/** 更新中...? */
+	private AtomicBoolean _updatingFlag = new AtomicBoolean(false);
+
 	/** 当数据对象空闲超过指定时间后才真正执行更新操作 */
 	public long _idelToUpdate = 2L * 60L * 1000L;
 	/** IO 服务 */
@@ -40,13 +57,13 @@ public final class LazySavingHelper {
 	 * @return 
 	 * 
 	 */
-	public boolean addUpdate(ILazySavingObj<?, ?> lso) {
+	public void addUpdate(ILazySavingObj<?, ?> lso) {
 		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			return false;
+			return;
 		} else {
-			return this.addUpdate(lso.getLifeCycle());
+			this.addUpdate(lso.getLifeCycle());
 		}
 	}
 
@@ -57,20 +74,35 @@ public final class LazySavingHelper {
 	 * @return
 	 * 
 	 */
-	public boolean addUpdate(LifeCycle lc) {
+	public void addUpdate(LifeCycle lc) {
+		// 字典变量
+		Map<String, UpdateEntry> mapX = this._updatingFlag.get() ? this._changeObjMap1 : this._changeObjMap0;
+		// 添加更新操作
+		addUpdate(lc, this.nowTime(), mapX);
+	}
+	
+	/**
+	 * 增加要被更新的对象, 注意 : 必须是同一个实例
+	 * 
+	 * @param lc
+	 * @param nowTime 
+	 * @param mapX 
+	 * @return
+	 * 
+	 */
+	private static void addUpdate(LifeCycle lc, long nowTime, Map<String, UpdateEntry> mapX) {
 		if (lc == null || 
-			lc._currState != LifeCycleStateEnum.active) {
+			lc._currState != LifeCycleStateEnum.active || 
+			mapX == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			return false;
+			return;
 		}
 
 		// 获取业务对象 UId
 		final String lsoUId = lc.getUId();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = this._changeObjMap.get(lsoUId);
-		// 获取当前时间
-		long nowTime = this.nowTime();
+		UpdateEntry oldEntry = mapX.get(lsoUId);
 
 		do {
 			if (oldEntry != null) {
@@ -90,13 +122,13 @@ public final class LazySavingHelper {
 					// 如果 LifeCycle 不是同一个对象, 
 					// 则直接退出!
 					LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的"); 
-					return false;
+					return;
 				} else {
 					// 如果是同一对象, 
 					// 则直接退出!
 					// 但是在更新前修改一下时间
 					oldEntry._lastModifiedTime = nowTime;
-					return true;
+					return;
 				}
 			}
 		} while (false);
@@ -106,9 +138,9 @@ public final class LazySavingHelper {
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典中
-		this._changeObjMap.put(lsoUId, newEntry);
+		mapX.put(lsoUId, newEntry);
 
-		return true;
+		return;
 	}
 
 	/**
@@ -118,13 +150,13 @@ public final class LazySavingHelper {
 	 * @return 
 	 * 
 	 */
-	public boolean addDel(ILazySavingObj<?, ?> lso) {
+	public void addDel(ILazySavingObj<?, ?> lso) {
 		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			return false;
+			return;
 		} else {
-			return this.addDel(lso.getLifeCycle());
+			this.addDel(lso.getLifeCycle());
 		}
 	}
 
@@ -135,18 +167,40 @@ public final class LazySavingHelper {
 	 * @return
 	 * 
 	 */
-	public boolean addDel(LifeCycle lc) {
+	public void addDel(LifeCycle lc) {
 		if (lc == null || 
 			lc._currState != LifeCycleStateEnum.active) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			return false;
+			return;
+		}
+
+		// 字典变量
+		Map<String, UpdateEntry> mapX = this._updatingFlag.get() ? this._changeObjMap1 : this._changeObjMap0;
+		// 添加删除操作
+		addDel(lc, this.nowTime(), mapX);
+	}
+
+	/**
+	 * 增加要被删除的对象
+	 * 
+	 * @param lc
+	 * @return
+	 * 
+	 */
+	private static void addDel(LifeCycle lc, long nowTime, Map<String, UpdateEntry> mapX) {
+		if (lc == null || 
+			lc._currState != LifeCycleStateEnum.active || 
+			mapX == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
 		}
 
 		// 获取业务对象 UId
 		final String lsoUId = lc.getUId();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = this._changeObjMap.get(lsoUId);
+		UpdateEntry oldEntry = mapX.get(lsoUId);
 
 		if (oldEntry != null) {
 			if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
@@ -156,34 +210,27 @@ public final class LazySavingHelper {
 					"准备将对象标记为删除操作, 但是已存在一个 key ( = {0} ) 相同的更新操作, 所以本次删除操作被忽略", 
 					lsoUId
 				));
-				return false;
+				return;
 			}
 
 			if (oldEntry._lifeCycle != lc) {
 				// 如果 LifeCycle 不是同一个对象, 
 				// 则直接退出!
 				LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的");
-				return false;
+				return;
 			} else {
 				// 如果是同一对象, 
 				// 则直接退出!
-				return true;
+				return;
 			}
 		}
 
-		// 
 		// 创建新的进入点
-		// 注意 : 删除对象时会立即执行! 所以, 
-		// 在这里的时间戳会设置为 0
-		// 
-		// 创建新的进入点
-		UpdateEntry newEntry = new UpdateEntry(lc, UpdateEntry.OPT_saveOrUpdate);
+		UpdateEntry newEntry = new UpdateEntry(lc, UpdateEntry.OPT_del);
 		// 设置最后修改时间
-		newEntry._lastModifiedTime = 0L;
+		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典
-		this._changeObjMap.put(lsoUId, newEntry);
-
-		return true;
+		mapX.put(lsoUId, newEntry);
 	}
 
 	/**
@@ -216,13 +263,25 @@ public final class LazySavingHelper {
 	 * 
 	 */
 	public final void execUpdate(ILazySavingPredication pred) {
+		if (this._updatingFlag.compareAndSet(
+			false, true)) {
+			// 事先检查是否未在更新过程中,
+			// 如果没在更新, 则把标志位设置为 true...
+			// 但如果正在更新中, 
+			// 则直接退出!
+			LazySavingLog.LOG.error("正在更新中...");
+			return;
+		}
+
 		// 获取当前时间
 		long nowTime = this.nowTime();
 		// 开始时间
 		long startTime = nowTime;
 
+		// 将字典 1 中的数据移到字典 0
+		mv(this._changeObjMap1, this._changeObjMap0);
 		// 获取迭代器
-		Iterator<UpdateEntry> it = this._changeObjMap.values().iterator();
+		Iterator<UpdateEntry> it = this._changeObjMap0.values().iterator();
 
 		while (it.hasNext()) {
 			// 获取入口
@@ -283,6 +342,11 @@ public final class LazySavingHelper {
 				LazySavingLog.LOG.error(ex.getMessage(), ex);
 			}
 		}
+		
+		// 再次将字典 1 中的数据移到字典 0, 
+		// 因为在更新过程中, 
+		// map1 中可能又有数据了...
+		mv(this._changeObjMap1, this._changeObjMap0);
 
 		// 获取结束时间
 		long endTime = this.nowTime();
@@ -294,5 +358,63 @@ public final class LazySavingHelper {
 			"更新消耗时间 = {0}(ms)", 
 			String.valueOf(costTime)
 		));
+
+		// 修改更新标识
+		this._updatingFlag.set(false);
+	}
+
+	/**
+	 * 将 "来源字典" 中的键值移到 "目标字典"
+	 * 
+	 * @param fromMap
+	 * @param toMap
+	 * 
+	 */
+	private static void mv(Map<String, UpdateEntry> fromMap, Map<String, UpdateEntry> toMap) {
+		if (fromMap == null || 
+			fromMap.isEmpty() || 
+			toMap == null || 
+			toMap.isEmpty()) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		// 获取键值迭代器
+		Iterator<Entry<String, UpdateEntry>> it = fromMap.entrySet().iterator();
+
+		while (it.hasNext()) {
+			// 获取字典入口
+			Entry<String, UpdateEntry> mapEntry = it.next();
+
+			if (mapEntry == null || 
+				mapEntry.getValue() == null) {
+				// 如果字典入口为空, 
+				// 则直接跳过!
+				continue;
+			}
+
+			// 获取更新入口
+			UpdateEntry upEntry = mapEntry.getValue();
+
+			if (upEntry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
+				// 添加 LC 到目标字典 ( 保存或者更新 )
+				addUpdate(
+					upEntry._lifeCycle, 
+					upEntry._lastModifiedTime, 
+					toMap
+				);
+			} else {
+				// 添加 LC 到目标字典 ( 删除 )
+				addDel(
+					upEntry._lifeCycle, 
+					upEntry._lastModifiedTime, 
+					toMap
+				);
+			}
+
+			// 从来源字典中删除当前键值
+			it.remove();
+		}
 	}
 }
