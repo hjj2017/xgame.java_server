@@ -22,15 +22,16 @@ public final class LazySavingHelper {
 
 	/** 
 	 * 变化的数据字典 0, 主字典!
-	 * 当处于更新过程中的时候, 主字典会与外界隔绝...
+	 * 当处于更新过程中的时候 ( 执行 {@link #execUpdate()} 时 ), 
+	 * 主字典会与外界隔绝...
 	 * 
 	 */
 	private final Map<String, UpdateEntry> _changeObjMap0 = new ConcurrentHashMap<>();
 
 	/** 
 	 * 变化的数据字典 1, 辅助字典!
-	 * 当处于更新过程中的时候,  
-	 * 相应的数据会塞到辅助字典里...
+	 * 当处于更新过程中的时候 ( 执行 {@link #execUpdate()} 时 ), 
+	 * 新数据会塞到辅助字典里...
 	 * 
 	 */
 	private final Map<String, UpdateEntry> _changeObjMap1 = new ConcurrentHashMap<>();
@@ -146,7 +147,7 @@ public final class LazySavingHelper {
 	/**
 	 * 增加要被删除的对象
 	 * 
-	 * @param po
+	 * @param lso
 	 * @return 
 	 * 
 	 */
@@ -247,7 +248,7 @@ public final class LazySavingHelper {
 	/**
 	 * 执行更新操作
 	 * 
-	 * @see execUpdate(IPOPredication)
+	 * @see execUpdate(ILazySavingPredication)
 	 * 
 	 */
 	public final void execUpdate() {
@@ -255,7 +256,7 @@ public final class LazySavingHelper {
 	}
 
 	/**
-	 * 执行更新操作, 如果指定了断言参数, 则判断 PO 对象是否符合条件并保存数据库.
+	 * 执行更新操作, 如果指定了断言参数, 则判断 LSO 对象是否符合条件并保存数据库.
 	 * 否则, 按照空闲时间来更新.
 	 * 空闲时间参数由 {@link #_idelToUpdate} 指定
 	 * 
@@ -312,7 +313,7 @@ public final class LazySavingHelper {
 			if (pred != null) {
 				if (pred.predicate(lc._lazySavingObj) == false) {
 					// 如果有断言对象, 
-					// 并且当前 PO 不满足条件, 
+					// 并且当前 LSO 不满足条件, 
 					// 则直接退出!
 					continue;
 				}
