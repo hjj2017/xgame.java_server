@@ -1,5 +1,6 @@
 package com.game.gameServer.msg;
 
+import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
@@ -18,8 +19,12 @@ import com.game.gameServer.framework.Player;
  * 
  */
 public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> {
-	/** 会话 Id */
-	public long _sessionId;
+	/** 消息软引用 */
+	private IoSession _sessionObj = null;
+
+	public void setupIoSession(IoSession value) {
+		this._sessionObj = value;
+	}
 
 	/**
 	 * 处理消息对象
