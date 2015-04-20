@@ -72,7 +72,7 @@ class MINA_IoHandler extends IoHandlerAdapter {
 
 		if (handler != null) {
 			// 设置会话 Id
-			handler._sessionId = fromSessionObj.getId();
+//			handler._sessionId = fromSessionObj.getId();
 		}
 
 		// 分派消息对象

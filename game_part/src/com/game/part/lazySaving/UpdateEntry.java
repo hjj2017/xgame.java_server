@@ -16,7 +16,7 @@ final class UpdateEntry {
 	static final int OPT_del = 2;
 
 	/** 待更新的业务对象引用 */
-	final LifeCycle _lifeCycle;
+	final ILazySavingObj<?, ?> _LSO;
 	/** 操作类型 */
 	final int _operTypeInt;
 	/** 最后修改时间 */
@@ -25,15 +25,15 @@ final class UpdateEntry {
 	/**
 	 * 类参数构造器
 	 * 
-	 * @param lc
+	 * @param LSO
 	 * @param operTypeInt
 	 * 
 	 */
-	UpdateEntry(LifeCycle lc, int operTypeInt) {
+	UpdateEntry(ILazySavingObj<?, ?> LSO, int operTypeInt) {
 		// 断言参数不为空
-		Assert.notNull(lc, "lc");
-		// 设置 LifeCycle
-		this._lifeCycle = lc;
+		Assert.notNull(LSO, "lso");
+		// 设置 LSO
+		this._LSO = LSO;
 		// 设置操作类型数值
 		this._operTypeInt = operTypeInt;
 	}

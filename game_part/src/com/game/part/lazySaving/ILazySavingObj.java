@@ -46,14 +46,6 @@ public interface ILazySavingObj<TEntity, TThreadEnum extends Enum<TThreadEnum>> 
 	TThreadEnum getThreadEnum();
 
 	/**
-	 * 获得此持久化业务对象的生命周期
-	 * 
-	 * @return
-	 * 
-	 */
-	LifeCycle getLifeCycle();
-
-	/**
 	 * 保存已修改的部分
 	 * 
 	 */

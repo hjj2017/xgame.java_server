@@ -41,9 +41,6 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	 * 
 	 */
 	protected void sendMsgToClient(AbstractGCMsgObj msgObj) {
-		this.sendMsgToClient(
-			msgObj, this._sessionId
-		);
 	}
 
 	/**

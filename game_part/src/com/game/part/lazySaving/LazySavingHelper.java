@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.game.part.io.IoOperServ;
 
@@ -22,7 +23,7 @@ public final class LazySavingHelper {
 
 	/** 
 	 * 变化的数据字典 0, 主字典!
-	 * 当处于更新过程中的时候 ( 执行 {@link #execUpdate()} 时 ), 
+	 * 当处于更新过程中的时候 ( 执行 {@link #execUpdateWithInterval()} 时 ), 
 	 * 主字典会与外界隔绝...
 	 * 
 	 */
@@ -30,7 +31,7 @@ public final class LazySavingHelper {
 
 	/** 
 	 * 变化的数据字典 1, 辅助字典!
-	 * 当处于更新过程中的时候 ( 执行 {@link #execUpdate()} 时 ), 
+	 * 当处于更新过程中的时候 ( 执行 {@link #execUpdateWithInterval()} 时 ), 
 	 * 新数据会塞到辅助字典里...
 	 * 
 	 */
@@ -40,9 +41,15 @@ public final class LazySavingHelper {
 	private AtomicBoolean _updatingFlag = new AtomicBoolean(false);
 
 	/** 当数据对象空闲超过指定时间后才真正执行更新操作 */
-	public long _idelToUpdate = 2L * 60L * 1000L;
+	public long _idelToUpdate = 8L * 60L * 1000L;
 	/** IO 服务 */
 	public IoOperServ<?> _ioServ = null;
+	/** 间隔制定时间之后, 才执行一次更新操作 */
+	public long _interval = 2L * 60L * 1000L;
+	/** 上一次执行更新操作的时间 */
+	private AtomicLong _lastUpdateTime = new AtomicLong(-1L);
+	/** 每次更新时写出多少条数据 */
+	public int _writeCount = 256;
 
 	/**
 	 * 类默认构造器
@@ -52,48 +59,30 @@ public final class LazySavingHelper {
 	}
 
 	/**
-	 * 增加要被更新的对象
+	 * 增加要被更新的对象, 注意 : 必须是同一个实例
 	 * 
-	 * @param lso
-	 * @return 
+	 * @param lc
+	 * @return
 	 * 
 	 */
 	public void addUpdate(ILazySavingObj<?, ?> lso) {
-		if (lso == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		} else {
-			this.addUpdate(lso.getLifeCycle());
-		}
+		// 字典变量
+		Map<String, UpdateEntry> mapX = this._updatingFlag.get() ? this._changeObjMap1 : this._changeObjMap0;
+		// 添加更新操作
+		addUpdate(lso, this.nowTime(), mapX);
 	}
 
 	/**
 	 * 增加要被更新的对象, 注意 : 必须是同一个实例
 	 * 
-	 * @param lc
-	 * @return
-	 * 
-	 */
-	public void addUpdate(LifeCycle lc) {
-		// 字典变量
-		Map<String, UpdateEntry> mapX = this._updatingFlag.get() ? this._changeObjMap1 : this._changeObjMap0;
-		// 添加更新操作
-		addUpdate(lc, this.nowTime(), mapX);
-	}
-	
-	/**
-	 * 增加要被更新的对象, 注意 : 必须是同一个实例
-	 * 
-	 * @param lc
+	 * @param lso
 	 * @param nowTime 
 	 * @param mapX 
 	 * @return
 	 * 
 	 */
-	private static void addUpdate(LifeCycle lc, long nowTime, Map<String, UpdateEntry> mapX) {
-		if (lc == null || 
-			lc._currState != LifeCycleStateEnum.active || 
+	private static void addUpdate(ILazySavingObj<?, ?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
+		if (lso == null || 
 			mapX == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -101,41 +90,37 @@ public final class LazySavingHelper {
 		}
 
 		// 获取业务对象 UId
-		final String lsoUId = lc.getUId();
+		final String lsoUId = lso.getUId();
 		// 获取旧的进入点
 		UpdateEntry oldEntry = mapX.get(lsoUId);
 
-		do {
-			if (oldEntry != null) {
-				if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
-					// 如果已有的入口是删除操作,
-					// 我擦, 那到底是删除还是更新啊...
-					// 放弃已有的删除操作, 
-					// 改为更新操作...
-					LazySavingLog.LOG.error(MessageFormat.format(
-						"准备将对象标记为更新操作, 但是已存在一个 key ( = {0} ) 相同的删除操作, 所以放弃删除操作改为更新操作", 
-						lsoUId
-					));
-					break;
-				}
-	
-				if (oldEntry._lifeCycle != lc) {
-					// 如果 LifeCycle 不是同一个对象, 
-					// 则直接退出!
-					LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的"); 
-					return;
-				} else {
-					// 如果是同一对象, 
-					// 则直接退出!
-					// 但是在更新前修改一下时间
-					oldEntry._lastModifiedTime = nowTime;
-					return;
-				}
+		if (oldEntry != null) {
+			if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
+				// 如果已有的入口是删除操作,
+				// 放弃本次更新操作!
+				LazySavingLog.LOG.error(MessageFormat.format(
+					"准备将对象标记为更新操作, 但是已存在一个 key ( = {0} ) 相同的删除操作, 所以放弃本次更新操作", 
+					lsoUId
+				));
+				return;
 			}
-		} while (false);
+
+			if (oldEntry._LSO != lso) {
+				// 如果 LifeCycle 不是同一个对象, 
+				// 则直接退出!
+				LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的"); 
+				return;
+			} else {
+				// 如果是同一对象, 
+				// 则直接退出!
+				// 但是在退出前修改一下时间
+				oldEntry._lastModifiedTime = nowTime;
+				return;
+			}
+		}
 
 		// 创建新的进入点
-		UpdateEntry newEntry = new UpdateEntry(lc, UpdateEntry.OPT_saveOrUpdate);
+		UpdateEntry newEntry = new UpdateEntry(lso, UpdateEntry.OPT_saveOrUpdate);
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典中
@@ -148,29 +133,11 @@ public final class LazySavingHelper {
 	 * 增加要被删除的对象
 	 * 
 	 * @param lso
-	 * @return 
+	 * @return
 	 * 
 	 */
 	public void addDel(ILazySavingObj<?, ?> lso) {
 		if (lso == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		} else {
-			this.addDel(lso.getLifeCycle());
-		}
-	}
-
-	/**
-	 * 增加要被删除的对象
-	 * 
-	 * @param lc
-	 * @return
-	 * 
-	 */
-	public void addDel(LifeCycle lc) {
-		if (lc == null || 
-			lc._currState != LifeCycleStateEnum.active) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
@@ -179,19 +146,20 @@ public final class LazySavingHelper {
 		// 字典变量
 		Map<String, UpdateEntry> mapX = this._updatingFlag.get() ? this._changeObjMap1 : this._changeObjMap0;
 		// 添加删除操作
-		addDel(lc, this.nowTime(), mapX);
+		addDel(lso, this.nowTime(), mapX);
 	}
 
 	/**
 	 * 增加要被删除的对象
 	 * 
-	 * @param lc
+	 * @param lso
+	 * @param nowTime
+	 * @param mapX
 	 * @return
 	 * 
 	 */
-	private static void addDel(LifeCycle lc, long nowTime, Map<String, UpdateEntry> mapX) {
-		if (lc == null || 
-			lc._currState != LifeCycleStateEnum.active || 
+	private static void addDel(ILazySavingObj<?, ?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
+		if (lso == null || 
 			mapX == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -199,35 +167,46 @@ public final class LazySavingHelper {
 		}
 
 		// 获取业务对象 UId
-		final String lsoUId = lc.getUId();
+		final String lsoUId = lso.getUId();
 		// 获取旧的进入点
 		UpdateEntry oldEntry = mapX.get(lsoUId);
 
 		if (oldEntry != null) {
-			if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
-				// 如果已有的入口是更新操作,
-				// 我擦, 那到底是删除还是更新啊...
-				LazySavingLog.LOG.error(MessageFormat.format(
-					"准备将对象标记为删除操作, 但是已存在一个 key ( = {0} ) 相同的更新操作, 所以本次删除操作被忽略", 
-					lsoUId
-				));
-				return;
-			}
-
-			if (oldEntry._lifeCycle != lc) {
-				// 如果 LifeCycle 不是同一个对象, 
-				// 则直接退出!
-				LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的");
-				return;
-			} else {
-				// 如果是同一对象, 
-				// 则直接退出!
-				return;
-			}
+			do {
+				if (oldEntry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
+					// 如果已有的入口是更新操作,
+					// 我擦, 那到底是删除还是更新啊...
+					LazySavingLog.LOG.error(MessageFormat.format(
+						"准备将对象标记为删除操作, 但是已存在一个 key ( = {0} ) 相同的更新操作, 所以替换更新操作为删除操作!", 
+						lsoUId
+					));
+					break;
+					// 注意, 这里的 break 打破了 do ... while 循环, 
+					// 这种用法其实 goto 语句的一个变种!
+					// 因为这时候需要跳转到 ADD_DEL
+					// 也就是说:
+					// 1、在 oldEntry 为空的情况下, 需要新建对象并添加到字典;
+					// 2、在 oldEntry 不为空, 但操作类型为更新时, 也需要新建对象并添加到字典;
+				}
+	
+				if (oldEntry._LSO != lso) {
+					// 如果 LifeCycle 不是同一个对象, 
+					// 则直接退出!
+					LazySavingLog.LOG.error("更新对象 ( 内存地址 ) 不相同, 这是不允许的");
+					return;
+				} else {
+					// 如果是同一对象, 
+					// 则直接退出!
+					// 但是在退出前修改一下时间
+					oldEntry._lastModifiedTime = nowTime;
+					return;
+				}
+			} while (false);
 		}
 
+// ADD_DEL:
 		// 创建新的进入点
-		UpdateEntry newEntry = new UpdateEntry(lc, UpdateEntry.OPT_del);
+		UpdateEntry newEntry = new UpdateEntry(lso, UpdateEntry.OPT_del);
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典
@@ -246,13 +225,29 @@ public final class LazySavingHelper {
 	}
 
 	/**
-	 * 执行更新操作
+	 * 根据间隔时间执行更新操作,
+	 * 该函数的调用者应该是一个定时器!
 	 * 
-	 * @see execUpdate(ILazySavingPredication)
+	 * @see #_interval
+	 * @see #execUpdateWithPredication(ILazySavingPredication)
 	 * 
 	 */
-	public final void execUpdate() {
-		this.execUpdate(null);
+	public final void execUpdateWithInterval() {
+		// 获取当前时间
+		long nowTime = this.nowTime();
+		// 获取上一次执行更新操作的时间
+		long lastUpdateTime = this._lastUpdateTime.get();
+
+		if ((nowTime - lastUpdateTime) < this._interval) {
+			// 如果还没有到间隔时间, 
+			// 则直接退出!
+			return;
+		}
+
+		// 执行更新操作
+		this.execUpdateWithPredication(null);
+		// 设置最后更新时间
+		this._lastUpdateTime.set(nowTime);
 	}
 
 	/**
@@ -263,7 +258,7 @@ public final class LazySavingHelper {
 	 * @param pred
 	 * 
 	 */
-	public final void execUpdate(ILazySavingPredication pred) {
+	public final void execUpdateWithPredication(ILazySavingPredication pred) {
 		if (this._updatingFlag.compareAndSet(
 			false, true)) {
 			// 事先检查是否未在更新过程中,
@@ -289,29 +284,21 @@ public final class LazySavingHelper {
 			UpdateEntry entry = it.next();
 
 			if (entry == null || 
-				entry._lifeCycle == null) {
+				entry._LSO == null) {
 				// 如果入口对象为空, 
 				// 则直接跳过!
 				it.remove();
 				continue;
 			}
 
-			// 获取 LifeCycle
-			LifeCycle lc = entry._lifeCycle;
+			// (w)rite (c)ount
+			int wc = 0;
 
-			if (lc._currState != LifeCycleStateEnum.active) {
-				// 如果 LifeCycle 尚未激活, 
-				// 则直接跳过!
-				LazySavingLog.LOG.error(MessageFormat.format(
-					"尚未激活 LifeCycle, key = {0}", 
-					lc.getUId()
-				));
-				it.remove();
-				continue;
-			}
+			// 获取延迟保存对象
+			final ILazySavingObj<?, ?> lso = entry._LSO;
 
 			if (pred != null) {
-				if (pred.predicate(lc._lazySavingObj) == false) {
+				if (pred.predicate(lso) == false) {
 					// 如果有断言对象, 
 					// 并且当前 LSO 不满足条件, 
 					// 则直接退出!
@@ -323,17 +310,26 @@ public final class LazySavingHelper {
 					// 则直接跳过!
 					continue;
 				}
+
+				// 注意, 只有在这里计数
+				// 使用条件接口时, 
+				// 是不做计数的...
+				wc++;
+			}
+
+			if (wc > this._writeCount) {
+				// 如果写出数量超过限制, 
+				// 则直接退出!
+				break;
 			}
 
 			try {
 				if (entry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
 					// 执行保存或更新操作
-					CommUpdater.OBJ.saveOrUpdate(lc._lazySavingObj);
+					CommUpdater.OBJ.saveOrUpdate(lso);
 				} else {
 					// 执行删除操作
-					CommUpdater.OBJ.del(lc._lazySavingObj);
-					// 在这里销毁业务对象!
-					lc.destroy();
+					CommUpdater.OBJ.del(lso);
 				}
 
 				// 从字典中移除对象
@@ -401,14 +397,14 @@ public final class LazySavingHelper {
 			if (upEntry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
 				// 添加 LC 到目标字典 ( 保存或者更新 )
 				addUpdate(
-					upEntry._lifeCycle, 
+					upEntry._LSO, 
 					upEntry._lastModifiedTime, 
 					toMap
 				);
 			} else {
 				// 添加 LC 到目标字典 ( 删除 )
 				addDel(
-					upEntry._lifeCycle, 
+					upEntry._LSO, 
 					upEntry._lastModifiedTime, 
 					toMap
 				);
