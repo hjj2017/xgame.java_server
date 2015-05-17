@@ -15,7 +15,7 @@ import com.game.part.util.Assert;
  * @since 2014/9/16
  * 
  */
-public class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_GetSingleResult, IDao_ExecNativeSQL {
+public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_GetSingleResult {
 	/** 单例对象 */
 	public static final CommDao OBJ = new CommDao();
 
