@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="build" name="robot">
+	<!--// import //-->
+	<import file="../../code_libs/make/ant-jarOneProj.xml" />
+
+	<!--// 目标项目 //-->
+	<path id="targetProj" location="${basedir}/.." />
+
+	<!--// 相关项目 //-->
+	<path id="relativeProjs">
+		<dirset dir="../../">
+			<include name="game_core" />
+			<include name="game_server" />
+		</dirset>
+	</path>
+
+	<!--// 引用包目录 //-->
+	<path id="libs">
+		<path refid="code_libs" />
+	</path>
+
+	<!--// 构建当前项目 //-->
+	<target name="build">
+		<jarOneProj targetProj="targetProj" targetVer="${targetVer}" 
+			libs="libs" 
+			relativeProjs="relativeProjs" 
+		/>
+	</target>
+
+</project>
