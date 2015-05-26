@@ -13,7 +13,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
 
-import com.game.core.util.PackageUtil;
+import com.game.part.util.PackageUtil;
 import com.game.robot.RobotLog;
 import com.game.robot.kernal.RobotConf.TestModule;
 

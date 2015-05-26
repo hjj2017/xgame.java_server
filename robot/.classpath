@@ -2,8 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/game_core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/game_server"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/game_part"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs.common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

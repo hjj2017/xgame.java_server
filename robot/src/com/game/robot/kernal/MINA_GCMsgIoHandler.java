@@ -3,7 +3,7 @@ package com.game.robot.kernal;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.core.util.Assert;
+import com.game.part.util.Assert;
 
 /**
  * GC 消息处理器
