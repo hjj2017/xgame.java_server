@@ -158,7 +158,7 @@ public final class RobotMain {
 			);
 
 			// 获取 "消息处理器类定义" 
-			Set<Class<?>> handlerClazzDefSet = PackageUtil.getSubClass(
+			Set<Class<?>> handlerClazzDefSet = PackageUtil.listSubClazz(
 				packageName, 
 				AbstractGCMsgHandler.class
 			);

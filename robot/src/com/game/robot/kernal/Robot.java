@@ -12,8 +12,8 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-import com.game.core.codec.GameCodecFactory;
-import com.game.core.msg.filter.MsgCumulativeFilter;
+import com.game.gameServer.framework.MINA_MsgCodecFactory;
+import com.game.gameServer.framework.MINA_MsgCumulativeFilter;
 import com.game.robot.RobotLog;
 
 /**
@@ -183,10 +183,10 @@ public final class Robot {
 			conn.setHandler(new MINA_GCMsgIoHandler(this));
 
 			// 网络黏包算法
-			conn.getFilterChain().addLast("msgCumulative", new MsgCumulativeFilter());
+			conn.getFilterChain().addLast("msgCumulative", new MINA_MsgCumulativeFilter());
 			// 添加消息解码器
 			conn.getFilterChain().addLast("msgCodec", new ProtocolCodecFilter(
-				new GameCodecFactory(RobotGCMsgRecognizer.OBJ)
+				new MINA_MsgCodecFactory()
 			));
 
 			// 连接到游戏服

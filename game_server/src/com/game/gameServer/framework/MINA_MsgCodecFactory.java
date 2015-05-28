@@ -14,7 +14,7 @@ import com.game.part.NullArgsError;
  * @since 2014/8/11
  * 
  */
-class MINA_MsgCodecFactory implements ProtocolCodecFactory {
+public class MINA_MsgCodecFactory implements ProtocolCodecFactory {
 	/**
 	 * 类参数构造器
 	 * 

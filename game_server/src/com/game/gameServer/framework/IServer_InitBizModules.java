@@ -29,21 +29,11 @@ interface IServer_InitBizModules {
 	default void initBizModules() {
 		// 记录启动日志
 		FrameworkLog.LOG.info(":: 初始化业务模块");
-		// 获取当前应用目录
-		String bizModulesDir = getSceneBizModulesDir();
-		// 加在场景服务器业务模块
-		FrameworkLog.LOG.info(MessageFormat.format(
-			"业务模块目录 = {0}", 
-			bizModulesDir
-		));
 
 		// 获取类列表
 		Set<Class<?>> allClazzSet = PackageUtil.listClazz(
-			bizModulesDir, 
-			true, 
-			clazz -> {
-				return clazz.getName().startsWith(BIZ_MODULES_PACKAGE);
-			}
+			"com.game.bizModules", 
+			true, null
 		);
 
 		if (allClazzSet == null || 
