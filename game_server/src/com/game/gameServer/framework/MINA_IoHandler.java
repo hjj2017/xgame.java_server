@@ -28,7 +28,7 @@ class MINA_IoHandler extends IoHandlerAdapter {
 		this.postMsg(sessionObj, cgMsgObj);
 	}
 
-	@Override
+	@Override 
 	public void messageReceived(IoSession sessionObj, Object obj) {
 		// 断言参数对象不为空
 		Assert.notNull(sessionObj);

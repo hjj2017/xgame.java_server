@@ -1,0 +1,94 @@
+<?php
+/**
+ * 数据库配置
+ *
+ */
+$GLOBALS["dbConfig"] = array(
+    // 分组 00
+    "group00" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.108.167",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 1,
+        "endIndex" => 50,
+    ),
+
+    // 分组 01
+    "group01" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.120.190",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 51,
+        "endIndex" => 80,
+    ),
+
+    // 分组 02
+    "group02" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.122.132",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 81,
+        "endIndex" => 100,
+    ),
+
+    // 分组 03
+    "group03" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.122.84",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 101,
+        "endIndex" => 130,
+    ),
+
+    // 分组 04
+    "group04" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.106.18",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 131,
+        "endIndex" => 160,
+    ),
+
+    // 分组 05
+    "group05" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.124.165",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 161,
+        "endIndex" => 190,
+    ),
+
+    // 分组 06
+    "group06" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.122.132",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 191,
+        "endIndex" => 200,
+    ),
+
+    // 分组 07
+    "group07" => array(
+        // 游戏服配置
+        "gameDbHost" => "10.66.103.219",
+        "gameDbUser" => "root",
+        "gameDbPass" => "!luosonglin",
+        // 起始和结束服务器索引
+        "startIndex" => 201,
+        "endIndex" => 220,
+    ),
+);
