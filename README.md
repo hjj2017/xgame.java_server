@@ -1,6 +1,6 @@
-# xgame-code_server-java8
-Xgame 是一个基于 Java 语言实现的 SLG 游戏服框架。
-（客户端项目是 xgame-code_client，不过目前还没有提交任何代码）
+# xgame
+Xgame 是一个基于 Java 语言实现的 SLG 游戏服框架。其中包括服务器代码、开发工具及合服工具。
+（客户端项目前还没有提交任何代码）
 Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我自己写的一个单线程框架。
 这套框架的最初来源是“人人游戏”的服务器架构，
 当然，仅限于实现思路而不是代码……
