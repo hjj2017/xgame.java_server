@@ -51,6 +51,7 @@ interface IDao_GetResultList {
 		if (em == null) {
 			// 如果实体管理器为空, 
 			// 则直接退出!
+			DaoLog.LOG.error("实体管理器为空");
 			return null;
 		}
 
@@ -83,6 +84,10 @@ interface IDao_GetResultList {
 
 		@SuppressWarnings("unchecked")
 		List<TEntity> objList = q.getResultList();
+		
+		// 关闭实体管理器
+		em.close();
+
 		return objList;
 	}
 

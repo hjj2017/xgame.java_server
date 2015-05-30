@@ -35,12 +35,14 @@ interface IDao_Save {
 		if (em == null) {
 			// 如果实体管理器为空, 
 			// 则直接退出!
+			DaoLog.LOG.error("实体管理器为空");
 			return;
 		}
 
+		// 获取数据库事务
+		EntityTransaction tranx = em.getTransaction();
+
 		try {
-			// 获取数据库事务
-			EntityTransaction tranx = em.getTransaction();
 			// 开始事务过程
 			tranx.begin();
 			// 保存实体
@@ -51,6 +53,10 @@ interface IDao_Save {
 		} catch (Exception ex) {
 			// 记录错误日志
 			DaoLog.LOG.error(ex.getMessage(), ex);
+			// 回滚事务
+			tranx.rollback();
+		} finally {
+			em.close();
 		}
 	}
 
@@ -77,26 +83,28 @@ interface IDao_Save {
 		if (em == null) {
 			// 如果实体管理器为空, 
 			// 则直接退出!
+			DaoLog.LOG.error("实体管理器为空");
 			return;
 		}
 
+		// 获取数据库事务
+		EntityTransaction tranx = em.getTransaction();
+
 		try {
-			// 获取数据库事务
-			EntityTransaction tranx = em.getTransaction();
 			// 开始事务过程
 			tranx.begin();
-
-			entityObjList.forEach(newEntity -> {
-				// 保存实体
-				em.merge(newEntity);
-			});
-	
+			// 保存数据实体
+			entityObjList.forEach(newEntity -> em.merge(newEntity));
 			em.flush();
 			// 提交事务
 			tranx.commit();
 		} catch (Exception ex) {
 			// 记录错误日志
 			DaoLog.LOG.error(ex.getMessage(), ex);
+			// 回滚事务
+			tranx.rollback();
+		} finally {
+			em.close();
 		}
 	}
 }

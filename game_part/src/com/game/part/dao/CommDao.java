@@ -103,11 +103,16 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
 		if (em == null) {
 			// 如果实体管理器为空, 
 			// 则直接退出!
+			DaoLog.LOG.error("实体管理器为空");
 			return null;
 		}
 
-		// 保存实体
-		return em.find(clazz, id);
+		// 获取实体
+		TEntity entityObj = em.find(clazz, id);
+		// 关闭实体管理器
+		em.close();
+
+		return entityObj;
 	}
 
 	/**
