@@ -16,26 +16,26 @@ import javax.persistence.Query;
  */
 interface IDao_GetResultList {
 	/** 选取数据列表 */
-	String JPQL_selectFrom = "select obj from {0} obj where {1}";
+	String JPQL_selectFrom = "select obj from {0} entity where {1}";
 
 	/**
 	 * 获取结果列表
 	 * 
-	 * @param clazz
-	 * @param jpqlWhere JPQL 查询语句中 where 后面的语句, 注意 : where 语句中需要使用 "obj." 前缀! 例如 : obj._userName
-	 * @param paramsMap 
+	 * @param entityClazz
+	 * @param jpqlWhere JPQL 查询语句中 where 后面的语句, 注意 : where 语句中需要使用 "entity." 前缀! 例如 : entity._userName
+	 * @param paramMap 
 	 * @param start
 	 * @param count
 	 * @return 
 	 * 
 	 */
 	default<TEntity> List<TEntity> getResultList(
-		Class<TEntity> clazz, 
+		Class<TEntity> entityClazz, 
 		String jpqlWhere, 
-		Map<String, Object> paramsMap, 
+		Map<String, Object> paramMap, 
 		int start, 
 		int count) {
-		if (clazz == null || 
+		if (entityClazz == null || 
 			count <= 0) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -62,15 +62,15 @@ interface IDao_GetResultList {
 		}
 
 		// 获取 HQL 查询
-		final String jpql = MessageFormat.format(JPQL_selectFrom, clazz.getName(), jpqlWhere);
+		final String jpql = MessageFormat.format(JPQL_selectFrom, entityClazz.getName(), jpqlWhere);
 		// 创建查询
 		Query q = em.createQuery(jpql)
 			.setFirstResult(start)
 			.setMaxResults(count);
 
-		if (paramsMap != null && 
-			paramsMap.isEmpty() == false) {
-			paramsMap.entrySet().forEach(entry -> {
+		if (paramMap != null && 
+			paramMap.isEmpty() == false) {
+			paramMap.entrySet().forEach(entry -> {
 				if (entry == null) {
 					// 如果进入点为空, 
 					// 则直接退出!

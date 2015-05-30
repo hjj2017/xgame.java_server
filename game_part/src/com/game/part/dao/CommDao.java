@@ -81,14 +81,14 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
 	 * 查找数据库实体
 	 * 
 	 * @param <TEntity> 
-	 * @param clazz
-	 * @param id
+	 * @param entityClazz
+	 * @param Id
 	 * @return 
 	 * 
 	 */
-	public<TEntity> TEntity find(Class<TEntity> clazz, Object id) {
-		if (clazz == null || 
-			id == null) {
+	public<TEntity> TEntity find(Class<TEntity> entityClazz, Object Id) {
+		if (entityClazz == null || 
+			Id == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return null;
@@ -108,7 +108,7 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
 		}
 
 		// 获取实体
-		TEntity entityObj = em.find(clazz, id);
+		TEntity entityObj = em.find(entityClazz, Id);
 		// 关闭实体管理器
 		em.close();
 

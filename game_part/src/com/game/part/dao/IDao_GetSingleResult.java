@@ -15,7 +15,7 @@ interface IDao_GetSingleResult {
 	 * 获取单个结果
 	 * 
 	 * @param clazz
-	 * @param jpqlWhere JPQL 查询语句中 where 后面的语句, 注意 : where 语句中需要使用 "obj." 前缀! 例如 : obj._userName
+	 * @param jpqlWhere JPQL 查询语句中 where 后面的语句, 注意 : where 语句中需要使用 "entity." 前缀! 例如 : entity._userName
 	 * @param paramsMap
 	 * @return 
 	 * 
