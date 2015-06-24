@@ -27,11 +27,11 @@ public class JettyHttpProc {
 	/** 单例对象 */
 	public static final JettyHttpProc OBJ = new JettyHttpProc();
 	/** 绑定服务器 Ip 地址 0 */
-	public String _bindIp0 = "127.0.0.1";
+	public String _bindIpAddr0 = "127.0.0.1";
 	/** 服务器端口号 0 */
 	public int _port0 = 8001;
 	/** 绑定服务器 Ip 地址 1 */
-	public String _bindIp1 = null;
+	public String _bindIpAddr1 = null;
 	/** 服务器端口号 1 */
 	public int _port1 = -1;
 
@@ -74,17 +74,17 @@ public class JettyHttpProc {
 			// 创建服务器连接
 			ServerConnector conn0 = new ServerConnector(serverObj);
 			conn0.setName("passport_server_0");
-			conn0.setHost(this._bindIp0);
+			conn0.setHost(this._bindIpAddr0);
 			conn0.setPort(this._port0);
 			conn0.setIdleTimeout(30000L);
 			conn0.setReuseAddress(true);
 
-			if (this._bindIp1 != null && 
+			if (this._bindIpAddr1 != null && 
 				this._port1 > 0) {
 				// 创建服务器连接
 				ServerConnector conn1 = new ServerConnector(serverObj);
 				conn1.setName("passport_server_1");
-				conn1.setHost(this._bindIp1);
+				conn1.setHost(this._bindIpAddr1);
 				conn1.setPort(this._port1);
 				conn1.setIdleTimeout(30000L);
 				conn1.setReuseAddress(true);
@@ -118,7 +118,7 @@ public class JettyHttpProc {
 			// 记录日志信息
 			JettyHttpLog.LOG.info(MessageFormat.format(
 				"Jetty HTTP 服务器已经启动, IP 地址 = {0}, 监听端口 = {1}", 
-				this._bindIp0, 
+				this._bindIpAddr0, 
 				String.valueOf(this._port0)
 			));
 		} catch (Exception ex) {

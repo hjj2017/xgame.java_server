@@ -1,18 +1,13 @@
 package com.game.passportServer;
 
-import java.io.File;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Persistence;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.game.part.dao.CommDao;
@@ -23,7 +18,7 @@ import com.game.passportServer.jsonConf.PassportServerConf;
  * Passport 服务器,
  * 请使用如下命令行启动该服务器 : 
  * <pre>
- * java -cp *.jar com.game.passportServer.CLI_Server -c all_confg/config.json
+ * java -cp *.jar com.game.passportServer.CLI_Server -c ../all_confg/etc/all_config.json
  * </pre>
  * <font color='#990000'>
  * 注意 : 命令行中必须给出配置文件 config.json 所在位置!</font><br />
@@ -31,11 +26,11 @@ import com.game.passportServer.jsonConf.PassportServerConf;
  * 若希望在 Eclipse 开发环境中正常启动该服务器, 
  * 请设置启动参数! 具体做法如下 :
  * <ol>
- *     <li>在该文件上点击鼠标右键;</li>
- *     <li>在弹出的菜单中选择 "Run As" --&gt; "Run Configurations ...";</li>
- *     <li>在弹出的对话框中的右侧区域找到 "Arguments" 页签;</li>
- *     <li>在 "Program Arguments" 下面的文本框里增加 : "-c config/all_config.json -l config/log4j.properties" ( 注意 : 只要双引号里面的值 );</li>
- *     <li>点击 "Apply" 按钮, 最后点击 "Run" 按钮;</li>
+ * <li>在该文件上点击鼠标右键;</li>
+ * <li>在弹出的菜单中选择 "Run As" --&gt; "Run Configurations ...";</li>
+ * <li>在弹出的对话框中的右侧区域找到 "Arguments" 页签;</li>
+ * <li>在 "Program Arguments" 下面的文本框里增加 : "-c ../all_config/etc/all_config.json -l ../all_config/etc/passport_server.log4j.properties" ( 注意 : 只要双引号里面的值 );</li>
+ * <li>点击 "Apply" 按钮, 最后点击 "Run" 按钮;</li>
  * </ol>
  * 
  * @author hjj2019
@@ -74,8 +69,11 @@ public class CLI_Server {
 		
 		/* 启动 HTTP 服务器 */ {
 			// 设置服务器 IP 和端口
-			JettyHttpProc.OBJ._bindIp0 = this._confObj._serverIpAddr;
-			JettyHttpProc.OBJ._port0 = this._confObj._serverPort;
+			JettyHttpProc.OBJ._bindIpAddr0 = this._confObj._bindIpAddr0;
+			JettyHttpProc.OBJ._port0 = this._confObj._port0;
+			JettyHttpProc.OBJ._bindIpAddr1 = this._confObj._bindIpAddr1;
+			JettyHttpProc.OBJ._port1 = this._confObj._port1;
+			
 			// 启动服务器
 			JettyHttpProc.OBJ.start();
 		}
@@ -118,7 +116,7 @@ public class CLI_Server {
 		// 创建应用对象并启动
 		theApp = new CLI_Server();
 		// 加载配置文件
-		theApp._confObj = loadConf(cmdLn.getOptionValue("c"));
+		theApp._confObj = PassportServerConf.createFromFile(cmdLn.getOptionValue("c"));
 		// 启动服务器
 		theApp.startUp();
 	}
@@ -148,70 +146,6 @@ public class CLI_Server {
 		} catch (Exception ex) {
 			// 输出错误日志
 			ex.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * 加载配置
-	 * 
-	 * @param configFileName 
-	 * @return 
-	 * 
-	 */
-	private static PassportServerConf loadConf(final String configFileName) {
-		if (configFileName == null || 
-			configFileName.isEmpty()) {
-			// 记录日志错误
-			ServerLog.LOG.error("配置文件名称为空");
-			return null;
-		}
-
-		try {
-			// 记录日志信息
-			ServerLog.LOG.info(MessageFormat.format(
-				"准备读取配置文件 : {0}", 
-				configFileName
-			));
-
-			// 读取配置文件
-			File fileObj = new File(configFileName);
-	
-			if (fileObj.exists() == false) {
-				// 如果文件不存在, 
-				// 则直接退出!
-				ServerLog.LOG.error(MessageFormat.format(
-					"配置文件 {0} 不存在", 
-					configFileName
-				));
-				return null;
-			}
-	
-			// 读取 JSON 文本
-			String jsonText = FileUtils.readFileToString(fileObj);
-			// 创建 JSON 对象
-			JSONObject jsonObj = JSONObject.fromObject(jsonText);
-			// 获取 passport JSON 对象
-			JSONObject myJson = jsonObj.getJSONObject("passportServer");
-	
-			if (myJson == null) {
-				// 如果 JSON 对象为空, 
-				// 则直接退出!
-				ServerLog.LOG.error(MessageFormat.format(
-					"配置文件 {0} 中未找到 passportServer 配置项", configFileName
-				));
-				return null;
-			}
-
-			// 创建配置对象并反序列化
-			PassportServerConf conf = new PassportServerConf();
-			conf.readJsonObj(myJson);
-
-			return conf;
-		} catch (Exception ex) {
-			// 记录错误日志
-			ServerLog.LOG.error(ex.getMessage(), ex);
 		}
 
 		return null;

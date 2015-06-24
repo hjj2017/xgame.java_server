@@ -21,7 +21,7 @@
 		// 存放所有项目所依赖的 jar 文件!
 		// 
 		//-->
-	<property name="LIBS_DIR" value="../libs" />
+	<property name="LIBS_DIR" value="../lib" />
 
 	<!--//
 		// 版本号

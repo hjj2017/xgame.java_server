@@ -32,13 +32,15 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 
 	@Override
 	protected void doPost(
-		HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		final HttpServletRequest req, final HttpServletResponse res) 
+		throws ServletException, IOException {
 		this.doGet(req, res);
 	}
 
 	@Override
 	protected void doGet(
-		HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		final HttpServletRequest req, final HttpServletResponse res) 
+		throws ServletException, IOException {
 		if (req == null || 
 			res == null) {
 			// 如果参数对象为空, 
@@ -63,11 +65,27 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			String.valueOf(gameServerId)
 		));
 
+		// 输出结果
+		res.getWriter().println(
+			this.doAction(platformUUId, pf, gameServerId
+		));
+	}
+
+	/**
+	 * 执行动作
+	 * 
+	 * @param platformUUId
+	 * @param pf
+	 * @param gameServerId
+	 * @return
+	 * 
+	 */
+	private String doAction(String platformUUId, String pf, int gameServerId) {
 		if (platformUUId == null || 
 			platformUUId.isEmpty()) {
-			// 输出结果, 并直接退出!
-			res.getWriter().println("null_platform_uuid");
-			return;
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return "null_platform_uuid";
 		}
 		
 		// 创建互斥锁
@@ -97,9 +115,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 					platformUUId
 				));
 
-				// 输出结果, 并直接退出!
-				res.getWriter().println("lock_error");
-				return;
+				return "lock_error";
 			}
 
 			// 根据 platformUUId 加锁
@@ -121,9 +137,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 					platformUUId
 				));
 
-				// 输出结果, 并直接退出!
-				res.getWriter().println("null_passport_entity");
-				return;
+				return "null_passport_entity";
 			}
 
 			// 创建并写出 JSON 对象
@@ -137,9 +151,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 				jsonStr
 			));
 
-			// 输出结果, 并直接退出!
-			res.getWriter().println(jsonStr);
-			return;
+			return jsonStr;
 		} catch (Exception ex) {
 			// 记录异常信息
 			JettyHttpLog.LOG.error(MessageFormat.format(
@@ -157,9 +169,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			));
 		}
 
-		// 输出结果, 并直接退出!
-		res.getWriter().println("error");
-		return;
+		return "error";
 	}
 
 	/**
