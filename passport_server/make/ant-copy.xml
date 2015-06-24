@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="main" name="signinServer">
+	<!--// import //-->
+	<import file="../../code_libs/make/ant-globalsConfig.xml" />
+	<property name="copyToDir" value="/C:/hdsgz/copy" />
+
+	<!--// 分拣文件 //-->
+	<target name="main">
+    	<antcall target="remkDirs" />
+		<antcall target="copyJars" />
+		<antcall target="copyConf" />
+		<antcall target="copyShell" />
+	</target>
+
+	<!--// 重建目录 //-->
+	<target name="remkDirs">
+		<delete dir="${copyToDir}/passport_server" />
+		<mkdir dir="${copyToDir}/passport_server" />
+		<mkdir dir="${copyToDir}/passport_server/libs" />
+		<mkdir dir="${copyToDir}/passport_server/config" />
+		<mkdir dir="${copyToDir}/passport_server/logs" />
+	</target>
+
+	<!--// 复制依赖包 //-->
+	<target name="copyJars">
+		<copy todir="${copyToDir}/passport_server/libs">
+			<fileset dir="./ant/jar" includes="*.jar" />
+			<fileset dir="./ant/libs" includes="*.jar" />
+		</copy>
+	</target>
+
+	<!--// 复制配置文件 //-->
+	<target name="copyConf">
+		<copy todir="${copyToDir}/passport_server/config">
+			<fileset dir="../config">
+				<include name="**/*.template" />
+				<exclude name="**/.*" />
+				<exclude name="config.json" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!--// 复制运行文件 //-->
+	<target name="copyShell">
+		<copy todir="${copyToDir}/passport_server/">
+			<fileset dir="../">
+				<include name="*.sh.template" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>
