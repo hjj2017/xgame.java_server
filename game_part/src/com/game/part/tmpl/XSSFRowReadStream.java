@@ -214,7 +214,7 @@ public final class XSSFRowReadStream {
 
 		if (cell == null || 
 			cell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
-			return null;
+			return false;
 		} else {
 			return XSSFUtil.getBoolCellVal(cell);
 		}

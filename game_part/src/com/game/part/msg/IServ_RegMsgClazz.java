@@ -45,8 +45,6 @@ interface IServ_RegMsgClazz {
 		}
 
 		try {
-			// 创建消息对象
-			AbstractMsgObj newMsgObj = newMsgClazz.newInstance();
 			// 获取已经注册的消息类
 			Class<?> oldMsgClazz = MsgServ.OBJ._msgClazzMap.get(msgSerialUId);
 	
@@ -66,7 +64,7 @@ interface IServ_RegMsgClazz {
 				return;
 			}
 	
-			if (oldMsgClazz.equals(newMsgObj)) {
+			if (oldMsgClazz.equals(newMsgClazz)) {
 				// 要是两个类相同, 
 				// 那就算了...
 				return;

@@ -155,8 +155,12 @@ public final class PackageUtil {
 				// 并且是执行递归操作时, 
 				// 获取子文件列表
 				subFileArr = currFile.listFiles();
-				// 添加文件到队列
-				fileQ.addAll(Arrays.asList(subFileArr));
+
+				if (subFileArr != null && 
+					subFileArr.length > 0) {
+					// 添加文件到队列
+					fileQ.addAll(Arrays.asList(subFileArr));
+				}
 				continue;
 			}
 
