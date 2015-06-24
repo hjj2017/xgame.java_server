@@ -3,7 +3,7 @@ package com.game.part.msg;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.junit.Test;
 
-import com.game.bizModules.cd.msg.CGKillCdTimeMsg;
+import com.game.bizModule.cd.msg.CGKillCdTimeMsg;
 import com.game.part.msg.type.MsgBool;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgStr;

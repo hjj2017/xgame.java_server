@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.game.bizModules.building.tmpl.BuildingTmpl;
+import com.game.bizModule.building.tmpl.BuildingTmpl;
 
 /**
  * 模板服务测试
