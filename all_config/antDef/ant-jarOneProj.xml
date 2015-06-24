@@ -12,8 +12,8 @@
 		// 
 		// @param targetProj 
 		// @param targetVer 
-		// @param libs 
-		// @param relativeProjs 
+		// @param libRef 
+		// @param relativeProjArr 
 		// @param javaVer 
 		// @param charEncoding 
 		// 
@@ -24,9 +24,9 @@
 		<!--// 目标版本号 //-->
 		<attribute name="targetVer" />
 		<!--// 依赖包 jar 文件 //-->
-		<attribute name="libs" />
+		<attribute name="libRef" />
 		<!--// 相关项目 //-->
-		<attribute name="relativeProjs" default="__EMPTY_PATH__" />
+		<attribute name="relativeProjArr" default="__EMPTY_PATH__" />
 		<!--// java 编译器版本 //-->
 		<attribute name="javaVer" default="1.8" />
 		<!--// 字符编码 //-->
@@ -50,17 +50,17 @@
 			<!--// 0. 先清理目录 //-->
 			<echo>:: 清理名录 : ${antMakeTempDir0}</echo>
 			<deltree dir="${antMakeTempDir0}" />
-			<mkdir dir="${antMakeTempDir0}/libs" />
+			<mkdir dir="${antMakeTempDir0}/lib" />
 			<mkdir dir="${antMakeTempDir0}/classes" />
 			<mkdir dir="${antMakeTempDir0}/jar" />
 
 			<!--// 1. 构建相关项目 //-->
-			<property name="__targetPath__" value="${antMakeTempDir0}/libs" />
+			<property name="__targetPath__" value="${antMakeTempDir0}/lib" />
 			<foreach target="jarRelativeProjAndCopy"
 				delimiter=","
 				param="relativeProj" 
 				inheritall="true">
-				<path refid="@{relativeProjs}" />
+				<path refid="@{relativeProjArr}" />
 			</foreach>
 
 			<!--// 2. 构建 java 源文件 //-->
@@ -71,9 +71,9 @@
 				target="@{javaVer}" 
 				encoding="utf-8">
 				<src path="${targetPath}/src" />
-				<classpath refid="@{libs}" />
+				<classpath refid="@{libRef}" />
 				<classpath>
-					<fileset dir="${antMakeTempDir0}/libs">
+					<fileset dir="${antMakeTempDir0}/lib">
 						<include name="*.jar" />
 					</fileset>
 				</classpath>
@@ -143,7 +143,7 @@
 		<!--// 拷贝 jar 文件 //-->
 		<echo>:: 拷贝 jar 文件到 : ${__targetPath__}</echo>
 		<copy todir="${__targetPath__}">
-			<fileset dir="${antMakeTempDir1}/libs">
+			<fileset dir="${antMakeTempDir1}/lib">
 				<include name="*.jar" />
 			</fileset>
 			<fileset dir="${antMakeTempDir1}/jar">

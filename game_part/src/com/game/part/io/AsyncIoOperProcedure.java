@@ -7,7 +7,6 @@ import java.util.concurrent.Executors;
 
 import com.game.part.ThreadNamingFactory;
 import com.game.part.util.Assert;
-import com.sun.istack.internal.NotNull;
 
 /**
  * 异步 IO 过程
@@ -179,7 +178,7 @@ class AsyncIoOperProcedure<E extends Enum<E>> implements IIoOperProcedure<IIoOpe
 		 * @param oper
 		 * 
 		 */
-		public MyRunner(@NotNull StatefulIoOper<E> oper) {
+		public MyRunner(StatefulIoOper<E> oper) {
 			this._oper = oper;
 		}
 
