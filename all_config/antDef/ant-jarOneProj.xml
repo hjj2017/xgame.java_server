@@ -2,7 +2,7 @@
 <project basedir=".">
 
 	<!--// 导入全局配置 //-->
-	<import file="./ant-globalsConfig.xml" />
+	<import file="./ant-globalConfig.xml" />
 
 	<!--// 空目录 //-->
 	<path id="__EMPTY_PATH__" />
@@ -28,7 +28,7 @@
 		<!--// 相关项目 //-->
 		<attribute name="relativeProjs" default="__EMPTY_PATH__" />
 		<!--// java 编译器版本 //-->
-		<attribute name="javaVer" default="1.7" />
+		<attribute name="javaVer" default="1.8" />
 		<!--// 字符编码 //-->
 		<attribute name="charEncoding" default="utf-8" />
 
