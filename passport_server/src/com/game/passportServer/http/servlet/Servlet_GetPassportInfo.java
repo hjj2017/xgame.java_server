@@ -1,23 +1,21 @@
-package com.game.passportServer.restful.servlet;
+package com.game.passportServer.http.servlet;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import com.game.passportServer.dao.CommDao;
+import com.game.part.dao.CommDao;
 import com.game.passportServer.entity.PassportEntity_X;
-import com.game.passportServer.restful.RestfulLog;
+import com.game.passportServer.http.JettyHttpLog;
 
 /**
  * 获取 Passport 信息
@@ -26,34 +24,51 @@ import com.game.passportServer.restful.RestfulLog;
  * @since 2015/2/9
  * 
  */
-@Path(value = "/get_passport_info")
-public class Servlet_GetPassportInfo {
+public class Servlet_GetPassportInfo extends HttpServlet {
+	/// serialVersionUID
+	private static final long serialVersionUID = 8875654284161116765L;
 	/** 锁字典 */
 	private static final ConcurrentHashMap<String, ReentrantLock> _lockMap = new ConcurrentHashMap<>();
 
-	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
-	public String doPost(
-		@FormParam("platform_uuid") String platformUUId, 
-		@FormParam("pf") String pf, 
-		@FormParam("game_server_id") int gameServerId) {
-		return this.doGet(
-			platformUUId, pf, gameServerId
-		);
+	@Override
+	protected void doPost(
+		HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		this.doGet(req, res);
 	}
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public String doGet(
-		@QueryParam("platform_uuid") String platformUUId,
-		@QueryParam("pf") String pf, 
-		@QueryParam("game_server_id") int gameServerId) {
+	@Override
+	protected void doGet(
+		HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		if (req == null || 
+			res == null) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			return;
+		}
+
+		res.setContentType("application/json; charset=utf-8");
+		res.setStatus(HttpServletResponse.SC_OK);
+
+		// 获取平台 UUId
+		String platformUUId = req.getParameter("platform_uuid");
+		// 获取平台 Pf 值
+		String pf = req.getParameter("pf");
+		// 获取游戏服 Id
+		int gameServerId = Integer.parseInt(req.getParameter("game_server_id") != null ? req.getParameter("game_server_id") : "-1");
+
 		// 记录日志信息
-		RestfulLog.LOG.info(MessageFormat.format(
+		JettyHttpLog.LOG.info(MessageFormat.format(
 			"接到请求 : platform_uuid = {0}, pf = {1}, game_server_id = {2}", 
 			platformUUId, pf, 
 			String.valueOf(gameServerId)
 		));
+
+		if (platformUUId == null || 
+			platformUUId.isEmpty()) {
+			// 输出结果, 并直接退出!
+			res.getWriter().println("null_platform_uuid");
+			return;
+		}
 		
 		// 创建互斥锁
 		ReentrantLock newLock = new ReentrantLock(true);
@@ -63,7 +78,7 @@ public class Servlet_GetPassportInfo {
 		if (oldLock != null) {
 			// 如果老锁不为空, 
 			// 则直接指向老锁 ...
-			RestfulLog.LOG.warn(MessageFormat.format(
+			JettyHttpLog.LOG.warn(MessageFormat.format(
 				"将引用指向旧锁, platformUUId = {0}", 
 				platformUUId
 			));
@@ -77,16 +92,18 @@ public class Servlet_GetPassportInfo {
 			if (!lockFlag) {
 				// 如果加锁失败, 
 				// 则直接退出!
-				RestfulLog.LOG.error(MessageFormat.format(
+				JettyHttpLog.LOG.error(MessageFormat.format(
 					"加锁失败, platformUUId = {0}", 
 					platformUUId
 				));
 
-				return "";
+				// 输出结果, 并直接退出!
+				res.getWriter().println("lock_error");
+				return;
 			}
 
 			// 根据 platformUUId 加锁
-			RestfulLog.LOG.error(MessageFormat.format(
+			JettyHttpLog.LOG.error(MessageFormat.format(
 				"加锁成功, platformUUId = {0}", 
 				platformUUId
 			));
@@ -99,12 +116,14 @@ public class Servlet_GetPassportInfo {
 			if (pe == null) {
 				// 如果 passport 数据依然为空, 
 				// 则直接退出!
-				RestfulLog.LOG.error(MessageFormat.format(
+				JettyHttpLog.LOG.error(MessageFormat.format(
 					"passport 数据为空, platformUUId = {0}", 
 					platformUUId
 				));
 
-				return "";
+				// 输出结果, 并直接退出!
+				res.getWriter().println("null_passport_entity");
+				return;
 			}
 
 			// 创建并写出 JSON 对象
@@ -113,15 +132,17 @@ public class Servlet_GetPassportInfo {
 			// 获取 JSON 字符串
 			String jsonStr = jsonObj.toString();
 			// 记录日志信息
-			RestfulLog.LOG.info(MessageFormat.format(
+			JettyHttpLog.LOG.info(MessageFormat.format(
 				"准备返回给调用者, jsonStr = {0}", 
 				jsonStr
 			));
 
-			return jsonStr;
+			// 输出结果, 并直接退出!
+			res.getWriter().println(jsonStr);
+			return;
 		} catch (Exception ex) {
 			// 记录异常信息
-			RestfulLog.LOG.error(MessageFormat.format(
+			JettyHttpLog.LOG.error(MessageFormat.format(
 				"加锁时发生异常, platformUUId = {0}", 
 				platformUUId
 			), ex);
@@ -130,13 +151,15 @@ public class Servlet_GetPassportInfo {
 			newLock.unlock();
 			_lockMap.remove(platformUUId);
 			// 记录日志信息
-			RestfulLog.LOG.info(MessageFormat.format(
+			JettyHttpLog.LOG.info(MessageFormat.format(
 				"给玩家解锁, platformUUId = {0}", 
 				platformUUId
 			));
 		}
 
-		return "";
+		// 输出结果, 并直接退出!
+		res.getWriter().println("error");
+		return;
 	}
 
 	/**
@@ -171,7 +194,7 @@ public class Servlet_GetPassportInfo {
 
 		if (pe == null) {
 			// 如果 passport 数据为空, 
-			RestfulLog.LOG.warn(
+			JettyHttpLog.LOG.warn(
 				"passport 数据为空需要新建, platformUUId = {0}", 
 				platformUUId
 			);
@@ -191,3 +214,4 @@ public class Servlet_GetPassportInfo {
 		return pe;
 	}
 }
+

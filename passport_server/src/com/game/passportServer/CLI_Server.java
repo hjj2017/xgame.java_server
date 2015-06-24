@@ -16,8 +16,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.game.part.dao.CommDao;
+import com.game.passportServer.http.JettyHttpProc;
 import com.game.passportServer.jsonConf.PassportServerConf;
-import com.game.passportServer.restful.RestfulServer;
 
 /**
  * Passport 服务器,
@@ -74,10 +74,10 @@ public class CLI_Server {
 		
 		/* 启动 HTTP 服务器 */ {
 			// 设置服务器 IP 和端口
-			RestfulServer.OBJ._bindIp = this._confObj._serverIpAddr;
-			RestfulServer.OBJ._port = this._confObj._serverPort;
+			JettyHttpProc.OBJ._bindIp0 = this._confObj._serverIpAddr;
+			JettyHttpProc.OBJ._port0 = this._confObj._serverPort;
 			// 启动服务器
-			RestfulServer.OBJ.start();
+			JettyHttpProc.OBJ.start();
 		}
 
 		// 强制 GC 一次

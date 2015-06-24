@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs.common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/game_part"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs.jetty"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

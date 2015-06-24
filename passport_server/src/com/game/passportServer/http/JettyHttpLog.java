@@ -1,4 +1,4 @@
-package com.game.passportServer.restful;
+package com.game.passportServer.http;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +10,14 @@ import org.slf4j.LoggerFactory;
  * @since 2015/2/3
  * 
  */
-public class RestfulLog {
+public class JettyHttpLog {
 	/** 日志对象 */
-	public static final Logger LOG = LoggerFactory.getLogger(RestfulLog.class);
+	public static final Logger LOG = LoggerFactory.getLogger(JettyHttpLog.class);
 	
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	private RestfulLog() {
+	private JettyHttpLog() {
 	}
 }
