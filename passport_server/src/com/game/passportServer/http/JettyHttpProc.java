@@ -64,7 +64,7 @@ public class JettyHttpProc {
 	 * 启动服务器
 	 * 
 	 */
-	public void start() {
+	public void startUp() {
 		try {
 			// 创建服务器对象
 			Server serverObj = new Server(this._port0);

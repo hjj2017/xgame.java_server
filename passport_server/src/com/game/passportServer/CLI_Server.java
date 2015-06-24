@@ -18,7 +18,7 @@ import com.game.passportServer.jsonConf.PassportServerConf;
  * Passport 服务器,
  * 请使用如下命令行启动该服务器 : 
  * <pre>
- * java -cp *.jar com.game.passportServer.CLI_Server -c ../all_confg/etc/all_config.json
+ * java -cp *.jar com.game.passportServer.CLI_Server -c ../all_confg/etc/all_config.json -l ../all_config/etc/passport_server.log4j.properties
  * </pre>
  * <font color='#990000'>
  * 注意 : 命令行中必须给出配置文件 config.json 所在位置!</font><br />
@@ -75,7 +75,7 @@ public class CLI_Server {
 			JettyHttpProc.OBJ._port1 = this._confObj._port1;
 			
 			// 启动服务器
-			JettyHttpProc.OBJ.start();
+			JettyHttpProc.OBJ.startUp();
 		}
 
 		// 强制 GC 一次
