@@ -2,8 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs.common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/game_part"/>
-	<classpathentry kind="lib" path="/game_bizModules/bin"/>
+	<classpathentry kind="lib" path="/game_bizModule/bin"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_lib.common"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_lib.jetty"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

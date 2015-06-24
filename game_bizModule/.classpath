@@ -3,8 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_libs.common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/game_server"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/game_part"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_lib.common"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_lib.jetty"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/code_lib.quartz"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
