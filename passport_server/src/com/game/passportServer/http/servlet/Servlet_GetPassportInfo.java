@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import com.game.part.dao.CommDao;
+import com.game.passportServer.ServerLog;
 import com.game.passportServer.entity.PassportEntity_X;
-import com.game.passportServer.http.JettyHttpLog;
 
 /**
  * 获取 Passport 信息
@@ -59,7 +59,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 		int gameServerId = Integer.parseInt(req.getParameter("game_server_id") != null ? req.getParameter("game_server_id") : "-1");
 
 		// 记录日志信息
-		JettyHttpLog.LOG.info(MessageFormat.format(
+		ServerLog.LOG.info(MessageFormat.format(
 			"接到请求 : platform_uuid = {0}, pf = {1}, game_server_id = {2}", 
 			platformUUId, pf, 
 			String.valueOf(gameServerId)
@@ -96,7 +96,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 		if (oldLock != null) {
 			// 如果老锁不为空, 
 			// 则直接指向老锁 ...
-			JettyHttpLog.LOG.warn(MessageFormat.format(
+			ServerLog.LOG.warn(MessageFormat.format(
 				"将引用指向旧锁, platformUUId = {0}", 
 				platformUUId
 			));
@@ -110,7 +110,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			if (!lockFlag) {
 				// 如果加锁失败, 
 				// 则直接退出!
-				JettyHttpLog.LOG.error(MessageFormat.format(
+				ServerLog.LOG.error(MessageFormat.format(
 					"加锁失败, platformUUId = {0}", 
 					platformUUId
 				));
@@ -119,7 +119,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			}
 
 			// 根据 platformUUId 加锁
-			JettyHttpLog.LOG.error(MessageFormat.format(
+			ServerLog.LOG.error(MessageFormat.format(
 				"加锁成功, platformUUId = {0}", 
 				platformUUId
 			));
@@ -132,7 +132,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			if (pe == null) {
 				// 如果 passport 数据依然为空, 
 				// 则直接退出!
-				JettyHttpLog.LOG.error(MessageFormat.format(
+				ServerLog.LOG.error(MessageFormat.format(
 					"passport 数据为空, platformUUId = {0}", 
 					platformUUId
 				));
@@ -146,7 +146,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			// 获取 JSON 字符串
 			String jsonStr = jsonObj.toString();
 			// 记录日志信息
-			JettyHttpLog.LOG.info(MessageFormat.format(
+			ServerLog.LOG.info(MessageFormat.format(
 				"准备返回给调用者, jsonStr = {0}", 
 				jsonStr
 			));
@@ -154,7 +154,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			return jsonStr;
 		} catch (Exception ex) {
 			// 记录异常信息
-			JettyHttpLog.LOG.error(MessageFormat.format(
+			ServerLog.LOG.error(MessageFormat.format(
 				"加锁时发生异常, platformUUId = {0}", 
 				platformUUId
 			), ex);
@@ -163,7 +163,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 			newLock.unlock();
 			_lockMap.remove(platformUUId);
 			// 记录日志信息
-			JettyHttpLog.LOG.info(MessageFormat.format(
+			ServerLog.LOG.info(MessageFormat.format(
 				"给玩家解锁, platformUUId = {0}", 
 				platformUUId
 			));
@@ -204,7 +204,7 @@ public class Servlet_GetPassportInfo extends HttpServlet {
 
 		if (pe == null) {
 			// 如果 passport 数据为空, 
-			JettyHttpLog.LOG.warn(
+			ServerLog.LOG.warn(
 				"passport 数据为空需要新建, platformUUId = {0}", 
 				platformUUId
 			);

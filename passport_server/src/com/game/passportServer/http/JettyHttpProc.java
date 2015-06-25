@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import com.game.passportServer.ServerLog;
 import com.game.passportServer.http.servlet.Servlet_GetPassportInfo;
 
 /**
@@ -116,14 +117,14 @@ public class JettyHttpProc {
 			serverObj.start();
 
 			// 记录日志信息
-			JettyHttpLog.LOG.info(MessageFormat.format(
+			ServerLog.LOG.info(MessageFormat.format(
 				"Jetty HTTP 服务器已经启动, IP 地址 = {0}, 监听端口 = {1}", 
 				this._bindIpAddr0, 
 				String.valueOf(this._port0)
 			));
 		} catch (Exception ex) {
 			// 记录错误日志
-			JettyHttpLog.LOG.error(ex.getMessage(), ex);
+			ServerLog.LOG.error(ex.getMessage(), ex);
 		}
 	}
 
@@ -138,7 +139,7 @@ public class JettyHttpProc {
 				this._serverObj.stop();
 			} catch (Exception ex) {
 				// 记录错误日志
-				JettyHttpLog.LOG.error(ex.getMessage(), ex);
+				ServerLog.LOG.error(ex.getMessage(), ex);
 			}
 		}
 	}
