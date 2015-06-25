@@ -30,7 +30,7 @@ public final class ConnConf {
 		}
 
 		// 绑定 IP 地址和端口
-		this._bindIpAddr = jsonObj.optString("bingIpAddr", this._bindIpAddr);
+		this._bindIpAddr = jsonObj.optString("bindIpAddr", this._bindIpAddr);
 		this._port = jsonObj.optInt("port", this._port);
 		// 设置空闲超时时间
 		this._idleTimeout = jsonObj.optLong("idleTimeout", this._idleTimeout);

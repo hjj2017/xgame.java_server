@@ -6,12 +6,20 @@
     "passportServer" : {
     	"serverId" : 1,
     	"connArr" : [
-    		{
+    		{ 
+    		# 绑定 IP 地址 1
     		"bindIpAddr" : "0.0.0.0",
         	"port" : 8007, 
-        	"idleTimeout" : 20000,
+        	"idleTimeout" : 2000,
+    		}, 
+    		{ 
+    		# 绑定 IP 地址 2
+    		"bindIpAddr" : "0.0.0.0",
+        	"port" : 8008, 
+        	"idleTimeout" : 2000,
     		}
     	],
+    	# 数据库配置
         "dbConn" : "jdbc:mysql://127.0.0.1:3306/llz_passport?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
         "dbUser" : "root", 
         "dbPass" : ""
