@@ -7,7 +7,7 @@ package com.game.part;
  * @since 2012/6/3
  *
  */
-public class NotSupportedError extends Error {
+public class NotSupportedError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 3917831565297901055L;
 

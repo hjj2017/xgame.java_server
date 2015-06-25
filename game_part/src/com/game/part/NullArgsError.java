@@ -7,7 +7,7 @@ package com.game.part;
  * @since 2012/6/3
  *
  */
-public class NullArgsError extends Error {
+public class NullArgsError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 9070716904017022631L;
 

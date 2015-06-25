@@ -2,12 +2,15 @@ package com.game.passportServer.jsonConf;
 
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
 
 import com.game.passportServer.ServerLog;
-
-import net.sf.json.JSONObject;
 
 /**
  * 配置定义
@@ -16,19 +19,13 @@ import net.sf.json.JSONObject;
  * @since 2015/2/9 
  * 
  */
-public class PassportServerConf {
+public final class PassportServerConf {
 	/** 默认配置 */
 	public static final PassportServerConf DEFAULT_CONF = new PassportServerConf();
 	/** 服务器 Id */
 	public int _serverId = 1;
-	/** 服务器 IP 地址 0 */
-	public String _bindIpAddr0 = "127.0.0.1";
-	/** 服务器端口号 0 */
-	public int _port0 = 8007;
-	/** 服务器 IP 地址 1 */
-	public String _bindIpAddr1 = null;
-	/** 服务器端口号 1 */
-	public int _port1 = -1;
+	/** 连接配置列表 */
+	public final List<ConnConf> _connConfList = new ArrayList<>();
 	/** 数据库连接 */
 	public String _dbConn = null;
 	/** 数据库用户 */
@@ -50,11 +47,29 @@ public class PassportServerConf {
 			return;
 		}
 
+		// 服务器 Id
 		this._serverId = jsonObj.optInt("serverId", this._serverId);
-		this._bindIpAddr0 = jsonObj.optString("bindIpAddr.0", this._bindIpAddr0);
-		this._port0 = jsonObj.optInt("port.0", this._port0);
-		this._bindIpAddr1 = jsonObj.optString("bindIpAddr.1", this._bindIpAddr1);
-		this._port1 = jsonObj.optInt("port.1", this._port1);
+
+		// 获取 JSON 数组
+		JSONArray jsonArr = jsonObj.getJSONArray("connArr");
+
+		for (int i = 0; i < jsonArr.size(); i++) {
+			// 获取连接配置 JSON
+			JSONObject connJson = jsonArr.getJSONObject(i);
+
+			if (connJson == null || 
+				connJson.isEmpty()) {
+				continue;
+			}
+
+			// 创建连接配置
+			ConnConf confObj = new ConnConf();
+			confObj.readJsonObj(connJson);
+			// 添加到连接列表
+			this._connConfList.add(confObj);
+		}
+
+		// 数据库配置
 		this._dbConn = jsonObj.optString("dbConn");
 		this._dbPass = jsonObj.optString("dbPass");
 		this._dbUser = jsonObj.optString("dbUser");

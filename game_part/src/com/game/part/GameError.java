@@ -7,7 +7,7 @@ package com.game.part;
  * @since 2012/6/3
  *
  */
-public class Error extends RuntimeException {
+public class GameError extends RuntimeException {
 	/** serialVersionUID */
 	private static final long serialVersionUID = -1001L;
 
@@ -15,7 +15,7 @@ public class Error extends RuntimeException {
 	 * 类默认构造器
 	 * 
 	 */
-	public Error() {
+	public GameError() {
 		super();
 	}
 
@@ -25,7 +25,7 @@ public class Error extends RuntimeException {
 	 * @param msg
 	 * 
 	 */
-	public Error(String msg) {
+	public GameError(String msg) {
 		super(msg);
 	}
 
@@ -35,7 +35,7 @@ public class Error extends RuntimeException {
 	 * @param err
 	 * 
 	 */
-	public Error(Throwable err) {
+	public GameError(Throwable err) {
 		super(err);
 	}
 
@@ -46,7 +46,7 @@ public class Error extends RuntimeException {
 	 * @param err
 	 * 
 	 */
-	public Error(String msg, Throwable err) {
+	public GameError(String msg, Throwable err) {
 		super(msg, err);
 	}
 }

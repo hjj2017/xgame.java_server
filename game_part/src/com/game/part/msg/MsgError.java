@@ -1,6 +1,6 @@
 package com.game.part.msg;
 
-import com.game.part.Error;
+import com.game.part.GameError;
 
 /**
  * 消息错误
@@ -9,7 +9,7 @@ import com.game.part.Error;
  * @since 2012/6/3
  * 
  */
-public class MsgError extends Error {
+public class MsgError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 8136836021493508981L;
 

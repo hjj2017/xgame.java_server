@@ -35,7 +35,7 @@ CREATE TABLE `t_passport_3` (
   `last_login_time` bigint(20) DEFAULT NULL,
   `last_game_server_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`platform_uuid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `t_passport_4` (
   `platform_uuid` varchar(64) NOT NULL,

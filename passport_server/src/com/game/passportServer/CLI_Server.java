@@ -69,11 +69,7 @@ public class CLI_Server {
 		
 		/* 启动 HTTP 服务器 */ {
 			// 设置服务器 IP 和端口
-			JettyHttpProc.OBJ._bindIpAddr0 = this._confObj._bindIpAddr0;
-			JettyHttpProc.OBJ._port0 = this._confObj._port0;
-			JettyHttpProc.OBJ._bindIpAddr1 = this._confObj._bindIpAddr1;
-			JettyHttpProc.OBJ._port1 = this._confObj._port1;
-			
+			JettyHttpProc.OBJ._connConfList = this._confObj._connConfList;
 			// 启动服务器
 			JettyHttpProc.OBJ.startUp();
 		}

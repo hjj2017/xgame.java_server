@@ -1,6 +1,6 @@
 package com.game.gameServer.framework;
 
-import com.game.part.Error;
+import com.game.part.GameError;
 
 /**
  * 内核错误
@@ -8,7 +8,7 @@ import com.game.part.Error;
  * @author haijiang
  *
  */
-public class FrameworkError extends Error {
+public class FrameworkError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = -1;
 

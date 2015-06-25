@@ -6,7 +6,7 @@ package com.game.part;
  * @author haijiang
  *
  */
-public class InvalidArgsError extends Error {
+public class InvalidArgsError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 7400420633310393852L;
 

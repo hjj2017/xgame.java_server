@@ -1,6 +1,6 @@
 package com.game.part.io;
 
-import com.game.part.Error;
+import com.game.part.GameError;
 
 /**
  * IO 错误
@@ -8,7 +8,7 @@ import com.game.part.Error;
  * @author haijiang
  *
  */
-public class IoOperError extends Error {
+public class IoOperError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 3844453167745941900L;
 

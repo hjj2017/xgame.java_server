@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import com.game.part.Error;
+import com.game.part.GameError;
 
 /**
  * 名称空间实用工具
@@ -103,7 +103,7 @@ public final class PackageUtil {
 			}
 		} catch (Exception ex) {
 			// 抛出异常!
-			throw new Error(ex);
+			throw new GameError(ex);
 		}
 
 		return resultSet;
@@ -204,7 +204,7 @@ public final class PackageUtil {
 				resultSet.add(clazzObj);
 			} catch (Exception ex) {
 				// 抛出异常
-				throw new Error(ex);
+				throw new GameError(ex);
 			}
 		}
 
@@ -296,7 +296,7 @@ public final class PackageUtil {
 			jarIn.close();
 		} catch (Exception ex) {
 			// 抛出异常
-			throw new Error(ex);
+			throw new GameError(ex);
 		}
 
 		return resultSet;

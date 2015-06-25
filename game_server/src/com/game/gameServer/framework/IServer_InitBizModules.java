@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.Set;
 
 import com.game.gameServer.msg.AbstractCGMsgObj;
-import com.game.part.Error;
+import com.game.part.GameError;
 import com.game.part.tmpl.XlsxTmplServ;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.util.Assert;
@@ -123,7 +123,7 @@ interface IServer_InitBizModules {
 		} catch (Exception ex) {
 			// 抛出异常
 			FrameworkLog.LOG.error(ex.getMessage(), ex);
-			throw new Error(ex);
+			throw new GameError(ex);
 		}
 	}
 }

@@ -2,23 +2,26 @@ package com.game.passportServer.http;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServlet;
 
-import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import com.game.part.GameError;
 import com.game.passportServer.ServerLog;
 import com.game.passportServer.http.servlet.Servlet_GetPassportInfo;
+import com.game.passportServer.jsonConf.ConnConf;
 
 /**
  * HTTP 服务器, 
  * 启动后, 可以使用如下地址进行测试 :
- * http://127.0.0.1:8007/get_passport_info?platform_uuid=qihu360-1001&pf=wan&game_server_id=1
+ * http://127.0.0.1:8001/get_passport_info?platform_uuid=qihu360-1001&pf=wan&game_server_id=1
  * 
  * @author jinhaijiang
  * @since 2015/2/9
@@ -27,14 +30,8 @@ import com.game.passportServer.http.servlet.Servlet_GetPassportInfo;
 public class JettyHttpProc {
 	/** 单例对象 */
 	public static final JettyHttpProc OBJ = new JettyHttpProc();
-	/** 绑定服务器 Ip 地址 0 */
-	public String _bindIpAddr0 = "127.0.0.1";
-	/** 服务器端口号 0 */
-	public int _port0 = 8001;
-	/** 绑定服务器 Ip 地址 1 */
-	public String _bindIpAddr1 = null;
-	/** 服务器端口号 1 */
-	public int _port1 = -1;
+	/** 连接配置列表 */
+	public List<ConnConf> _connConfList = null;
 
 	/** 服务器对象 */
 	private Server _serverObj = null;
@@ -66,39 +63,38 @@ public class JettyHttpProc {
 	 * 
 	 */
 	public void startUp() {
+		if (this._connConfList == null || 
+			this._connConfList.isEmpty()) {
+			// 如果连接配置列表为空, 
+			// 则抛出异常!
+			throw new GameError("连接配置列表为空");
+		}
+
 		try {
 			// 创建服务器对象
-			Server serverObj = new Server(this._port0);
-
-			// 连接器数组
-			Connector[] connArr = null;
-			// 创建服务器连接
-			ServerConnector conn0 = new ServerConnector(serverObj);
-			conn0.setName("passport_server_0");
-			conn0.setHost(this._bindIpAddr0);
-			conn0.setPort(this._port0);
-			conn0.setIdleTimeout(30000L);
-			conn0.setReuseAddress(true);
-
-			if (this._bindIpAddr1 != null && 
-				this._port1 > 0) {
+			Server serverObj = new Server();
+			// 创建连接列表
+			List<ServerConnector> connObjList = this._connConfList.stream().map(C -> {
 				// 创建服务器连接
-				ServerConnector conn1 = new ServerConnector(serverObj);
-				conn1.setName("passport_server_1");
-				conn1.setHost(this._bindIpAddr1);
-				conn1.setPort(this._port1);
-				conn1.setIdleTimeout(30000L);
-				conn1.setReuseAddress(true);
-
-				// 如果有两个连接, 
-				connArr = new Connector[] { conn0, conn1 };
-			} else {
-				// 如果只有一个连接
-				connArr = new Connector[] { conn0 };
-			}
-
+				ServerConnector conn0 = new ServerConnector(serverObj);
+				conn0.setHost(C._bindIpAddr);
+				conn0.setPort(C._port);
+				conn0.setIdleTimeout(C._idleTimeout);
+				conn0.setReuseAddress(true);
+				// 记录日志信息
+				ServerLog.LOG.info(MessageFormat.format(
+					"IP 地址 = {0}, 监听端口 = {1}", 
+					C._bindIpAddr, 
+					String.valueOf(C._port)
+				));
+				
+				return conn0;
+			}).collect(Collectors.toList());
+			
 			// 设置连接
-			serverObj.setConnectors(connArr);
+			serverObj.setConnectors(connObjList.toArray(
+				new ServerConnector[0]
+			));
 
 			// Servlet 处理器
 			ServletContextHandler ctxHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -117,11 +113,7 @@ public class JettyHttpProc {
 			serverObj.start();
 
 			// 记录日志信息
-			ServerLog.LOG.info(MessageFormat.format(
-				"Jetty HTTP 服务器已经启动, IP 地址 = {0}, 监听端口 = {1}", 
-				this._bindIpAddr0, 
-				String.valueOf(this._port0)
-			));
+			ServerLog.LOG.info("Jetty HTTP 服务器已经启动");
 		} catch (Exception ex) {
 			// 记录错误日志
 			ServerLog.LOG.error(ex.getMessage(), ex);

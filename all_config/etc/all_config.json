@@ -5,8 +5,13 @@
 # ///////////////////////////////////////////////////////////////// 
     "passportServer" : {
     	"serverId" : 1,
-        "bindIpAddr.0" : "0.0.0.0",
-        "port.0" : 8007,  
+    	"connArr" : [
+    		{
+    		"bindIpAddr" : "0.0.0.0",
+        	"port" : 8007, 
+        	"idleTimeout" : 20000,
+    		}
+    	],
         "dbConn" : "jdbc:mysql://127.0.0.1:3306/llz_passport?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
         "dbUser" : "root", 
         "dbPass" : ""
