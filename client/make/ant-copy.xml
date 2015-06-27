@@ -20,7 +20,10 @@
 	<target name="copyPHP">
 		<copy todir="${copyToDir}/client">
 			<fileset dir="../">
-				<include name="**/*.*" />
+				<!--客户端配置文件 遵循命名规则 Client{0}Config.php-->
+				<!--<exclude name="configs/Client*Config.php"/>
+				<include name="**/*.*" />-->
+				<include name="configs/ClientVerConfig.php"/>
 			</fileset>
 		</copy>
 		<delete dir="${copyToDir}/client/.settings" />
@@ -29,9 +32,7 @@
 			<fileset dir="${copyToDir}/client">
 				<include name=".project" />
 				<include name="config/log4php.config.xml" />
-				<include name="maintenance/WhiteListConfig.php" />
 				<include name="maintenance/Show.html" />
-				<include name="maintenance/TimeConfig.php" />
 			</fileset>
 		</delete>
 	</target>

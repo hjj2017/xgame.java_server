@@ -49,7 +49,7 @@ class TimeUpdate {
         $startTime,
         $endTime) {
         // 获取目标文件
-        $targetFile = WebApp::getPhysicalPath("maintenance/TimeConfig.php");
+        $targetFile = WebApp::getPhysicalPath("configs/TimeConfig.php");
         MyLog::LOG()->info("准备打开目标文件 $targetFile");
 
         // 打开文件并获取句柄

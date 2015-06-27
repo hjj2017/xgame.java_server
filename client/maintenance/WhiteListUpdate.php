@@ -29,7 +29,7 @@ class WhiteListUpdate {
         // 记录日志信息
         MyLog::LOG()->info("接到白名单列表 = $whiteList");
         // 获取目标文件
-        $targetFile = WebApp::getPhysicalPath("maintenance/WhiteListConfig.php");
+        $targetFile = WebApp::getPhysicalPath("configs/WhiteListConfig.php");
         MyLog::LOG()->info("准备打开目标文件 $targetFile");
 
         // 打开文件
