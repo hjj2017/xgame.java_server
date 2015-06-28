@@ -1,8 +1,8 @@
 <?php
 // 获取当前目录
-$currDir = __DIR__;
+$currDir = dirname(__FILE__);
 // 日志目录
-$logDir = dirname("${currDir}/..");
+$logDir = dirname("${currDir}/../log");
 
 //
 // 设置 log4php 配置

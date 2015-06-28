@@ -7,7 +7,7 @@
  */
 function __GET_SERVER_NAME() {
 	// 获取文件名称
-	$serverName = exec("pwd");
+	$serverName = exec("pwd -P");
 
 	// 出现 s00_game/client 的位置
 	$rIndex = stripos($serverName, "_game/client");
