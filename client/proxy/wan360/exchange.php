@@ -1,6 +1,6 @@
 <?php
 require_once("global.php");
-require_once(__DIR__ . "/../../configs/ServerNameConfig.php");
+require_once(__DIR__ . "/../../configs/ServerName.php");
 require_once(__DIR__ . "/../../MyLog.php");
 
 /**
@@ -129,7 +129,7 @@ function tellGameServer($platformUUId, $pf, $serverName, $roleUUId, $roleName, $
 				"platform" => $pf,
 				"role_id" => $roleUUId, 
 				"role_name" => $roleName, 
-				"time" => $time,
+				"time" => $orderTime,
 			)
 		);
 

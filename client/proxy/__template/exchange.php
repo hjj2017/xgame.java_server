@@ -1,6 +1,6 @@
 <?php
 require_once("global.php");
-require_once(__DIR__ . "/../../configs/ServerNameConfig.php");
+require_once(__DIR__ . "/../../configs/ServerName.php");
 
 /**
  * 页面入口函数

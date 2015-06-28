@@ -1,7 +1,7 @@
 <?php
 // import
-require_once("libs/apache-log4php-2.3.0/Logger.php");
-require_once("WebApp.php");
+require_once("lib/apache-log4php-2.3.0/Logger.php");
+require_once("etc/Log4PHP.Conf.php");
 
 /**
  * 自定义日志类
@@ -19,8 +19,9 @@ class MyLog {
      */
     public static function LOG() {
         if (MyLog::$_logger == null) {
+            // 读取配置
+            Logger::configure($GLOBALS["LOG_4_PHP"]);
             // 创建日志对象
-            Logger::configure(WebApp::getPhysicalPath("php.config/log4php.config.xml"));
             MyLog::$_logger = Logger::getLogger("MyLog");
         }
 

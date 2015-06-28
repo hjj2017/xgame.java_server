@@ -1,6 +1,6 @@
 <?php
 // 引入所有配置文件
-loadAllConfigs();
+loadAllConf();
 
 /**
  * 加载所有配置文件
@@ -8,10 +8,10 @@ loadAllConfigs();
  * @return void
  *
  */
-function loadAllConfigs() {
+function loadAllConf() {
 	// 遍历配置目录中的所有文件,
 	// 并包含进来!
-	foreach (scandir("configs/") as $handle) {
+	foreach (scandir("etc/") as $handle) {
 
 		if (is_dir($handle)) {
 			// 如果当前句柄是目录,
@@ -20,7 +20,7 @@ function loadAllConfigs() {
 		}
 
 		// 创建并包含文件
-		touchAndRequireOnce("configs/" . $handle);
+		touchAndRequireOnce("etc/" . $handle);
 	}
 }
 
@@ -49,10 +49,7 @@ if ($nowTime >= intval(MAINTENANCE_START_TIME) &&
     // 如果当前服务器正在维护中,
     // 并且玩家又不在白名单中,
     // 则直接退出!
-    require_once("WebApp.php");
-    // 显示维护页面
-    global $theApp;
-    $theApp->start("maintenance/Show");
+    header("redirect: /maintenance.php");
     die(-1);
 }
 
@@ -69,19 +66,19 @@ function getFrameUrl() {
 	//
 	// 以下为可配置项
 	// CDN 地址
-	// @see configs/ClientCDNConfig.php
+	// @see configs/Cdn.php
 	$cdnHost = CLIENT_CDN_URL;
 	// 客户端版本号
-	// @see configs/ClientVerConfig.php
+	// @see configs/ResVer.php
 	$clientVer = CLIENT_VER;
 	
 	// 游戏服务器地址, 默认为当前服务器域名
     $gameServerHost = $_SERVER["HTTP_HOST"];
     // 游戏服务器端口号
-    // @see configs/ClientPortConfig.php
+    // @see configs/ServerPort.php
     $gameServerPort = CLIENT_PORT;
     // 设置服务器名称
-    // @see configs/ServerNameConfig.php
+    // @see configs/ServerName.php
     $serverName = $GLOBALS["serverName"];
 
     // 统计汇报地址 : http://gm.gz.1251012822.clb.myqcloud.com:8010/client_res
@@ -115,7 +112,7 @@ function getFrameUrl() {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<title>龙狼传</title>
+<title>Xgame</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 </head>
 <frameset cols="100%" rows="100%" frameborder="0px">
