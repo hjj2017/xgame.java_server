@@ -100,8 +100,61 @@ class ZkServ extends Zookeeper {
         $startTimeStr = $jsonArr[0];
         $endTimeStr = $jsonArr[1];
 
+        $text = <<< __EOF
+<?php
+\$GLOBALS["MAINTENANCE_START_TIME"] = $startTimeStr;
+\$GLOBALS["MAINTENANCE_END_TIME"] = $endTimeStr;
+
+__EOF;
+
         // 目标文件
         $targetFile = dirname(__FILE__) . "/etc/MaintenanceTime.php";
+        // 写出目标文件
+        self::writeToFile($targetFile, $text);
+    }
+
+    /**
+     * 更新白名单
+     *
+     * @param String $value
+     * @return void
+     *
+     */
+    private function updateWhiteList($value) {
+        // 记录日志信息
+        MyLog::LOG()->info("白名单 = ${value}");
+        // 获取 JSON 数组
+        $jsonArr = json_decode($value);
+
+        $text = <<< __EOF
+<?php
+\$GLOBALS["WHITE_LIST"] = array(
+__EOF;
+
+        foreach ($jsonArr as $json) {
+            // 获取平台 UUId
+            $platformUUId = $json;
+            // 添加到文本
+            $text .= "\t\"${platformUUId}\" => 1, ";
+        }
+
+        $text .= ");";
+
+        // 目标文件
+        $targetFile = dirname(__FILE__) . "/etc/WhiteList.php";
+        // 写出目标文件
+        self::writeToFile($targetFile, $text);
+    }
+
+    /**
+     * 写出目标文件
+     *
+     * @param $targetFile 目标文件的完整路径
+     * @param $text 文本内容
+     * @return void
+     *
+     */
+    private static function writeToFile($targetFile, $text) {
         // 打开文件
         $fp = fopen($targetFile, "w");
 
@@ -111,13 +164,6 @@ class ZkServ extends Zookeeper {
             MyLog::LOG()->error("打开文件 ${targetFile} 失败!!");
             return;
         }
-
-        $text = <<< __EOF
-<?php
-\$GLOBALS["MAINTENANCE_START_TIME"] = $startTimeStr;
-\$GLOBALS["MAINTENANCE_END_TIME"] = $endTimeStr;
-
-__EOF;
 
         // 写出文件内容
         $result = fwrite($fp, $text);
@@ -132,20 +178,6 @@ __EOF;
 
         fflush($fp);
         fclose($fp);
-
-        // 输出日志信息
-        MyLog::LOG()->info("文件 ${targetFile} 已更新");
-    }
-
-    /**
-     * 更新白名单
-     *
-     * @return void
-     *
-     */
-    private function updateWhiteList() {
-        // 获取白名单
-        $whiteList = $this->get("whiteList");
     }
 }
 
