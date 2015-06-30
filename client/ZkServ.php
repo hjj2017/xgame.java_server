@@ -135,10 +135,10 @@ __EOF;
             // 获取平台 UUId
             $platformUUId = $json;
             // 添加到文本
-            $text .= "\t\"${platformUUId}\" => 1, ";
+            $text .= "\n\t\"${platformUUId}\" => 1, ";
         }
 
-        $text .= ");";
+        $text .= "\n);";
 
         // 目标文件
         $targetFile = dirname(__FILE__) . "/etc/WhiteList.php";

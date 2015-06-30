@@ -21,6 +21,10 @@ function __GET_SERVER_NAME() {
 	// 为提高兼容性, 增加一个 "-" 字符
 	$serverName = strtoupper($serverName);
 
+	if (strlen($serverName) <= 0) {
+		$serverName = "S00";
+	}
+
 	return $serverName;
 }
 
