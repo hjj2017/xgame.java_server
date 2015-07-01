@@ -60,8 +60,8 @@ class StatefulIoOper implements IIoOper {
 	}
 
 	@Override
-	public String getKey() {
-		return this._innerOper.getKey();
+	public String getThreadKey() {
+		return this._innerOper.getThreadKey();
 	}
 
 	@Override
@@ -69,7 +69,7 @@ class StatefulIoOper implements IIoOper {
 		// 记录日志信息
 		IoOperLog.LOG.info(MessageFormat.format(
 			"StatefulIoOper[ key = {0} ].doInit",
-			this.getKey()
+			this.getThreadKey()
 		));
 
 		// 获取执行结果
@@ -91,7 +91,7 @@ class StatefulIoOper implements IIoOper {
 		// 记录日志信息
 		IoOperLog.LOG.info(MessageFormat.format(
 			"StatefulIoOper[ key = {0} ].doAsyncProc",
-			this.getKey()
+			this.getThreadKey()
 		));
 
 		// 获取执行结果

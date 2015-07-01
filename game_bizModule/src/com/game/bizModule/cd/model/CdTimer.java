@@ -15,8 +15,8 @@ import com.game.part.util.Assert;
  * 
  */
 public class CdTimer implements ILazySavingObj<CdTimerEntity> {
-	/** 玩家角色 UUId */
-	public long _humanUUId = -1;
+	/** 玩家角色 UId */
+	public long _humanUId = -1;
 	/** 队列类型 */
 	public final CdTypeEnum _cdType;
 	/** 开始时间 */
@@ -88,7 +88,7 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 			"{0}-{1}-{2}",
 			this.getClass().getSimpleName(),
 			this._cdType.intVal(),
-			this._humanUUId
+			this._humanUId
 		);
 	}
 
@@ -99,6 +99,6 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 
 	@Override
 	public String getThreadKey() {
-		return AbstractPlayerOrSceneIoOper.getKey(this._humanUUId);
+		return AbstractPlayerOrSceneIoOper.getThreadKey(this._humanUId);
 	}
 }

@@ -7,21 +7,21 @@ package com.game.gameServer.io;
  * @since 2012/12/31
  * 
  */
-public abstract class AbstractPlayerOrSceneIoOper implements IBindUUIdIoOper, IMsgDispatchable {
+public abstract class AbstractPlayerOrSceneIoOper implements IBindUIdIoOper, IMsgDispatchable {
     @Override
-    public final String getKey() {
-        return getKey(this.getBindUUId());
+    public final String getThreadKey() {
+        return getThreadKey(this.getBindUId());
     }
 
     /**
      * 获取关键字
      *
-     * @param UUId
+     * @param UId
      * @return
      *
      */
-    public static String getKey(long UUId) {
+    public static String getThreadKey(long UId) {
         return "PLAYER_OR_SCENE."
-            + IoConf.OBJ.getPlayerOrSceneThreadIndex(UUId);
+            + IoConf.OBJ.getPlayerOrSceneThreadIndex(UId);
     }
 }

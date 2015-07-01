@@ -1,6 +1,5 @@
 package com.game.part.io;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -65,7 +64,7 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 	 */
 	private void invokeDoIo(StatefulIoOper oper) {
 		if (oper == null ||
-			StringUtil.isNullOrEmpty(oper.getKey())) {
+			StringUtil.isNullOrEmpty(oper.getThreadKey())) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			IoOperLog.LOG.error(
@@ -75,7 +74,7 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 		}
 
 		// 获取执行服务
-		ExecutorService execServ = this.getES(oper.getKey());
+		ExecutorService execServ = this.getES(oper.getThreadKey());
 
 		if (execServ == null) {
 			// 如果执行服务为空, 
@@ -90,16 +89,16 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 	/**
 	 * 获取多线程服务
 	 *
-	 * @param key
+	 * @param threadKey
 	 * @return
 	 *
 	 */
-	private ExecutorService getES(String key) {
+	private ExecutorService getES(String threadKey) {
 		// 断言参数不为空
-		Assert.notNull(key, "key");
+		Assert.notNull(threadKey, "threadKey");
 
 		// 获取线程池
-		ExecutorService es = this._execServMap.get(key);
+		ExecutorService es = this._execServMap.get(threadKey);
 
 		if (es == null) {
 			// 如果线程池为空,
@@ -108,18 +107,18 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 			synchronized (this) {
 				// 从字典中重新获取线程池,
 				// 并做二次判断
-				es = this._execServMap.get(key);
+				es = this._execServMap.get(threadKey);
 
 				if (es == null) {
 					// 创建线程命名工厂
-					ThreadNamingFactory tnf = new ThreadNamingFactory();
-					tnf.putThreadName(THREAD_NAME_PREFIX + "::" + key);
+					ThreadNamingFactory f = new ThreadNamingFactory();
+					f.putThreadName(THREAD_NAME_PREFIX + "::" + threadKey);
 
 					// 如果二次判断之后还是空,
 					// 那么创建线程池!
-					es = Executors.newSingleThreadExecutor(tnf);
+					es = Executors.newSingleThreadExecutor(f);
 					// 将线程池添加到字典
-					this._execServMap.put(key, es);
+					this._execServMap.put(threadKey, es);
 				}
 			}
 		}

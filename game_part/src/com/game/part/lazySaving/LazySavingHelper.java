@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.game.part.io.IoOperServ;
-
 /**
  * 数据更新器
  * 
@@ -227,7 +225,7 @@ public final class LazySavingHelper {
 	 * 该函数的调用者应该是一个定时器!
 	 * 
 	 * @see #_interval
-	 * @see #execUpdateWithPredication(ILazySavingPredication)
+	 * @see #execUpdateWithPredicate(ILazySavingPredicate)
 	 * 
 	 */
 	public final void execUpdateWithInterval() {
@@ -243,7 +241,7 @@ public final class LazySavingHelper {
 		}
 
 		// 执行更新操作
-		this.execUpdateWithPredication(null);
+		this.execUpdateWithPredicate(null);
 		// 设置最后更新时间
 		this._lastUpdateTime.set(nowTime);
 	}
@@ -256,7 +254,7 @@ public final class LazySavingHelper {
 	 * @param pred
 	 * 
 	 */
-	public final void execUpdateWithPredication(ILazySavingPredication pred) {
+	public final void execUpdateWithPredicate(ILazySavingPredicate pred) {
 		if (this._updatingFlag.compareAndSet(
 			false, true)) {
 			// 事先检查是否未在更新过程中,

@@ -8,13 +8,13 @@ package com.game.part.io;
  */
 public interface IIoOper {
 	/**
-	 * 获取关键字,
-	 * 关键字决定异步操作在哪一个线程中执行!
+	 * 获取线程关键字,
+	 * 该关键字决定异步操作在哪一个线程中执行!
 	 *
 	 * @return
 	 *
 	 */
-	String getKey();
+	String getThreadKey();
 
 	/**
 	 * 初始化异步操作

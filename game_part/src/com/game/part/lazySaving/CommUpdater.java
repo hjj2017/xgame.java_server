@@ -2,10 +2,7 @@ package com.game.part.lazySaving;
 
 import java.text.MessageFormat;
 
-import com.game.part.dao.CommDao;
-import com.game.part.io.IIoOper;
 import com.game.part.io.IoOperServ;
-import com.game.part.util.Assert;
 
 /**
  * 通用的 LSO 更新器
@@ -52,19 +49,10 @@ class CommUpdater {
 		}
 
 		// 通过 IO 服务执行保存操作
-		IoOperServ.OBJ.execute(new IIoOper() {
-			@Override
-			public String getKey() {
-				return lso.getThreadKey();
-			}
-
-			@Override
-			public boolean doIo() {
-				// 保存到数据库
-				CommDao.OBJ.save(entity);
-				return true;
-			}
-		});
+		IoOperServ.OBJ.execute(new IoOper_SaveOrUpdate(
+			lso.getThreadKey(),
+			entity
+		));
 	}
 
 	/**
@@ -95,18 +83,9 @@ class CommUpdater {
 
 
 		// 通过 IO 服务执行保存操作...
-		IoOperServ.OBJ.execute(new IIoOper() {
-			@Override
-			public String getKey() {
-				return lso.getThreadKey();
-			}
-
-			@Override
-			public boolean doIo() {
-				// 从数据库中删除
-				CommDao.OBJ.del(entity);
-				return true;
-			}
-		});
+		IoOperServ.OBJ.execute(new IoOper_Del(
+			lso.getThreadKey(),
+			entity
+		));
 	}
 }

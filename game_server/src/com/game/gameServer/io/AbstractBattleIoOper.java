@@ -7,10 +7,10 @@ package com.game.gameServer.io;
  * @since 2014/8/14
  * 
  */
-public abstract class AbstractBattleIoOper implements IBindUUIdIoOper, IMsgDispatchable {
+public abstract class AbstractBattleIoOper implements IBindUIdIoOper, IMsgDispatchable {
     @Override
-    public final String getKey() {
+    public final String getThreadKey() {
         return "BATTLE."
-            + IoConf.OBJ.getBattleThreadIndex(this.getBindUUId());
+            + IoConf.OBJ.getBattleThreadIndex(this.getBindUId());
     }
 }

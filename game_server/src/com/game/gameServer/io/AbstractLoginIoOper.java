@@ -7,10 +7,10 @@ package com.game.gameServer.io;
  * @since 2014/8/14
  * 
  */
-public abstract class AbstractLoginIoOper implements IBindUUIdIoOper, IMsgDispatchable {
+public abstract class AbstractLoginIoOper implements IBindUIdIoOper, IMsgDispatchable {
     @Override
-    public final String getKey() {
+    public final String getThreadKey() {
         return "LOGIN."
-            + IoConf.OBJ.getLoginThreadIndex(this.getBindUUId());
+            + IoConf.OBJ.getLoginThreadIndex(this.getBindUId());
     }
 }
