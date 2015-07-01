@@ -1,6 +1,5 @@
 package com.game.gameServer.msg;
 
-import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;

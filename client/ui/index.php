@@ -24,6 +24,17 @@ function loadAllConf() {
 	}
 }
 
+// 获取平台 UUId
+$platformUUId = @$_REQUEST["platform_uuid"];
+// 获取黑名单
+$blackList = $GLOBALS["BLACK_LIST"];
+
+if (@$whiteList[$platformUUId] == 1) {
+    // 如果在黑名单列表里,
+    // 则直接退出!
+    die(-2);
+}
+
 // 获取当前时间
 $nowTime = intval(date("YmdHis", time()));
 // 获取白名单
@@ -31,7 +42,7 @@ $whiteList = $GLOBALS["WHITE_LIST"];
 
 if ($nowTime >= intval($GLOBALS["MAINTENANCE_START_TIME"]) &&
     $nowTime <= intval($GLOBALS["MAINTENANCE_END_TIME"]) &&
-    $whiteList[@$_REQUEST["platform_uuid"]] != 1) {
+    @$whiteList[$platformUUId] != 1) {
     // 如果当前服务器正在维护中,
     // 并且玩家又不在白名单中,
     // 则直接退出!

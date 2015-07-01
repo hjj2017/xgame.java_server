@@ -50,6 +50,7 @@ class ZkServ extends Zookeeper {
         $this->_zkPathMap = array(
             "/${appName}/${serverName}/conf/maintenanceTimeStr" => "updateMaintenanceTime",
             "/${appName}/${serverName}/conf/whiteList" => "updateWhiteList",
+            "/${appName}/${serverName}/conf/blackList" => "updateBlackList",
         );
 
         foreach ($this->_zkPathMap as $key => $val) {
@@ -85,7 +86,8 @@ class ZkServ extends Zookeeper {
     }
 
     /**
-     * 更新停服维护时间
+     * 更新停服维护时间,
+     * 注意这是一个回调函数! 会在 watch 函数中被间接调用
      *
      * @param String $value
      * @return void
@@ -115,6 +117,7 @@ __EOF;
 
     /**
      * 更新白名单
+     * 注意这是一个回调函数! 会在 watch 函数中被间接调用
      *
      * @param String $value
      * @return void
@@ -142,6 +145,40 @@ __EOF;
 
         // 目标文件
         $targetFile = dirname(__FILE__) . "/etc/WhiteList.php";
+        // 写出目标文件
+        self::writeToFile($targetFile, $text);
+    }
+
+    /**
+     * 更新黑名单
+     * 注意这是一个回调函数! 会在 watch 函数中被间接调用
+     *
+     * @param String $value
+     * @return void
+     *
+     */
+    private function updateBlackList($value) {
+        // 记录日志信息
+        MyLog::LOG()->info("白名单 = ${value}");
+        // 获取 JSON 数组
+        $jsonArr = json_decode($value);
+
+        $text = <<< __EOF
+<?php
+\$GLOBALS["BLACK_LIST"] = array(
+__EOF;
+
+        foreach ($jsonArr as $json) {
+            // 获取平台 UUId
+            $platformUUId = $json;
+            // 添加到文本
+            $text .= "\n\t\"${platformUUId}\" => 1, ";
+        }
+
+        $text .= "\n);";
+
+        // 目标文件
+        $targetFile = dirname(__FILE__) . "/etc/BlackList.php";
         // 写出目标文件
         self::writeToFile($targetFile, $text);
     }
