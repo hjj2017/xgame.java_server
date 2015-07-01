@@ -5,8 +5,6 @@ import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 
-import com.game.part.NullArgsError;
-
 /**
  * 消息解码器工厂类
  * 
@@ -17,9 +15,7 @@ import com.game.part.NullArgsError;
 public class MINA_MsgCodecFactory implements ProtocolCodecFactory {
 	/**
 	 * 类参数构造器
-	 * 
-	 * @param serializer
-	 * @throws NullArgsError if serializer == null 
+	 *
 	 * 
 	 */
 	public MINA_MsgCodecFactory() {

@@ -7,10 +7,9 @@ package com.game.part.lazySaving;
  * @since 2015/4/3
  * 
  * @param <TEntity> 对应的实体类型
- * @param <TThreadEnum> 线程枚举
  * 
  */
-public interface ILazySavingObj<TEntity, TThreadEnum extends Enum<TThreadEnum>> {
+public interface ILazySavingObj<TEntity> {
 	/**
 	 * 获取全局 Id
 	 * 
@@ -38,12 +37,12 @@ public interface ILazySavingObj<TEntity, TThreadEnum extends Enum<TThreadEnum>> 
 	TEntity toEntity();
 
 	/**
-	 * 获取运行线程枚举
+	 * 获取运行线程关键字
 	 * 
 	 * @return
 	 * 
 	 */
-	TThreadEnum getThreadEnum();
+	String getThreadKey();
 
 	/**
 	 * 保存已修改的部分

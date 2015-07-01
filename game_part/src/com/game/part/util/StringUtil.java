@@ -113,4 +113,16 @@ public class StringUtil {
 
 		return src;
 	}
+
+	/**
+	 * 字符串是否为空 ?
+	 *
+	 * @param value
+	 * @return
+	 *
+	 */
+	public static boolean isNullOrEmpty(String value) {
+		return value == null
+			|| value.isEmpty();
+	}
 }

@@ -6,7 +6,7 @@ package com.game.part;
  * @author haijiang
  *
  */
-public class InvalidArgsError extends GameError {
+public class BadArgError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 7400420633310393852L;
 
@@ -14,7 +14,7 @@ public class InvalidArgsError extends GameError {
 	 * 类默认构造器
 	 * 
 	 */
-	public InvalidArgsError() {
+	public BadArgError() {
 		super();
 	}
 
@@ -24,7 +24,7 @@ public class InvalidArgsError extends GameError {
 	 * @param msg
 	 * 
 	 */
-	public InvalidArgsError(String msg) {
+	public BadArgError(String msg) {
 		super(msg);
 	}
 
@@ -34,7 +34,7 @@ public class InvalidArgsError extends GameError {
 	 * @param err
 	 * 
 	 */
-	public InvalidArgsError(Throwable err) {
+	public BadArgError(Throwable err) {
 		super(err);
 	}
 
@@ -45,7 +45,7 @@ public class InvalidArgsError extends GameError {
 	 * @param err
 	 * 
 	 */
-	public InvalidArgsError(String msg, Throwable err) {
+	public BadArgError(String msg, Throwable err) {
 		super(msg, err);
 	}
 }

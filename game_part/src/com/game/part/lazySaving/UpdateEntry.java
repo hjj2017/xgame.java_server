@@ -16,7 +16,7 @@ final class UpdateEntry {
 	static final int OPT_del = 2;
 
 	/** 待更新的业务对象引用 */
-	final ILazySavingObj<?, ?> _LSO;
+	final ILazySavingObj<?> _LSO;
 	/** 操作类型 */
 	final int _operTypeInt;
 	/** 最后修改时间 */
@@ -29,7 +29,7 @@ final class UpdateEntry {
 	 * @param operTypeInt
 	 * 
 	 */
-	UpdateEntry(ILazySavingObj<?, ?> LSO, int operTypeInt) {
+	UpdateEntry(ILazySavingObj<?> LSO, int operTypeInt) {
 		// 断言参数不为空
 		Assert.notNull(LSO, "lso");
 		// 设置 LSO

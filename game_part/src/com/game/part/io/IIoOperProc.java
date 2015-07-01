@@ -6,13 +6,12 @@ package com.game.part.io;
  * @author haijiang
  *
  */
-interface IIoOperProcedure<TOper extends IIoOper, E extends Enum<E>> {
+interface IIoOperProc<TIoOper extends IIoOper> {
 	/**
 	 * 开始工作
 	 * 
 	 * @param oper
-	 * @param e 
 	 * 
 	 */
-	void execute(TOper oper, E e);
+	void execute(TIoOper oper);
 }

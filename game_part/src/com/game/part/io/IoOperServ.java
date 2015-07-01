@@ -8,61 +8,35 @@ import com.game.part.util.Assert;
  * @author haijiang
  * 
  */
-public class IoOperServ<E extends Enum<E>> {
+public final class IoOperServ {
+	/** 单例对象 */
+	public static final IoOperServ OBJ = new IoOperServ();
 	/** 异步模式 */
-	private boolean _asyncMode = false;
-	/** IO 操作过程 */
-	private IIoOperProcedure<IIoOper, E> _operProc = null;
+	public boolean _asyncMode = false;
 
 	/**
-	 * 类参数构造器, 默认工作模式为同步
-	 * 
-	 * @param threadEnums 
+	 * 类默认构造器
 	 * 
 	 */
-	public IoOperServ(E[] threadEnums) {
-		this(false, threadEnums);
-	}
-
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param asyncMode 
-	 * @param threadEnums 
-	 * 
-	 * @see IoOperModeEnum  
-	 * 
-	 */
-	public IoOperServ(boolean asyncMode, E[] threadEnums) {
-		if (asyncMode) {
-			// 异步工作方式
-			this._asyncMode = true;
-			this._operProc = new AsyncIoOperProcedure<E>(this, threadEnums);
-		} else {
-			// 同步工作方式
-			this._asyncMode = false;
-			this._operProc = new SyncIoOperProcedure<E>();
-		}
-	}
-
-	/**
-	 * 是否工作于异步模式 ?
-	 * 
-	 */
-	public boolean isAsyncMode() {
-		return this._asyncMode;
+	private IoOperServ() {
 	}
 
 	/**
 	 * 执行游戏内的 IO 操作
 	 * 
 	 * @param oper
-	 * @param threadEnum 
 	 * 
 	 */
-	public void execute(IIoOper oper, E threadEnum) {
+	public void execute(IIoOper oper) {
+		// 断言参数不为空
 		Assert.notNull(oper);
-		Assert.notNull(threadEnum);
-		this._operProc.execute(oper, threadEnum);
+
+		if (this._asyncMode) {
+			// 工作于同步模式
+			SyncIoOperProc.OBJ.execute(oper);
+		} else {
+			// 工作于异步模式
+			AsyncIoOperProc.OBJ.execute(oper);
+		}
 	}
 }

@@ -5,16 +5,15 @@ import java.text.MessageFormat;
 import com.game.part.util.Assert;
 
 /**
- * 有状态的异步操作
+ * 有状态的异步操作,
+ * 该类的目的是讲一个有无状态的异步操作包装成一个有状态的操作
  * 
  * @author haijiang
  * 
  */
-class StatefulIoOper<E extends Enum<E>> implements IIoOper {
+class StatefulIoOper implements IIoOper {
 	/** 异步操作 */
 	private IIoOper _innerOper = null;
-	/** 线程枚举 */
-	private E _threadEnum = null;
 	/** 当前状态 */
 	private IoOperStateEnum _currState = null;
 
@@ -22,13 +21,11 @@ class StatefulIoOper<E extends Enum<E>> implements IIoOper {
 	 * 类参数构造器
 	 * 
 	 * @param oper
-	 * @param threadEnum 
 	 * 
 	 */
-	public StatefulIoOper(IIoOper oper, E threadEnum) {
+	public StatefulIoOper(IIoOper oper) {
 		Assert.notNull(oper);
 		this._innerOper = oper;
-		this._threadEnum = threadEnum;
 	}
 
 	/**
@@ -38,16 +35,6 @@ class StatefulIoOper<E extends Enum<E>> implements IIoOper {
 	 */
 	public IIoOper getInnerOper() {
 		return this._innerOper;
-	}
-
-	/**
-	 * 获取线程枚举
-	 * 
-	 * @return 
-	 * 
-	 */
-	public E getThreadEnum() {
-		return this._threadEnum;
 	}
 
 	/**
@@ -73,11 +60,16 @@ class StatefulIoOper<E extends Enum<E>> implements IIoOper {
 	}
 
 	@Override
+	public String getKey() {
+		return this._innerOper.getKey();
+	}
+
+	@Override
 	public boolean doInit() {
 		// 记录日志信息
 		IoOperLog.LOG.info(MessageFormat.format(
-			"StatefulIoOper[name={0}].doInit", 
-			this.getThreadEnum().name()
+			"StatefulIoOper[ key = {0} ].doInit",
+			this.getKey()
 		));
 
 		// 获取执行结果
@@ -98,8 +90,8 @@ class StatefulIoOper<E extends Enum<E>> implements IIoOper {
 	public boolean doIo() {
 		// 记录日志信息
 		IoOperLog.LOG.info(MessageFormat.format(
-			"StatefulIoOper[name={0}].doAsyncProc", 
-			this.getThreadEnum().name()
+			"StatefulIoOper[ key = {0} ].doAsyncProc",
+			this.getKey()
 		));
 
 		// 获取执行结果

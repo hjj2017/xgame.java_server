@@ -1,5 +1,10 @@
 package com.game.bizModule.cd.model;
 
+import java.text.MessageFormat;
+
+import com.game.bizModule.cd.entity.CdTimerEntity;
+import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
+import com.game.part.lazySaving.ILazySavingObj;
 import com.game.part.util.Assert;
 
 /**
@@ -9,7 +14,9 @@ import com.game.part.util.Assert;
  * @since 2013/4/8
  * 
  */
-public class CdTimer {
+public class CdTimer implements ILazySavingObj<CdTimerEntity> {
+	/** 玩家角色 UUId */
+	public long _humanUUId = -1;
 	/** 队列类型 */
 	public final CdTypeEnum _cdType;
 	/** 开始时间 */
@@ -49,8 +56,7 @@ public class CdTimer {
 	/**
 	 * 获取时间间隔, 即, 开始时间与结束时间的时间差, 
 	 * 单位: ms 毫秒. 
-	 * 
-	 * @param now 
+	 *
 	 * @return
 	 * 
 	 */
@@ -74,5 +80,25 @@ public class CdTimer {
 		} else {
 			return this._endTime - now;
 		}
+	}
+
+	@Override
+	public String getUId() {
+		return MessageFormat.format(
+			"{0}-{1}-{2}",
+			this.getClass().getSimpleName(),
+			this._cdType.intVal(),
+			this._humanUUId
+		);
+	}
+
+	@Override
+	public CdTimerEntity toEntity() {
+		return null;
+	}
+
+	@Override
+	public String getThreadKey() {
+		return AbstractPlayerOrSceneIoOper.getKey(this._humanUUId);
 	}
 }

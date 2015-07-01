@@ -20,7 +20,7 @@ public interface ILazySavingPredication {
 	 */
 	public static final ILazySavingPredication unreserved = new ILazySavingPredication() {
 		@Override
-		public boolean predicate(ILazySavingObj<?, ?> lso) {
+		public boolean predicate(ILazySavingObj<?> lso) {
 			return true;
 		}
 	};
@@ -32,5 +32,5 @@ public interface ILazySavingPredication {
 	 * @return
 	 * 
 	 */
-	boolean predicate(ILazySavingObj<?, ?> lso);
+	boolean predicate(ILazySavingObj<?> lso);
 }

@@ -42,8 +42,6 @@ public final class LazySavingHelper {
 
 	/** 当数据对象空闲超过指定时间后才真正执行更新操作 */
 	public long _idelToUpdate = 8L * 60L * 1000L;
-	/** IO 服务 */
-	public IoOperServ<?> _ioServ = null;
 	/** 间隔制定时间之后, 才执行一次更新操作 */
 	public long _interval = 2L * 60L * 1000L;
 	/** 上一次执行更新操作的时间 */
@@ -61,11 +59,11 @@ public final class LazySavingHelper {
 	/**
 	 * 增加要被更新的对象, 注意 : 必须是同一个实例
 	 * 
-	 * @param lc
+	 * @param lso
 	 * @return
 	 * 
 	 */
-	public void addUpdate(ILazySavingObj<?, ?> lso) {
+	public void addUpdate(ILazySavingObj<?> lso) {
 		// 字典变量
 		Map<String, UpdateEntry> mapX = this._updatingFlag.get() ? this._changeObjMap1 : this._changeObjMap0;
 		// 添加更新操作
@@ -81,7 +79,7 @@ public final class LazySavingHelper {
 	 * @return
 	 * 
 	 */
-	private static void addUpdate(ILazySavingObj<?, ?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
+	private static void addUpdate(ILazySavingObj<?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
 		if (lso == null || 
 			mapX == null) {
 			// 如果参数对象为空, 
@@ -136,7 +134,7 @@ public final class LazySavingHelper {
 	 * @return
 	 * 
 	 */
-	public void addDel(ILazySavingObj<?, ?> lso) {
+	public void addDel(ILazySavingObj<?> lso) {
 		if (lso == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -158,7 +156,7 @@ public final class LazySavingHelper {
 	 * @return
 	 * 
 	 */
-	private static void addDel(ILazySavingObj<?, ?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
+	private static void addDel(ILazySavingObj<?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
 		if (lso == null || 
 			mapX == null) {
 			// 如果参数对象为空, 
@@ -295,7 +293,7 @@ public final class LazySavingHelper {
 			int wc = 0;
 
 			// 获取延迟保存对象
-			final ILazySavingObj<?, ?> lso = entry._LSO;
+			final ILazySavingObj<?> lso = entry._LSO;
 
 			if (pred != null) {
 				if (pred.predicate(lso) == false) {

@@ -6,16 +6,26 @@ package com.game.part.io;
  * @author haijiang
  *
  */
-class SyncIoOperProcedure<E extends Enum<E>> implements IIoOperProcedure<IIoOper, E> {
+class SyncIoOperProc implements IIoOperProc<IIoOper> {
+	/** 单例对象 */
+	static final SyncIoOperProc OBJ = new SyncIoOperProc();
+
+	/**
+	 * 类默认构造器
+	 *
+	 */
+	private SyncIoOperProc() {
+	}
+
 	@Override
-	public void execute(IIoOper oper, E threadEnum) {
+	public void execute(IIoOper oper) {
 		if (oper == null) {
 			return;
 		}
 
 		// 将异步操作包装成一个有状态的对象, 
 		// 然后带入 invokeDoInit, invokeDoIo 函数中!
-		this.nextStep(new StatefulIoOper<E>(oper, threadEnum));
+		this.nextStep(new StatefulIoOper(oper));
 	}
 
 	/**
@@ -23,7 +33,7 @@ class SyncIoOperProcedure<E extends Enum<E>> implements IIoOperProcedure<IIoOper
 	 * 
 	 * @param oper
 	 */
-	private void invokeDoInit(StatefulIoOper<E> oper) {
+	private void invokeDoInit(StatefulIoOper oper) {
 		if (oper == null) {
 			return;
 		}
@@ -37,7 +47,7 @@ class SyncIoOperProcedure<E extends Enum<E>> implements IIoOperProcedure<IIoOper
 	 * 
 	 * @param oper
 	 */
-	private void invokeDoIo(StatefulIoOper<E> oper) {
+	private void invokeDoIo(StatefulIoOper oper) {
 		if (oper == null) {
 			return;
 		}
@@ -51,7 +61,7 @@ class SyncIoOperProcedure<E extends Enum<E>> implements IIoOperProcedure<IIoOper
 	 * 
 	 * @param oper
 	 */
-	private void nextStep(StatefulIoOper<E> oper) {
+	private void nextStep(StatefulIoOper oper) {
 		if (oper == null) {
 			return;
 		}

@@ -1,0 +1,186 @@
+package com.game.part.io;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.game.part.ThreadNamingFactory;
+import com.game.part.util.Assert;
+import com.game.part.util.StringUtil;
+
+/**
+ * 异步 IO 过程
+ * 
+ * @author hjj2019
+ * 
+ */
+class AsyncIoOperProc implements IIoOperProc<IIoOper> {
+	/** 单例对象 */
+	static final AsyncIoOperProc OBJ = new AsyncIoOperProc();
+
+	/** 过程名称 */
+	private static final String THREAD_NAME_PREFIX = "com.game::AsyncIoOperProc";
+	/** 运行服务字典 */
+	private final ConcurrentHashMap<String, ExecutorService> _execServMap = new ConcurrentHashMap<>();
+
+	/**
+	 * 类默认构造器
+	 *
+	 */
+	private AsyncIoOperProc() {
+	}
+
+	@Override
+	public void execute(IIoOper oper) {
+		if (oper == null) {
+			return;
+		}
+
+		// 将异步操作包装成一个有状态的对象, 
+		// 然后带入 invokeDoInit, invokeDoIo 函数中!
+		this.nextStep(new StatefulIoOper(oper));
+	}
+
+	/**
+	 * 调用异步操作对象的 doInit 函数
+	 * 
+	 * @param oper
+	 */
+	private void invokeDoInit(StatefulIoOper oper) {
+		if (oper == null) {
+			return;
+		}
+
+		// 执行初始化过程并进入下一步
+		oper.doInit();
+		this.nextStep(oper);
+	}
+
+	/**
+	 * 调用异步操作对象的 doIo 函数
+	 * 
+	 * @param oper
+	 * 
+	 */
+	private void invokeDoIo(StatefulIoOper oper) {
+		if (oper == null ||
+			StringUtil.isNullOrEmpty(oper.getKey())) {
+			// 如果参数对象为空, 
+			// 则直接退出!
+			IoOperLog.LOG.error(
+				"异步操作对象为空, 或者 key 为空"
+			);
+			return;
+		}
+
+		// 获取执行服务
+		ExecutorService execServ = this.getES(oper.getKey());
+
+		if (execServ == null) {
+			// 如果执行服务为空, 
+			// 则直接退出!
+			return;
+		}
+
+		// 提交多线程服务
+		execServ.submit(new MyRunner(oper));
+	}
+
+	/**
+	 * 获取多线程服务
+	 *
+	 * @param key
+	 * @return
+	 *
+	 */
+	private ExecutorService getES(String key) {
+		// 断言参数不为空
+		Assert.notNull(key, "key");
+
+		// 获取线程池
+		ExecutorService es = this._execServMap.get(key);
+
+		if (es == null) {
+			// 如果线程池为空,
+			// 则新建!
+			// 在新建线程池之前需要加锁以避免创建多个对象...
+			synchronized (this) {
+				// 从字典中重新获取线程池,
+				// 并做二次判断
+				es = this._execServMap.get(key);
+
+				if (es == null) {
+					// 创建线程命名工厂
+					ThreadNamingFactory tnf = new ThreadNamingFactory();
+					tnf.putThreadName(THREAD_NAME_PREFIX + "::" + key);
+
+					// 如果二次判断之后还是空,
+					// 那么创建线程池!
+					es = Executors.newSingleThreadExecutor(tnf);
+					// 将线程池添加到字典
+					this._execServMap.put(key, es);
+				}
+			}
+		}
+
+		return es;
+	}
+
+	/**
+	 * 执行下一步操作
+	 * 
+	 * @param oper
+	 */
+	void nextStep(StatefulIoOper oper) {
+		if (oper == null) {
+			return;
+		}
+
+		IoOperStateEnum currState = oper.getCurrState();
+
+		if (currState == null) {
+			this.invokeDoInit(oper);
+			return;
+		}
+
+		switch (oper.getCurrState()) {
+		case exit:
+		case ioFinished:
+			return;
+
+		case initOk:
+			this.invokeDoIo(oper);
+			return;
+
+		default:
+			return;
+		}
+	}
+
+	/**
+	 * 自定义运行器
+	 * 
+	 * @author hjj2017
+	 * 
+	 */
+	private static class MyRunner implements Runnable {
+		/** IO 操作 */
+		private StatefulIoOper _oper = null;
+
+		/**
+		 * 类参数构造器
+		 *
+		 * @param oper
+		 * 
+		 */
+		public MyRunner(StatefulIoOper oper) {
+			this._oper = oper;
+		}
+
+		@Override
+		public void run() {
+			this._oper.doIo();
+		}
+	}
+}
