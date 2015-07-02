@@ -1,14 +1,13 @@
-package com.game.gameServer.msg;
+package com.game.gameServer.scene;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.game.gameServer.scene.SceneFacade;
-import com.game.part.BadArgError;
+import com.game.part.lazySaving.LazySavingHelper;
 import com.game.part.msg.IMsgReceiver;
 import com.game.part.msg.type.AbstractMsgObj;
 
@@ -29,6 +28,8 @@ public class ReceiveMsgAndHeartbeat implements IMsgReceiver {
     private final ConcurrentLinkedQueue<AbstractMsgObj> _msgQ = new ConcurrentLinkedQueue<>();
     /** 提交服务 */
     private ScheduledExecutorService _postES = null;
+    /** 心跳接口列表 */
+    public final List<IHeartbeat> _heartbeatList = new ArrayList<>();
 
     /**
      * 类默认构造器
@@ -42,14 +43,35 @@ public class ReceiveMsgAndHeartbeat implements IMsgReceiver {
      *
      */
     public void startUp() {
-        // 创建提交线程
-        this._postES = Executors.newSingleThreadScheduledExecutor();
-        this._postES.scheduleWithFixedDelay(() -> {
+        //
+        // 创建线程逻辑,
+        // 在这里定义每次心跳时需要执行哪些操作
+        //
+        final Runnable r = () -> {
+            // 令每个心跳接口执行一次心跳!
+            this._heartbeatList.forEach(hb -> {
+                if (hb != null) {
+                    hb.doHeartbeat();
+                }
+            });
+
+            // 处理消息队列
             while (this._msgQ.size() > 0) {
                 // 令场景处理消息
                 SceneFacade.OBJ.handleMsg(this._msgQ.poll());
             }
-        }, HEARTBEAT_PERIOD, HEARTBEAT_PERIOD, TimeUnit.MILLISECONDS);
+
+            // 执行延迟保存
+            LazySavingHelper.OBJ.execUpdateWithInterval();
+        };
+
+        // 创建线程池并提交线程
+        this._postES = Executors.newSingleThreadScheduledExecutor();
+        this._postES.scheduleWithFixedDelay(r,
+            HEARTBEAT_PERIOD,
+            HEARTBEAT_PERIOD,
+            TimeUnit.MILLISECONDS
+        );
     }
 
     @Override

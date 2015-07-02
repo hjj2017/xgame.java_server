@@ -1,11 +1,10 @@
-package com.game.gameServer.bizServ;
+package com.game.gameServer.framework;
 
 import java.text.MessageFormat;
 import java.util.Set;
 
-import com.game.gameServer.framework.FrameworkLog;
-import com.game.gameServer.msg.AbstractCGMsgObj;
-import com.game.part.GameError;
+import com.game.gameServer.scene.IHeartbeat;
+import com.game.gameServer.scene.ReceiveMsgAndHeartbeat;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.tmpl.XlsxTmplServ;
@@ -28,7 +27,6 @@ public interface IServerInit_BizModule {
 	 * 执行初始化过程
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	default void initBizModule() {
 		// 记录启动日志
 		FrameworkLog.LOG.info(":: 初始化业务模块");
@@ -50,25 +48,57 @@ public interface IServerInit_BizModule {
 		allClazzSet.forEach(currClazz -> {
 			if (ClazzUtil.isConcreteDrivedClass(
 				currClazz,
-				AbstractMsgObj.class)) {
-				// 如果是消息类,
-				// 则注册到消息字典
-				Class<? extends AbstractMsgObj> msgClazzDef = (Class<AbstractMsgObj>)currClazz;
-				registerMsg(msgClazzDef);
+				IHeartbeat.class)) {
+				// 如果是心跳接口,
+				regHeartbeatObj((Class<IHeartbeat>)currClazz);
 				return;
 			}
 
 			if (ClazzUtil.isConcreteDrivedClass(
-				currClazz, 
+				currClazz,
+				AbstractMsgObj.class)) {
+				// 如果是消息类,
+				regMsgClazz((Class<AbstractMsgObj>)currClazz);
+				return;
+			}
+
+			if (ClazzUtil.isConcreteDrivedClass(
+				currClazz,
 				AbstractXlsxTmpl.class)) {
-				// 如果是模板类, 
-				// 则加载模板数据...
-				Class<? extends AbstractXlsxTmpl> 
-					tmplClazzDef = (Class<AbstractXlsxTmpl>)currClazz;
-				loadXlsxTmpl(tmplClazzDef);
+				// 如果是模板类,
+				loadXlsxTmpl((Class<AbstractXlsxTmpl>)currClazz);
 				return;
 			}
 		});
+	}
+
+	/**
+	 * 注册心跳
+	 *
+	 * @param byClazzDef
+	 *
+	 */
+	static void regHeartbeatObj(Class<? extends IHeartbeat> byClazzDef) {
+		// 断言参数不为空
+		Assert.notNull(byClazzDef);
+
+		try {
+			// 获取心跳对象
+			IHeartbeat hb = byClazzDef.newInstance();
+			// 添加到列表
+			ReceiveMsgAndHeartbeat.OBJ._heartbeatList.add(hb);
+
+			// 记录消息注册日志
+			FrameworkLog.LOG.info(MessageFormat.format(
+				":::: 注册心跳接口 = {0}",
+				byClazzDef.getName()
+			));
+		} catch (Exception ex) {
+			// 记录错误日志
+			FrameworkLog.LOG.error(ex.getMessage(), ex);
+			// 直接抛出异常
+			throw new FrameworkError(ex);
+		}
 	}
 
 	/**
@@ -77,7 +107,7 @@ public interface IServerInit_BizModule {
 	 * @param clazzDef
 	 * 
 	 */
-	static void registerMsg(Class<? extends AbstractMsgObj> clazzDef) {
+	static void regMsgClazz(Class<? extends AbstractMsgObj> clazzDef) {
 		// 断言参数不为空
 		Assert.notNull(clazzDef);
 
