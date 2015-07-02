@@ -1,4 +1,4 @@
-package com.game.gameServer.framework;
+package com.game.gameServer.framework.mina;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
@@ -16,7 +16,7 @@ import com.game.part.util.Assert;
  * @since 2012/6/3
  *
  */
-class MINA_IoHandler extends IoHandlerAdapter {
+class MsgIoHandler extends IoHandlerAdapter {
 	@Override
 	public void sessionCreated(IoSession sessionObj) {
 		// 断言参数对象不为空
@@ -72,7 +72,7 @@ class MINA_IoHandler extends IoHandlerAdapter {
 
 		if (handler != null) {
 			// 设置会话 Id
-//			handler._sessionId = fromSessionObj.getId();
+//			handler._sessionUId = fromSessionObj.getId();
 		}
 
 		// 分派消息对象

@@ -8,9 +8,9 @@ package com.game.gameServer.framework;
  */
 public class Player {
 	/** Id */
-	public long _id = -1L;
+	public long _UId = -1L;
 	/** 会话 Id, 主要是用于通信层 */
-	public long _sessionId = -1L;
+	public long _sessionUId = -1L;
 
 	/**
 	 * 类默认构造器

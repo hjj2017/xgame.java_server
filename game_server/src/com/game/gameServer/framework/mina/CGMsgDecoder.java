@@ -1,4 +1,4 @@
-package com.game.gameServer.framework;
+package com.game.gameServer.framework.mina;
 
 import java.text.MessageFormat;
 
@@ -7,6 +7,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderAdapter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
+import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.IoBuffUtil;
 import com.game.part.msg.MsgServ;
@@ -18,12 +19,12 @@ import com.game.part.msg.MsgServ;
  * @since 2014/8/11
  * 
  */
-class MINA_CGMsgDecoder extends ProtocolDecoderAdapter {	
+class CGMsgDecoder extends ProtocolDecoderAdapter {
 	/**
 	 * 类参数构造器
 	 * 
 	 */
-	public MINA_CGMsgDecoder() {
+	public CGMsgDecoder() {
 	}
 	
 	@Override

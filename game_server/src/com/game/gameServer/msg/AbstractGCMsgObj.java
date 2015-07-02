@@ -40,4 +40,14 @@ public abstract class AbstractGCMsgObj extends AbstractMsgObj {
 			super.writeBuff(buff);
 		}
 	}
+
+	/**
+	 * 是不是聊天消息?
+	 * 注意 : 聊天消息会进入聊天线程执行!
+	 *
+	 * @return
+	 */
+	public boolean isChatMsg() {
+		return false;
+	}
 }

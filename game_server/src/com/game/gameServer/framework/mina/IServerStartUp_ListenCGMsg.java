@@ -1,4 +1,4 @@
-package com.game.gameServer.framework;
+package com.game.gameServer.framework.mina;
 
 import java.net.InetSocketAddress;
 
@@ -8,20 +8,22 @@ import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
+import com.game.gameServer.framework.FrameworkLog;
+
 /**
  * 开始端口监听
  * 
  * @author hjj2019
  *
  */
-interface IServer_ListenCSMsg {
+public interface IServerStartUp_ListenCGMsg {
 	/**
-	 * 监听 CS 消息
+	 * 开始监听 CG 消息
 	 * 
 	 */
-	public default void listenCSMsg() {
+	default void startListenCGMsg() {
 		// 记录异步操作服务初始化日志
-		FrameworkLog.LOG.info(":: start PortListen");
+		FrameworkLog.LOG.info(":: 准备监听 CG 消息");
 
 		// 创建 IO 接收器
 		NioSocketAcceptor acceptor = new NioSocketAcceptor();
@@ -29,11 +31,14 @@ interface IServer_ListenCSMsg {
 		// 获取责任链
 		DefaultIoFilterChainBuilder chain = acceptor.getFilterChain();
 		// 处理网络粘包
-		chain.addLast("msgCumulative", new MINA_MsgCumulativeFilter());
+		chain.addLast("msgCumulative", new MsgCumulativeFilter());
 		// 消息加密
-		chain.addLast("msgDecrypt", new MINA_MsgDecryptFilter());
+		chain.addLast("msgDecrypt", new MsgDecryptFilter());
 		// 添加自定义编解码器
-		chain.addLast("msgCodec", new ProtocolCodecFilter(new MINA_MsgCodecFactory()));
+		chain.addLast("msgCodec", new ProtocolCodecFilter(
+			new GCMsgEncoder(),
+			new CGMsgDecoder()
+		));
 
 		// 获取会话配置
 		IoSessionConfig cfg = acceptor.getSessionConfig();
@@ -44,7 +49,7 @@ interface IServer_ListenCSMsg {
 		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 10);
 
  		// 设置 IO 句柄
-		acceptor.setHandler(new MINA_IoHandler());
+		acceptor.setHandler(new MsgIoHandler());
 		acceptor.setReuseAddress(true);
 
 		try {

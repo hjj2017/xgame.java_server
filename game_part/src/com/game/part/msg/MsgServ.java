@@ -21,8 +21,8 @@ public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 	public String _outputClazzToDir = null;
 	/** 消息类字典 */
 	final Map<Short, Class<? extends AbstractMsgObj>> _msgClazzMap = new ConcurrentHashMap<>();
-	/** 消息接收者列表 */
-	private final List<IMsgReceiver> _msgRecvList = new ArrayList<>();
+	/** 消息接收者 */
+	private IMsgReceiver _msgRecv = null;
 
 	/**
 	 * 类默认构造器
@@ -32,7 +32,7 @@ public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 	}
 	
 	/**
-	 * 添加消息接收者, 
+	 * 设置消息接收者,
 	 * 消息接收者一般是场景, 
 	 * 但是这里使用的是一个接口 {@link IMsgReceiver}, 
 	 * 其目的是将消息分派者与具体的消息接收者分离!
@@ -44,15 +44,15 @@ public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 	 * @return 
 	 * 
 	 */
-	public MsgServ addMsgReceiver(IMsgReceiver value) {
+	public MsgServ putMsgReceiver(IMsgReceiver value) {
 		if (value == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return this;
 		}
 
-		// 添加接收者
-		this._msgRecvList.add(value);
+		// 设置接收者
+		this._msgRecv = value;
 		return this;
 	}
 
@@ -68,11 +68,8 @@ public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 			// 如果消息对象为空, 
 			// 则直接退出!
 			return;
+		} else {
+			this._msgRecv.receive(msgObj);
 		}
-
-		this._msgRecvList.forEach(r -> {
-			// 尝试接收消息
-			r.receive(msgObj);
-		});
 	}
 }

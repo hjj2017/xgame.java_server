@@ -8,7 +8,7 @@ import com.game.gameServer.framework.App_GameServer;
  * @author hjj2017
  *
  */
-public class Console_GameServer {
+public class CLI_GameServer {
 	/**
 	 * 应用程序主函数
 	 * 

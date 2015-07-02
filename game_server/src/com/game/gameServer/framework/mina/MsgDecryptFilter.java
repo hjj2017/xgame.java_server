@@ -1,4 +1,4 @@
-package com.game.gameServer.framework;
+package com.game.gameServer.framework.mina;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -8,6 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
+import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.SpecialMsgSerialUId;
 import com.game.part.msg.IoBuffUtil;
 import com.game.part.util.BytesUtil;
@@ -25,7 +26,7 @@ import com.game.part.util.MD5Util;
  * @since 2014/3/17
  * 
  */
-class MINA_MsgDecryptFilter extends IoFilterAdapter {
+class MsgDecryptFilter extends IoFilterAdapter {
 	/** 时间戳字典 */
 	private static final ConcurrentHashMap<Long, Integer> _tsMap = new ConcurrentHashMap<>();
 	/** MD5 Key */
