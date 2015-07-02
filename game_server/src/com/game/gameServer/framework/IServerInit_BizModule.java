@@ -19,7 +19,7 @@ import com.game.part.util.PackageUtil;
  * @author hjj2019
  *
  */
-public interface IServerInit_BizModule {
+interface IServerInit_BizModule {
 	/** 场景业务模块包名称 */
 	static final String BIZ_MODULE_PACKAGE = "com.game.bizModule";
 

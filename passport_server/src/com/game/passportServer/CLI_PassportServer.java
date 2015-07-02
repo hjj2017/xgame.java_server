@@ -18,7 +18,7 @@ import com.game.passportServer.jsonConf.PassportServerConf;
  * Passport 服务器,
  * 请使用如下命令行启动该服务器 : 
  * <pre>
- * java -cp *.jar com.game.passportServer.CLI_Server -c ../all_config/etc/all_config.json -l ../all_config/etc/passport_server.log4j.properties
+ * java -cp *.jar com.game.passportServer.CLI_PassportServer -c ../all_config/etc/all_config.json -l ../all_config/etc/passport_server.log4j.properties
  * </pre>
  * <font color='#990000'>
  * 注意 : 命令行中必须给出配置文件 config.json 所在位置!</font><br />
@@ -37,7 +37,7 @@ import com.game.passportServer.jsonConf.PassportServerConf;
  * @since 2015/2/9
  * 
  */
-public class CLI_Server {
+public class CLI_PassportServer {
 	/** 配置对象 */
 	private PassportServerConf _confObj = null;
 
@@ -108,9 +108,9 @@ public class CLI_Server {
 		);
 
 		// 定义应用对象
-		final CLI_Server theApp;
+		final CLI_PassportServer theApp;
 		// 创建应用对象并启动
-		theApp = new CLI_Server();
+		theApp = new CLI_PassportServer();
 		// 加载配置文件
 		theApp._confObj = PassportServerConf.createFromFile(cmdLn.getOptionValue("c"));
 		// 启动服务器

@@ -8,7 +8,7 @@ curr_dir=`pwd`
 # 服务器指纹
 finger_print=`echo ${curr_dir}+passportServer+Qwer0987# | md5sum | cut -d ' ' -f1`
 # 应用程序类
-app_clazz=com.game.passportServer.CLI_Server
+app_clazz=com.game.passportServer.CLI_PassportServer
 # 配置文件目录
 config_dir=../all_config/etc
 # 依赖包目录
