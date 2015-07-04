@@ -36,7 +36,3 @@ Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我�
 - 【代码】增加消息类生成工具，由 JAVA 代码生成 ActionScript 或者 C# 代码；
 - ...
 
-
-- 1
-- 2
-- 3
