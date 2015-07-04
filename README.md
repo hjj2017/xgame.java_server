@@ -16,3 +16,5 @@ Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我�
 * 消息类支持多层嵌套（理论上没有上限）；
 * 修改延迟保存罗辑（LazySaving），使用起来更方便、更明确，只实现 ILazySavingObj 接口即可；
 * 日志服务器框架调整为 HTTP 方式；
+* 结构化的 ANT 打包脚本；
+* 调整机器人压力测试项目，简化框架结构；
