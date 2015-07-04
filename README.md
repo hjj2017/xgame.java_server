@@ -18,3 +18,16 @@ Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我�
 * 日志服务器框架调整为 HTTP 方式；
 * 结构化的 ANT 打包脚本；
 * 调整机器人压力测试项目，简化框架结构；
+----
+后续更新内容：
+* 【文档】增加 IntelliJ IDEA 开发说明，如何使用 IntelliJ IDEA 打开该项目；
+* 【文档】增加 Eclipse 开发说明，如何使用 Eclipse 打开该项目；
+* 【文档】增加 ANT 编译打包说明；
+* 【代码】完善 Robot 压力测试工具代码；
+* 【代码】增加登陆过程代码；
+* 【代码】增加 CommDao 增加缓存机制；
+* 【代码】增加游戏服（GameServer）的 HTTP 支持；
+* 【代码】增加游戏服（GameServer）的 ZooKeeper 支持；
+* 【代码】完善日志服务器代码；
+* 【代码】增加消息类生成工具，由 JAVA 代码生成 ActionScript 或者 C# 代码；
+* ...
