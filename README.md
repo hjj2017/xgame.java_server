@@ -6,6 +6,7 @@ Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我�
 当然，仅限于实现思路而不是代码……
 原来的代码存在着诸多的不严谨，所以问题一直都比较严重。
 而 Xgame 则做出了很多改进！例如：
+
 - 将消息解码与消息黏包算法分开；
 - 自定义的消息加密算法；
 - 修改 IoOperation 的返回值为 boolean 类型，以避免死循环（纠正了原框架不严谨的地方）；
@@ -22,6 +23,7 @@ Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我�
 ----
 
 后续更新内容：
+
 - 【文档】增加 IntelliJ IDEA 开发说明，如何使用 IntelliJ IDEA 打开该项目；
 - 【文档】增加 Eclipse 开发说明，如何使用 Eclipse 打开该项目；
 - 【文档】增加 ANT 编译打包说明；
@@ -33,3 +35,8 @@ Xgame 消息层使用 MINA，IO 采用 EclipseLink + MySQL，场景服务是我�
 - 【代码】完善日志服务器代码；
 - 【代码】增加消息类生成工具，由 JAVA 代码生成 ActionScript 或者 C# 代码；
 - ...
+
+
+- 1
+- 2
+- 3
