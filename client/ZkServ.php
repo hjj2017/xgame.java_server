@@ -1,4 +1,24 @@
 <?php
+//
+// 首先, 执行 zkCli.sh 进入 ZooKeeper 命令行工具界面,
+// 在命令行中可以执行以下操作 :
+//
+// 新建 Kev/Value
+// $ create /xgame 0
+// $ create /xgame/S00 0
+// $ create /xgame/S00/conf/maintenanceTimeStr 0
+// $ create /xgame/S00/conf/whiteList 0
+// $ create /xgame/S00/conf/blackList 0
+//
+// 之后执行 PHP 命令启动监听服务 :
+//
+// $ php ZkServ.php
+//
+// 注意 : 请事先确认是否已经安装 php-zookeeper 扩展?
+// 回到 ZooKeeper 界面, 尝试修改维护时间字符串 :
+//
+// $ set /xgame/S00/conf/maintenanceTimeStr [20150101000000,20151231235959]
+//
 // @import
 require_once("MyLog.php");
 require_once("etc/AppName.php");
@@ -6,10 +26,11 @@ require_once("etc/ServerName.php");
 require_once("etc/ZooKeeper.php");
 
 /**
- * Zookeeper 服务
+ * ZooKeeper 服务
  *
  * @auth jinhaijiang
  * @since 2015/6/28
+ * @see https://git.oschina.net/afrxprojs/xgame-code_server
  *
  */
 class ZkServ extends Zookeeper {
@@ -237,4 +258,3 @@ while (true) {
     MyLog::LOG()->info("live");
     sleep(60);
 }
-
