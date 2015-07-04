@@ -3,8 +3,10 @@ package com.game.gameServer.framework;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.gameServer.scene.IHeartbeat;
-import com.game.gameServer.scene.ReceiveMsgAndHeartbeat;
+import com.game.gameServer.scene.SceneFacade;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.tmpl.XlsxTmplServ;
@@ -50,7 +52,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				IHeartbeat.class)) {
 				// 如果是心跳接口,
-				regHeartbeatObj((Class<IHeartbeat>)currClazz);
+				regHeartbeatObj((Class<IHeartbeat>) currClazz);
 				return;
 			}
 
@@ -58,7 +60,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				AbstractMsgObj.class)) {
 				// 如果是消息类,
-				regMsgClazz((Class<AbstractMsgObj>)currClazz);
+				regMsgClazz((Class<AbstractMsgObj>) currClazz);
 				return;
 			}
 
@@ -66,7 +68,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				AbstractXlsxTmpl.class)) {
 				// 如果是模板类,
-				loadXlsxTmpl((Class<AbstractXlsxTmpl>)currClazz);
+				loadXlsxTmpl((Class<AbstractXlsxTmpl>) currClazz);
 				return;
 			}
 		});
@@ -86,7 +88,7 @@ interface IServerInit_BizModule {
 			// 获取心跳对象
 			IHeartbeat hb = byClazzDef.newInstance();
 			// 添加到列表
-			ReceiveMsgAndHeartbeat.OBJ._heartbeatList.add(hb);
+			SceneFacade.OBJ._heartbeatList.add(hb);
 
 			// 记录消息注册日志
 			FrameworkLog.LOG.info(MessageFormat.format(
@@ -111,13 +113,33 @@ interface IServerInit_BizModule {
 		// 断言参数不为空
 		Assert.notNull(clazzDef);
 
-		// 注册消息类
-		MsgServ.OBJ.regMsgClazz((short) 0, clazzDef);
-		// 记录消息注册日志
-		FrameworkLog.LOG.info(MessageFormat.format(
-			":::: 注册消息类 = {0}",
-			clazzDef.getName()
-		));
+		try {
+			// 消息 Id
+			short msgSerialUId = -1;
+
+			if (clazzDef.equals(AbstractCGMsgObj.class)) {
+				// 创建 CG 消息对象并获取消息 Id
+				AbstractCGMsgObj cgMSG = (AbstractCGMsgObj)clazzDef.newInstance();
+				msgSerialUId = cgMSG.getSerialUId();
+			} else if (clazzDef.equals(AbstractGCMsgObj.class)) {
+				// 创建 GC 消息对象并获取消息 Id
+				AbstractGCMsgObj gcMSG = (AbstractGCMsgObj)clazzDef.newInstance();
+				msgSerialUId = gcMSG.getSerialUId();
+			}
+
+			// 注册消息类
+			MsgServ.OBJ.regMsgClazz(msgSerialUId, clazzDef);
+			// 记录消息注册日志
+			FrameworkLog.LOG.info(MessageFormat.format(
+				":::: 注册消息类 = {0}",
+				clazzDef.getName()
+			));
+		} catch (Exception ex) {
+			// 记录错误日志
+			FrameworkLog.LOG.error(ex.getMessage(), ex);
+			// 直接抛出异常
+			throw new FrameworkError(ex);
+		}
 	}
 
 	/**

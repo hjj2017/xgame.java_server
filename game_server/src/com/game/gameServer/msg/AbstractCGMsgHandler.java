@@ -75,7 +75,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 			return;
 		}
 
-		// 根据玩家 ID 获取 IO 会话
+		// 根据玩家 Id 获取 IO 会话
 		IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(toSessionUId);
 
 		if (sessionObj == null) {
@@ -101,7 +101,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	 */
 	protected void putKeyValueToSession(String k, Object v, long sessionUId) {
 		if (sessionUId <= 0) {
-			// 如果会话 ID 为空, 
+			// 如果会话 Id 为空,
 			// 则直接退出!
 			return;
 		}
@@ -127,7 +127,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	}
 
 	/**
-	 * 根据关键字名称和会话 ID 获取数值
+	 * 根据关键字名称和会话 Id 获取数值
 	 * 
 	 * @param k
 	 * @param sessionUId
@@ -136,7 +136,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	 */
 	protected Object getValueByKeyAndSessionUId(String k, long sessionUId) {
 		if (sessionUId <= 0) {
-			// 如果会话 ID 为空, 
+			// 如果会话 Id 为空,
 			// 则直接退出!
 			return null;
 		}
@@ -205,17 +205,17 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 			return;
 		}
 
-		// 获取会话 ID 集合
-		Set<Long> sessionIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
+		// 获取会话 Id 集合
+		Set<Long> sessionUIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
 
-		if (sessionIdSet == null || 
-			sessionIdSet.size() <= 0) {
+		if (sessionUIdSet == null ||
+			sessionUIdSet.size() <= 0) {
 			return;
 		}
 
-		sessionIdSet.forEach(sessionId -> {
+		sessionUIdSet.forEach(sessionUId -> {
 			// 发送消息
-			this.sendMsgToClient(msgObj, sessionId);
+			this.sendMsgToClient(msgObj, sessionUId);
 		});
 	}
 
@@ -279,16 +279,16 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	/**
 	 * 断开会话
 	 * 
-	 * @param sessionId
+	 * @param sessionUId
 	 * 
 	 */
-	protected void disconnect(long sessionId) {
-		if (sessionId <= 0L) {
+	protected void disconnect(long sessionUId) {
+		if (sessionUId <= 0L) {
 			return;
 		}
 
 		// 获取会话对象
-		IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(sessionId);
+		IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(sessionUId);
 
 		if (sessionObj == null) {
 			// 如果会话对象为空, 

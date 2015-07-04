@@ -16,7 +16,7 @@ interface IMsgDispatchable {
 	 * 该函数只是一个快捷方式
 	 * 
 	 * @param msgObj 
-	 * @see MsgServ#post(AbstractExternalMsg)
+	 * @see MsgServ#post(AbstractMsgObj)
 	 * 
 	 */
 	default void msgDispatch(AbstractMsgObj msgObj) {

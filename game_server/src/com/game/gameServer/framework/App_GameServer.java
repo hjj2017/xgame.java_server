@@ -1,7 +1,7 @@
 package com.game.gameServer.framework;
 
 import com.game.gameServer.framework.mina.IServerStartUp_ListenCGMsg;
-import com.game.gameServer.scene.ReceiveMsgAndHeartbeat;
+import com.game.gameServer.scene.SceneFacade;
 import com.game.part.msg.MsgServ;
 
 /**
@@ -30,8 +30,11 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 		// 记录初始化开始
 		FrameworkLog.LOG.info(":: init");
 
+		//
 		// 初始化业务模块
+		// @see IServerInit_BizModule#initBizModule
 		this.initBizModule();
+
 		// 记录初始化完成
 		FrameworkLog.LOG.info(":: 初始化完成");
 	}
@@ -45,16 +48,14 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 		FrameworkLog.LOG.info(":: 准备启动服务器消息监听");
 
 		// 设置消息接收器
-		MsgServ.OBJ.putMsgReceiver(ReceiveMsgAndHeartbeat.OBJ);
+		MsgServ.OBJ.putMsgReceiver(SceneFacade.OBJ);
 		// 启动心跳
-		ReceiveMsgAndHeartbeat.OBJ.startUp();
+		SceneFacade.OBJ.startUp();
 
 		//
 		// 开始监听 CG 消息,
-		// 要浏览这个函数的完整内容, 可以查阅类 :
-		// IServerStartUp_ListenCGMsg...
-		//
-		this.startListenCGMsg();
+		// @see IServerStartUp_ListenCGMsg
+		this.startUpListenCGMsg();
 
 		// 记录准备完成日志
 		FrameworkLog.LOG.info(":: 启动完成!!");

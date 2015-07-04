@@ -1,4 +1,18 @@
 {
+#
+# 游戏服务器配置
+#
+# /////////////////////////////////////////////////////////////////
+	"gameServer" : {
+		"serverId" : 1,
+		"bindIpAddr" : "0.0.0.0",
+		"port" : 4400,
+		"msgEncrypt" : 1,
+		"maxBattleThreadNum" : 8,
+		"maxLoginThreadNum" : 4,
+		"maxPlayerOrSceneThreadNum" : 4
+	},
+
 # 
 # passport 服务器配置
 # 

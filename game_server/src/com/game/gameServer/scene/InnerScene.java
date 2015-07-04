@@ -65,12 +65,12 @@ class InnerScene {
 	}
 
 	/**
-	 * 处理消息
+	 * 执行消息
 	 *
 	 * @param msgObj
 	 *
 	 */
-	final void handleMsg(AbstractMsgObj msgObj) {
+	final void execMsg(AbstractMsgObj msgObj) {
 		if (msgObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!

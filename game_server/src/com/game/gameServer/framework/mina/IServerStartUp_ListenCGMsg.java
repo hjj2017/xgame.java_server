@@ -2,6 +2,7 @@ package com.game.gameServer.framework.mina;
 
 import java.net.InetSocketAddress;
 
+import com.game.gameServer.framework.FrameworkError;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSessionConfig;
@@ -21,7 +22,7 @@ public interface IServerStartUp_ListenCGMsg {
 	 * 开始监听 CG 消息
 	 * 
 	 */
-	default void startListenCGMsg() {
+	default void startUpListenCGMsg() {
 		// 记录异步操作服务初始化日志
 		FrameworkLog.LOG.info(":: 准备监听 CG 消息");
 
@@ -32,8 +33,15 @@ public interface IServerStartUp_ListenCGMsg {
 		DefaultIoFilterChainBuilder chain = acceptor.getFilterChain();
 		// 处理网络粘包
 		chain.addLast("msgCumulative", new MsgCumulativeFilter());
-		// 消息加密
-		chain.addLast("msgDecrypt", new MsgDecryptFilter());
+
+		if (SocketConf.OBJ._msgEncrypt) {
+			// 如果消息需要加密...
+			chain.addLast(
+				"msgDecrypt",
+				new MsgDecryptFilter()
+			);
+		}
+
 		// 添加自定义编解码器
 		chain.addLast("msgCodec", new ProtocolCodecFilter(
 			new GCMsgEncoder(),
@@ -54,11 +62,15 @@ public interface IServerStartUp_ListenCGMsg {
 
 		try {
 			// 绑定端口
-			acceptor.bind(new InetSocketAddress(4400));
+			acceptor.bind(new InetSocketAddress(
+				SocketConf.OBJ._bindIpAddr,
+				SocketConf.OBJ._bindPort
+			));
 		} catch (Exception ex) {
 			// 输出异常并停止服务器
 			FrameworkLog.LOG.error(ex.getMessage(), ex);
-			System.exit(-1);
+			// 抛出异常!
+			throw new FrameworkError(ex);
 		}
 	}
 }
