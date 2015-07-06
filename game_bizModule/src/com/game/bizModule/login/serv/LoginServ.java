@@ -1,6 +1,6 @@
 package com.game.bizModule.login.serv;
 
-import com.game.gameServer.bizServ.GameBizServ;
+import com.game.gameServer.bizServ.AbstractBizServ;
 
 /**
  * 登陆服务
@@ -8,7 +8,7 @@ import com.game.gameServer.bizServ.GameBizServ;
  * @author hjj2019
  * 
  */
-public class LoginServ extends GameBizServ implements IServ_Auth {
+public class LoginServ extends AbstractBizServ implements IServ_Auth {
 	/** 单例对象 */
 	public static final LoginServ OBJ = new LoginServ();
 }

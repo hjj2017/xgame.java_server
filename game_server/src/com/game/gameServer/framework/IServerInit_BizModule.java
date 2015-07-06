@@ -52,7 +52,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				IHeartbeat.class)) {
 				// 如果是心跳接口,
-				regHeartbeatObj((Class<IHeartbeat>) currClazz);
+				regHeartbeatObj((Class<IHeartbeat>)currClazz);
 				return;
 			}
 
@@ -60,7 +60,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				AbstractMsgObj.class)) {
 				// 如果是消息类,
-				regMsgClazz((Class<AbstractMsgObj>) currClazz);
+				regMsgClazz((Class<AbstractMsgObj>)currClazz);
 				return;
 			}
 
@@ -68,7 +68,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				AbstractXlsxTmpl.class)) {
 				// 如果是模板类,
-				loadXlsxTmpl((Class<AbstractXlsxTmpl>) currClazz);
+				loadXlsxTmpl((Class<AbstractXlsxTmpl>)currClazz);
 				return;
 			}
 		});

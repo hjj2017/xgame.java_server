@@ -1,5 +1,7 @@
 package com.game.gameServer.io;
 
+import net.sf.json.JSONObject;
+
 /**
  * IO 配置
  *
@@ -22,6 +24,26 @@ public final class IoConf {
      *
      */
     private IoConf() {
+    }
+
+    /**
+     * 从 JSON 对象中读取配置
+     *
+     * @param jsonObj
+     *
+     */
+    public void readFromJson(JSONObject jsonObj) {
+        if (jsonObj == null ||
+            jsonObj.isEmpty()) {
+            return;
+        }
+
+        // 最大战斗线程数量
+        this._maxBattleThreadNum = jsonObj.optInt("maxBattleThreadNum", this._maxBattleThreadNum);
+        // 最大登陆线程数量
+        this._maxLoginThreadNum = jsonObj.optInt("maxLoginThreadNum", this._maxLoginThreadNum);
+        // 最大玩家或场景线程数
+        this._maxGamePlayerOrSceneThreadNum = jsonObj.optInt("maxGamePlayerOrSceneThreadNum", this._maxGamePlayerOrSceneThreadNum);
     }
 
     /**

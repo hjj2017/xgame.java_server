@@ -6,5 +6,5 @@ package com.game.gameServer.bizServ;
  * @author hjj2019
  *
  */
-public abstract class GameBizServ implements IIoOperExecutable {
+public abstract class AbstractBizServ implements IIoOperExecutable {
 }

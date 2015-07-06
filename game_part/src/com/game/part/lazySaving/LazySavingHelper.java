@@ -256,7 +256,7 @@ public final class LazySavingHelper {
 	 */
 	public final void execUpdateWithPredicate(ILazySavingPredicate pred) {
 		if (this._updatingFlag.compareAndSet(
-			false, true)) {
+			false, true) == false) {
 			// 事先检查是否未在更新过程中,
 			// 如果没在更新, 则把标志位设置为 true...
 			// 但如果正在更新中, 
