@@ -137,7 +137,7 @@ interface IServ_LoadTmplData {
 		);
 
 		// 获取绝对文件名
-		final String absFileName = XlsxTmplServ.OBJ._baseDir + excelFileName;
+		final String absFileName = XlsxTmplServ.OBJ._xlsxFileDir + "/" + excelFileName;
 		// 记录日志信息
 		XlsxTmplLog.LOG.info("打开文件 " + absFileName);
 

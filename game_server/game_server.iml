@@ -8,6 +8,7 @@
     <orderEntry type="jdk" jdkName="jdk1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="code_lib.common" level="project" />
-    <orderEntry type="module" module-name="game_part" />
+    <orderEntry type="module" module-name="game_part" exported="" />
+    <orderEntry type="module" module-name="game_bizModule" exported="" scope="RUNTIME" />
   </component>
 </module>

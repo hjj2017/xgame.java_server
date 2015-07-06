@@ -16,10 +16,10 @@ import com.game.part.util.Assert;
 public class XlsxTmplServ implements IServ_LoadTmplData, IServ_PackUp, IServ_Validate {
 	/** 单例对象 */
 	public static final XlsxTmplServ OBJ = new XlsxTmplServ();
-	/** 基础目录 */
-	public String _baseDir = null;
-	/** 输出类文件到目标目录 */
-	public String _outputClazzToDir = null;
+	/** Excel 文件所在目录 */
+	public String _xlsxFileDir = null;
+	/** 输出类文件到目标目录, 主要用于调试 */
+	public String _debugClazzToDir = null;
 	/** 对象列表字典 */
 	final ConcurrentHashMap<Class<?>, List<?>> _objListMap = new ConcurrentHashMap<>();
 

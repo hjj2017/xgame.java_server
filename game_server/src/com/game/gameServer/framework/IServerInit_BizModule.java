@@ -117,14 +117,29 @@ interface IServerInit_BizModule {
 			// 消息 Id
 			short msgSerialUId = -1;
 
-			if (clazzDef.equals(AbstractCGMsgObj.class)) {
+			if (ClazzUtil.isConcreteDrivedClass(
+				clazzDef,
+				AbstractCGMsgObj.class)) {
+				//
+				// 是 CG 消息么?
 				// 创建 CG 消息对象并获取消息 Id
 				AbstractCGMsgObj cgMSG = (AbstractCGMsgObj)clazzDef.newInstance();
 				msgSerialUId = cgMSG.getSerialUId();
-			} else if (clazzDef.equals(AbstractGCMsgObj.class)) {
+			} else if (ClazzUtil.isConcreteDrivedClass(
+				clazzDef,
+				AbstractGCMsgObj.class)) {
+				//
+				// 是 GC 消息么?
 				// 创建 GC 消息对象并获取消息 Id
 				AbstractGCMsgObj gcMSG = (AbstractGCMsgObj)clazzDef.newInstance();
 				msgSerialUId = gcMSG.getSerialUId();
+			} else {
+				// 记录警告日志
+				FrameworkLog.LOG.warn(MessageFormat.format(
+					"消息类 {0} 不是 CG 或者 GC 消息, 所以被跳过...",
+					clazzDef.getName()
+				));
+				return;
 			}
 
 			// 注册消息类
@@ -152,6 +167,8 @@ interface IServerInit_BizModule {
 		// 断言参数不为空
 		Assert.notNull(clazzDef);
 
+		// 设置 Excel 文件目录
+		XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
 		// 加载模板对象列表
 		XlsxTmplServ.OBJ.loadTmplData(clazzDef);
 		// 记录模板注册日志

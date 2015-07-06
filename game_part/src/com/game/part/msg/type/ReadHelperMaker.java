@@ -105,8 +105,10 @@ public final class ReadHelperMaker {
 			// 将所有必须的类都导入进来, 
 			// 会生成如下代码 : 
 			// import org.apache.mina.core.buffer.IoBuffer;
+			// import com.game.part.msg.type.AbstractMsgObj;
 			// import byClazz;
 			codeCtx._importClazzSet.add(IoBuffer.class);
+			codeCtx._importClazzSet.add(AbstractMsgObj.class);
 			codeCtx._importClazzSet.add(byClazz);
 			// 构建函数体
 			buildFuncText(byClazz, codeCtx);

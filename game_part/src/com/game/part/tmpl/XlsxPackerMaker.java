@@ -119,11 +119,11 @@ final class XlsxPackerMaker {
 			// 添加方法
 			cc.addMethod(cm);
 
-			if (XlsxTmplServ.OBJ._outputClazzToDir != null &&
-				XlsxTmplServ.OBJ._outputClazzToDir.isEmpty() == false) {
+			if (XlsxTmplServ.OBJ._debugClazzToDir != null &&
+				XlsxTmplServ.OBJ._debugClazzToDir.isEmpty() == false) {
 				// 如果输出目录不为空, 
 				// 则写出类文件用作调试
-				cc.writeFile(XlsxTmplServ.OBJ._outputClazzToDir);
+				cc.writeFile(XlsxTmplServ.OBJ._debugClazzToDir);
 			}
 
 			// 获取 JAVA 类
