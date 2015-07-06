@@ -72,9 +72,10 @@ interface IServ_RegMsgClazz {
 				// 如果两个类不想同, 
 				// 则直接抛出异常!
 				throw new MsgError(MessageFormat.format(
-					"已经使用 msgSerialUId = {0} 的数值定义过消息类 {1}", 
+					"注册消息类 {0} 失败, 已经使用 msgSerialUId = {1} 的数值注册过消息类 {2}",
+					newMsgClazz.getName(),
 					String.valueOf(msgSerialUId), 
-					newMsgClazz.getName()
+					oldMsgClazz.getName()
 				));
 			}
 		} catch (MsgError err) {

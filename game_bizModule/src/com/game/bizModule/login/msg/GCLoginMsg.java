@@ -1,5 +1,6 @@
 package com.game.bizModule.login.msg;
 
+import com.game.bizModule.global.MsgSerialUIdDef;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 
 /**
@@ -10,8 +11,6 @@ import com.game.gameServer.msg.AbstractGCMsgObj;
  * 
  */
 public class GCLoginMsg extends AbstractGCMsgObj {
-	/** 消息类型 ID */
-	private static final short MSG_TYPE_ID = 1001;
 	/** 是否成功 ? */
 	public boolean _success = false;
 
@@ -22,6 +21,11 @@ public class GCLoginMsg extends AbstractGCMsgObj {
 	public GCLoginMsg() {
 	}
 
+	@Override
+	public short getSerialUId() {
+		return MsgSerialUIdDef.GC_Login;
+	}
+	
 	/**
 	 * 类参数构造器
 	 * 
@@ -30,10 +34,5 @@ public class GCLoginMsg extends AbstractGCMsgObj {
 	 */
 	public GCLoginMsg(boolean success) {
 		this._success = success;
-	}
-
-	@Override
-	public short getSerialUId() {
-		return MSG_TYPE_ID;
 	}
 }

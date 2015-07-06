@@ -1,5 +1,6 @@
 package com.game.bizModule.login.msg;
 
+import com.game.bizModule.global.MsgSerialUIdDef;
 import com.game.bizModule.login.handler.Handler_CGLogin;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 
@@ -10,14 +11,12 @@ import com.game.gameServer.msg.AbstractCGMsgObj;
  *
  */
 public class CGLoginMsg extends AbstractCGMsgObj<Handler_CGLogin> {
-	/** 消息类型 ID */
-	private static final short MSG_TYPE_ID = 1001;
 	/** 登陆字符串 */
 	public String _loginStr = null;
 
 	@Override
 	public short getSerialUId() {
-		return MSG_TYPE_ID;
+		return MsgSerialUIdDef.CG_Login;
 	}
 
 	@Override

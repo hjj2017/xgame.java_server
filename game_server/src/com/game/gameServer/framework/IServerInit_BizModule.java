@@ -10,6 +10,7 @@ import com.game.gameServer.scene.SceneFacade;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.tmpl.XlsxTmplServ;
+import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.util.Assert;
 import com.game.part.util.ClazzUtil;
@@ -167,14 +168,24 @@ interface IServerInit_BizModule {
 		// 断言参数不为空
 		Assert.notNull(clazzDef);
 
-		// 设置 Excel 文件目录
-		XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
+		if (clazzDef.getAnnotation(XlsxTmpl.class) == null) {
+			// 判断参数类是否标注了 @XlsxFile 注解?
+			// 如果没有该注解,
+			// 则直接跳过...
+			return;
+		}
+
+		if (XlsxTmplServ.OBJ._xlsxFileDir == null) {
+			// 设置 Excel 文件目录
+			XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
+		}
+
 		// 加载模板对象列表
 		XlsxTmplServ.OBJ.loadTmplData(clazzDef);
 		// 记录模板注册日志
 		FrameworkLog.LOG.info(MessageFormat.format(
-			":::: 注册模板类 = {0}",
-			clazzDef.getName()
+				":::: 注册模板类 = {0}",
+				clazzDef.getName()
 		));
 	}
 }
