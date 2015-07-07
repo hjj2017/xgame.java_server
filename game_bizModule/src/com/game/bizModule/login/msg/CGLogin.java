@@ -10,13 +10,30 @@ import com.game.gameServer.msg.AbstractCGMsgObj;
  * @author hjj2019
  *
  */
-public class CGLoginMsg extends AbstractCGMsgObj<Handler_CGLogin> {
+public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	/** 登陆字符串 */
 	public String _loginStr = null;
 
+	/**
+	 * 类默认构造器
+	 *
+	 */
+	public CGLogin() {
+	}
+
+	/**
+	 * 类参数构造器
+	 *
+	 * @param loginStr
+	 *
+	 */
+	public CGLogin(String loginStr) {
+		this._loginStr = loginStr;
+	}
+
 	@Override
 	public short getSerialUId() {
-		return AllMsgSerialUId.CG_Login;
+		return AllMsgSerialUId.CG_LOGIN;
 	}
 
 	@Override

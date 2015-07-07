@@ -10,5 +10,6 @@
     <orderEntry type="library" name="code_lib.common" level="project" />
     <orderEntry type="module" module-name="game_part" />
     <orderEntry type="module" module-name="game_server" />
+    <orderEntry type="module" module-name="game_bizModule" />
   </component>
 </module>

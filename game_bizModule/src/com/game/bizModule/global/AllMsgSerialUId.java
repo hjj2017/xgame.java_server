@@ -28,11 +28,11 @@ public final class AllMsgSerialUId {
     ///////////////////////////////////////////////////////////////////
 
     /** 消息基址 */
-    private static short MsgBase_Login = 1000;
+    private static short MSG_BASE_LOGIN = 1000;
     /** 登陆 CG 消息 */
-    public static final short CG_Login = ++MsgBase_Login;
+    public static final short CG_LOGIN = ++MSG_BASE_LOGIN;
     /** 登陆 GC 消息 */
-    public static final short GC_Login = ++MsgBase_Login;
+    public static final short GC_LOGIN = ++MSG_BASE_LOGIN;
 
     /**
      * 类默认构造器

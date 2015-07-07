@@ -10,7 +10,7 @@ import com.game.gameServer.msg.AbstractGCMsgObj;
  * @since 2014/9/15
  * 
  */
-public class GCLoginMsg extends AbstractGCMsgObj {
+public class GCLogin extends AbstractGCMsgObj {
 	/** 是否成功 ? */
 	public boolean _success = false;
 
@@ -18,12 +18,12 @@ public class GCLoginMsg extends AbstractGCMsgObj {
 	 * 类默认构造器
 	 * 
 	 */
-	public GCLoginMsg() {
+	public GCLogin() {
 	}
 
 	@Override
 	public short getSerialUId() {
-		return AllMsgSerialUId.GC_Login;
+		return AllMsgSerialUId.GC_LOGIN;
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class GCLoginMsg extends AbstractGCMsgObj {
 	 * @param success 
 	 * 
 	 */
-	public GCLoginMsg(boolean success) {
+	public GCLogin(boolean success) {
 		this._success = success;
 	}
 }

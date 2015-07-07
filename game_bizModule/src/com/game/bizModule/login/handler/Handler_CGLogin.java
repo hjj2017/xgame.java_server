@@ -1,6 +1,6 @@
 package com.game.bizModule.login.handler;
 
-import com.game.bizModule.login.msg.CGLoginMsg;
+import com.game.bizModule.login.msg.CGLogin;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 
 /**
@@ -9,9 +9,9 @@ import com.game.gameServer.msg.AbstractCGMsgHandler;
  * @author hjj2019
  * 
  */
-public class Handler_CGLogin extends AbstractCGMsgHandler<CGLoginMsg> {
+public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 	@Override
-	public void handle(CGLoginMsg msg) {
+	public void handle(CGLogin msg) {
 		if (msg == null) {
 			return;
 		}
