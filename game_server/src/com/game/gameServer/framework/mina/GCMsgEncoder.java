@@ -14,7 +14,7 @@ import com.game.gameServer.msg.AbstractGCMsgObj;
  * @since 2015/3/28
  *
  */
-class GCMsgEncoder extends ProtocolEncoderAdapter {
+public class GCMsgEncoder extends ProtocolEncoderAdapter {
 	/** GC 消息默认容量 */
 	private static final int GCMSG_DEFAULT_CAPCITY = 64;
 	

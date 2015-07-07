@@ -56,7 +56,7 @@ public final class RobotMain {
 
 		// 事先扫描 gameServer 项目, 
 		// 注册所有的 GC 消息!
-		RobotGCMsgRecognizer.OBJ.scanGameServerProj();
+		RobotGCMsgRecognizer.OBJ.scanAllModule();
 		// 扫描 moduleImpl 下得所有模块
 		this.scanAllModuleImpl(confObj);
 
@@ -146,7 +146,7 @@ public final class RobotMain {
 				+ moduleConf._currModule;
 
 			// 获取 "准备类定义" 
-			Set<Class<?>> readyClazzDefSet = PackageUtil.getSubClass(
+			Set<Class<?>> readyClazzDefSet = PackageUtil.listSubClazz(
 				packageName, 
 				AbstractModuleReady.class
 			);

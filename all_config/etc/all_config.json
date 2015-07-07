@@ -4,15 +4,23 @@
 #
 # /////////////////////////////////////////////////////////////////
 	"gameServer" : {
+		# 基础配置
 		"serverIndex" : 1,
 		"bindIpAddr" : "0.0.0.0",
 		"port" : 4400,
 		"msgEncrypt" : 1,
+		# IO 配置
 		"maxBattleThreadNum" : 8,
 		"maxLoginThreadNum" : 4,
 		"maxPlayerOrSceneThreadNum" : 4,
+		# 策划表所在目录
 		"xlsxFileDir" : "../game_res/xlsx",
+		# 战报所在目录
 		"battleReportDir" : "../client/BR",
+		# 数据库配置
+		"dbConn" : "jdbc:mysql://127.0.0.1:3306/xgame_gameServer?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
+		"dbUser" : "root",
+		"dbPass" : ""
 	},
 
 # 

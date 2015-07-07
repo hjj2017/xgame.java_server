@@ -17,7 +17,7 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2014/3/17
  * 
  */
-class MsgCumulativeFilter extends IoFilterAdapter {
+public class MsgCumulativeFilter extends IoFilterAdapter {
 	/** 
 	 * 从客户端接收的消息估计长度,
 	 * {@value} 字节, 

@@ -26,7 +26,7 @@ import com.game.part.util.MD5Util;
  * @since 2014/3/17
  * 
  */
-class MsgDecryptFilter extends IoFilterAdapter {
+public class MsgDecryptFilter extends IoFilterAdapter {
 	/** 时间戳字典 */
 	private static final ConcurrentHashMap<Long, Integer> _tsMap = new ConcurrentHashMap<>();
 	/** MD5 Key */

@@ -1,9 +1,14 @@
 package com.game.robot.kernal;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.game.gameServer.framework.FrameworkLog;
+import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.AbstractGCMsgObj;
+import com.game.part.msg.MsgServ;
 import com.game.part.util.PackageUtil;
 import com.game.robot.RobotLog;
 
@@ -16,34 +21,37 @@ import com.game.robot.RobotLog;
  * @author yuan.lv
  * 
  */
-public class RobotGCMsgRecognizer extends BaseMsgRecognizer {
+public class RobotGCMsgRecognizer {
 	/** 单例对象 */
 	public static final RobotGCMsgRecognizer OBJ = new RobotGCMsgRecognizer();
-	/** GC 消息类定义字典 */
-	private final Map<Short, Class<?>> _gcMsgClazzDefMap = new HashMap<Short, Class<?>>();
 
 	/**
-	 * 扫描 gameServer 项目
+	 * 扫描所有模块
 	 * 
 	 */
-	void scanGameServerProj() {
+	void scanAllModule() {
 		// 记录日志信息
 		RobotLog.LOG.info("开始扫描游戏服, 注册 GC 消息");
 		// 获取 GCMsg 的所有子类
-		Set<Class<?>> clazzSet = PackageUtil.getSubClass(
-			"com.game.gameServer",
-			GCMessage.class
+		Set<Class<?>> clazzSet = PackageUtil.listSubClazz(
+			"com.game.bizModule",
+			AbstractGCMsgObj.class
 		);
 
-		// 注册一个特殊消息
-		this._gcMsgClazzDefMap.put(
-			CoreMsgTypeDef.GC_QQ_TGW, QQTgwMsg.class
-		);
-
-		for (Class<?> clazz : clazzSet) {
+		for (Class<?> clazzDef : clazzSet) {
 			try {
-				// 添加消息到字典
-				this._gcMsgClazzDefMap.put(((GCMessage)clazz.newInstance()).getType(), clazz);
+				// 创建 CG 消息对象并获取消息 Id
+				AbstractGCMsgObj cgMSG = (AbstractGCMsgObj)clazzDef.newInstance();
+				// 注册消息类
+				MsgServ.OBJ.regMsgClazz(
+					cgMSG.getSerialUId(), cgMSG.getClass()
+				);
+
+				// 记录消息注册日志
+				FrameworkLog.LOG.info(MessageFormat.format(
+					":::: 注册消息类 = {0}",
+					clazzDef.getName()
+				));
 			} catch (Exception ex) {
 				// 记录错误日志
 				RobotLog.LOG.error(ex.getMessage(), ex);
@@ -53,29 +61,4 @@ public class RobotGCMsgRecognizer extends BaseMsgRecognizer {
 		// 记录日志信息
 		RobotLog.LOG.info("注册 GC 消息完成");
 	}
-
-	@Override
-	public IMsg createMessageImpl(short msgTypeDef) {
-		// 获取消息类定义
-		Class<?> clazzDef = this._gcMsgClazzDefMap.get(msgTypeDef);
-
-		if (clazzDef == null) {
-			// 如果消息类定义为空, 
-			// 则直接退出!
-			RobotLog.LOG.info("未知的消息类型, msgTypeDef = " + msgTypeDef);
-			return null;
-		}
-
-		try {
-			// 创建消息对象并返回
-			IMsg msgObj = (IMsg)clazzDef.newInstance();
-			return msgObj;
-		} catch (Exception ex) {
-			// 记录异常日志
-			RobotLog.LOG.error(ex.getMessage(), ex);
-		}
-
-		return null;
-	}
-
 }

@@ -10,7 +10,7 @@ curr_dir=`pwd`
 # 服务器指纹
 finger_print=`echo ${curr_dir}+gameServer+Qwer0987# | md5sum | cut -d ' ' -f1`
 # 应用程序类
-app_class=com.game.robot.ConsoleApp
+app_class=com.game.robot.CLI_Robot
 # 命令行参数
 arg_arr="-c ${curr_dir}/etc/robot.json -l ${curr_dir}/etc/log4j.properties"
 # 依赖包目录

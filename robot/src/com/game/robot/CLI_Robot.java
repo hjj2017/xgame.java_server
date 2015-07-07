@@ -14,12 +14,12 @@ import com.game.robot.kernal.RobotMain;
  * @since 2015/5/14
  * 
  */
-public final class ConsoleApp {
+public final class CLI_Robot {
 	/**
 	 * 类默认构造器
 	 * 
 	 */
-	private ConsoleApp() {
+	private CLI_Robot() {
 	}
 
 	/**

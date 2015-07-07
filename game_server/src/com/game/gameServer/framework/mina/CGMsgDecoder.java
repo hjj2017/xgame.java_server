@@ -19,7 +19,7 @@ import com.game.part.msg.MsgServ;
  * @since 2014/8/11
  * 
  */
-class CGMsgDecoder extends ProtocolDecoderAdapter {
+public class CGMsgDecoder extends ProtocolDecoderAdapter {
 	/**
 	 * 类参数构造器
 	 * 

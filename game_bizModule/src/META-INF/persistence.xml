@@ -2,14 +2,21 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
-	<persistence-unit name="llz" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="Xgame" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>com.game.bizModules.login.entity.UserEntity</class>
+		<class>com.game.bizModule.login.entity.UserEntity</class>
         <properties>
         	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/llz_s001_game?characterEncoding=utf-8&amp;useServerPrepStmts=true" />
-			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="root" />
+
+			<!--
+			// 关于用户名和密码,
+			// 具体请参见 all_config 项目 etc/all_config.json 文件,
+			// 在 gameServer 节点中
+			// 定义了游戏服数据库连接...
+			//-->
+			<property name="javax.persistence.jdbc.url" value="" />
+			<property name="javax.persistence.jdbc.user" value="" />
+			<property name="javax.persistence.jdbc.password" value="" />
 
 			<property name="eclipselink.connection-pool.default.initial" value="1" />
             <property name="eclipselink.connection-pool.default.min" value="64" />
