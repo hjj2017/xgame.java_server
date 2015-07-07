@@ -20,11 +20,16 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 	 */
 	public abstract short getSerialUId();
 
+	/** 版本修订, 主要用于消息加密 */
+	public int _revision;
+
 	@Override
 	public void readBuff(IoBuffer buff) {
 		if (buff != null) {
 			// 读掉开头的序列化 Id
 			IoBuffUtil.readShort(buff);
+			// 读取版本修订
+			IoBuffUtil.readInt(buff);
 			// 执行父类的读取罗辑
 			super.readBuff(buff);
 		}
@@ -34,7 +39,9 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 	public void writeBuff(IoBuffer buff) {
 		if (buff != null) {
 			// 将序列化 Id 写在开头
-			IoBuffUtil.writeShort(getSerialUId(), buff);
+			IoBuffUtil.writeShort(this.getSerialUId(), buff);
+			// 写出版本修订
+			IoBuffUtil.writeInt(this._revision, buff);
 			// 执行父类的写出罗辑
 			super.writeBuff(buff);
 		}

@@ -11,6 +11,7 @@ import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.IoBuffUtil;
 import com.game.part.msg.MsgServ;
+import com.game.part.msg.type.AbstractMsgObj;
 
 /**
  * 客户端消息 -&gt; 服务端消息
@@ -36,10 +37,12 @@ public class CGMsgDecoder extends ProtocolDecoderAdapter {
 			return;
 		}
 
+		// 读掉开头的消息长度
+		IoBuffUtil.readShort(buff);
 		// 获取消息序列化 Id
 		short msgSerialUId = IoBuffUtil.readShort(buff);
 		// 获取消息对象
-		AbstractCGMsgObj<?> msgObj = MsgServ.OBJ.newMsgObj(msgSerialUId);
+		AbstractMsgObj msgObj = MsgServ.OBJ.newMsgObj(msgSerialUId);
 
 		if (msgObj == null) {
 			// 如果消息对象为空, 
@@ -53,6 +56,9 @@ public class CGMsgDecoder extends ProtocolDecoderAdapter {
 
 		// 令消息读取数据
 		msgObj.readBuff(buff);
+		buff.position(0);
+		buff.limit(0);
+
 		// 向下处理
 		output.write(msgObj);
 	}

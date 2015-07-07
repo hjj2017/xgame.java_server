@@ -4,6 +4,7 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
 import com.game.part.util.Assert;
+import com.game.robot.RobotLog;
 
 /**
  * GC 消息处理器
@@ -40,5 +41,10 @@ class MINA_GCMsgIoHandler extends IoHandlerAdapter {
 
 		// 将消息对象添加到队列
 		this._robotObj._msgQ.offer(msgObj);
+	}
+	
+	@Override
+	public void exceptionCaught(IoSession sessionObj, Throwable cause) {
+		RobotLog.LOG.error(cause.getMessage(), cause);
 	}
 }

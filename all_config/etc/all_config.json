@@ -6,9 +6,9 @@
 	"gameServer" : {
 		# 基础配置
 		"serverIndex" : 1,
-		"bindIpAddr" : "0.0.0.0",
+		"bindIpAddr" : "127.0.0.1",
 		"port" : 4400,
-		"msgEncrypt" : 1,
+		"msgEncrypt" : 0,
 		# IO 配置
 		"maxBattleThreadNum" : 8,
 		"maxLoginThreadNum" : 4,

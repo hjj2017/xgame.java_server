@@ -21,7 +21,7 @@ public class S000_ConnectToGameServer extends AbstractModuleReady {
 
 		// 连接到游戏服
 		robotObj.connectToGameServer();
-		// 跳转到下一模块
-		robotObj.gotoNextModule();
+		// 跳转到下一模块并准备
+		robotObj.gotoNextModuleAndReady();
 	}
 }

@@ -180,8 +180,6 @@ public final class Robot {
 		try {
 			// 创建 NIO 连接
 			NioSocketConnector conn = new NioSocketConnector();
-			// 设置消息处理器
-			conn.setHandler(new MINA_GCMsgIoHandler(this));
 
 			// 网络黏包算法
 			conn.getFilterChain().addLast("msgCumulative", new MsgCumulativeFilter());
@@ -191,6 +189,8 @@ public final class Robot {
 				new CGMsgDecoder()
 			));
 
+			// 设置消息处理器
+			conn.setHandler(new MINA_GCMsgIoHandler(this));
 			// 连接到游戏服
 			ConnectFuture cf = conn.connect(new InetSocketAddress(
 				this._gameServerIpAddr, 

@@ -1,12 +1,12 @@
 {
 # 游戏服 IP 地址
-"gameServerIpAddr" : "192.168.1.182",
+"gameServerIpAddr" : "127.0.0.1",
 # 游戏服端口号
-"gameServerPort" : 48000,
+"gameServerPort" : 4400,
 # 起始账户 Id
 "startPId" : "2048",
 # 结束账户 Id
-"endPId" : "2248",
+"endPId" : "2048",
 # 账户密码
 "userPassword" : "1",
 # 游戏服名称
@@ -21,9 +21,6 @@
 	# nextModule 可以不用填写, 
 	# 测试时的执行顺序, 就是以下文本行的顺序!
     { "currModule" : "connect" },
-    { "currModule" : "login" },
-    { "currModule" : "task" },
-    { "currModule" : "card2" },
-    { "currModule" : "warSets", "nextModule" : "task" },
+    { "currModule" : "login", "nextModule" : "disconnect" },
 ]
 }
