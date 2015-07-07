@@ -1,6 +1,6 @@
 package com.game.bizModule.login.msg;
 
-import com.game.bizModule.global.MsgSerialUIdDef;
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 
 /**
@@ -23,7 +23,7 @@ public class GCLoginMsg extends AbstractGCMsgObj {
 
 	@Override
 	public short getSerialUId() {
-		return MsgSerialUIdDef.GC_Login;
+		return AllMsgSerialUId.GC_Login;
 	}
 	
 	/**

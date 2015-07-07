@@ -11,8 +11,8 @@
 		"maxBattleThreadNum" : 8,
 		"maxLoginThreadNum" : 4,
 		"maxPlayerOrSceneThreadNum" : 4,
-		"xlsxFileDir" : "game_res",
-		"battleReportDir" : "client/BR",
+		"xlsxFileDir" : "../game_res/xlsx",
+		"battleReportDir" : "../client/BR",
 	},
 
 # 

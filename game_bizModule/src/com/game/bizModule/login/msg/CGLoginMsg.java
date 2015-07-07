@@ -1,6 +1,6 @@
 package com.game.bizModule.login.msg;
 
-import com.game.bizModule.global.MsgSerialUIdDef;
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.login.handler.Handler_CGLogin;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 
@@ -16,7 +16,7 @@ public class CGLoginMsg extends AbstractCGMsgObj<Handler_CGLogin> {
 
 	@Override
 	public short getSerialUId() {
-		return MsgSerialUIdDef.CG_Login;
+		return AllMsgSerialUId.CG_Login;
 	}
 
 	@Override

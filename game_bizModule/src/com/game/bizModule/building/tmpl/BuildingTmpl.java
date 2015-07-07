@@ -22,9 +22,9 @@ import com.game.part.tmpl.type.XlsxStr;
 @XlsxTmpl(fileName = "building.xlsx", sheetIndex = 0, startFromRowIndex = 2)
 @Validator(clazz = Valid_BuildingTmpl.class)
 public class BuildingTmpl extends AbstractXlsxTmpl {
-	/** ID */ 
-	@OneToOne(groupName = "ID")
-	public XlsxInt _ID = new XlsxInt(false);
+	/** Id */
+	@OneToOne(groupName = "Id")
+	public XlsxInt _Id = new XlsxInt(false);
 	/** 所在城市 Id */
 	@OneToMany(groupName = "cityId")
 	public XlsxInt _cityId;
@@ -35,8 +35,8 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** Y 坐标 */
 	public XlsxInt _posY;
 
-	/** ID 字典 */
-	@OneToOne(groupName = "ID")
+	/** Id 字典 */
+	@OneToOne(groupName = "Id")
 	public static Map<Integer, BuildingTmpl> _IDMap = new HashMap<>();
 	/** 城市建筑字典 */
 	@OneToMany(groupName = "cityId")
