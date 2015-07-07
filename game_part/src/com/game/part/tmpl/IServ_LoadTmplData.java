@@ -12,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.game.part.tmpl.anno.XlsxTmpl;
+import com.game.part.tmpl.anno.FromXlsxFile;
 import com.game.part.tmpl.type.AbstractXlsxCol;
 import com.game.part.util.Assert;
 import com.game.part.util.Out;
@@ -92,7 +92,7 @@ interface IServ_LoadTmplData {
 		Assert.notNull(byClazz, "byClazz");
 
 		// 获取 Excel 模板注解
-		XlsxTmpl annoXlsxTmpl = byClazz.getAnnotation(XlsxTmpl.class);
+		FromXlsxFile annoXlsxTmpl = byClazz.getAnnotation(FromXlsxFile.class);
 
 		if (annoXlsxTmpl == null) {
 			// 如果注解对象为空, 
@@ -100,7 +100,7 @@ interface IServ_LoadTmplData {
 			throw new XlsxTmplError(MessageFormat.format(
 				"{0} 类未标注 {1} 注解", 
 				byClazz.getName(), 
-				XlsxTmpl.class.getName()
+				FromXlsxFile.class.getName()
 			));
 		}
 

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XlsxTmpl {
+public @interface FromXlsxFile {
 	/** 文件名称 */
 	String fileName();
 	/** 页签索引 */

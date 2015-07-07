@@ -5,7 +5,7 @@ import java.util.Map;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.Validator;
-import com.game.part.tmpl.anno.XlsxTmpl;
+import com.game.part.tmpl.anno.FromXlsxFile;
 import com.game.part.util.Assert;
 
 /**
@@ -15,7 +15,7 @@ import com.game.part.util.Assert;
  * @since 2014/6/23
  * 
  */
-@XlsxTmpl(fileName = "cd.xlsx", sheetIndex = 0)
+@FromXlsxFile(fileName = "cd.xlsx", sheetIndex = 0)
 @Validator(clazz = CdTimerTmpl_Validator.class)
 public class CdTimerTmpl {
 	/** Cd 类型 Int */

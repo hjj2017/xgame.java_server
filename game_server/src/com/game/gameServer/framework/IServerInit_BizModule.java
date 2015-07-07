@@ -10,7 +10,7 @@ import com.game.gameServer.scene.SceneFacade;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.tmpl.XlsxTmplServ;
-import com.game.part.tmpl.anno.XlsxTmpl;
+import com.game.part.tmpl.anno.FromXlsxFile;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.util.Assert;
 import com.game.part.util.ClazzUtil;
@@ -168,8 +168,8 @@ interface IServerInit_BizModule {
 		// 断言参数不为空
 		Assert.notNull(clazzDef);
 
-		if (clazzDef.getAnnotation(XlsxTmpl.class) == null) {
-			// 判断参数类是否标注了 @XlsxFile 注解?
+		if (clazzDef.getAnnotation(FromXlsxFile.class) == null) {
+			// 判断参数类是否标注了 @FromXlsxFile 注解?
 			// 如果没有该注解,
 			// 则直接跳过...
 			return;

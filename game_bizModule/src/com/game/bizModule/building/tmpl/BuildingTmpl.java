@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.game.part.tmpl.anno.FromXlsxFile;
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.OneToOne;
 import com.game.part.tmpl.anno.Validator;
-import com.game.part.tmpl.anno.XlsxTmpl;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.tmpl.type.XlsxInt;
 import com.game.part.tmpl.type.XlsxStr;
@@ -19,7 +19,7 @@ import com.game.part.tmpl.type.XlsxStr;
  * @since 2014/6/5
  * 
  */
-@XlsxTmpl(fileName = "building.xlsx", sheetIndex = 0, startFromRowIndex = 2)
+@FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0, startFromRowIndex = 2)
 @Validator(clazz = Valid_BuildingTmpl.class)
 public class BuildingTmpl extends AbstractXlsxTmpl {
 	/** Id */
