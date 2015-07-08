@@ -31,7 +31,7 @@ public class CGKillCdTimeMsg extends AbstractCGMsgObj<Handler_CGKillCdTime> {
 	}
 
 	@Override
-	public Handler_CGKillCdTime getSelfHandler() {
+	public Handler_CGKillCdTime newHandlerObj() {
 		return new Handler_CGKillCdTime();
 	}
 }

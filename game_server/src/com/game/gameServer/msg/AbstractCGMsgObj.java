@@ -17,6 +17,9 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 	/** Md5 字符串, 主要用于消息加密 */
 	public String _md5;
 
+	/** 处理器对象 */
+	private THandler _h = null;
+
 	/**
 	 * 获取消息序列化 Id
 	 * 
@@ -128,5 +131,21 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 	 * @return
 	 * 
 	 */
-	public abstract THandler getSelfHandler();
+	public final THandler getSelfHandler() {
+		if (this._h == null) {
+			// 如果处理器对象为空,
+			// 则新建处理器!
+			this._h = this.newHandlerObj();
+		}
+
+		return this._h;
+	}
+
+	/**
+	 * 创建新的处理器对象
+	 *
+	 * @return
+	 *
+	 */
+	protected abstract THandler newHandlerObj();
 }

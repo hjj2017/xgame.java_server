@@ -25,6 +25,8 @@ class MsgIoHandler extends IoHandlerAdapter {
 		// 断言参数对象不为空
 		Assert.notNull(sessionObj);
 
+		// 添加会话对象
+		OnlineSessionManager.OBJ.addSession(sessionObj);
 		// 获取消息对象
 		AbstractCGMsgObj<?> cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_OPENED);
 		// 发送消息
@@ -40,8 +42,9 @@ class MsgIoHandler extends IoHandlerAdapter {
 		if (obj instanceof AbstractCGMsgObj) {
 			// 输出日志记录
 			FrameworkLog.LOG.info(MessageFormat.format(
-				"接到消息 {0}",
-				obj.getClass().getName()
+				"接到消息 {0}, sessionUId = {1}",
+				obj.getClass().getName(),
+				String.valueOf(sessionObj.getId())
 			));
 
 			// 发送消息
@@ -81,7 +84,7 @@ class MsgIoHandler extends IoHandlerAdapter {
 
 		if (handler != null) {
 			// 设置会话 Id
-//			handler._sessionUId = fromSessionObj.getId();
+			handler._sessionUId = fromSessionObj.getId();
 		}
 
 		// 分派消息对象

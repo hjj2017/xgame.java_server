@@ -38,7 +38,7 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	}
 
 	@Override
-	public Handler_CGLogin getSelfHandler() {
+	public Handler_CGLogin newHandlerObj() {
 		return new Handler_CGLogin();
 	}
 }

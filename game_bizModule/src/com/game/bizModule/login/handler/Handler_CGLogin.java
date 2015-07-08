@@ -1,6 +1,7 @@
 package com.game.bizModule.login.handler;
 
 import com.game.bizModule.login.msg.CGLogin;
+import com.game.bizModule.login.msg.GCLogin;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 
 /**
@@ -17,5 +18,7 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 			// 则直接退出!
 			return;
 		}
+
+		this.sendMsgToClient(new GCLogin(true));
 	}
 }

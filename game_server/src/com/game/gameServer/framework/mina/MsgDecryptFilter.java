@@ -17,9 +17,9 @@ import com.game.part.util.MD5Util;
 /**
  * 消息解密, 该类负责三件事情:
  * <ol>
- * <li>消息体验证</li>
- * <li>时序验证</li>
- * <li>消息解密</li>
+ * <li>消息体验证;</li>
+ * <li>时序验证;</li>
+ * <li>消息解密; ( 当然, 消息加密和解密这一步还没具体实现 )</li>
  * </ol>
  * 
  * @author hjj2017

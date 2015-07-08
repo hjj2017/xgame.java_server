@@ -18,12 +18,27 @@ import com.game.gameServer.framework.Player;
  * 
  */
 public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> {
-	/** 消息软引用 */
-	private IoSession _sessionObj = null;
-
-	public void setupIoSession(IoSession value) {
-		this._sessionObj = value;
-	}
+	/**
+	 * 会话 Id, 会在 MsgIoHandler 中赋值.
+	 *
+	 * <font color="#990000">注意: 该值的作用域不应该超过 com.game.gameServer!</font><br />
+	 * 但比较无奈的是,
+	 * 直到 JAVA 8 都不支持类似 C# 语言中 internal
+	 * 或者 readonly 这样的关键字...
+	 *
+	 * 而在 Scala 语言中可以使用:
+	 * <p><code>public [ gameServer ] Long _sessionUId</code></p>
+	 * 这样的声明方式来做出明确限制!
+	 * 整个框架可以具备良好、严谨的封闭性.
+	 *
+	 * 我可以定义一个 ReadOnlyLong 这样的类,
+	 * 在赋值过一次之后, 就只能当做只读变量使用.
+	 * 但我并不想把代码搞得太复杂,
+	 *
+	 * 还是让我们期待 JAVA 9 吧...
+	 *
+	 */
+	public long _sessionUId;
 
 	/**
 	 * 处理消息对象
@@ -40,6 +55,16 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	 * 
 	 */
 	protected void sendMsgToClient(AbstractGCMsgObj msgObj) {
+		if (msgObj == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return;
+		}
+
+		// 发送消息给客户端
+		this.sendMsgToClient(
+			msgObj, this._sessionUId
+		);
 	}
 
 	/**
