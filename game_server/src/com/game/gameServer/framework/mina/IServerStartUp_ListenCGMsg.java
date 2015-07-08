@@ -44,15 +44,15 @@ public interface IServerStartUp_ListenCGMsg {
 
 		// 添加自定义编解码器
 		chain.addLast("msgCodec", new ProtocolCodecFilter(
-			new GCMsgEncoder(),
-			new CGMsgDecoder()
+			new MsgEncoder(),
+			new MsgDecoder()
 		));
 
 		// 获取会话配置
 		IoSessionConfig cfg = acceptor.getSessionConfig();
 
 		// 设置缓冲区大小
-		cfg.setReadBufferSize(4096);
+		cfg.setReadBufferSize(2048);
 		// 设置 session 空闲时间
 		cfg.setIdleTime(IdleStatus.BOTH_IDLE, 10);
 

@@ -12,8 +12,8 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-import com.game.gameServer.framework.mina.CGMsgDecoder;
-import com.game.gameServer.framework.mina.GCMsgEncoder;
+import com.game.gameServer.framework.mina.MsgDecoder;
+import com.game.gameServer.framework.mina.MsgEncoder;
 import com.game.gameServer.framework.mina.MsgCumulativeFilter;
 import com.game.robot.RobotLog;
 
@@ -185,8 +185,8 @@ public final class Robot {
 			conn.getFilterChain().addLast("msgCumulative", new MsgCumulativeFilter());
 			// 添加消息解码器
 			conn.getFilterChain().addLast("msgCodec", new ProtocolCodecFilter(
-				new GCMsgEncoder(),
-				new CGMsgDecoder()
+				new MsgEncoder(),
+				new MsgDecoder()
 			));
 
 			// 设置消息处理器

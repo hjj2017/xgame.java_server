@@ -14,20 +14,13 @@ import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 
 /**
- * 客户端消息 -&gt; 服务端消息
+ * 消息解码器
  * 
  * @author hjj2017
  * @since 2014/8/11
  * 
  */
-public class CGMsgDecoder extends ProtocolDecoderAdapter {
-	/**
-	 * 类参数构造器
-	 * 
-	 */
-	public CGMsgDecoder() {
-	}
-	
+public class MsgDecoder extends ProtocolDecoderAdapter {
 	@Override
 	public void decode(IoSession sessionObj, IoBuffer buff, ProtocolDecoderOutput output) {
 		if (buff == null || 
@@ -37,11 +30,17 @@ public class CGMsgDecoder extends ProtocolDecoderAdapter {
 			return;
 		}
 
-		// 读掉开头的消息长度
-		IoBuffUtil.readShort(buff);
+		// 获取原始位置
+		final int oldPos = buff.position();
+
+		// 首先, 跳过消息长度
+		buff.skip(2);
 		// 获取消息序列化 Id
 		short msgSerialUId = IoBuffUtil.readShort(buff);
-		// 获取消息对象
+		//
+		// 获取消息对象, 注意:
+		// CG 消息和 GC 消息,
+		// 都是继承自 AbstractMsgObj 类
 		AbstractMsgObj msgObj = MsgServ.OBJ.newMsgObj(msgSerialUId);
 
 		if (msgObj == null) {
@@ -54,10 +53,10 @@ public class CGMsgDecoder extends ProtocolDecoderAdapter {
 			return;
 		}
 
+		// 回转到原始位置
+		buff.position(oldPos);
 		// 令消息读取数据
 		msgObj.readBuff(buff);
-		buff.position(0);
-		buff.limit(0);
 
 		// 向下处理
 		output.write(msgObj);

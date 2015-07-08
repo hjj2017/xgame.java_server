@@ -3,6 +3,7 @@ package com.game.bizModule.login.msg;
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.login.handler.Handler_CGLogin;
 import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.part.msg.type.MsgStr;
 
 /**
  * 登陆游戏
@@ -12,7 +13,7 @@ import com.game.gameServer.msg.AbstractCGMsgObj;
  */
 public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	/** 登陆字符串 */
-	public String _loginStr = null;
+	public MsgStr _loginStr;
 
 	/**
 	 * 类默认构造器
@@ -28,7 +29,7 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	 *
 	 */
 	public CGLogin(String loginStr) {
-		this._loginStr = loginStr;
+		this._loginStr = new MsgStr(loginStr);
 	}
 
 	@Override

@@ -35,26 +35,25 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 	private static final AtomicBoolean _enabled = new AtomicBoolean(true);
 
 	@Override
-	public void sessionClosed(NextFilter nextFilter, IoSession sess) throws Exception {
+	public void sessionClosed(NextFilter nextFilter, IoSession sessionObj) throws Exception {
 		if (nextFilter == null || 
-			sess == null) {
+			sessionObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null nextFilter or sess");
 			return;
 		}
 
 		// 从字典中移除时间戳
-		_tsMap.remove(sess.getId());
+		_tsMap.remove(sessionObj.getId());
 		// 向下传递
-		super.sessionClosed(nextFilter, sess);
+		super.sessionClosed(nextFilter, sessionObj);
 	}
 
 	@Override
 	public void messageReceived(
-		NextFilter nextFilter, IoSession sess, Object msgObj) throws Exception {
+		NextFilter nextFilter, IoSession sessionObj, Object msgObj) throws Exception {
 		if (nextFilter == null || 
-			sess == null) {
+			sessionObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			FrameworkLog.LOG.error("null nextFilter or sess");
@@ -64,25 +63,25 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		if (!_enabled.get()) {
 			// 如果消息没有加密, 
 			// 则直接退出!
-			super.messageReceived(nextFilter, sess, msgObj);
+			super.messageReceived(nextFilter, sessionObj, msgObj);
 			return;
 		}
 
-		// 获取会话 UUId
-		long sessionUUId = sess.getId();
+		// 获取会话 Id
+		long sessionUId = sessionObj.getId();
 
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null msgObj, sessionUUId = " + sessionUUId);
+			FrameworkLog.LOG.error("null msgObj, sessionUId = " + sessionUId);
 			return;
 		}
 
 		if (!(msgObj instanceof IoBuffer)) {
 			// 如果消息对象不是 ByteBuff, 
 			// 则直接向下传递!
-			FrameworkLog.LOG.warn("msgObj is not a ByteBuff, sessionUUId = " + sessionUUId);
-			super.messageReceived(nextFilter, sess, msgObj);
+			FrameworkLog.LOG.warn("msgObj is not a ByteBuff, sessionUId = " + sessionUId);
+			super.messageReceived(nextFilter, sessionObj, msgObj);
 		}
 
 		// 获取 Buff
@@ -91,26 +90,26 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		buff.position(0);
 
 		if (buff.hasRemaining() && 
-			validateBuffContent(buff, sessionUUId) == false) {
+			validateBuffContent(buff, sessionUId) == false) {
 			// 如果验证 Buff 失败, 
 			// 则直接退出!
-			sess.close(true);
+			sessionObj.close(true);
 			return;
 		}
 
 		// 向下传递
-		super.messageReceived(nextFilter, sess, msgObj);
+		super.messageReceived(nextFilter, sessionObj, msgObj);
 	}
 
 	/**
 	 * 验证 Buff 对象
 	 * 
 	 * @param buff 
-	 * @param fromSessionUUId 
+	 * @param fromSessionUId
 	 * @return 
 	 * 
 	 */
-	private static boolean validateBuffContent(IoBuffer buff, long fromSessionUUId) {
+	private static boolean validateBuffContent(IoBuffer buff, long fromSessionUId) {
 		if (buff == null || 
 			buff.hasRemaining() == false) {
 			// 如果参数对象为空, 
@@ -121,14 +120,14 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		// 原始位置
 		final int origPos = buff.position();
 		// 创建消息结构
-		MsgStruct msg = createMsgStruct(buff, fromSessionUUId);
+		MsgStruct msg = createMsgStruct(buff, fromSessionUId);
 		// 恢复到原始位置
 		buff.position(origPos);
 
 		if (msg == null) {
 			// 消息对象无法识别, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null msg, sessionUUId = " + fromSessionUUId);
+			FrameworkLog.LOG.error("null msg, sessionUUId = " + fromSessionUId);
 			return false;
 		}
 
@@ -142,14 +141,14 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		if (!validateTS(msg)) {
 			// 如果时间戳验证失败, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("msg.ts error, sessionUUId = " + fromSessionUUId);
+			FrameworkLog.LOG.error("msg.ts error, sessionUId = " + fromSessionUId);
 			return false;
 		}
 
 		if (!validateMD5(msg)) {
 			// 如果 MD5 验证失败, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("msg._md5 error, sessionUUId = " + fromSessionUUId);
+			FrameworkLog.LOG.error("msg._md5 error, sessionUId = " + fromSessionUId);
 			return false;
 		}
 
@@ -171,7 +170,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			// 如果参数对象为空, 
 			// 或者剩余字节数 < 4 ( 没法分析出消息长度和类型 )
 			// 则直接退出!
-			FrameworkLog.LOG.error("null buff or remaining < 4, sessionUUId = " + fromSessionUUId);
+			FrameworkLog.LOG.error("null buff or remaining < 4, sessionUId = " + fromSessionUUId);
 			return null;
 		}
 
@@ -180,7 +179,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		// 创建消息结构
 		MsgStruct msg = new MsgStruct();
 		// 来自会话 UUId
-		msg._sessionUUId = fromSessionUUId;
+		msg._sessionUId = fromSessionUUId;
 		// 获取消息长度
 		msg._len = IoBuffUtil.readShort(buff);
 		// 获取消息类型
@@ -203,7 +202,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			msg._md5.isEmpty()) {
 			// 如果 MD5 字符串为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null or empty md5, sessionUUId " + fromSessionUUId);
+			FrameworkLog.LOG.error("null or empty md5, sessionUId " + fromSessionUUId);
 			return null;
 		}
 
@@ -215,7 +214,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			// 则直接退出!
 			FrameworkLog.LOG.error(
 				"bodyLen < 0, msgTypeID = " + msg._serialUId 
-				+ ", sessionUUId = " + fromSessionUUId
+				+ ", sessionUId = " + fromSessionUUId
 			);
 			return null;
 		}
@@ -251,7 +250,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		// 获取消息时间戳
 		int newTS = msg._ts;
 		// 获取旧时间戳
-		Integer oldTS = _tsMap.get(msg._sessionUUId);
+		Integer oldTS = _tsMap.get(msg._sessionUId);
 
 		if (oldTS == null) {
 			oldTS = Integer.MIN_VALUE;
@@ -264,7 +263,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		}
 
 		// 更新时间戳
-		_tsMap.put(msg._sessionUUId, newTS);
+		_tsMap.put(msg._sessionUId, newTS);
 		return true;
 	}
 
@@ -307,7 +306,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 	 */
 	private static class MsgStruct {
 		/** 会话 UUId */
-		private long _sessionUUId = -1L;
+		private long _sessionUId = -1L;
 		/** 消息长度 */
 		private short _len = -1;
 		/** 消息序列化 Id */

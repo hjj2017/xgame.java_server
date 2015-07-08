@@ -77,7 +77,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 		} else if (inBuff.remaining() <= 8) {
 			// 如果 <= 8 字节, 
 			// 那还是执行粘包处理过程吧 ...
-			// 8 字节 = 消息长度 ( Short ) + 消息类型 ( Short ) + 时间戳 ( Int )
+			// 8 字节 = 消息长度 ( Short ) + 消息类型 ( Short ) + 版本修订 ( Int )
 			// 如果比这个长度都小, 
 			// 那肯定不是一条完整消息 ...
 			this.msgRecv_0(nextFilter, sessionObj, inBuff);
