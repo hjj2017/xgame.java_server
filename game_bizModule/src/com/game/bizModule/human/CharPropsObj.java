@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.game.bizModule.utils.ChangedRecordableObject;
+import com.game.bizModule.util.ChangedRecordableObject;
 import com.game.part.util.Assert;
 import com.game.part.util.KeyValPair;
 

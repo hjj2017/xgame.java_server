@@ -1,4 +1,4 @@
-package com.game.bizModule.utils;
+package com.game.bizModule.util;
 
 import java.lang.reflect.Array;
 import java.util.BitSet;
