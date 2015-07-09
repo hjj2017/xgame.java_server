@@ -72,4 +72,4 @@ Windows 平台：
 
 > 运行 IntelliJ IDEA，在主菜单中选择“File -> Open ...”，在弹出对话框中选择：C:\Git\xame-code_server
 
-> \# 提示：JAVA 版本请选择 1.8
+> \# 提示：JAVA 版本请选择 1.8，名称要用 jdk1.8 噢
