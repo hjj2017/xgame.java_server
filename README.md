@@ -77,4 +77,4 @@ Xgame 参考了以往的经验，同时也做出了很多改进！
 
 
 *Windows 平台 + Eclipse*
->[Wiki/如何在 Windows 平台使用 Eclipse 打开项目](https://git.oschina.net/afrxprojs/xgame-code_server/wikis/%E5%A6%82%E4%BD%95%E5%9C%A8-Windows-%E5%B9%B3%E5%8F%B0%E4%BD%BF%E7%94%A8-Eclipse-%E6%89%93%E5%BC%80%E9%A1%B9%E7%9B%AE)
+>[Wiki / 如何在 Windows 平台使用 Eclipse 打开项目](https://git.oschina.net/afrxprojs/xgame-code_server/wikis/%E5%A6%82%E4%BD%95%E5%9C%A8-Windows-%E5%B9%B3%E5%8F%B0%E4%BD%BF%E7%94%A8-Eclipse-%E6%89%93%E5%BC%80%E9%A1%B9%E7%9B%AE)
