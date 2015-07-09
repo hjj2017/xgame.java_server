@@ -73,3 +73,6 @@ Windows 平台 + IntelliJ IDEA（推荐）：
 > 运行 IntelliJ IDEA，在主菜单中选择“File -> Open ...”，在弹出对话框中选择：C:\Git\xame-code_server
 
 > \# 提示：JAVA 版本请选择 1.8，名称要用 jdk1.8 噢
+
+Windows 平台 + Eclipse
+[查看具体内容](https://git.oschina.net/afrxprojs/xgame-code_server/wikis/%E5%A6%82%E4%BD%95%E5%9C%A8-Windows-%E5%B9%B3%E5%8F%B0%E4%BD%BF%E7%94%A8-Eclipse-%E6%89%93%E5%BC%80%E9%A1%B9%E7%9B%AE)
