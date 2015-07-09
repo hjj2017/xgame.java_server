@@ -49,3 +49,18 @@ Xgame 参考了以往的经验，同时也做出了很多改进！
 - 【代码】增加消息类生成工具，由 JAVA 代码生成 ActionScript 或者 C# 代码；
 - ...
 
+----
+
+# 如何使用 IDE 打开这个项目?
+
+Windows 平台：
+> cd C:\Git
+> git clone https://git.oschina.net/afrxprojs/xgame-code_server.git
+> cd xgame-code_server
+> unzip IDEA.zip 
+> \# 如果使用的是 IntelliJ IDEA 则解压 IDEA.zip 文件
+> \# 要解压 IDEA.zip 也可以使用其它压缩软件，例如：WinZip、WinRAR
+> \# 或者干脆直接双击 IDEA.zip 也可以
+> \# 如果提示覆盖文件，直接覆盖就可以了
+> 运行 IntelliJ IDEA，在主菜单中选择“File -> Open ...”，在弹出对话框中选择 C:\Git\xame-code_server
+> \# 提示：JAVA 版本请选择 1.8
