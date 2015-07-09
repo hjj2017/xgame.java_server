@@ -62,7 +62,7 @@ Windows 平台：
 
 > unzip IDEA.zip 
 
-> \# 如果使用的是 IntelliJ IDEA 则解压 IDEA.zip 文件
+> \# 如果你使用的是 IntelliJ IDEA （推荐）则解压 IDEA.zip 文件
 
 > \# 要解压 IDEA.zip 也可以使用其它压缩软件，例如：WinZip、WinRAR
 
