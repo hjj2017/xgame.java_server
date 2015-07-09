@@ -53,7 +53,7 @@ Xgame 参考了以往的经验，同时也做出了很多改进！
 
 # 如何使用 IDE 打开这个项目?
 
-Windows 平台：
+Windows 平台 + IntelliJ IDEA（推荐）：
 > cd C:\Git
 
 > git clone https://git.oschina.net/afrxprojs/xgame-code_server.git
@@ -62,7 +62,7 @@ Windows 平台：
 
 > unzip IDEA.zip 
 
-> \# 如果你使用的是 IntelliJ IDEA （推荐）则解压 IDEA.zip 文件
+> \# 如果你使用的是 IntelliJ IDEA 则解压 IDEA.zip 文件
 
 > \# 要解压 IDEA.zip 也可以使用其它压缩软件，例如：WinZip、WinRAR
 
