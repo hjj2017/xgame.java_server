@@ -1,2 +1,4 @@
 /log/
 /*.iml
+/.classpath
+/.project
