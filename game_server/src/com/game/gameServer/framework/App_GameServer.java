@@ -2,7 +2,12 @@ package com.game.gameServer.framework;
 
 import com.game.gameServer.framework.mina.IServerStartUp_ListenCGMsg;
 import com.game.gameServer.scene.SceneFacade;
+import com.game.part.dao.CommDao;
 import com.game.part.msg.MsgServ;
+
+import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 网关服务器内核类
@@ -30,6 +35,9 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 		// 记录初始化开始
 		FrameworkLog.LOG.info(":: init");
 
+		// 初始化 EntityManagerFactory
+		this.initEMF();
+
 		//
 		// 初始化业务模块
 		// @see IServerInit_BizModule#initBizModule
@@ -37,6 +45,23 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 
 		// 记录初始化完成
 		FrameworkLog.LOG.info(":: 初始化完成");
+	}
+
+	/**
+	 * 初始化 EntityManagerFactory
+	 *
+	 */
+	private void initEMF() {
+		// 自定义字典
+		Map<String, String> myMap = new HashMap<>();
+		// 设置数据库连接地址、用户名和密码
+		myMap.put("javax.persistence.jdbc.url", GameServerConf.OBJ._dbConn);
+		myMap.put("javax.persistence.jdbc.user", GameServerConf.OBJ._dbUser);
+		myMap.put("javax.persistence.jdbc.password", GameServerConf.OBJ._dbPass);
+		// 设置实体管理器工厂
+		CommDao.OBJ.putEMF(Persistence.createEntityManagerFactory(
+			"Xgame-gameServer", myMap
+		));
 	}
 
 	/**

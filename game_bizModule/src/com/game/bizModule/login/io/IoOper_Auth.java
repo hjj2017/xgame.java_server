@@ -30,7 +30,12 @@ public class IoOper_Auth extends AbstractLoginIoOper {
         // 验证登录字符串
         boolean success = this._authImpl.auth(this._loginStr);
 
-        this.msgDispatch(new GGAuthFinished());
+        // 登陆验证完成消息
+        GGAuthFinished ggMSG = new GGAuthFinished();
+        ggMSG._p = this._p;
+
+        // 分派 GG 消息
+        this.msgDispatch(ggMSG);
         return true;
     }
 }

@@ -18,6 +18,12 @@ public final class GameServerConf {
     public String _xlsxFileDir = "game_res";
     /** 战报目录 */
     public String _battleReportDir = "client/BR";
+    /** 数据库连接 */
+    public String _dbConn = "127.0.0.1";
+    /** 数据库用户 */
+    public String _dbUser = "root";
+    /** 数据库密码 */
+    public String _dbPass = "root";
 
     /**
      * 类默认构造器
@@ -44,5 +50,9 @@ public final class GameServerConf {
         this._xlsxFileDir = jsonObj.optString("xlsxFileDir", this._xlsxFileDir);
         // 战报目录
         this._battleReportDir = jsonObj.optString("battleReportDir", this._battleReportDir);
+        // 数据库连接配置
+        this._dbConn = jsonObj.optString("dbConn", this._dbConn);
+        this._dbUser = jsonObj.optString("dbUser", this._dbUser);
+        this._dbPass = jsonObj.optString("dbUser", this._dbPass);
     }
 }

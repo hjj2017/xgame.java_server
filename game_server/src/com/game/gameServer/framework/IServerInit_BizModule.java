@@ -184,8 +184,8 @@ interface IServerInit_BizModule {
 		XlsxTmplServ.OBJ.loadTmplData(clazzDef);
 		// 记录模板注册日志
 		FrameworkLog.LOG.info(MessageFormat.format(
-				":::: 注册模板类 = {0}",
-				clazzDef.getName()
+			":::: 注册模板类 = {0}",
+			clazzDef.getName()
 		));
 	}
 }

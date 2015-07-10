@@ -16,7 +16,7 @@ import javax.persistence.Query;
  */
 interface IDao_GetResultList {
 	/** 选取数据列表 */
-	String JPQL_selectFrom = "select obj from {0} entity where {1}";
+	String JPQL_selectFrom = "select entity from {0} entity where {1}";
 
 	/**
 	 * 获取结果列表

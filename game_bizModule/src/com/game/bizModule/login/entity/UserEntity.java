@@ -14,8 +14,8 @@ import javax.persistence.Id;
 @Entity(name = "t_user")
 public class UserEntity {
 	/** 账号 Id */
-	@Id @Column(name = "passport_id", updatable = false)
-	public Long _passportId = null;
+	@Id @Column(name = "platform_uid", updatable = false)
+	public String _platformUId = null;
 	/** 用户名 */
 	@Column(name = "user_name", length = 256)
 	public String _userName = null;

@@ -15,11 +15,11 @@ import com.game.part.dao.CommDao;
  * @since 2014/9/15 
  * 
  */
-public class Auth_ByPasswd implements IAuthorize {
+public class Auth_ByPassword implements IAuthorize {
 	/** 用户名 */
-	private static final String JK_userName = "user_name";
+	private static final String JK_userName = "userName";
 	/** 密码 */
-	private static final String JK_passwd = "passwd";
+	private static final String JK_password = "password";
 
 	@Override
 	public boolean auth(String loginStr) {
@@ -31,8 +31,8 @@ public class Auth_ByPasswd implements IAuthorize {
 		// 创建 JSON 对象
 		JSONObject jsonObj = JSONObject.fromObject(loginStr);
 		// 获取用户名和密码
-		final String userName = jsonObj.getString(JK_userName);
-		final String passwd = jsonObj.getString(JK_passwd);
+		final String userName = jsonObj.optString(JK_userName, "");
+		final String passwd = jsonObj.optString(JK_password, "");
 
 		if (userName == null || 
 			userName.isEmpty() || 
@@ -50,7 +50,7 @@ public class Auth_ByPasswd implements IAuthorize {
 		// 获取用户实体
 		UserEntity ue = CommDao.OBJ.getSingleResult(
 			UserEntity.class, 
-			"obj._userName = :userName", 
+			"entity._userName = :userName",
 			paramMap
 		);
 

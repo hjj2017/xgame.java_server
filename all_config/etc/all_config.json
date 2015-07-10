@@ -18,9 +18,9 @@
 		# 战报所在目录
 		"battleReportDir" : "../client/BR",
 		# 数据库配置
-		"dbConn" : "jdbc:mysql://127.0.0.1:3306/xgame_gameServer?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
+		"dbConn" : "jdbc:mysql://127.0.0.1:3306/s00_game?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
 		"dbUser" : "root",
-		"dbPass" : ""
+		"dbPass" : "root"
 	},
 
 # 

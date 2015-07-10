@@ -1,9 +1,10 @@
 package com.game.bizModule.login.serv;
 
+import com.game.bizModule.login.io.IoOper_Auth;
 import com.game.gameServer.framework.Player;
 import net.sf.json.JSONObject;
 
-import com.game.bizModule.login.serv.auth.Auth_ByPasswd;
+import com.game.bizModule.login.serv.auth.Auth_ByPassword;
 import com.game.bizModule.login.serv.auth.Auth_ByPlatformUser;
 import com.game.bizModule.login.serv.auth.IAuthorize;
 import com.game.part.util.Assert;
@@ -18,13 +19,13 @@ import com.game.part.util.BizResultPool;
  */
 interface IServ_Auth {
 	/** 根据用户名和密码登录 */
-	IAuthorize valid_byPasswd = new Auth_ByPasswd();
+	IAuthorize valid_byPasswd = new Auth_ByPassword();
 	/** 通过平台登录 */
 	IAuthorize valid_byPlatformUser = new Auth_ByPlatformUser();
 	/** 协议 */
 	String JK_protocol = "protocol";
 	/** 根据密码登录 */
-	String PROTOCOL_password = "passwd";
+	String PROTOCOL_password = "password";
 	/** 通过平台登录 */
 	String PROTOCOL_platformUser = "platfromUser";
 
@@ -58,11 +59,14 @@ interface IServ_Auth {
 			return;
 		}
 
-		// 验证登录字符串
-		boolean success = authImpl.auth(loginStr);
-		// 更新成功标志
-		result._success = success;
-		return;
+		// 创建验证异步操作
+		IoOper_Auth op = new IoOper_Auth();
+		// 设置参数
+		op._authImpl = authImpl;
+		op._loginStr = loginStr;
+		op._p = p;
+		// 执行异步操作...
+		LoginServ.OBJ.execute(op);
 	}
 
 	/**
