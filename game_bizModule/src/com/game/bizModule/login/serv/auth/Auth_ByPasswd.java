@@ -9,7 +9,7 @@ import com.game.bizModule.login.entity.UserEntity;
 import com.game.part.dao.CommDao;
 
 /**
- * 根据用户名和密码验证
+ * 根据用户名和密码验证, 用户名密码一般是存在数据库中
  * 
  * @author hjj2019
  * @since 2014/9/15 
@@ -44,14 +44,14 @@ public class Auth_ByPasswd implements IAuthorize {
 		}
 
 		// 创建参数字典
-		Map<String, Object> paramsMap = new HashMap<>();
-		paramsMap.put("userName", userName);
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userName", userName);
 
 		// 获取用户实体
 		UserEntity ue = CommDao.OBJ.getSingleResult(
 			UserEntity.class, 
 			"obj._userName = :userName", 
-			paramsMap
+			paramMap
 		);
 
 		if (ue != null && 

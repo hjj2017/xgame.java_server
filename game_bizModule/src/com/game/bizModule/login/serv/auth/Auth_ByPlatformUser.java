@@ -1,13 +1,13 @@
 package com.game.bizModule.login.serv.auth;
 
 /**
- * 通过登陆服验证
+ * 验证 ( 第三方 ) 平台用户
  * 
  * @author hjj2019
  * @since 2014/9/15
  * 
  */
-public class Auth_BySigninServer implements IAuthorize {
+public class Auth_ByPlatformUser implements IAuthorize {
 	@Override
 	public boolean auth(String loginStr) {
 		return false;

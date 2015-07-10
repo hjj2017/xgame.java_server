@@ -110,7 +110,7 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 	}
 
 	@Override
-	public void exec() {
+	public final void exec() {
 		@SuppressWarnings("unchecked")
 		AbstractCGMsgHandler<AbstractCGMsgObj<?>> 
 			handler = (AbstractCGMsgHandler<AbstractCGMsgObj<?>>)this.getSelfHandler();

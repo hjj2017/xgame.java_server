@@ -1,69 +1,75 @@
 package com.game.bizModule.login.serv;
 
+import com.game.gameServer.framework.Player;
 import net.sf.json.JSONObject;
 
 import com.game.bizModule.login.serv.auth.Auth_ByPasswd;
-import com.game.bizModule.login.serv.auth.Auth_BySigninServer;
+import com.game.bizModule.login.serv.auth.Auth_ByPlatformUser;
 import com.game.bizModule.login.serv.auth.IAuthorize;
 import com.game.part.util.Assert;
 import com.game.part.util.BizResultPool;
 
 /**
- * 验证登陆字符串
+ * 验证登录字符串
  * 
  * @author hjj2017
  * @since 2014/9/10
  * 
  */
 interface IServ_Auth {
-	/** 根据用户名和密码登陆 */
+	/** 根据用户名和密码登录 */
 	IAuthorize valid_byPasswd = new Auth_ByPasswd();
-	/** 通过登陆服登陆 */
-	IAuthorize valid_bySigninServer = new Auth_BySigninServer();
+	/** 通过平台登录 */
+	IAuthorize valid_byPlatformUser = new Auth_ByPlatformUser();
 	/** 协议 */
 	String JK_protocol = "protocol";
-	/** 根据密码登陆 */
+	/** 根据密码登录 */
 	String PROTOCOL_password = "passwd";
-	/** 通过登陆服登陆 */
-	String PROTOCOL_signinServer = "signinServer";
+	/** 通过平台登录 */
+	String PROTOCOL_platformUser = "platfromUser";
 
 	/**
-	 * 登陆验证并授权
-	 * 
+	 * 异步执行登陆过程
+	 *
+	 * @param p
 	 * @param loginStr
 	 * @return 
 	 * 
 	 */
-	default Result_Auth auth(String loginStr) {
+	default void asyncAuth(Player p, String loginStr) {
 		// 借出结果对象
 		Result_Auth result = BizResultPool.borrow(Result_Auth.class);
 
 		if (loginStr == null || 
 			loginStr.isEmpty()) {
-			return result;
+			// 如果登录串为空,
+			// 则直接退出!
+			result._errorCode = -1;
+			return;
 		}
 
-		// 获取登陆验证器
+		// 获取登录验证器
 		IAuthorize authImpl = getAuthImpl(loginStr);
 
 		if (authImpl == null) {
-			// 如果登陆验证器为空, 
+			// 如果登录验证器为空, 
 			// 则直接退出!
-			return result;
+			result._errorCode = -2;
+			return;
 		}
 
-		// 验证登陆字符串
+		// 验证登录字符串
 		boolean success = authImpl.auth(loginStr);
 		// 更新成功标志
 		result._success = success;
-		return result;
+		return;
 	}
 
 	/**
-	 * 根据登陆字符串获取登陆验证器, 登陆字符串是一个 JSON 串. 格式为 : 
-	 * { "protocol" : "passwd", 具体的登陆参数... }<br/>
+	 * 根据登录字符串获取登录验证器, 登录字符串是一个 JSON 串. 格式为 : 
+	 * { "protocol" : "passwd", 具体的登录参数... }<br/>
 	 * 根据 protocol 字段值来创建验证器, 
-	 * 在验证器内部会验证 "具体的登陆参数"...<br/>
+	 * 在验证器内部会验证 "具体的登录参数"...<br/>
 	 * 
 	 * @param loginStr
 	 * @return 
@@ -77,7 +83,7 @@ interface IServ_Auth {
 
 		if (!jsonObj.has(JK_protocol)) {
 			// 如果没有协议字段, 
-			// 则默认使用用户名和密码登陆
+			// 则默认使用用户名和密码登录
 			return valid_byPasswd;
 		}
 
@@ -85,11 +91,11 @@ interface IServ_Auth {
 		String protocol = jsonObj.getString(JK_protocol);
 
 		if (protocol.equalsIgnoreCase(PROTOCOL_password)) {
-			// 使用用户名和密码登陆
+			// 使用用户名和密码登录
 			return valid_byPasswd;
-		} else if (protocol.equalsIgnoreCase(PROTOCOL_signinServer)) {
-			// 通过登陆服登陆
-			return valid_bySigninServer;
+		} else if (protocol.equalsIgnoreCase(PROTOCOL_platformUser)) {
+			// 通过登录服登录
+			return valid_byPlatformUser;
 		} else {
 			return null;
 		}
