@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.game.bizModule.login.LoginCheckList;
 import com.game.bizModule.login.LoginLog;
 import net.sf.json.JSONObject;
 
@@ -93,11 +94,11 @@ public class Auth_ByPassword implements IAuthorize {
 
 		if (outAuthData != null) {
 			outAuthData._createTime = ue._createTime;
+			outAuthData._isAdmin = ue._isAdmin == 1;
 			outAuthData._lastLoginIpAddr = ue._lastLoginIpAddr;
 			outAuthData._lastLoginTime = ue._lastLoginTime;
 			outAuthData._pf = ue._pf;
 			outAuthData._userName = ue._userName;
-			outAuthData._checkList_authOk = true;
 		}
 
 		return true;
