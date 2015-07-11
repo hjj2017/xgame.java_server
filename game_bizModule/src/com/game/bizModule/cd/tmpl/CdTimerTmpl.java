@@ -40,7 +40,7 @@ public class CdTimerTmpl {
 		Assert.notNull(cdType);
 
 		if (_IDMap != null) {
-			return _IDMap.get(cdType.intVal());
+			return _IDMap.get(cdType.getIntVal());
 		} else {
 			return null;
 		}

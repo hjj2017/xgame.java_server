@@ -20,12 +20,12 @@ public enum CharPropsTypeEnum implements EnumHelper.ICustomEnum {
 ;
 
 	@Override
-	public int intVal() {
+	public int getIntVal() {
 		return -1;
 	}
 
 	@Override
-	public String strVal() {
+	public String getStrVal() {
 		return null;
 	}
 

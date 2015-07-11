@@ -11,6 +11,15 @@ import com.game.part.msg.type.AbstractMsgObj;
  */
 public abstract class AbstractExecutableMsgObj extends AbstractMsgObj {
 	/**
+	 * 获取消息类型
+	 *
+	 * @return
+	 */
+	public MsgTypeEnum getMsgType() {
+		return MsgTypeEnum.game;
+	}
+
+	/**
 	 * 执行自身
 	 * 
 	 */

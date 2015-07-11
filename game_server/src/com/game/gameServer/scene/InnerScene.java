@@ -109,7 +109,7 @@ class InnerScene {
 	 * @return
 	 *
 	 */
-	private static boolean isExecutable(
+	static boolean isExecutable(
 		AbstractMsgObj msgObj) {
 		return msgObj != null && msgObj instanceof AbstractExecutableMsgObj;
 	}

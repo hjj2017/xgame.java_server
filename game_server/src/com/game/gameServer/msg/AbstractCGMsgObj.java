@@ -99,16 +99,6 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 		buff.position(newPos);
 	}
 
-	/**
-	 * 是不是聊天消息?
-	 * 注意 : 聊天消息会进入聊天线程执行!
-	 *
-	 * @return
-	 */
-	public boolean isChatMsg() {
-		return false;
-	}
-
 	@Override
 	public final void exec() {
 		@SuppressWarnings("unchecked")

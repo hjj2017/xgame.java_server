@@ -3,6 +3,7 @@ package com.game.bizModule.login.msg;
 import com.game.bizModule.login.handler.Handler_GGAuthFinished;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
 
 /**
  * 登陆验证完成
@@ -18,5 +19,10 @@ public class GGAuthFinished extends AbstractGGMsgObj<Handler_GGAuthFinished> {
     @Override
     protected Handler_GGAuthFinished newHandlerObj() {
         return new Handler_GGAuthFinished();
+    }
+
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.login;
     }
 }

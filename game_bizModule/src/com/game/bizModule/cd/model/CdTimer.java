@@ -87,7 +87,7 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 		return MessageFormat.format(
 			"{0}-{1}-{2}",
 			this.getClass().getSimpleName(),
-			this._cdType.intVal(),
+			this._cdType.getIntVal(),
 			this._humanUId
 		);
 	}

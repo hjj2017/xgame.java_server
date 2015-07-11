@@ -69,7 +69,7 @@ class CharPropsObj<T extends Number> {
 			return null;
 		} else {
 			return this._origValObj.getVal(
-				propsType.intVal()
+				propsType.getIntVal()
 			);
 		}
 	}
@@ -77,7 +77,7 @@ class CharPropsObj<T extends Number> {
 	/**
 	 * 设置原始值
 	 * 
-	 * @param index
+	 * @param propsType
 	 * @param value 
 	 * 
 	 */
@@ -86,7 +86,7 @@ class CharPropsObj<T extends Number> {
 			return;
 		} else {
 			this._origValObj.setVal(
-				propsType.intVal(), 
+				propsType.getIntVal(),
 				value
 			);
 		}
@@ -95,7 +95,7 @@ class CharPropsObj<T extends Number> {
 	/**
 	 * 获取当前值
 	 * 
-	 * @param index
+	 * @param propsType
 	 * @return 
 	 * 
 	 */
@@ -104,7 +104,7 @@ class CharPropsObj<T extends Number> {
 			return null;
 		} else {
 			return this._currValObj.getVal(
-				propsType.intVal()
+				propsType.getIntVal()
 			);
 		}
 	}
@@ -112,7 +112,7 @@ class CharPropsObj<T extends Number> {
 	/**
 	 * 设置当前值
 	 * 
-	 * @param index
+	 * @param propsType
 	 * @param value 
 	 * 
 	 */
@@ -121,7 +121,7 @@ class CharPropsObj<T extends Number> {
 			return;
 		} else {
 			this._currValObj.setVal(
-				propsType.intVal(), 
+				propsType.getIntVal(),
 				value
 			);
 		}
@@ -133,7 +133,6 @@ class CharPropsObj<T extends Number> {
 	 * @param sysKey 
 	 * @param propsType
 	 * @param value
-	 * @see RolePropSysKeyDef
 	 * 
 	 */
 	public void addAddition(int sysKey, CharPropsTypeEnum propsType, T value) {
@@ -147,8 +146,7 @@ class CharPropsObj<T extends Number> {
 	 * @param sysKey
 	 * @param propsType
 	 * @param value
-	 * @param map 
-	 * @see RolePropSysKeyDef
+	 * @param map
 	 * 
 	 */
 	private static <T> void addX(
@@ -206,8 +204,7 @@ class CharPropsObj<T extends Number> {
 	/**
 	 * 清除指定系统的所有加数
 	 * 
-	 * @param sysKey 
-	 * @see RolePropSysKeyDef
+	 * @param sysKey
 	 * 
 	 */
 	public void clearAdd(int sysKey) {
@@ -287,8 +284,7 @@ class CharPropsObj<T extends Number> {
 	 * 
 	 * @param sysKey 系统关键字
 	 * @param propsType
-	 * @param value 
-	 * @see RolePropSysKeyDef
+	 * @param value
 	 * 
 	 */
 	public void addMul(int sysKey, CharPropsTypeEnum propsType, T value) {
@@ -309,8 +305,7 @@ class CharPropsObj<T extends Number> {
 	/**
 	 * 清除指定系统的所有乘数
 	 * 
-	 * @param sysKey 
-	 * @see RolePropSysKeyDef 
+	 * @param sysKey
 	 * 
 	 */
 	public void clearMul(int sysKey) {

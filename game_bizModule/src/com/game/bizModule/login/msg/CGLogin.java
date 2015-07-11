@@ -3,6 +3,7 @@ package com.game.bizModule.login.msg;
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.login.handler.Handler_CGLogin;
 import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgStr;
 
 /**
@@ -40,5 +41,10 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	@Override
 	public Handler_CGLogin newHandlerObj() {
 		return new Handler_CGLogin();
+	}
+
+	@Override
+	public MsgTypeEnum getMsgType() {
+		return MsgTypeEnum.login;
 	}
 }

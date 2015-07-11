@@ -1,17 +1,18 @@
 package com.game.gameServer.scene;
 
 import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.AbstractExecutableMsgObj;
 import com.game.gameServer.msg.AbstractGCMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.lazySaving.LazySavingHelper;
 import com.game.part.msg.IMsgReceiver;
 import com.game.part.msg.type.AbstractMsgObj;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * 场景门面
@@ -34,18 +35,24 @@ public final class SceneFacade implements IMsgReceiver {
     /** 心跳接口列表 */
     public final List<IHeartbeat> _heartbeatList = new ArrayList<>();
 
-    /** 聊天场景 */
-    private InnerScene _chatScene = null;
-    /** 游戏场景 */
-    private InnerScene _gameScene = null;
+    /** 场景字典 */
+    private final Map<MsgTypeEnum, InnerScene> _sceneMap;
 
     /**
      * 类默认构造器
      *
      */
     private SceneFacade() {
-        this._chatScene = new InnerScene("CHAT");
-        this._gameScene = new InnerScene("GAME");
+        // 创建场景字典
+        this._sceneMap = new ConcurrentHashMap<>();
+
+        for (MsgTypeEnum msgType : MsgTypeEnum.values()) {
+            // 添加场景到字典
+            this._sceneMap.put(
+                msgType,
+                new InnerScene(msgType.getStrVal())
+            );
+        }
     }
 
     /**
@@ -110,33 +117,32 @@ public final class SceneFacade implements IMsgReceiver {
             return;
         }
 
-        if (isChatMsg(msgObj)) {
-            // 如果是聊天消息, 则交给聊天场景
-            this._chatScene.execMsg(msgObj);
-        } else {
-            // 交给游戏场景
-            this._gameScene.execMsg(msgObj);
+        if (InnerScene.isExecutable(msgObj) == false) {
+            // 如果不是可执行消息,
+            // 则直接退出!
+            SceneLog.LOG.error(MessageFormat.format(
+                "消息 {0} 不是可执行消息",
+                msgObj.getClass().getName()
+            ));
+            return;
         }
-    }
 
-    /**
-     * 是否是聊天消息
-     *
-     * @param msgObj
-     * @return
-     *
-     */
-    private static boolean isChatMsg(AbstractMsgObj msgObj) {
-        if (msgObj == null) {
-            return false;
-        } else if (msgObj instanceof AbstractCGMsgObj) {
-            // 如果是 CG 消息
-            return ((AbstractCGMsgObj)msgObj).isChatMsg();
-        } else if (msgObj instanceof AbstractGCMsgObj) {
-            // 如果是 GC 消息
-            return ((AbstractGCMsgObj)msgObj).isChatMsg();
-        } else {
-            return false;
+        // 获取消息类型
+        MsgTypeEnum msgType = ((AbstractExecutableMsgObj)msgObj).getMsgType();
+        // 获取场景对象
+        InnerScene sceneObj = this._sceneMap.get(msgType);
+
+        if (sceneObj == null) {
+            // 如果场景对象为空,
+            // 则直接退出!
+            SceneLog.LOG.error(MessageFormat.format(
+                "场景为空, 消息类型 = {0}",
+                msgType.getStrVal()
+            ));
+            return;
         }
+
+        // 令场景执行消息
+        sceneObj.execMsg(msgObj);
     }
 }

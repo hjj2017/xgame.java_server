@@ -142,7 +142,7 @@ public final class RobotMain {
 			}
 
 			// 获取包名称
-			final String packageName = "com.game.robot.moduleImpl." 
+			final String packageName = "com.game.robot.moduleImpl."
 				+ moduleConf._currModule;
 
 			// 获取 "准备类定义" 
@@ -256,7 +256,7 @@ public final class RobotMain {
 		}
 
 		// 获取包名称
-		final String packageName = "com.game.robot.moduleImpl." 
+		final String packageName = "com.game.robot.moduleImpl."
 			+ moduleConf._currModule;
 
 		// 获取 "准备类定义" 
@@ -299,7 +299,7 @@ public final class RobotMain {
 		}
 
 		// 获取包名称
-		final String packageName = "com.game.robot.moduleImpl." 
+		final String packageName = "com.game.robot.moduleImpl."
 			+ moduleConf._currModule;
 
 		// 获取 "准备类定义" 

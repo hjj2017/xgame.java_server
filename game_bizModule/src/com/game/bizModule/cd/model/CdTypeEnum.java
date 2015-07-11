@@ -42,12 +42,12 @@ public enum CdTypeEnum implements EnumHelper.ICustomEnum {
 	}
 
 	@Override
-	public int intVal() {
+	public int getIntVal() {
 		return this._intVal;
 	}
 
 	@Override
-	public String strVal() {
+	public String getStrVal() {
 		return this._strVal;
 	}
 

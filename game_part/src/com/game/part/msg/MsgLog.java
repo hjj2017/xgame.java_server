@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @since 2012/6/3
  *
  */
-public class MsgLog {
+public final class MsgLog {
 	/** 单例对象 */
 	public static final Logger LOG = LoggerFactory.getLogger(MsgLog.class);
 	
