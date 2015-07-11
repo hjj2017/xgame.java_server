@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.game.part.ThreadNamingFactory;
 import com.game.part.util.Assert;
@@ -128,13 +129,11 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 				es = this._execServMap.get(threadKey);
 
 				if (es == null) {
-					// 创建线程命名工厂
-					ThreadNamingFactory f = new ThreadNamingFactory();
-					f.putThreadName(THREAD_NAME_PREFIX + "::" + threadKey);
-
 					// 如果二次判断之后还是空,
 					// 那么创建线程池!
-					es = Executors.newSingleThreadExecutor(f);
+					es = Executors.newSingleThreadExecutor(new ThreadNamingFactory(
+						THREAD_NAME_PREFIX + "::" + threadKey
+					));
 					// 将线程池添加到字典
 					this._execServMap.put(threadKey, es);
 				}

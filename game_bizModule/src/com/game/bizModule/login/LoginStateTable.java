@@ -1,13 +1,13 @@
 package com.game.bizModule.login;
 
 /**
- * 登陆 CheckList
+ * 登陆状态表
  *
  * @author hjj2019
  * @since 2015/7/11
  *
  */
-public class LoginCheckList {
+public class LoginStateTable {
     /** 是否已经有了平台 UId? */
     public boolean _platformUIdOk = false;
     /** 验证完成? */

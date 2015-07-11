@@ -1,6 +1,6 @@
 package com.game.bizModule.login.handler;
 
-import com.game.bizModule.login.LoginCheckList;
+import com.game.bizModule.login.LoginStateTable;
 import com.game.bizModule.login.msg.GCLogin;
 import com.game.bizModule.login.msg.GGAuthFinished;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
@@ -22,10 +22,10 @@ public class Handler_GGAuthFinished extends AbstractGGMsgHandler<GGAuthFinished>
             return;
         }
 
-        // 获取登陆 CheckList
-        LoginCheckList checkList = msgObj._p.getPropValOrCreate(LoginCheckList.class);
+        // 获取登陆状态表
+        LoginStateTable stateTbl = msgObj._p.getPropValOrCreate(LoginStateTable.class);
         // 登陆授权完成!
-        checkList._authOk = true;
+        stateTbl._authOk = true;
 
         // 给客户端发消息
         this.sendMsgToClient(

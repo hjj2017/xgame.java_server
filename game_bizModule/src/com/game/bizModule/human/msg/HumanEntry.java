@@ -1,4 +1,4 @@
 package com.game.bizModule.human.msg;
 
-public class CGGetHumanList {
+public class HumanEntry {
 }

@@ -40,23 +40,23 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 		}
 
 		// 获取管理器对象
-		CdManager mngr = this._mngrMap.get(h._UUID);
+		CdManager mngr = this._mngrMap.get(h._UId);
 
 		if (mngr == null) {
-			mngr = new CdManager(h._UUID);
+			mngr = new CdManager(h._UId);
 			// 添加到字典
 			CdManager orig = this._mngrMap.putIfAbsent(
-				h._UUID, mngr
+				h._UId, mngr
 			);
 
 			if (orig != null) {
-				CdLog.LOG.warn("Cd 管理器不为空, 角色 = " + h._UUID);
+				CdLog.LOG.warn("Cd 管理器不为空, 角色 = " + h._UId);
 				mngr = orig;
 			}
 		}
 
 		// 获取 Cd 计时器列表
-		List<CdTimerEntity> el = CdTimerDao.OBJ.listByHumanUUID(h._UUID);
+		List<CdTimerEntity> el = CdTimerDao.OBJ.listByHumanUUID(h._UId);
 
 		if (el != null && 
 			el.isEmpty() == false) {

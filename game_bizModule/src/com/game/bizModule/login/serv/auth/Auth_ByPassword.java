@@ -4,7 +4,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.game.bizModule.login.LoginCheckList;
 import com.game.bizModule.login.LoginLog;
 import net.sf.json.JSONObject;
 

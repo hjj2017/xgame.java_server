@@ -1,6 +1,6 @@
 package com.game.bizModule.login.serv;
 
-import com.game.bizModule.login.LoginCheckList;
+import com.game.bizModule.login.LoginStateTable;
 import com.game.bizModule.login.serv.auth.AuthData;
 import com.game.bizModule.login.LoginLog;
 import com.game.bizModule.login.io.IoOper_Auth;
@@ -92,10 +92,10 @@ interface IServ_Auth {
 		// 设置平台 UId
 		authData._platformUId = platformUId;
 
-		// 获取登陆 CheckList
-		LoginCheckList checkList = p.getPropValOrCreate(LoginCheckList.class);
+		// 获取登陆状态表
+		LoginStateTable stateTab = p.getPropValOrCreate(LoginStateTable.class);
 		// 已有平台 UId
-		checkList._platformUIdOk = true;
+		stateTab._platformUIdOk = true;
 
 		// 创建验证异步操作
 		IoOper_Auth op = new IoOper_Auth();

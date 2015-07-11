@@ -14,6 +14,23 @@ public class ThreadNamingFactory implements ThreadFactory {
 	private String _tName;
 
 	/**
+	 * 类默认构造器
+	 *
+	 */
+	public ThreadNamingFactory() {
+	}
+
+	/**
+	 * 类参数构造器
+	 *
+	 * @param threadName
+	 *
+	 */
+	public ThreadNamingFactory(String threadName) {
+		this.putThreadName(threadName);
+	}
+
+	/**
 	 * 设置线程名称
 	 * 
 	 * @param value
