@@ -16,7 +16,7 @@ public class Handler_GGAuthFinished extends AbstractGGMsgHandler<GGAuthFinished>
     public void handle(GGAuthFinished msgObj) {
         // 给客户端发消息
         this.sendMsgToClient(
-            new GCLogin(true), msgObj._p
+            new GCLogin(msgObj._ok), msgObj._p
         );
     }
 }

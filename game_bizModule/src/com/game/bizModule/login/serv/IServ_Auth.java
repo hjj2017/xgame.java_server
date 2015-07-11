@@ -1,6 +1,6 @@
 package com.game.bizModule.login.serv;
 
-import com.game.bizModule.login.AuthData;
+import com.game.bizModule.login.serv.auth.AuthData;
 import com.game.bizModule.login.LoginLog;
 import com.game.bizModule.login.io.IoOper_Auth;
 import com.game.gameServer.framework.Player;
@@ -90,6 +90,7 @@ interface IServ_Auth {
 		AuthData authData = p.getPropValOrCreate(AuthData.class);
 		// 设置平台 UId
 		authData._platformUId = platformUId;
+		authData._checkList_platformUId = true;
 
 		// 创建验证异步操作
 		IoOper_Auth op = new IoOper_Auth();

@@ -1,5 +1,6 @@
 package com.game.gameServer.framework.mina;
 
+import java.net.InetSocketAddress;
 import java.text.MessageFormat;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,13 +70,14 @@ public final class OnlineSessionManager {
 	}
 
 	/**
-	 * 设置 IO 会话与 Player 对象的关联
+	 * 将玩家绑定到会话,
+	 * 同时修改玩家的 sessionUId 和最后登录 IP 地址
 	 * 
 	 * @param p
 	 * @param sessionUId
 	 * 
 	 */
-	public void putPlayerToSession(Player p, long sessionUId) {
+	public void bindPlayerToSession(Player p, long sessionUId) {
 		if (p == null || 
 			sessionUId <= 0) {
 			// 如果参数对象为空, 
@@ -95,6 +97,17 @@ public final class OnlineSessionManager {
 				String.valueOf(sessionUId)
 			));
 			return;
+		}
+
+		// 设置会话 UId
+		p._sessionUId = sessionUId;
+		// 获取 IP 地址
+		InetSocketAddress ipAddr = (InetSocketAddress)sessionObj.getRemoteAddress();
+
+		if (ipAddr != null ||
+			ipAddr.getAddress() != null) {
+			// 设置登陆 IP 地址
+			p._loginIpAddr = ipAddr.getAddress().getHostAddress();
 		}
 
 		// 将玩家对象存入会话对象

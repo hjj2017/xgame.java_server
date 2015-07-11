@@ -1,7 +1,5 @@
 package com.game.bizModule.login.serv.auth;
 
-import com.game.bizModule.login.AuthData;
-
 /**
  * 验证 ( 第三方 ) 平台用户
  * 

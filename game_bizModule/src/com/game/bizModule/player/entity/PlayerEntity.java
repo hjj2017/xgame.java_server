@@ -1,4 +1,4 @@
-package com.game.bizModule.login.entity;
+package com.game.bizModule.player.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +11,8 @@ import javax.persistence.Id;
  * @since 2014/9/15
  * 
  */
-@Entity(name = "t_user")
-public class UserEntity {
+@Entity(name = "t_player")
+public class PlayerEntity {
 	/** 账号 Id */
 	@Id @Column(name = "platform_uid", length = 64, updatable = false)
 	public String _platformUId = null;

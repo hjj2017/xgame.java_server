@@ -1,12 +1,5 @@
 package com.game.gameServer.msg;
 
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.mina.core.session.IoSession;
-
-import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.framework.mina.OnlineSessionManager;
 import com.game.gameServer.framework.Player;
 
@@ -92,9 +85,8 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 					// 如果玩家对象还是为空,
 					// 则新建!
 					p = new Player();
-					p._sessionUId = this._sessionUId;
 					// 并添加到管理器
-					mngrObj.putPlayerToSession(p, this._sessionUId);
+					mngrObj.bindPlayerToSession(p, this._sessionUId);
 				}
 			}
 		}

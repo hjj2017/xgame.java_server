@@ -15,6 +15,8 @@ import com.game.gameServer.msg.MsgTypeEnum;
 public class GGAuthFinished extends AbstractGGMsgObj<Handler_GGAuthFinished> {
     /** 玩家对象 */
     public Player _p = null;
+    /** 登陆成功? */
+    public boolean _ok = false;
 
     @Override
     protected Handler_GGAuthFinished newHandlerObj() {

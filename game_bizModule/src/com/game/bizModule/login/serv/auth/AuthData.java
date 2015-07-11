@@ -1,4 +1,4 @@
-package com.game.bizModule.login;
+package com.game.bizModule.login.serv.auth;
 
 import com.game.gameServer.framework.Player;
 
@@ -22,6 +22,14 @@ public final class AuthData {
     public long _lastLoginTime = 0L;
     /** 最后登录 IP 地址 */
     public String _lastLoginIpAddr = null;
+
+// checkList
+///////////////////////////////////////////////////////////////////
+
+    /** CheckList : 是否已经有了平台 UId? */
+    public boolean _checkList_platformUId = false;
+    /** CheckList : 验证完成? */
+    public boolean _checkList_authOk = false;
 
     /**
      * 获取 IO 操作所用的绑定 Id

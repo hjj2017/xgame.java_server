@@ -4,11 +4,10 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.game.bizModule.login.AuthData;
 import com.game.bizModule.login.LoginLog;
 import net.sf.json.JSONObject;
 
-import com.game.bizModule.login.entity.UserEntity;
+import com.game.bizModule.player.entity.PlayerEntity;
 import com.game.part.dao.CommDao;
 
 /**
@@ -70,8 +69,8 @@ public class Auth_ByPassword implements IAuthorize {
 		paramMap.put("userName", userName);
 
 		// 获取用户实体
-		UserEntity ue = CommDao.OBJ.getSingleResult(
-			UserEntity.class, 
+		PlayerEntity ue = CommDao.OBJ.getSingleResult(
+			PlayerEntity.class,
 			"entity._userName = :userName",
 			paramMap
 		);
@@ -98,6 +97,7 @@ public class Auth_ByPassword implements IAuthorize {
 			outAuthData._lastLoginTime = ue._lastLoginTime;
 			outAuthData._pf = ue._pf;
 			outAuthData._userName = ue._userName;
+			outAuthData._checkList_authOk = true;
 		}
 
 		return true;
