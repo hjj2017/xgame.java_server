@@ -1,4 +1,4 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import net.sf.json.JSONObject;
 

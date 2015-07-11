@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class XlsxTmplLog {
 	/** 日志对象 */
-	public static final Logger LOG = LoggerFactory.getLogger(XlsxTmplLog.class);
+	public static final Logger LOG = LoggerFactory.getLogger("game.tmpl");
 
 	/**
 	 * 类默认构造器

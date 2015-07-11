@@ -1,11 +1,8 @@
 package com.game.robot.kernal;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.part.msg.MsgServ;
@@ -65,7 +62,7 @@ public class RobotGCMsgRecognizer {
 				}
 
 				// 记录消息注册日志
-				FrameworkLog.LOG.info(MessageFormat.format(
+				RobotLog.LOG.info(MessageFormat.format(
 					":::: 注册消息类 = {0}",
 					clazzDef.getName()
 				));

@@ -1,6 +1,6 @@
 package com.game.gameServer.framework;
 
-import com.game.gameServer.framework.mina.IServerStartUp_ListenCGMsg;
+import com.game.gameServer.msg.mina.IServerStartUp_ListenCGMsg;
 import com.game.gameServer.scene.SceneFacade;
 import com.game.part.dao.CommDao;
 import com.game.part.msg.MsgServ;

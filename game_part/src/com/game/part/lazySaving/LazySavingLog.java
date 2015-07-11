@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 class LazySavingLog {
 	/** 日志对象 */
-	final static Logger LOG = LoggerFactory.getLogger(LazySavingLog.class);
+	final static Logger LOG = LoggerFactory.getLogger("game.lazySaving");
 
 	/**
 	 * 类参数构造器

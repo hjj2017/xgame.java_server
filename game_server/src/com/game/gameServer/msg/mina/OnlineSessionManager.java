@@ -1,4 +1,4 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import java.net.InetSocketAddress;
 import java.text.MessageFormat;
@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.framework.Player;
+import com.game.part.msg.MsgLog;
 
 /**
  * 在线玩家管理器
@@ -82,7 +82,7 @@ public final class OnlineSessionManager {
 			sessionUId <= 0) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("参数对象为空");
+			MsgLog.LOG.error("参数对象为空");
 			return;
 		}
 
@@ -92,7 +92,7 @@ public final class OnlineSessionManager {
 		if (sessionObj == null) {
 			// 如果未找到会话 Id,
 			// 则直接退出!
-			FrameworkLog.LOG.error(MessageFormat.format(
+			MsgLog.LOG.error(MessageFormat.format(
 				"未找到会话对象, sessionUId = {0}",
 				String.valueOf(sessionUId)
 			));

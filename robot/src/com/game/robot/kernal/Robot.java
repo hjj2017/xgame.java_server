@@ -12,9 +12,9 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-import com.game.gameServer.framework.mina.MsgDecoder;
-import com.game.gameServer.framework.mina.MsgEncoder;
-import com.game.gameServer.framework.mina.MsgCumulativeFilter;
+import com.game.gameServer.msg.mina.MsgDecoder;
+import com.game.gameServer.msg.mina.MsgEncoder;
+import com.game.gameServer.msg.mina.MsgCumulativeFilter;
 import com.game.robot.RobotLog;
 
 /**

@@ -1,6 +1,6 @@
 package com.game.gameServer.msg;
 
-import com.game.gameServer.framework.mina.OnlineSessionManager;
+import com.game.gameServer.msg.mina.OnlineSessionManager;
 import com.game.gameServer.framework.Player;
 
 /**

@@ -1,5 +1,7 @@
 package com.game.part.msg.type;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.mina.core.buffer.IoBuffer;
 
 import com.game.part.msg.MsgError;
@@ -51,5 +53,10 @@ public abstract class AbstractMsgField {
 			MsgLog.LOG.error(ex.getMessage(), ex);
 			throw new MsgError(ex);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

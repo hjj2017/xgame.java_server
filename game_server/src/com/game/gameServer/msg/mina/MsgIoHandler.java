@@ -1,14 +1,14 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import java.text.MessageFormat;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.SpecialMsgSerialUId;
+import com.game.part.msg.MsgLog;
 import com.game.part.msg.MsgServ;
 import com.game.part.util.Assert;
 
@@ -41,9 +41,9 @@ class MsgIoHandler extends IoHandlerAdapter {
 
 		if (obj instanceof AbstractCGMsgObj) {
 			// 输出日志记录
-			FrameworkLog.LOG.info(MessageFormat.format(
+			MsgLog.LOG.info(MessageFormat.format(
 				"接到消息 {0}, sessionUId = {1}",
-				obj.getClass().getName(),
+				obj.toString(),
 				String.valueOf(sessionObj.getId())
 			));
 

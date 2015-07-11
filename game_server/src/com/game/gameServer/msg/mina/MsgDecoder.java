@@ -1,4 +1,4 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import java.text.MessageFormat;
 
@@ -7,9 +7,8 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderAdapter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
-import com.game.gameServer.framework.FrameworkLog;
-import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.IoBuffUtil;
+import com.game.part.msg.MsgLog;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 
@@ -46,7 +45,7 @@ public class MsgDecoder extends ProtocolDecoderAdapter {
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error(MessageFormat.format(
+			MsgLog.LOG.error(MessageFormat.format(
 				"无法取得消息对象, msgSerialUId = {0}", 
 				String.valueOf(msgSerialUId)
 			));

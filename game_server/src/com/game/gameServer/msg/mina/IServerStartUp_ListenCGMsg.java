@@ -1,15 +1,15 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import java.net.InetSocketAddress;
 
-import com.game.gameServer.framework.FrameworkError;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import com.game.gameServer.framework.FrameworkLog;
+import com.game.gameServer.framework.FrameworkError;
+import com.game.part.msg.MsgLog;
 
 /**
  * 开始端口监听
@@ -24,7 +24,7 @@ public interface IServerStartUp_ListenCGMsg {
 	 */
 	default void startUpListenCGMsg() {
 		// 记录异步操作服务初始化日志
-		FrameworkLog.LOG.info(":: 准备监听 CG 消息");
+		MsgLog.LOG.info(":: 准备监听 CG 消息");
 
 		// 创建 IO 接收器
 		NioSocketAcceptor acceptor = new NioSocketAcceptor();
@@ -68,7 +68,7 @@ public interface IServerStartUp_ListenCGMsg {
 			));
 		} catch (Exception ex) {
 			// 输出异常并停止服务器
-			FrameworkLog.LOG.error(ex.getMessage(), ex);
+			MsgLog.LOG.error(ex.getMessage(), ex);
 			// 抛出异常!
 			throw new FrameworkError(ex);
 		}

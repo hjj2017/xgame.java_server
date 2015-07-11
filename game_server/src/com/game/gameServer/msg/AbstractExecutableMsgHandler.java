@@ -1,13 +1,14 @@
 package com.game.gameServer.msg;
 
-import com.game.gameServer.framework.FrameworkLog;
-import com.game.gameServer.framework.Player;
-import com.game.gameServer.framework.mina.OnlineSessionManager;
-import org.apache.mina.core.session.IoSession;
-
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.mina.core.session.IoSession;
+
+import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.mina.OnlineSessionManager;
+import com.game.part.msg.MsgLog;
 
 /**
  * 可执行消息的处理器
@@ -65,7 +66,7 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
         if (sessionObj == null) {
             // 如果会话对象为空,
             // 则直接退出!
-            FrameworkLog.LOG.error(MessageFormat.format(
+            MsgLog.LOG.error(MessageFormat.format(
                 "会话对象为空, sessionUId = {0}",
                 String.valueOf(toSessionUId)
             ));

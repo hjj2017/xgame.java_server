@@ -1,4 +1,4 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -8,9 +8,9 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.SpecialMsgSerialUId;
 import com.game.part.msg.IoBuffUtil;
+import com.game.part.msg.MsgLog;
 import com.game.part.util.BytesUtil;
 import com.game.part.util.MD5Util;
 
@@ -56,7 +56,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			sessionObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null nextFilter or sess");
+			MsgLog.LOG.error("null nextFilter or sess");
 			return;
 		}
 
@@ -73,14 +73,14 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		if (msgObj == null) {
 			// 如果消息对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null msgObj, sessionUId = " + sessionUId);
+			MsgLog.LOG.error("null msgObj, sessionUId = " + sessionUId);
 			return;
 		}
 
 		if (!(msgObj instanceof IoBuffer)) {
 			// 如果消息对象不是 ByteBuff, 
 			// 则直接向下传递!
-			FrameworkLog.LOG.warn("msgObj is not a ByteBuff, sessionUId = " + sessionUId);
+			MsgLog.LOG.warn("msgObj is not a ByteBuff, sessionUId = " + sessionUId);
 			super.messageReceived(nextFilter, sessionObj, msgObj);
 		}
 
@@ -127,7 +127,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		if (msg == null) {
 			// 消息对象无法识别, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null msg, sessionUUId = " + fromSessionUId);
+			MsgLog.LOG.error("null msg, sessionUUId = " + fromSessionUId);
 			return false;
 		}
 
@@ -141,14 +141,14 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		if (!validateTS(msg)) {
 			// 如果时间戳验证失败, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("msg.ts error, sessionUId = " + fromSessionUId);
+			MsgLog.LOG.error("msg.ts error, sessionUId = " + fromSessionUId);
 			return false;
 		}
 
 		if (!validateMD5(msg)) {
 			// 如果 MD5 验证失败, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("msg._md5 error, sessionUId = " + fromSessionUId);
+			MsgLog.LOG.error("msg._md5 error, sessionUId = " + fromSessionUId);
 			return false;
 		}
 
@@ -170,7 +170,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			// 如果参数对象为空, 
 			// 或者剩余字节数 < 4 ( 没法分析出消息长度和类型 )
 			// 则直接退出!
-			FrameworkLog.LOG.error("null buff or remaining < 4, sessionUId = " + fromSessionUUId);
+			MsgLog.LOG.error("null buff or remaining < 4, sessionUId = " + fromSessionUUId);
 			return null;
 		}
 
@@ -202,7 +202,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			msg._md5.isEmpty()) {
 			// 如果 MD5 字符串为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null or empty md5, sessionUId " + fromSessionUUId);
+			MsgLog.LOG.error("null or empty md5, sessionUId " + fromSessionUUId);
 			return null;
 		}
 
@@ -212,7 +212,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		if (bodyLen < 0) {
 			// 如果消息长度不够, 
 			// 则直接退出!
-			FrameworkLog.LOG.error(
+			MsgLog.LOG.error(
 				"bodyLen < 0, msgTypeID = " + msg._serialUId 
 				+ ", sessionUId = " + fromSessionUUId
 			);

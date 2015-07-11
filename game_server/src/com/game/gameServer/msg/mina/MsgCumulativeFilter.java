@@ -1,4 +1,4 @@
-package com.game.gameServer.framework.mina;
+package com.game.gameServer.msg.mina;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -6,9 +6,9 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.msg.SpecialMsgSerialUId;
 import com.game.part.msg.IoBuffUtil;
+import com.game.part.msg.MsgLog;
 
 /**
  * 消息粘包处理
@@ -35,7 +35,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 			sessionObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null nextFilter or sessionObj");
+			MsgLog.LOG.error("null nextFilter or sessionObj");
 			return;
 		}
 
@@ -52,7 +52,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 			sessionObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null nextFilter or sessionObj");
+			MsgLog.LOG.error("null nextFilter or sessionObj");
 			return;
 		}
 
@@ -62,7 +62,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 		if (!(msgObj instanceof IoBuffer)) {
 			// 如果消息对象不是 ByteBuff, 
 			// 则直接向下传递!
-			FrameworkLog.LOG.warn("msgObj is not a IoBuff, sessionUId = " + sessionUId);
+			MsgLog.LOG.warn("msgObj is not a IoBuff, sessionUId = " + sessionUId);
 			super.messageReceived(nextFilter, sessionObj, msgObj);
 		}
 
@@ -72,7 +72,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 		if (!inBuff.hasRemaining()) {
 			// 如果没有剩余内容, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("inBuff has not remaining, sessionUId = " + sessionUId);
+			MsgLog.LOG.error("inBuff has not remaining, sessionUId = " + sessionUId);
 			return;
 		} else if (inBuff.remaining() <= 8) {
 			// 如果 <= 8 字节, 
@@ -123,7 +123,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 			sessionObj == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null nextFilter or sessionObj");
+			MsgLog.LOG.error("null nextFilter or sessionObj");
 			return;
 		}
 
@@ -138,11 +138,11 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 		containerBuff.position(0);
 
 //		// 记录调试信息
-//		FrameworkLog.LOG.debug("\nin = [ " + inBuff.getHexDump() + " ]");
+//		MsgLog.LOG.debug("\nin = [ " + inBuff.getHexDump() + " ]");
 
 		for (int i = 0; ; i++) {
 //			// 记录调试信息
-//			FrameworkLog.LOG.debug(
+//			MsgLog.LOG.debug(
 //				"i = " + i 
 //				+ "\nco = [ " + containerBuff.getHexDump() + " ]"
 //				+ "\nco.pos = " + containerBuff.position() 
@@ -168,7 +168,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 			final int msgSerialUId = containerBuff.getShort();
 
 //			// 记录调试信息
-//			FrameworkLog.LOG.debug(
+//			MsgLog.LOG.debug(
 //				"i = " + i 
 //				+ "\nmsgSize = " + msgSize
 //				+ "\nmsgSerialUId = " + msgSerialUId
@@ -218,7 +218,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 				// 这种情况可能是消息已经乱套了 ...
 				// 还是重新来过吧!
 				// 
-				FrameworkLog.LOG.error("i = " + i + ", msgSize = " + msgSize + ", sessionUId = " + sessionUId);
+				MsgLog.LOG.error("i = " + i + ", msgSize = " + msgSize + ", sessionUId = " + sessionUId);
 				// 将容器 Buff 内容清空
 				containerBuff.position(0);
 				containerBuff.flip();
@@ -233,7 +233,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 				// 则可能是出现网络粘包情况了 ...
 				// 直接退出就可以了!
 				// 
-				FrameworkLog.LOG.warn(
+				MsgLog.LOG.warn(
 					"i = " + i
 					+ ", msgSize = " + msgSize 
 					+ ", containerBuff.remaining = " + containerBuff.remaining()
@@ -255,10 +255,10 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 				// 这种情况可能也是消息乱套了 ...
 				// 记录一下错误信息
 				// 
-				FrameworkLog.LOG.error("i = " + i + ", null realBuff, sessionUId = " + sessionUId);
+				MsgLog.LOG.error("i = " + i + ", null realBuff, sessionUId = " + sessionUId);
 			} else {
 //				// 记录调试信息
-//				FrameworkLog.LOG.debug(
+//				MsgLog.LOG.debug(
 //					"i = " + i
 //					+ "\nreal = [ " + realBuff.getHexDump() + " ]"
 //					+ "\nreal.pos = " + realBuff.position()
@@ -308,7 +308,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 			Object oldVal = _containerBuffMap.putIfAbsent(sessionUId, containerBuff);
 
 			if (oldVal != null) {
-				FrameworkLog.LOG.warn("exists oldVal");
+				MsgLog.LOG.warn("exists oldVal");
 			}
 		}
 
@@ -362,7 +362,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 		if (containerBuff == null) {
 			// 如果容器为空, 
 			// 则直接退出!
-			FrameworkLog.LOG.error("null containerBuff, sessionUId = " + sessionObj.getId());
+			MsgLog.LOG.error("null containerBuff, sessionUId = " + sessionObj.getId());
 			return false;
 		} else {
 			// 如果当前位置和极限值都为 0, 
