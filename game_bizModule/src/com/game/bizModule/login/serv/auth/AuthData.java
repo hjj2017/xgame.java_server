@@ -46,8 +46,8 @@ public final class AuthData {
         // 获取字符串长度
         int strLen = this._platformUId.length();
         // 获取最后两位字符
-        long n1 = this._platformUId.charAt(strLen - 1);
-        long n0 = this._platformUId.charAt(strLen - 0);
+        long n1 = this._platformUId.charAt(strLen - 2);
+        long n0 = this._platformUId.charAt(strLen - 1);
         // 换算为 10 进制数
         return n1 * 10 + n0;
     }
