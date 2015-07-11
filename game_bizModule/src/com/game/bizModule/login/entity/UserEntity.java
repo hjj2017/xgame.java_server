@@ -14,16 +14,19 @@ import javax.persistence.Id;
 @Entity(name = "t_user")
 public class UserEntity {
 	/** 账号 Id */
-	@Id @Column(name = "platform_uid", updatable = false)
+	@Id @Column(name = "platform_uid", length = 64, updatable = false)
 	public String _platformUId = null;
 	/** 用户名 */
-	@Column(name = "user_name", length = 256)
+	@Column(name = "user_name", length = 32, updatable = false)
 	public String _userName = null;
 	/** 密码 */
-	@Column(name = "passwd", length = 256)
-	public String _passwd = null;
+	@Column(name = "user_pass", length = 128)
+	public String _userPass = null;
+	/** Pf 值 */
+	@Column(name = "pf", length = 32, updatable = false)
+	public String _pf = null;
 	/** 创建时间 */
-	@Column(name = "create_time")
+	@Column(name = "create_time", updatable = false)
 	public Long _createTime = null;
 	/** 最后登陆时间 */
 	@Column(name = "last_login_time")

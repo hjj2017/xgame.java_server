@@ -37,9 +37,15 @@ class SyncIoOperProc implements IIoOperProc<IIoOper> {
 		if (oper == null) {
 			return;
 		}
-	
-		oper.doInit();
-		this.nextStep(oper);
+
+		try {
+			// 执行初始化操作并进入下一步!
+			oper.doInit();
+			this.nextStep(oper);
+		} catch (Exception ex) {
+			// 记录错误日志
+			IoOperLog.LOG.error(ex.getMessage(), ex);
+		}
 	}
 
 	/**
@@ -52,8 +58,13 @@ class SyncIoOperProc implements IIoOperProc<IIoOper> {
 			return;
 		}
 
-		oper.doIo();
-		this.nextStep(oper);
+		try {
+			// 执行 IO 操作
+			oper.doIo();
+		} catch (Exception ex) {
+			// 记录错误日志
+			IoOperLog.LOG.error(ex.getMessage(), ex);
+		}
 	}
 
 	/**
@@ -73,19 +84,19 @@ class SyncIoOperProc implements IIoOperProc<IIoOper> {
 			this.invokeDoInit(oper);
 			return;
 		}
-	
+
 		switch (oper.getCurrState()) {
-		case exit:
-		case ioFinished:
-			return;
+			case exit:
+			case ioFinished:
+				return;
 
-		case initOk:
-			// 执行异步过程
-			this.invokeDoIo(oper);
-			return;
+			case initOk:
+				// 执行异步过程
+				this.invokeDoIo(oper);
+				return;
 
-		default:
-			return;
+			default:
+				return;
 		}
 	}
 }

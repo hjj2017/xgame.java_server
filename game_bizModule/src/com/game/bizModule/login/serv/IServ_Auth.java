@@ -1,5 +1,7 @@
 package com.game.bizModule.login.serv;
 
+import com.game.bizModule.login.AuthData;
+import com.game.bizModule.login.LoginLog;
 import com.game.bizModule.login.io.IoOper_Auth;
 import com.game.gameServer.framework.Player;
 import net.sf.json.JSONObject;
@@ -8,7 +10,8 @@ import com.game.bizModule.login.serv.auth.Auth_ByPassword;
 import com.game.bizModule.login.serv.auth.Auth_ByPlatformUser;
 import com.game.bizModule.login.serv.auth.IAuthorize;
 import com.game.part.util.Assert;
-import com.game.part.util.BizResultPool;
+
+import java.text.MessageFormat;
 
 /**
  * 验证登录字符串
@@ -19,15 +22,15 @@ import com.game.part.util.BizResultPool;
  */
 interface IServ_Auth {
 	/** 根据用户名和密码登录 */
-	IAuthorize valid_byPasswd = new Auth_ByPassword();
+	final IAuthorize valid_byPasswd = new Auth_ByPassword();
 	/** 通过平台登录 */
-	IAuthorize valid_byPlatformUser = new Auth_ByPlatformUser();
+	final IAuthorize valid_byPlatformUser = new Auth_ByPlatformUser();
 	/** 协议 */
-	String JK_protocol = "protocol";
+	final String JK_protocol = "protocol";
 	/** 根据密码登录 */
-	String PROTOCOL_password = "password";
+	final String PROTOCOL_password = "password";
 	/** 通过平台登录 */
-	String PROTOCOL_platformUser = "platfromUser";
+	final String PROTOCOL_platformUser = "platfromUser";
 
 	/**
 	 * 异步执行登陆过程
@@ -37,27 +40,56 @@ interface IServ_Auth {
 	 * @return 
 	 * 
 	 */
-	default void asyncAuth(Player p, String loginStr) {
-		// 借出结果对象
-		Result_Auth result = BizResultPool.borrow(Result_Auth.class);
-
-		if (loginStr == null || 
+	default void asyncAuth(Player p, final String loginStr) {
+		if (p == null ||
+			loginStr == null ||
 			loginStr.isEmpty()) {
-			// 如果登录串为空,
+			// 如果参数对象为空,
 			// 则直接退出!
-			result._errorCode = -1;
 			return;
 		}
 
+		// 记录日志信息
+		LoginLog.LOG.info(MessageFormat.format(
+			"登陆字符串 = {0}",
+			loginStr
+		));
+
 		// 获取登录验证器
-		IAuthorize authImpl = getAuthImpl(loginStr);
+		final IAuthorize authImpl = getAuthImpl(loginStr);
 
 		if (authImpl == null) {
 			// 如果登录验证器为空, 
 			// 则直接退出!
-			result._errorCode = -2;
+			LoginLog.LOG.error(MessageFormat.format(
+				"登陆验证器为空, 登陆字符串 = {0}",
+				loginStr
+			));
 			return;
 		}
+
+		// 事先解析出平台 UId,
+		// 也就是说先得大概知道玩家到底是谁?
+		String platformUId = authImpl.parsePlatformUId(loginStr);
+
+		if (platformUId == null ||
+			platformUId.isEmpty()) {
+			// 如果是谁都不知道,
+			// 则直接退出!
+			// 这就跟实名购买火车票一样,
+			// 你连最基本的身份证号都不告诉我...
+			// 那对不起, 88!
+			LoginLog.LOG.error(MessageFormat.format(
+				"platformUId 为空, 登陆字符串 = {0}",
+				loginStr
+			));
+			return;
+		}
+
+		// 获取验证数据
+		AuthData authData = p.getPropValOrCreate(AuthData.class);
+		// 设置平台 UId
+		authData._platformUId = platformUId;
 
 		// 创建验证异步操作
 		IoOper_Auth op = new IoOper_Auth();
@@ -71,7 +103,7 @@ interface IServ_Auth {
 
 	/**
 	 * 根据登录字符串获取登录验证器, 登录字符串是一个 JSON 串. 格式为 : 
-	 * { "protocol" : "passwd", 具体的登录参数... }<br/>
+	 * { "protocol" : "password", 具体的登录参数... }<br/>
 	 * 根据 protocol 字段值来创建验证器, 
 	 * 在验证器内部会验证 "具体的登录参数"...<br/>
 	 * 

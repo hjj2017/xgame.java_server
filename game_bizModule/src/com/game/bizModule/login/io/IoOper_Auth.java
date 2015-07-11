@@ -1,5 +1,6 @@
 package com.game.bizModule.login.io;
 
+import com.game.bizModule.login.AuthData;
 import com.game.bizModule.login.msg.GGAuthFinished;
 import com.game.bizModule.login.serv.auth.IAuthorize;
 import com.game.gameServer.framework.Player;
@@ -22,20 +23,31 @@ public class IoOper_Auth extends AbstractLoginIoOper {
 
     @Override
     public long getBindUId() {
-        return 0L;
+        // 获取授权信息
+        AuthData authData = this._p.getPropValOrCreate(AuthData.class);
+        // 获取绑定 Id
+        return authData.getIoBindUId();
     }
 
     @Override
     public boolean doIo() {
+        // 获取授权信息
+        AuthData authData = this._p.getPropValOrCreate(AuthData.class);
         // 验证登录字符串
-        boolean success = this._authImpl.auth(this._loginStr);
+        boolean ok = this._authImpl.auth(
+            this._loginStr,
+            this._p._loginIpAddr,
+            authData
+        );
 
-        // 登陆验证完成消息
-        GGAuthFinished ggMSG = new GGAuthFinished();
-        ggMSG._p = this._p;
+        if (ok) {
+            // 登陆验证完成消息
+            GGAuthFinished ggMSG = new GGAuthFinished();
+            ggMSG._p = this._p;
+            // 分派 GG 消息
+            this.msgDispatch(ggMSG);
+        }
 
-        // 分派 GG 消息
-        this.msgDispatch(ggMSG);
         return true;
     }
 }

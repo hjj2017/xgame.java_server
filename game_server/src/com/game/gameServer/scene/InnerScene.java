@@ -1,18 +1,13 @@
 package com.game.gameServer.scene;
 
+import com.game.gameServer.msg.AbstractExecutableMsgObj;
+import com.game.part.ThreadNamingFactory;
+import com.game.part.msg.type.AbstractMsgObj;
+
 import java.text.MessageFormat;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.game.gameServer.msg.AbstractExecutableMsgObj;
-import com.game.part.ThreadNamingFactory;
-import com.game.part.msg.IMsgReceiver;
-import com.game.part.msg.type.AbstractMsgObj;
 
 
 /**
@@ -91,10 +86,19 @@ class InnerScene {
 		AbstractExecutableMsgObj execMsgObj = (AbstractExecutableMsgObj)msgObj;
 		// 提交到线程池
 		this._execServ.submit(() -> {
-			// 执行消息
-			execMsgObj.exec();
-			// 消息计数器 -1
-			this._counter.decrementAndGet();
+			try {
+				// 执行消息
+				execMsgObj.exec();
+			} catch (Exception ex) {
+				// 记录错误日志
+				SceneLog.LOG.error(MessageFormat.format(
+					"场景 {0} 抛出异常 {1}",
+					this._name, ex.getMessage()
+				), ex);
+			} finally {
+				// 消息计数器 -1
+				this._counter.decrementAndGet();
+			}
 		});
 	}
 

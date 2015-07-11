@@ -67,8 +67,8 @@ class StatefulIoOper implements IIoOper {
 	@Override
 	public boolean doInit() {
 		// 记录日志信息
-		IoOperLog.LOG.info(MessageFormat.format(
-			"StatefulIoOper[ key = {0} ].doInit",
+		IoOperLog.LOG.debug(MessageFormat.format(
+			"StatefulIoOper[key = {0}].doInit",
 			this.getThreadKey()
 		));
 
@@ -89,8 +89,8 @@ class StatefulIoOper implements IIoOper {
 	@Override
 	public boolean doIo() {
 		// 记录日志信息
-		IoOperLog.LOG.info(MessageFormat.format(
-			"StatefulIoOper[ key = {0} ].doAsyncProc",
+		IoOperLog.LOG.debug(MessageFormat.format(
+			"StatefulIoOper[key = {0}].doAsyncProc",
 			this.getThreadKey()
 		));
 

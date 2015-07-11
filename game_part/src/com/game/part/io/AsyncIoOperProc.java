@@ -1,5 +1,6 @@
 package com.game.part.io;
 
+import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,9 +52,14 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 			return;
 		}
 
-		// 执行初始化过程并进入下一步
-		oper.doInit();
-		this.nextStep(oper);
+		try {
+			// 执行初始化过程并进入下一步
+			oper.doInit();
+			this.nextStep(oper);
+		} catch (Exception ex) {
+			// 记录错误日志
+			IoOperLog.LOG.error(ex.getMessage(), ex);
+		}
 	}
 
 	/**
@@ -83,7 +89,19 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 		}
 
 		// 提交多线程服务
-		execServ.submit(new MyRunner(oper));
+		execServ.submit(() -> {
+			try {
+				// 执行 IO 操作
+				oper.doIo();
+			} catch (Exception ex) {
+				// 记录错误日志
+				IoOperLog.LOG.error(MessageFormat.format(
+					"IO 线程 {0} 抛出异常 {1}",
+					Thread.currentThread().getName(),
+					ex.getMessage()
+				), ex);
+			}
+		});
 	}
 
 	/**
@@ -144,42 +162,16 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 		}
 
 		switch (oper.getCurrState()) {
-		case exit:
-		case ioFinished:
-			return;
+			case exit:
+			case ioFinished:
+				return;
 
-		case initOk:
-			this.invokeDoIo(oper);
-			return;
+			case initOk:
+				this.invokeDoIo(oper);
+				return;
 
-		default:
-			return;
-		}
-	}
-
-	/**
-	 * 自定义运行器
-	 * 
-	 * @author hjj2017
-	 * 
-	 */
-	private static class MyRunner implements Runnable {
-		/** IO 操作 */
-		private StatefulIoOper _oper = null;
-
-		/**
-		 * 类参数构造器
-		 *
-		 * @param oper
-		 * 
-		 */
-		public MyRunner(StatefulIoOper oper) {
-			this._oper = oper;
-		}
-
-		@Override
-		public void run() {
-			this._oper.doIo();
+			default:
+				return;
 		}
 	}
 }
