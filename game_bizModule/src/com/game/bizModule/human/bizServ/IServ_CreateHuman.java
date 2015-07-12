@@ -1,9 +1,13 @@
 package com.game.bizModule.human.bizServ;
 
+import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.io.IoOper_CreateHuman;
 import com.game.bizModule.login.LoginStateTable;
 import com.game.gameServer.framework.Player;
+
+import java.security.MessageDigest;
+import java.text.MessageFormat;
 
 /**
  * 创建玩家角色
@@ -23,7 +27,11 @@ interface IServ_CreateHuman {
      *
      */
     default void asyncCreateHuman(Player p, String serverName, String humanName, int tmplId) {
-        if (p == null) {
+        if (p == null ||
+            serverName == null ||
+            serverName.isEmpty() ||
+            humanName == null ||
+            humanName.isEmpty()) {
             // 如果参数对象为空,
             // 则直接退出!
             return;
@@ -43,6 +51,10 @@ interface IServ_CreateHuman {
             loginStateTbl._authSuccess == false) {
             // 平台验证都没过,
             // 直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 还没有通过登陆验证",
+                p._platformUId
+            ));
             return;
         }
 
@@ -52,6 +64,12 @@ interface IServ_CreateHuman {
         if (hStateTable._serverName.equals(serverName) == false) {
             // 如果服务器名称不对,
             // 则直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 所选择的服务器名称不对! 查询角色时用的是 ''{1}'', 但在创建角色时用的是 ''{2}''",
+                p._platformUId,
+                hStateTable._serverName,
+                serverName
+            ));
             return;
         }
 
@@ -61,6 +79,10 @@ interface IServ_CreateHuman {
             // 如果正在查询角色入口列表,
             // 或者已经有角色,
             // 直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 已有角色或正在操作中",
+                p._platformUId
+            ));
             return;
         }
 

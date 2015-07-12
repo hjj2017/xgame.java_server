@@ -2,6 +2,7 @@ package com.game.robot.moduleImpl.human;
 
 import com.game.bizModule.human.msg.CGQueryHumanEntryList;
 import com.game.bizModule.login.msg.CGLogin;
+import com.game.part.msg.type.MsgStr;
 import com.game.robot.kernal.AbstractModuleReady;
 import com.game.robot.kernal.Robot;
 import net.sf.json.JSONObject;
@@ -24,6 +25,7 @@ public class S000_CGQueryHumanEntryList extends AbstractModuleReady {
 
 		// 创建并发送 CG 消息
 		CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
+		cgMSG._serverName = new MsgStr(robotObj._gameServerName);
 		robotObj.sendMsg(cgMSG);
 	}
 }

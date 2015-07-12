@@ -16,6 +16,13 @@ public class GCCreateHuman extends AbstractGCMsgObj {
     public MsgBool _success;
 
     /**
+     * 类默认构造器
+     *
+     */
+    public GCCreateHuman() {
+    }
+
+    /**
      * 类参数构造器
      *
      * @param success
