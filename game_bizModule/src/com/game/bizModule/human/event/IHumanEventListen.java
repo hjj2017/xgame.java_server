@@ -10,6 +10,15 @@ import com.game.bizModule.human.Human;
  */
 public interface IHumanEventListen {
 	/**
+	 * 创建角色
+	 *
+	 * @param h
+	 *
+	 */
+	default void onCreateNew(Human h) {
+	}
+
+	/**
 	 * 从数据库中加载数据
 	 * 
 	 * @param h 

@@ -74,4 +74,12 @@ public final class Player {
 
 		return (T)objVal;
 	}
+
+	/**
+	 * 清除属性字典中的所有数据, 一般是在玩家断线时调用!
+	 *
+	 */
+	public void clearAllProp() {
+		this._propMap.clear();
+	}
 }

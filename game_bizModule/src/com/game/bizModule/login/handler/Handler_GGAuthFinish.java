@@ -4,6 +4,7 @@ import com.game.bizModule.login.LoginStateTable;
 import com.game.bizModule.login.msg.GCLogin;
 import com.game.bizModule.login.msg.GGAuthFinish;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
+import com.game.gameServer.msg.MsgTypeEnum;
 
 /**
  * 验证完成

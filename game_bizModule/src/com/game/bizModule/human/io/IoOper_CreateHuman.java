@@ -40,6 +40,9 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
 
         // 保存数据
         CommDao.OBJ.save(he);
+        // 触发建角事件
+        HumanServ.OBJ.fireCreateHumanEvent(null);
+
         // 创建消息对象
         GGCreateHumanFinish ggMSG = new GGCreateHumanFinish();
         ggMSG._p = this._p;

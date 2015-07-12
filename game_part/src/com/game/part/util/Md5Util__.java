@@ -7,7 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  *
  *
  */
-public class MD5Util {
+public class Md5Util__ {
 	
 	/**
 	 * 将输入的字符串进行MD5加密（编码）
@@ -15,19 +15,19 @@ public class MD5Util {
 	 * @param inputString
 	 * @return
 	 */
-	public static String createMD5String(String inputString) {
-		return encodeByMD5(inputString);
+	public static String createMd5String(String inputString) {
+		return encodeByMd5(inputString);
 	}
 
 	/**
-	 * 验证MD5密码是否正确
+	 * 验证 MD5 密码是否正确
 	 * 
-	 * @param pass
+	 * @param md5
 	 * @param inputString
 	 * @return
 	 */
-	public static boolean authMD5String(String md5, String inputString) {
-		if (md5.equals(encodeByMD5(inputString))) {
+	public static boolean authMd5String(String md5, String inputString) {
+		if (md5.equals(encodeByMd5(inputString))) {
 			return true;
 		} else {
 			return false;
@@ -41,7 +41,7 @@ public class MD5Util {
 	 * @return 
 	 * 
 	 */
-	public static String encodeByMD5(String origStr) {
+	public static String encodeByMd5(String origStr) {
 		if (origStr == null) {
 			return null;
 		} else {
@@ -56,7 +56,7 @@ public class MD5Util {
 	 * @return 
 	 * 
 	 */
-	public static String encodeByMD5(byte[] byteArr) {
+	public static String encodeByMd5(byte[] byteArr) {
 		return DigestUtils.md5Hex(byteArr);
 	}
 }

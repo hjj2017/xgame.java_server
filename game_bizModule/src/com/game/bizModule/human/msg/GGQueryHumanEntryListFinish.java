@@ -6,6 +6,7 @@ import com.game.bizModule.human.entity.HumanEntryEntity;
 import com.game.bizModule.human.handler.Handler_GGQueryHumanEntryListFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
 
 /**
  * 查询玩家角色列表完成
@@ -25,5 +26,10 @@ public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj<Handler_GGQuer
     @Override
     protected Handler_GGQueryHumanEntryListFinish newHandlerObj() {
         return new Handler_GGQueryHumanEntryListFinish();
+    }
+
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.login;
     }
 }

@@ -113,6 +113,28 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	}
 
 	/**
+	 * 移除玩家对象
+	 *
+	 * @param theP
+	 * @return
+	 *
+	 */
+	protected boolean uninstallPlayer(Player theP) {
+		if (theP == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return false;
+		}
+
+		// 获取管理器对象
+		OnlineSessionManager mngrObj = OnlineSessionManager.OBJ;
+		// 解除玩家到会话的绑定关系
+		mngrObj.unbindPlayerFromSession(theP._sessionUId);
+
+		return true;
+	}
+
+	/**
 	 * 根据会话 Id 获取玩家对象
 	 *
 	 * @return 

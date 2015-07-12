@@ -3,6 +3,7 @@ package com.game.bizModule.human.msg;
 import com.game.bizModule.human.handler.Handler_GGCreateHumanFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
 
 /**
  * 创建角色完成
@@ -20,5 +21,10 @@ public class GGCreateHumanFinish extends AbstractGGMsgObj<Handler_GGCreateHumanF
     @Override
     protected Handler_GGCreateHumanFinish newHandlerObj() {
         return new Handler_GGCreateHumanFinish();
+    }
+
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.login;
     }
 }
