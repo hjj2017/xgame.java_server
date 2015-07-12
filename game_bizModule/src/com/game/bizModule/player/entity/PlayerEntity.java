@@ -34,7 +34,4 @@ public class PlayerEntity {
 	/** 最后登陆 IP 地址 */
 	@Column(name = "last_login_ip_addr", length = 64)
 	public String _lastLoginIpAddr = null;
-	/** 是否为管理员? */
-	@Column(name = "is_admin", updatable = false)
-	public Short _isAdmin = 0;
 }
