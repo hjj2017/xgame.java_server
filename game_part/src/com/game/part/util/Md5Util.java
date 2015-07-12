@@ -3,11 +3,11 @@ package com.game.part.util;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
- * MD5 加密编码工具类
+ * Md5 加密编码工具类
  *
  *
  */
-public class Md5Util__ {
+public class Md5Util {
 	
 	/**
 	 * 将输入的字符串进行MD5加密（编码）

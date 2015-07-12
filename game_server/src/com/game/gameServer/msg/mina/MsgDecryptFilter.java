@@ -12,7 +12,7 @@ import com.game.gameServer.msg.SpecialMsgSerialUId;
 import com.game.part.msg.IoBuffUtil;
 import com.game.part.msg.MsgLog;
 import com.game.part.util.BytesUtil;
-import com.game.part.util.Md5Util__;
+import com.game.part.util.Md5Util;
 
 /**
  * 消息解密, 该类负责三件事情:
@@ -290,7 +290,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		// 添加 MD5 Key
 		bytes_md5 = ArrayUtils.addAll(bytes_md5, MD5_KEY);
 		// 进行 MD5 加密
-		String str_md5 = Md5Util__.encodeByMd5(bytes_md5);
+		String str_md5 = Md5Util.encodeByMd5(bytes_md5);
 		str_md5 = str_md5.toLowerCase();
 		// 验证消息中的 MD5 字符串, 
 		// 注意 : 消息中的 MD5 字符串是一个子集 ...
