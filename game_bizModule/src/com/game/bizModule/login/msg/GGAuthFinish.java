@@ -1,6 +1,6 @@
 package com.game.bizModule.login.msg;
 
-import com.game.bizModule.login.handler.Handler_GGAuthFinished;
+import com.game.bizModule.login.handler.Handler_GGAuthFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
@@ -12,15 +12,15 @@ import com.game.gameServer.msg.MsgTypeEnum;
  * @since 2015/7/10
  *
  */
-public class GGAuthFinished extends AbstractGGMsgObj<Handler_GGAuthFinished> {
+public class GGAuthFinish extends AbstractGGMsgObj<Handler_GGAuthFinish> {
     /** 玩家对象 */
     public Player _p = null;
     /** 登陆成功? */
-    public boolean _ok = false;
+    public boolean _success = false;
 
     @Override
-    protected Handler_GGAuthFinished newHandlerObj() {
-        return new Handler_GGAuthFinished();
+    protected Handler_GGAuthFinish newHandlerObj() {
+        return new Handler_GGAuthFinish();
     }
 
     @Override

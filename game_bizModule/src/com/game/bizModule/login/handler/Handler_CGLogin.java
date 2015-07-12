@@ -1,7 +1,7 @@
 package com.game.bizModule.login.handler;
 
 import com.game.bizModule.login.msg.CGLogin;
-import com.game.bizModule.login.serv.LoginServ;
+import com.game.bizModule.login.bizServ.LoginServ;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 
@@ -20,10 +20,13 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 			return;
 		}
 
+		// 创建玩家对象
+		Player p = new Player();
+		// 设置平台 UId 和会话 UId
+		p._platformUId = cgMSG._platformUId.getStrVal();
+		p._sessionUId = this._sessionUId;
 		// 安装玩家对象
-		this.setupPlayer();
-		// 获取玩家对象
-		Player p = this.getPlayer();
+		super.setupPlayer(p);
 
 		// 获取登录串
 		String loginStr = cgMSG._loginStr.getStrVal();

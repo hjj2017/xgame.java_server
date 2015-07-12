@@ -1,4 +1,4 @@
-package com.game.bizModule.login.serv;
+package com.game.bizModule.login.bizServ;
 
 import com.game.gameServer.bizServ.AbstractBizServ;
 

@@ -35,8 +35,7 @@ public abstract class AbstractMsgField {
 	 * objVal 不能为空, 但如果真为空值, 则自动创建
 	 * 
 	 * @param objVal
-	 * @param cell
-	 * @param xlsxFileName
+	 * @param objClazz
 	 * @return
 	 * 
 	 */

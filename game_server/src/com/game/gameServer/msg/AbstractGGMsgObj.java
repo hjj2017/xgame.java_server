@@ -1,6 +1,5 @@
 package com.game.gameServer.msg;
 
-import com.game.part.msg.IoBuffUtil;
 import org.apache.mina.core.buffer.IoBuffer;
 
 /**
@@ -15,9 +14,8 @@ public abstract class AbstractGGMsgObj<THandler extends AbstractGGMsgHandler<?>>
 	public int _revision;
 	/** Md5 字符串, 主要用于消息加密 */
 	public String _md5;
-
 	/** 处理器对象 */
-	private THandler _h = null;
+	private THandler _msgHandler = null;
 
 	@Override
 	public void readBuff(IoBuffer buff) {
@@ -52,13 +50,13 @@ public abstract class AbstractGGMsgObj<THandler extends AbstractGGMsgHandler<?>>
 	 * 
 	 */
 	public final THandler getSelfHandler() {
-		if (this._h == null) {
+		if (this._msgHandler == null) {
 			// 如果处理器对象为空,
 			// 则新建处理器!
-			this._h = this.newHandlerObj();
+			this._msgHandler = this.newHandlerObj();
 		}
 
-		return this._h;
+		return this._msgHandler;
 	}
 
 	/**

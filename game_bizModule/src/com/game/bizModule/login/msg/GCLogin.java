@@ -12,7 +12,7 @@ import com.game.part.msg.type.MsgBool;
  * 
  */
 public class GCLogin extends AbstractGCMsgObj {
-	/** 是否成功 ? */
+	/** 是否成功? */
 	public MsgBool _success;
 
 	/**

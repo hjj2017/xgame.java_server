@@ -207,7 +207,7 @@ class ClazzDefValidator {
 		if (AbstractMsgObj.class.isAssignableFrom((Class<?>)aType)) {
 			// 如果真实类型是 AbstractMsgObj 的子类, 
 			// 则递归验证真实类型
-			validate(fType);
+			validate((Class<?>)aType);
 		}
 
 		try {

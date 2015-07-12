@@ -23,9 +23,9 @@ public final class OnlineSessionManager {
 	private static final String SESSION_PLAYER_KEY = "_PLAYER";
 
 	/** 会话字典 */
-	private final ConcurrentHashMap<Long, IoSession> _sessionMap = new ConcurrentHashMap<Long, IoSession>();
-	/** 玩家 ID => 会话 ID 字典 */
-	private final ConcurrentHashMap<Long, Long> _playerIdToSessionUIdMap = new ConcurrentHashMap<Long, Long>();
+	private final ConcurrentHashMap<Long, IoSession> _sessionMap = new ConcurrentHashMap<>();
+	/** 平台 UId => 会话 Id 字典 */
+	private final ConcurrentHashMap<String, Long> _platformUIdToSessionUIdMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 类默认构造器
@@ -106,14 +106,15 @@ public final class OnlineSessionManager {
 
 		if (ipAddr != null ||
 			ipAddr.getAddress() != null) {
-			// 设置登陆 IP 地址
+			// 设置登陆 IP 地址和时间
 			p._loginIpAddr = ipAddr.getAddress().getHostAddress();
+			p._loginTime = sessionObj.getCreationTime();
 		}
 
 		// 将玩家对象存入会话对象
 		sessionObj.setAttribute(SESSION_PLAYER_KEY, p);
 		// 管家玩家 ID 和 会话 ID
-		this._playerIdToSessionUIdMap.put(p._UId, sessionUId);
+		this._platformUIdToSessionUIdMap.put(p._platformUId, sessionUId);
 	}
 
 	/**
@@ -122,8 +123,10 @@ public final class OnlineSessionManager {
 	 * @param sessionUId
 	 * 
 	 */
-	public void removePlayerBySessionId(long sessionUId) {
+	public void unbindPlayerFromSession(long sessionUId) {
 		if (sessionUId <= 0) {
+			// 如果参数对象为空,
+			// 则直接退出!
 			return;
 		}
 
@@ -131,6 +134,8 @@ public final class OnlineSessionManager {
 		IoSession sessionObj = this.getSessionByUId(sessionUId);
 
 		if (sessionObj == null) {
+			// 如果未找到会话对象,
+			// 则直接退出!
 			return;
 		}
 
@@ -140,7 +145,7 @@ public final class OnlineSessionManager {
 		if (p != null) {
 			// 如果玩家对象不为空, 
 			// 则取消玩家 ID 与会话 ID 的关联关系!
-			this._playerIdToSessionUIdMap.remove(p._UId);
+			this._platformUIdToSessionUIdMap.remove(p._platformUId);
 		}
 
 		// 将玩家对象移出会话对象
@@ -148,19 +153,22 @@ public final class OnlineSessionManager {
 	}
 
 	/**
-	 * 根据玩家 Id 获取 IO 会话对象
+	 * 根据平台 UId 获取 IO 会话对象
 	 * 
-	 * @param playerUId
+	 * @param platformUId
 	 * @return 
 	 * 
 	 */
-	public IoSession getSessionByPlayerUId(long playerUId) {
-		if (playerUId <= 0L) {
+	public IoSession getSessionByPlatformUId(String platformUId) {
+		if (platformUId == null ||
+			platformUId.isEmpty()) {
+			// 如果参数对象为空,
+			// 则直接退出!
 			return null;
 		}
 
 		// 获取会话 Id
-		Long sessionUId = this._playerIdToSessionUIdMap.get(playerUId);
+		Long sessionUId = this._platformUIdToSessionUIdMap.get(platformUId);
 
 		if (sessionUId == null ||
 			sessionUId <= 0) {
@@ -173,19 +181,19 @@ public final class OnlineSessionManager {
 		if (sessionObj == null) {
 			// 
 			// 如果 IO 会话对象为空, 
-			// 则取消玩家 ID 与会话 ID 的关联关系!
+			// 则取平台 UId 与会话 Id 的关联关系!
 			// 注意: 一定是现有 IoSession, 然后才有的 Player...
 			// 如果 IoSession 已经不存在了, 
 			// 那么 Player 也必然不存在!
 			// 
-			this._playerIdToSessionUIdMap.remove(playerUId);
+			this._platformUIdToSessionUIdMap.remove(platformUId);
 		}
 
 		return sessionObj;
 	}
 
 	/**
-	 * 根据会话 Id 获取玩家对象
+	 * 根据会话 UId 获取玩家对象
 	 * 
 	 * @param sessionUId
 	 * @return

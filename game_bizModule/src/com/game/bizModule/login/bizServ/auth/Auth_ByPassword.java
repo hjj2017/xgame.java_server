@@ -1,10 +1,12 @@
-package com.game.bizModule.login.serv.auth;
+package com.game.bizModule.login.bizServ.auth;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.game.bizModule.login.LoginLog;
+import com.game.gameServer.framework.Player;
+import com.game.part.util.NullUtil;
 import net.sf.json.JSONObject;
 
 import com.game.bizModule.player.entity.PlayerEntity;
@@ -22,29 +24,13 @@ public class Auth_ByPassword implements IAuthorize {
 	private static final String JK_userName = "userName";
 	/** 密码 */
 	private static final String JK_password = "password";
+	/** Pf 值 */
+	private static final String JK_pf = "pf";
 
 	@Override
-	public String parsePlatformUId(String loginStr) {
-		if (loginStr == null ||
-			loginStr.isEmpty()) {
-			return null;
-		}
-
-		// 创建 JSON 对象
-		JSONObject jsonObj = JSONObject.fromObject(loginStr);
-		// 获取用户名和密码
-		final String userName = jsonObj.optString(JK_userName, "");
-
-		// 因为是用户名密码登陆, 所以,
-		// 直接用 userName 作为 platformUId,
-		// 这需要保证数据库表 t_user 的
-		// platform_uid 字段和 user_name 字段数值相同!
-		return userName;
-	}
-
-	@Override
-	public boolean auth(String loginStr, String loginIpAddr, AuthData outAuthData) {
-		if (loginStr == null || 
+	public boolean auth(Player p, String loginStr) {
+		if (p == null ||
+			loginStr == null ||
 			loginStr.isEmpty()) {
 			return false;
 		}
@@ -69,14 +55,14 @@ public class Auth_ByPassword implements IAuthorize {
 		paramMap.put("userName", userName);
 
 		// 获取用户实体
-		PlayerEntity ue = CommDao.OBJ.getSingleResult(
+		PlayerEntity pe = CommDao.OBJ.getSingleResult(
 			PlayerEntity.class,
 			"entity._userName = :userName",
 			paramMap
 		);
 
-		if (ue == null ||
-			passwd.equals(ue._userPass) == false) {
+		if (pe == null ||
+			passwd.equals(pe._userPass) == false) {
 			// 如果数据实体为空或者密码不正确,
 			// 则直接退出!
 			LoginLog.LOG.error(MessageFormat.format(
@@ -85,20 +71,13 @@ public class Auth_ByPassword implements IAuthorize {
 			return false;
 		}
 
-		// 更新最后登录时间和登录 IP 地址
-		ue._lastLoginTime = System.currentTimeMillis();
-		ue._lastLoginIpAddr = loginIpAddr;
 		// 更新用户实体
-		CommDao.OBJ.save(ue);
+		CommDao.OBJ.save(pe);
 
-		if (outAuthData != null) {
-			outAuthData._createTime = ue._createTime;
-			outAuthData._isAdmin = ue._isAdmin == 1;
-			outAuthData._lastLoginIpAddr = ue._lastLoginIpAddr;
-			outAuthData._lastLoginTime = ue._lastLoginTime;
-			outAuthData._pf = ue._pf;
-			outAuthData._userName = ue._userName;
-		}
+		// 更新玩家对象
+		p._userName = pe._userName;
+		p._pf = NullUtil.optVal(p._pf, "WEB");
+		p._createTime = NullUtil.optVal(pe._createTime, 0L);
 
 		return true;
 	}

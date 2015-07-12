@@ -2,6 +2,10 @@ package com.game.gameServer.msg;
 
 import com.game.gameServer.msg.mina.OnlineSessionManager;
 import com.game.gameServer.framework.Player;
+import com.game.part.msg.MsgLog;
+import org.apache.mina.core.session.IoSession;
+
+import java.text.MessageFormat;
 
 /**
  * 抽象的消息处理器
@@ -55,41 +59,57 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	/**
 	 * 安装玩家对象, 一般是在接到客户端第一个消息时执行
 	 *
+	 * @param newP
+	 * @return
+	 *
 	 */
-	protected void setupPlayer() {
-		if (this._sessionUId <= 0L) {
-			// 如果会话 Id 为空,
+	protected boolean setupPlayer(Player newP) {
+		if (newP == null ||
+			newP._platformUId == null ||
+			newP._platformUId.isEmpty() ||
+			newP._sessionUId <= 0L) {
+			// 如果参数对象为空,
 			// 则直接退出!
-			return;
+			return false;
 		}
 
 		// 获取管理器对象
 		OnlineSessionManager mngrObj = OnlineSessionManager.OBJ;
-		// 获取玩家对象
-		Player p = mngrObj.getPlayerBySessionUId(
-			this._sessionUId
+		// 获旧取玩家对象
+		Player oldP = mngrObj.getPlayerBySessionUId(
+			newP._sessionUId
 		);
 
-		if (p == null) {
-			// 如果玩家对象为空,
-			// 先加锁,
-			// 避免并发问题
-			synchronized (mngrObj) {
-				// 这时候基本可以保证已经是线程安全的了,
-				// 再重新获取一次玩家对象
-				p = mngrObj.getPlayerBySessionUId(
-					this._sessionUId
-				);
-
-				if (p == null) {
-					// 如果玩家对象还是为空,
-					// 则新建!
-					p = new Player();
-					// 并添加到管理器
-					mngrObj.bindPlayerToSession(p, this._sessionUId);
-				}
-			}
+		if (oldP != null) {
+			// 如果有老玩家,
+			// 直接令是新老玩家断线!
+			MsgLog.LOG.error(MessageFormat.format(
+				"sessionUId = {0}, 已有老玩家 {1}",
+				String.valueOf(newP._sessionUId), oldP._platformUId
+			));
+			this.disconnect(newP);
+			this.disconnect(oldP);
+			return false;
 		}
+
+		// 获取会话对象
+		IoSession sessionObj = mngrObj.getSessionByPlatformUId(newP._platformUId);
+
+		if (sessionObj != null) {
+			// 如果有会话对象,
+			// 直接令是新老玩家断线!
+			MsgLog.LOG.error(MessageFormat.format(
+				"platformUId = {0}, 已有会话对象",
+				newP._platformUId
+			));
+			this.disconnect(newP);
+			sessionObj.close(false);
+			return false;
+		}
+
+		// 绑定玩家到会话
+		mngrObj.bindPlayerToSession(newP, newP._sessionUId);
+		return true;
 	}
 
 	/**
@@ -99,6 +119,6 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	 * 
 	 */
 	protected Player getPlayer() {
-		return OnlineSessionManager.OBJ.getPlayerBySessionUId(this._sessionUId);
+		return super.getPlayerBySessionUId(this._sessionUId);
 	}
 }

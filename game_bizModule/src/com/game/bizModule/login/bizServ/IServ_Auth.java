@@ -1,15 +1,14 @@
-package com.game.bizModule.login.serv;
+package com.game.bizModule.login.bizServ;
 
 import com.game.bizModule.login.LoginStateTable;
-import com.game.bizModule.login.serv.auth.AuthData;
 import com.game.bizModule.login.LoginLog;
 import com.game.bizModule.login.io.IoOper_Auth;
 import com.game.gameServer.framework.Player;
 import net.sf.json.JSONObject;
 
-import com.game.bizModule.login.serv.auth.Auth_ByPassword;
-import com.game.bizModule.login.serv.auth.Auth_ByPlatformUser;
-import com.game.bizModule.login.serv.auth.IAuthorize;
+import com.game.bizModule.login.bizServ.auth.Auth_ByPassword;
+import com.game.bizModule.login.bizServ.auth.Auth_ByPlatformUser;
+import com.game.bizModule.login.bizServ.auth.IAuthorize;
 import com.game.part.util.Assert;
 
 import java.text.MessageFormat;
@@ -52,9 +51,37 @@ interface IServ_Auth {
 
 		// 记录日志信息
 		LoginLog.LOG.info(MessageFormat.format(
-			"登陆字符串 = {0}",
+			"platformUId = {0}, 登陆字符串 = {1}",
+			p._platformUId,
 			loginStr
 		));
+
+		if (p._platformUId == null ||
+			p._platformUId.isEmpty()) {
+			// 如果是谁都不知道,
+			// 则直接退出!
+			// 这就跟实名购买火车票一样,
+			// 你连最基本的身份证号都不告诉我...
+			// 那对不起, 88!
+			LoginLog.LOG.error(MessageFormat.format(
+				"platformUId 为空, 登陆字符串 = {0}",
+				loginStr
+			));
+			return;
+		}
+
+		// 获取登陆状态表
+		LoginStateTable stateTbl = p.getPropValOrCreate(LoginStateTable.class);
+
+		if (stateTbl._execAuth) {
+			// 如果是正在执行授权过程,
+			// 则直接退出!
+			LoginLog.LOG.error(MessageFormat.format(
+				"platformUUId = {0}, 正在授权",
+				p._platformUId
+			));
+			return;
+		}
 
 		// 获取登录验证器
 		final IAuthorize authImpl = getAuthImpl(loginStr);
@@ -69,33 +96,9 @@ interface IServ_Auth {
 			return;
 		}
 
-		// 事先解析出平台 UId,
-		// 也就是说先得大概知道玩家到底是谁?
-		String platformUId = authImpl.parsePlatformUId(loginStr);
-
-		if (platformUId == null ||
-			platformUId.isEmpty()) {
-			// 如果是谁都不知道,
-			// 则直接退出!
-			// 这就跟实名购买火车票一样,
-			// 你连最基本的身份证号都不告诉我...
-			// 那对不起, 88!
-			LoginLog.LOG.error(MessageFormat.format(
-				"platformUId 为空, 登陆字符串 = {0}",
-				loginStr
-			));
-			return;
-		}
-
-		// 获取验证数据
-		AuthData authData = p.getPropValOrCreate(AuthData.class);
-		// 设置平台 UId
-		authData._platformUId = platformUId;
-
-		// 获取登陆状态表
-		LoginStateTable stateTab = p.getPropValOrCreate(LoginStateTable.class);
-		// 已有平台 UId
-		stateTab._platformUIdOk = true;
+		// 已有平台 UId 并且正在授权
+		stateTbl._platformUIdOk = true;
+		stateTbl._execAuth = true;
 
 		// 创建验证异步操作
 		IoOper_Auth op = new IoOper_Auth();

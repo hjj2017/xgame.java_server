@@ -10,9 +10,12 @@ import com.game.part.msg.type.MsgStr;
  * 登陆游戏
  * 
  * @author hjj2019
+ * @since 2015/7/12
  *
  */
 public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
+	/** 平台 UId */
+	public MsgStr _platformUId;
 	/** 登陆字符串 */
 	public MsgStr _loginStr;
 
@@ -26,10 +29,12 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	/**
 	 * 类参数构造器
 	 *
+	 * @param platformUId
 	 * @param loginStr
 	 *
 	 */
-	public CGLogin(String loginStr) {
+	public CGLogin(String platformUId, String loginStr) {
+		this._platformUId = new MsgStr(platformUId);
 		this._loginStr = new MsgStr(loginStr);
 	}
 

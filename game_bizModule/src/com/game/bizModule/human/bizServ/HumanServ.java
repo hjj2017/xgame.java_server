@@ -9,7 +9,7 @@ import com.game.gameServer.bizServ.AbstractBizServ;
  * @since 2015/7/11
  *
  */
-public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryList {
+public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryList, IServ_CreateHuman {
     /** 单例对象 */
     public static final HumanServ OBJ = new HumanServ();
 

@@ -23,6 +23,9 @@ public class S010_GCLogin extends AbstractGCMsgHandler<GCLogin> {
 			"机器人 {0} 登陆验证成功", 
 			robotObj._userName
 		));
+
+		// 进入下一模块!
+		robotObj.gotoNextModuleAndReady();
 	}
 
 	@Override

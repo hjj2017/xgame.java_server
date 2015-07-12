@@ -27,10 +27,12 @@ public class S000_CGLogin extends AbstractModuleReady {
 
 		// 创建登陆协议文本
 		jsonObj.put("protocol", "password");
-		jsonObj.put("serverName", robotObj._gameServerName);
 		jsonObj.put("userName", robotObj._userName);
 		jsonObj.put("password", robotObj._userPass);
 		// 创建并发送 GC 消息
-		robotObj.sendMsg(new CGLogin(jsonObj.toString()));
+		robotObj.sendMsg(new CGLogin(
+			robotObj._userName,
+			jsonObj.toString()
+		));
 	}
 }

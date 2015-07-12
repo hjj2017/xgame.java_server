@@ -4,7 +4,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
 	<persistence-unit name="Xgame-gameServer" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
 		<class>com.game.bizModule.player.entity.PlayerEntity</class>
+		<class>com.game.bizModule.human.entity.HumanEntryEntity</class>
+		<class>com.game.bizModule.human.entity.HumanEntity</class>
+
         <properties>
         	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 

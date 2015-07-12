@@ -3,7 +3,7 @@ package com.game.bizModule.human.msg;
 import java.util.List;
 
 import com.game.bizModule.human.entity.HumanEntryEntity;
-import com.game.bizModule.human.handler.Handler_GGQueryHumanEntryListOk;
+import com.game.bizModule.human.handler.Handler_GGQueryHumanEntryListFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgObj;
 
@@ -14,14 +14,16 @@ import com.game.gameServer.msg.AbstractGGMsgObj;
  * @since 2015/7/11
  *
  */
-public class GGQueryHumanEntryListOk extends AbstractGGMsgObj<Handler_GGQueryHumanEntryListOk> {
+public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj<Handler_GGQueryHumanEntryListFinish> {
     /** 玩家对象 */
     public Player _p = null;
+    /** 服务器名称 */
+    public String _serverName = null;
     /** 玩家角色入口实体列表 */
     public List<HumanEntryEntity> _heel = null;
 
     @Override
-    protected Handler_GGQueryHumanEntryListOk newHandlerObj() {
-        return new Handler_GGQueryHumanEntryListOk();
+    protected Handler_GGQueryHumanEntryListFinish newHandlerObj() {
+        return new Handler_GGQueryHumanEntryListFinish();
     }
 }

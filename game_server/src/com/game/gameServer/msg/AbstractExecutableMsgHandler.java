@@ -262,4 +262,22 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
             sessionObj.close(true);
         }
     }
+
+    /**
+     * 根据会话 UId 获取玩家对象
+     *
+     * @param sessionUId
+     * @return
+     *
+     */
+    protected Player getPlayerBySessionUId(long sessionUId) {
+        if (sessionUId <= 0L) {
+            // 如果会话 UId 为空,
+            // 则直接退出!
+            return null;
+        } else {
+            // 获取玩家对象
+            return OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+        }
+    }
 }

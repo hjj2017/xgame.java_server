@@ -21,6 +21,7 @@
 	# nextModule 可以不用填写, 
 	# 测试时的执行顺序, 就是以下文本行的顺序!
     { "currModule" : "connect" },
-    { "currModule" : "login", "nextModule" : "disconnect" },
+    { "currModule" : "login" },
+	{ "currModule" : "human", "nextModule" : "disconnect" },
 ]
 }

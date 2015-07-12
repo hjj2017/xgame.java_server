@@ -10,12 +10,20 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 public final class Player {
-	/** Id */
-	public long _UId = -1L;
 	/** 会话 Id, 主要是用于通信层 */
 	public long _sessionUId = -1L;
+	/** 平台 UId */
+	public String _platformUId = null;
+	/** 用户名 */
+	public String _userName = null;
+	/** Pf */
+	public String _pf = null;
+	/** 创建时间 */
+	public long _createTime = 0L;
 	/** 登陆 IP 地址 */
 	public String _loginIpAddr = null;
+	/** 登陆时间 */
+	public long _loginTime = 0L;
 	/** 玩家的属性字典 */
 	private final Map<Object, Object> _propMap = new ConcurrentHashMap<>();
 

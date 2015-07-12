@@ -1,8 +1,7 @@
 package com.game.bizModule.cd.serv;
 
-import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
-import com.game.bizModule.character.Human;
+import com.game.bizModule.human.Human;
 import com.game.part.util.Assert;
 
 /**

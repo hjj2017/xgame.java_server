@@ -97,16 +97,16 @@ interface IDao_GetResultList {
 	 * @param <TEntity> 
 	 * @param clazz
 	 * @param hqlWhere
-	 * @param paramsMap 
+	 * @param paramMap
 	 * @return
 	 * 
 	 */
 	default<TEntity> List<TEntity> getResultList(
 		Class<TEntity> clazz, 
 		String hqlWhere, 
-		Map<String, Object> paramsMap) {
+		Map<String, Object> paramMap) {
 		return this.getResultList(
-			clazz, hqlWhere, paramsMap, 0, Integer.MAX_VALUE
+			clazz, hqlWhere, paramMap, 0, Integer.MAX_VALUE
 		);
 	}
 
@@ -131,7 +131,8 @@ interface IDao_GetResultList {
 	 * 
 	 * @param <TEntity> 
 	 * @param clazz
-	 * @param hqlWhere
+	 * @param start
+	 * @param count
 	 * @return
 	 */
 	default<TEntity> List<TEntity> getResultList(
@@ -148,7 +149,6 @@ interface IDao_GetResultList {
 	 * 
 	 * @param <TEntity> 
 	 * @param clazz
-	 * @param hqlWhere
 	 * @return
 	 * 
 	 */

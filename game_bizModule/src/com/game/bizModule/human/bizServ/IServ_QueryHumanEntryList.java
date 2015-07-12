@@ -1,5 +1,6 @@
 package com.game.bizModule.human.bizServ;
 
+import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.io.IoOper_QueryHumanEntryList;
 import com.game.bizModule.login.LoginStateTable;
 import com.game.gameServer.framework.Player;
@@ -16,9 +17,10 @@ interface IServ_QueryHumanEntryList {
      * 异步方式查询玩家入口列表
      *
      * @param p
+     * @param serverName
      *
      */
-    default void asyncQueryHumanEntryList(Player p) {
+    default void asyncQueryHumanEntryList(Player p, String serverName) {
         if (p == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -26,18 +28,28 @@ interface IServ_QueryHumanEntryList {
         }
 
         // 获取登陆状态表
-        LoginStateTable stateTbl = p.getPropValOrCreate(LoginStateTable.class);
+        LoginStateTable loginStateTbl = p.getPropValOrCreate(LoginStateTable.class);
 
-        if (stateTbl._platformUIdOk == false ||
-            stateTbl._authOk == false) {
+        if (loginStateTbl._platformUIdOk == false ||
+            loginStateTbl._authSuccess == false) {
             // 如果登陆验证都没成功,
             // 那还是退出吧!
+            return;
+        }
+
+        // 获取角色状态表
+        HumanStateTable humanStateTbl = p.getPropValOrCreate(HumanStateTable.class);
+
+        if (humanStateTbl._execQueryHumanEntryList) {
+            // 如果正在执行查询角色入口列表的任务,
+            // 则直接退出!
             return;
         }
 
         // 创建异步操作对象
         IoOper_QueryHumanEntryList op = new IoOper_QueryHumanEntryList();
         op._p = p;
+        op._serverName = serverName;
         // 执行异步操作!
         HumanServ.OBJ.execute(op);
     }
