@@ -1,5 +1,6 @@
 package com.game.bizModule.human;
 
+import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
 import com.game.part.util.Assert;
 
@@ -16,6 +17,10 @@ import java.text.MessageFormat;
 public final class Human {
 	/** UId */
 	public final String _UId;
+	/** 角色名称 */
+	public String _humanName = null;
+	/** 服务器名称 */
+	public String _serverName = null;
 	/** 玩家引用 */
 	private WeakReference<Player> _pRef = null;
 
@@ -61,7 +66,7 @@ public final class Human {
 		}
 
 		// 获取角色 UId
-		String humanUId = getUId(byPlayer, serverName);
+		final String humanUId = newUId(byPlayer, serverName);
 		// 创建角色对象并设置玩家引用
 		Human h = new Human(humanUId);
 		h._pRef = new WeakReference<>(byPlayer);
@@ -77,15 +82,15 @@ public final class Human {
 	 * @return
 	 *
 	 */
-	private static String getUId(Player byPlayer, String serverName) {
+	private static String newUId(Player byPlayer, String serverName) {
 		// 断言参数不为空
 		Assert.notNull(byPlayer, "byPlayer");
 		Assert.notNullOrEmpty(serverName, "serverName");
 
 		return MessageFormat.format(
 			"{0}-{1}",
-			byPlayer._platformUId,
-			serverName
+			serverName,
+			byPlayer._platformUId
 		);
 	}
 	/**
@@ -123,5 +128,23 @@ public final class Human {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * 创建角色实体
+	 *
+	 * @return
+	 *
+	 */
+	public HumanEntity createEntity() {
+		// 创建角色实体
+		HumanEntity he = new HumanEntity();
+		// 设置实体属性
+		he._humanUId = this._UId;
+		he._platformUId = this.getPlayer()._platformUId;
+		he._serverName = this._serverName;
+		he._humanName = this._humanName;
+
+		return he;
 	}
 }

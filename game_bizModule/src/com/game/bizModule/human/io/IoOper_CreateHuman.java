@@ -1,5 +1,6 @@
 package com.game.bizModule.human.io;
 
+import com.game.bizModule.human.Human;
 import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.bizModule.human.msg.GGCreateHumanFinish;
@@ -15,37 +16,28 @@ import com.game.part.dao.CommDao;
  *
  */
 public class IoOper_CreateHuman extends AbstractLoginIoOper {
-    /** 玩家对象 */
-    public Player _p;
-    /** 服务器名称 */
-    public String _serverName;
-    /** 角色名称 */
-    public String _humanName;
-    /** 模版 Id */
-    public int _tmplId;
+    /** 角色对象 */
+    public Human _h = null;
 
     @Override
     public long getBindUId() {
-        return AbstractLoginIoOper.getBindUIdByPlayer(this._p);
+        return AbstractLoginIoOper.getBindUIdByPlayer(
+            this._h.getPlayer()
+        );
     }
 
     @Override
     public boolean doIo() {
-        // 创建角色实体
-        HumanEntity he = new HumanEntity();
-        he._humanUId = 1001L;
-        he._platformUId = this._p._platformUId;
-        he._serverName = this._serverName;
-        he._humanName = this._humanName;
-
+        // 获取角色实体
+        final HumanEntity he = this._h.createEntity();
         // 保存数据
         CommDao.OBJ.save(he);
         // 触发建角事件
-        HumanServ.OBJ.fireCreateHumanEvent(null);
+        HumanServ.OBJ.fireCreateHumanEvent(this._h);
 
         // 创建消息对象
         GGCreateHumanFinish ggMSG = new GGCreateHumanFinish();
-        ggMSG._p = this._p;
+        ggMSG._p = this._h.getPlayer();
         ggMSG._success = true;
         // 分派消息
         this.msgDispatch(ggMSG);

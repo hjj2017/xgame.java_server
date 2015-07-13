@@ -95,10 +95,7 @@ interface IServ_CreateHuman {
 
         // 创建异步操作
         IoOper_CreateHuman op = new IoOper_CreateHuman();
-        op._p = p;
-        op._serverName = serverName;
-        op._humanName = humanName;
-        op._tmplId = tmplId;
+        op._h = h;
         // 执行异步操作
         HumanServ.OBJ.execute(op);
     }
