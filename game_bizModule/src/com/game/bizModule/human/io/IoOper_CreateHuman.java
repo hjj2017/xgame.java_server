@@ -4,7 +4,6 @@ import com.game.bizModule.human.Human;
 import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.bizModule.human.msg.GGCreateHumanFinish;
-import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractLoginIoOper;
 import com.game.part.dao.CommDao;
 
@@ -29,7 +28,7 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
     @Override
     public boolean doIo() {
         // 获取角色实体
-        final HumanEntity he = this._h.createEntity();
+        final HumanEntity he = this._h.toEntity();
         // 保存数据
         CommDao.OBJ.save(he);
         // 触发建角事件

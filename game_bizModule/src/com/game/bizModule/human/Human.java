@@ -2,6 +2,8 @@ package com.game.bizModule.human;
 
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
+import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
+import com.game.part.lazySaving.ILazySavingObj;
 import com.game.part.util.Assert;
 
 import java.lang.ref.WeakReference;
@@ -14,7 +16,7 @@ import java.text.MessageFormat;
  * @since 2015/7/11
  *
  */
-public final class Human {
+public final class Human implements ILazySavingObj<HumanEntity> {
 	/** UId */
 	public final String _UId;
 	/** 角色名称 */
@@ -130,13 +132,24 @@ public final class Human {
 		}
 	}
 
+	@Override
+	public String getUId() {
+		return this._UId;
+	}
+
+	@Override
+	public String getThreadKey() {
+		return AbstractPlayerOrSceneIoOper.getThreadKey(0L);
+	}
+
 	/**
 	 * 创建角色实体
 	 *
 	 * @return
 	 *
 	 */
-	public HumanEntity createEntity() {
+	@Override
+	public HumanEntity toEntity() {
 		// 创建角色实体
 		HumanEntity he = new HumanEntity();
 		// 设置实体属性

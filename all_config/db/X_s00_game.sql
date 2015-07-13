@@ -2,7 +2,8 @@
 SQLyog Community v11.32 (64 bit)
 MySQL - 5.6.24 : Database - X_s00_game
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -21,7 +22,7 @@ USE `X_s00_game`;
 DROP TABLE IF EXISTS `t_human`;
 
 CREATE TABLE `t_human` (
-  `human_uid` bigint(20) NOT NULL,
+  `human_uid` varchar(20) NOT NULL,
   `human_name` varchar(32) DEFAULT NULL,
   `platform_uid` varchar(64) DEFAULT NULL,
   `server_name` varchar(16) DEFAULT NULL,
