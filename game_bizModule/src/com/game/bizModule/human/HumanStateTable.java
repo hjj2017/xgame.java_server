@@ -16,4 +16,6 @@ public class HumanStateTable {
     public boolean _hasHuman = false;
     /** 正在执行创建角色任务? */
     public boolean _execCreateHuman = false;
+    /** 已经进入游戏? */
+    public boolean _inGame = false;
 }

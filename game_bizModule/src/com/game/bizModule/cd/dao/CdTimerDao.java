@@ -18,11 +18,11 @@ public class CdTimerDao {
 	/**
 	 * 获取 Cd 计时器实体
 	 * 
-	 * @param humanUUID
+	 * @param humanUId
 	 * @return
 	 * 
 	 */
-	public List<CdTimerEntity> listByHumanUUID(long humanUUID) {
+	public List<CdTimerEntity> listByHumanUId(String humanUId) {
 		return null;
 	}
 }

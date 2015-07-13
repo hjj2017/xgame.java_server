@@ -8,7 +8,7 @@ import com.game.gameServer.bizServ.AbstractBizServ;
  * @author hjj2019
  * 
  */
-public class LoginServ extends AbstractBizServ implements IServ_Auth {
+public class LoginServ extends AbstractBizServ implements IServ_Auth, IServ_Disconnect {
 	/** 单例对象 */
 	public static final LoginServ OBJ = new LoginServ();
 }

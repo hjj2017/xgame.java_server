@@ -24,7 +24,7 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 	/** 单例对象 */
 	public static final CdServ OBJ = new CdServ();
 	/** 管理器字典 */
-	final ConcurrentHashMap<Long, CdManager> _mngrMap = new ConcurrentHashMap<>();
+	final ConcurrentHashMap<String, CdManager> _mngrMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 类默认构造器
@@ -56,7 +56,7 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 		}
 
 		// 获取 Cd 计时器列表
-		List<CdTimerEntity> el = CdTimerDao.OBJ.listByHumanUUID(h._UId);
+		List<CdTimerEntity> el = CdTimerDao.OBJ.listByHumanUId(h._UId);
 
 		if (el != null && 
 			el.isEmpty() == false) {

@@ -14,19 +14,19 @@ import com.game.bizModule.cd.model.CdTypeEnum;
  * 
  */
 class CdManager {
-	/** 玩家角色 UUID */
-	public long _humanUUID = -1;
+	/** 玩家角色 UId */
+	public String _humanUId = null;
 	/** 冷却队列字典 */
 	public final Map<CdTypeEnum, CdTimer> _cdMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 类参数构造器
 	 * 
-	 * @param humanUUID 
+	 * @param humanUId
 	 * 
 	 */
-	CdManager(long humanUUID) {
-		this._humanUUID = humanUUID;
+	CdManager(String humanUId) {
+		this._humanUId = humanUId;
 	}
 
 	/**

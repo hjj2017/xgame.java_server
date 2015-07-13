@@ -1,7 +1,9 @@
 package com.game.bizModule.login.handler;
 
+import com.game.bizModule.human.Human;
 import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.login.LoginLog;
+import com.game.bizModule.login.bizServ.LoginServ;
 import com.game.bizModule.login.msg.CGDisconnect;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
@@ -26,23 +28,13 @@ public class Handler_CGDisconnect extends AbstractCGMsgHandler<CGDisconnect> {
 		}
 
 		// 获取玩家对象
-		Player p = this.getPlayer();
-		// 触发角色退出游戏事件
-		HumanServ.OBJ.fireQuitGameEvent(null);
-		// 立即写入延迟数据
-		LazySavingHelper.OBJ.execUpdateWithPredicate(lso -> {
-			return lso.getGroupUId().equals("");
-		});
+		final Player p = this.getPlayer();
+		// 玩家断线
+		LoginServ.OBJ.disconnect(p);
 
 		// 删除玩家对象
 		this.uninstallPlayer(p);
 		// 清除所有属性
 		p.clearAllProp();
-
-		// 记录日志信息
-		LoginLog.LOG.info(MessageFormat.format(
-			"玩家 {0} 已经退出游戏",
-			p._platformUId
-		));
 	}
 }

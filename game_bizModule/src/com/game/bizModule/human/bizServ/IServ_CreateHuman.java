@@ -1,12 +1,12 @@
 package com.game.bizModule.human.bizServ;
 
+import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.io.IoOper_CreateHuman;
 import com.game.bizModule.login.LoginStateTable;
 import com.game.gameServer.framework.Player;
 
-import java.security.MessageDigest;
 import java.text.MessageFormat;
 
 /**
@@ -88,6 +88,10 @@ interface IServ_CreateHuman {
 
         // 执行建角过程
         hStateTable._execCreateHuman = true;
+
+        // 新建一个角色对象
+        Human h = Human.create(p, serverName);
+        p.putPropVal(Human.class, h);
 
         // 创建异步操作
         IoOper_CreateHuman op = new IoOper_CreateHuman();

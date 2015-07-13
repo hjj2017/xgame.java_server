@@ -2,8 +2,10 @@ package com.game.bizModule.human.bizServ;
 
 import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
+import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.event.IHumanEventListen;
 import com.game.gameServer.bizServ.AbstractBizServ;
+import com.game.gameServer.framework.Player;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -112,7 +114,14 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
     public void fireQuitGameEvent(Human h) {
         if (h == null) {
             return;
-        } else {
+        }
+
+        // 获取角色状态表
+        HumanStateTable hStateTbl = h.getPropValOrCreate(HumanStateTable.class);
+
+        if (hStateTbl._inGame) {
+            // 如果玩家处在游戏中状态,
+            // 触发退出游戏事件
             this._ell.forEach(el -> el.onQuitGame(h));
         }
     }

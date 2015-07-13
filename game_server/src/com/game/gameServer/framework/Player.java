@@ -35,33 +35,51 @@ public final class Player {
 	}
 
 	/**
-	 * 根据类定义获取属性值, 如果没有就新建
+	 * 根据类定义获取属性值
 	 *
-	 * @param byClazzDef
+	 * @param byClazz
 	 * @param <T>
 	 * @return
 	 *
 	 */
-	public<T> T getPropValOrCreate(Class<T> byClazzDef) {
-		if (byClazzDef == null) {
+	public<T> T getPropVal(Class<T> byClazz) {
+		if (byClazz == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return null;
+		} else {
+			return (T)this._propMap.get(byClazz);
+		}
+	}
+
+	/**
+	 * 根据类定义获取属性值, 如果没有就新建
+	 *
+	 * @param byClazz
+	 * @param <T>
+	 * @return
+	 *
+	 */
+	public<T> T getPropValOrCreate(Class<T> byClazz) {
+		if (byClazz == null) {
 			// 如果参数对象为空,
 			// 则直接退出!
 			return null;
 		}
 
 		// 事先获取属性值
-		Object objVal = this._propMap.get(byClazzDef);
+		Object objVal = this._propMap.get(byClazz);
 
 		if (objVal == null) {
 			try {
 				// 如果属性值为空,
 				// 创建类对象
-				objVal = byClazzDef.newInstance();
+				objVal = byClazz.newInstance();
 				// 添加到字典, 并且看看原来有没有值?
-				if (this._propMap.putIfAbsent(byClazzDef, objVal) != null) {
+				if (this._propMap.putIfAbsent(byClazz, objVal) != null) {
 					// 如果添加到字典的时候已经有值,
 					// 那么再重新获取一次!
-					objVal = this._propMap.get(byClazzDef);
+					objVal = this._propMap.get(byClazz);
 				}
 			} catch (Exception ex) {
 				// 记录错误日志
@@ -73,6 +91,28 @@ public final class Player {
 		}
 
 		return (T)objVal;
+	}
+
+	/**
+	 * 根据类定义添加对象到字典
+	 *
+	 * @param byClazz
+	 * @param objVal
+	 * @param <T>
+	 *
+	 */
+	public<T> void putPropVal(Class<T> byClazz, T objVal) {
+		if (objVal == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return;
+		}
+
+		// 添加到字典
+		this._propMap.putIfAbsent(
+			byClazz,
+			objVal
+		);
 	}
 
 	/**
