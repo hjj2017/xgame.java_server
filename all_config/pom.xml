@@ -5,19 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>Xgame</groupId>
-    <artifactId>ROOT</artifactId>
+    <artifactId>all_config</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>ROOT</name>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
+    <name>all_config</name>
 
     <build>
         <plugins>

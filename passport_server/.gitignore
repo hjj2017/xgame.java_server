@@ -1,6 +1,8 @@
 /bin/
 /out/
+/target/
 /log/
 /*.iml
+/*.sh
 /.classpath
 /.project
