@@ -13,6 +13,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <url>https://git.oschina.net/afrxprojs/xgame-code_server/</url>
+    <issueManagement>
+        <system>OSChina Issue</system>
+        <url>https://git.oschina.net/afrxprojs/xgame-code_server/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+        <name>The Apache Software License, Version 2.0</name>
+        <url>http://apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
     <modules>
         <module>../game_part</module>
         <module>../game_server</module>
