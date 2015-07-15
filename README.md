@@ -37,11 +37,11 @@ Xgame 参考了以往的经验，同时也做出了很多改进！
 
 # 后续更新内容
 
-- 【文档】增加 IntelliJ IDEA 开发说明，如何使用 IntelliJ IDEA 打开该项目；
-- 【文档】增加 Eclipse 开发说明，如何使用 Eclipse 打开该项目；
+- ~~【完成】【文档】增加 IntelliJ IDEA 开发说明，如何使用 IntelliJ IDEA 打开该项目；~~
+- ~~【完成】【文档】增加 Eclipse 开发说明，如何使用 Eclipse 打开该项目；~~
 - 【文档】增加 ANT 编译打包说明；
 - 【代码】完善 Robot 压力测试工具代码；
-- 【代码】增加登陆过程代码；
+- ~~【完成】【代码】增加登陆过程代码；~~
 - 【代码】增加 CommDao 增加缓存机制；
 - 【代码】增加游戏服（GameServer）的 HTTP 支持；
 - 【代码】增加游戏服（GameServer）的 ZooKeeper 支持；
