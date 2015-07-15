@@ -89,9 +89,24 @@ public final class PackageUtil {
 						new File(currUrl.getFile()), packageName, recursive, filter
 					);
 				} else if ("JAR".equalsIgnoreCase(protocol)) {
+					// 获取文件字符串
+					String fileStr = currUrl.getFile();
+
+					if (fileStr.startsWith("file:")) {
+						// 如果是以 "file:" 开头的,
+						// 则去除这个开头
+						fileStr = fileStr.substring(5);
+					}
+
+					if (fileStr.lastIndexOf('!') > 0) {
+						// 如果有 '!' 字符,
+						// 则截断 '!' 字符之后的所有字符
+						fileStr = fileStr.substring(0, fileStr.lastIndexOf('!'));
+					}
+
 					// 从 JAR 文件中加载类
 					tmpSet = listClazzFromJar(
-						new File(currUrl.getFile()), packageName, recursive, filter
+						new File(fileStr), packageName, recursive, filter
 					);
 				}
 
@@ -103,7 +118,7 @@ public final class PackageUtil {
 			}
 		} catch (Exception ex) {
 			// 抛出异常!
-			throw new GameError(ex);
+			throw new GameError(ex.getMessage(), ex);
 		}
 
 		return resultSet;

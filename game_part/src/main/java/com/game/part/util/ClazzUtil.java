@@ -334,4 +334,26 @@ public final class ClazzUtil {
 			});
 		}
 	}
+
+	/**
+	 * 从指定目录中扫描 jar 文件添加到 classpath 中
+	 *
+	 * @param fromDir
+	 *
+	 */
+	public static void scanAllJar(
+		String fromDir) {
+		ClazzUtil_ScanAllJar.process(fromDir);
+	}
+
+	/**
+	 * 将 class 目录添加到 classpath 中
+	 *
+	 * @param fromDir
+	 *
+	 */
+	public static void putClazzDir(
+		String fromDir) {
+		ClazzUtil_AddClazzDir.process(fromDir);
+	}
 }

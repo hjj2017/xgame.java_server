@@ -2,10 +2,15 @@ package com.game.gameServer;
 
 import com.game.gameServer.conf.ConfFacade;
 import com.game.gameServer.framework.App_GameServer;
+import com.game.gameServer.framework.FrameworkLog;
+import com.game.gameServer.framework.GameServerConf;
+import com.game.part.util.ClazzUtil;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.PropertyConfigurator;
+
+import java.text.MessageFormat;
 
 /**
  * 游戏服务器, 运行于命令行终端!
@@ -70,6 +75,9 @@ public class CLI_GameServer {
 
 		// 加载指定的配置文件
 		ConfFacade.OBJ.readFromFile(cmdLn.getOptionValue("c"));
+		// 扫描所有的 jar 和 class 文件
+		scanAllJarAndClazz();
+
 		// 初始化并启动服务器
 		App_GameServer.OBJ.init();
 		App_GameServer.OBJ.startUp();
@@ -103,5 +111,37 @@ public class CLI_GameServer {
 		}
 
 		return null;
+	}
+
+	/**
+	 * 扫描所有的 jar 文件和 class 文件添加到 classpath
+	 *
+	 */
+	private static void scanAllJarAndClazz() {
+		if (GameServerConf.OBJ._libDir != null &&
+			GameServerConf.OBJ._libDir.isEmpty() == false) {
+			// 扫描指定目录下所有的 jar 文件,
+			// 添加到 classpath
+			FrameworkLog.LOG.info(MessageFormat.format(
+				"扫描 lib 目录 : {0}",
+				GameServerConf.OBJ._libDir
+			));
+			ClazzUtil.scanAllJar(
+				GameServerConf.OBJ._libDir
+			);
+		}
+
+		if (GameServerConf.OBJ._clazzDir != null &&
+			GameServerConf.OBJ._clazzDir.isEmpty() == false) {
+			// 扫描指定目录下所有的 class 文件,
+			// 添加到 classpath
+			FrameworkLog.LOG.info(MessageFormat.format(
+				"设置 clazz 目录 : {0}",
+				GameServerConf.OBJ._clazzDir
+			));
+			ClazzUtil.putClazzDir(
+				GameServerConf.OBJ._clazzDir
+			);
+		}
 	}
 }

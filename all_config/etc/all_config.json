@@ -13,6 +13,8 @@
 		"maxBattleThreadNum" : 8,
 		"maxLoginThreadNum" : 4,
 		"maxPlayerOrSceneThreadNum" : 4,
+		# class 目录
+		"clazzDir" : "../game_bizModule/target/classes",
 		# 策划表所在目录
 		"xlsxFileDir" : "../game_res/xlsx",
 		# 战报所在目录
