@@ -2,5 +2,6 @@
 /.metadata/
 /RemoteSystemsTempFiles/
 /out/
+/target/
 /log/
 /*.iml
