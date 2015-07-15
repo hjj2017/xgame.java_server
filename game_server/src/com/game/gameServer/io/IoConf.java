@@ -49,54 +49,54 @@ public final class IoConf {
     /**
      * 获取战斗线程索引
      *
-     * @param bindUUId
+     * @param bindUId
      * @return
      *
      */
-    int getBattleThreadIndex(long bindUUId) {
-        if (bindUUId <= 0) {
+    int getBattleThreadIndex(long bindUId) {
+        if (bindUId <= 0) {
             // 如果参数对象为空,
             // 则直接退出!
             return 0;
         } else {
             // 获取余数
-            return (int) (bindUUId & 0xFFFF) % this._maxBattleThreadNum;
+            return (int) (bindUId & 0xFFFF) % this._maxBattleThreadNum;
         }
     }
 
     /**
      * 获取登陆线程索引
      *
-     * @param bindUUId
+     * @param bindUId
      * @return
      *
      */
-    int getLoginThreadIndex(long bindUUId) {
-        if (bindUUId <= 0) {
+    int getLoginThreadIndex(long bindUId) {
+        if (bindUId <= 0) {
             // 如果参数对象为空,
             // 则直接退出!
             return 0;
         } else {
             // 获取余数
-            return (int) (bindUUId & 0xFFFF) % this._maxLoginThreadNum;
+            return (int) (bindUId & 0xFFFF) % this._maxLoginThreadNum;
         }
     }
 
     /**
      * 获取玩家或场景线程索引
      *
-     * @param bindUUId
+     * @param bindUId
      * @return
      *
      */
-    int getPlayerOrSceneThreadIndex(long bindUUId) {
-        if (bindUUId <= 0) {
+    int getPlayerOrSceneThreadIndex(long bindUId) {
+        if (bindUId <= 0) {
             // 如果参数对象为空,
             // 则直接退出!
             return 0;
         } else {
             // 获取余数
-            return (int) (bindUUId & 0xFFFF) % this._maxGamePlayerOrSceneThreadNum;
+            return (int) (bindUId & 0xFFFF) % this._maxGamePlayerOrSceneThreadNum;
         }
     }
 }
