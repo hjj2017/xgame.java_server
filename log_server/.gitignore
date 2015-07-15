@@ -1,0 +1,7 @@
+/bin/
+/out/
+/target/
+/log/
+/*.iml
+/.classpath
+/.project
