@@ -1,10 +1,7 @@
 package com.game.gameServer.msg;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.mina.core.buffer.IoBuffer;
-
 import com.game.part.msg.IoBuffUtil;
+import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  * 抽象的 CG 的消息
