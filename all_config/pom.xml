@@ -8,6 +8,10 @@
     <artifactId>all_config</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>all_config</name>
+    <packaging>pom</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <build>
         <plugins>
