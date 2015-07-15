@@ -17,7 +17,7 @@ Xgame 参考了以往的经验，同时也做出了很多改进！
 - 消息类支持多层嵌套（理论上没有上限）；
 - 修改延迟保存罗辑（LazySaving），使用起来更方便、更明确，只实现 ILazySavingObj 接口即可；
 - 日志服务器框架调整为 HTTP 方式；
-- 结构化的 ANT 打包脚本；
+- **使用 Maven 打包和部署；**
 - 调整机器人压力测试项目，简化框架结构；
 
 ----
@@ -37,44 +37,11 @@ Xgame 参考了以往的经验，同时也做出了很多改进！
 
 # 后续更新内容
 
-- ~~【完成】【文档】增加 IntelliJ IDEA 开发说明，如何使用 IntelliJ IDEA 打开该项目；~~
-- ~~【完成】【文档】增加 Eclipse 开发说明，如何使用 Eclipse 打开该项目；~~
-- 【文档】增加 ANT 编译打包说明；
-- 【代码】完善 Robot 压力测试工具代码；
-- ~~【完成】【代码】增加登陆过程代码；~~
+- ~~<完成>【代码】完善 Robot 压力测试工具代码；~~
+- ~~<完成>【代码】增加登陆过程代码；~~
 - 【代码】增加 CommDao 增加缓存机制；
 - 【代码】增加游戏服（GameServer）的 HTTP 支持；
 - 【代码】增加游戏服（GameServer）的 ZooKeeper 支持；
 - 【代码】完善日志服务器代码；
 - 【代码】增加消息类生成工具，由 JAVA 代码生成 ActionScript 或者 C# 代码；
 - ...
-
-----
-
-# 如何使用 IDE 打开这个项目?
-
-*Windows 平台 + IntelliJ IDEA（推荐）：*
-> cd C:\Git
-
-> git clone https://git.oschina.net/afrxprojs/xgame-code_server.git
-
-> cd xgame-code_server
-
-> unzip IDEA.zip 
-
-> \# 如果你使用的是 IntelliJ IDEA 则解压 IDEA.zip 文件
-
-> \# 要解压 IDEA.zip 也可以使用其它压缩软件，例如：WinZip、WinRAR
-
-> \# 或者干脆直接双击 IDEA.zip 也可以
-
-> \# 如果提示覆盖文件，直接覆盖就可以了
-
-> 运行 IntelliJ IDEA，在主菜单中选择“File -> Open ...”，在弹出对话框中选择：C:\Git\xame-code_server
-
-> \# 提示：JAVA 版本请选择 1.8，名称要用 jdk1.8 噢
-
-
-
-*Windows 平台 + Eclipse*
->[Wiki / 如何在 Windows 平台使用 Eclipse 打开项目](https://git.oschina.net/afrxprojs/xgame-code_server/wikis/%E5%A6%82%E4%BD%95%E5%9C%A8-Windows-%E5%B9%B3%E5%8F%B0%E4%BD%BF%E7%94%A8-Eclipse-%E6%89%93%E5%BC%80%E9%A1%B9%E7%9B%AE)
