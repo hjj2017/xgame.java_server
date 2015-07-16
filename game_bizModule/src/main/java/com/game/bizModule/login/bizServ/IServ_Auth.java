@@ -77,7 +77,7 @@ interface IServ_Auth {
 			// 如果是正在执行授权过程,
 			// 则直接退出!
 			LoginLog.LOG.error(MessageFormat.format(
-				"platformUUId = {0}, 正在授权",
+				"platformUId = {0}, 正在授权",
 				p._platformUId
 			));
 			return;
