@@ -15,7 +15,7 @@ import com.game.bizModule.cd.model.CdTypeEnum;
  */
 class CdManager {
 	/** 玩家角色 UId */
-	public String _humanUId = null;
+	public long _humanUId = 0L;
 	/** 冷却队列字典 */
 	public final Map<CdTypeEnum, CdTimer> _cdMap = new ConcurrentHashMap<>();
 
@@ -25,7 +25,7 @@ class CdManager {
 	 * @param humanUId
 	 * 
 	 */
-	CdManager(String humanUId) {
+	CdManager(long humanUId) {
 		this._humanUId = humanUId;
 	}
 

@@ -1,5 +1,7 @@
 package com.game.bizModule.human;
 
+import com.game.bizModule.guid.bizServ.Guid64Serv;
+import com.game.bizModule.guid.bizServ.Guid64TypeEnum;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
@@ -18,7 +20,7 @@ import java.text.MessageFormat;
  */
 public final class Human implements ILazySavingObj<HumanEntity> {
 	/** UId */
-	public final String _UId;
+	public final long _UId;
 	/** 角色名称 */
 	public String _humanName = null;
 	/** 服务器名称 */
@@ -32,7 +34,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 	 * @param UId
 	 *
 	 */
-	private Human(String UId) {
+	private Human(long UId) {
 		this._UId = UId;
 	}
 
@@ -43,7 +45,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 	 *
 	 */
 	public Player getPlayer() {
-		if (this._pRef != null) {
+		if (this._pRef == null) {
 			return null;
 		} else {
 			return this._pRef.get();
@@ -68,7 +70,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 		}
 
 		// 获取角色 UId
-		final String humanUId = newUId(byPlayer, serverName);
+		final long humanUId = Guid64Serv.OBJ.nextUId(Guid64TypeEnum.human);
 		// 创建角色对象并设置玩家引用
 		Human h = new Human(humanUId);
 		h._pRef = new WeakReference<>(byPlayer);
@@ -76,25 +78,6 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 		return h;
 	}
 
-	/**
-	 * 获取 UId
-	 *
-	 * @param byPlayer
-	 * @param serverName
-	 * @return
-	 *
-	 */
-	private static String newUId(Player byPlayer, String serverName) {
-		// 断言参数不为空
-		Assert.notNull(byPlayer, "byPlayer");
-		Assert.notNullOrEmpty(serverName, "serverName");
-
-		return MessageFormat.format(
-			"{0}-{1}",
-			serverName,
-			byPlayer._platformUId
-		);
-	}
 	/**
 	 * 从玩家对象获取角色
 	 *
@@ -134,7 +117,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 
 	@Override
 	public String getUId() {
-		return this._UId;
+		return Human.class.getSimpleName() + "_" + this._UId;
 	}
 
 	@Override

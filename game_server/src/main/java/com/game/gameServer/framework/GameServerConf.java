@@ -12,6 +12,8 @@ import net.sf.json.JSONObject;
 public final class GameServerConf {
     /** 单例对象 */
     public static final GameServerConf OBJ = new GameServerConf();
+    /** 平台索引 */
+    public int _platformIndex = 1;
     /** 服务器索引 */
     public int _serverIndex  = 1;
     /** lib 目录, 一般是游戏业务模块的 jar 文件所在目录 */

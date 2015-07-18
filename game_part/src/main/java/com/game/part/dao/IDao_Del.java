@@ -20,8 +20,6 @@ import com.game.part.util.ClazzUtil;
  * 
  */
 interface IDao_Del {
-	/** Id 字段名称字典 */
-	final ConcurrentHashMap<Class<?>, String> _IdFieldNameMap = new ConcurrentHashMap<>();
 	/** 删除实体 */
 	String JPQL_del = "delete from {0} entity where entity.{1} = :Id";
 
@@ -106,19 +104,19 @@ interface IDao_Del {
 		EntityTransaction tranx = em.getTransaction();
 
 		// 获取 Id 字段名称
-		String idFieldName = getIdFieldName(entityClazz);
-		// 构建 HQL 查询
-		final String hql = MessageFormat.format(
+		String IdFieldName = CommDao.OBJ.getIdFieldName(entityClazz);
+		// 构建 JPQL 查询
+		final String jpql = MessageFormat.format(
 			JPQL_del, 
 			entityClazz.getName(), 
-			idFieldName
+			IdFieldName
 		);
 
 		try {
 			// 开始事务过程
 			tranx.begin();
 			// 创建并执行 SQL 查询
-			em.createQuery(hql).setParameter("Id", Id).executeUpdate();
+			em.createQuery(jpql).setParameter("Id", Id).executeUpdate();
 			em.flush();
 			// 提交事务
 			tranx.commit();
@@ -130,54 +128,6 @@ interface IDao_Del {
 		} finally {
 			em.close();
 		}
-	}
-
-	/**
-	 * 获取标注了 @Id 注解的字段名称
-	 * 
-	 * @param fromClazz
-	 * @return
-	 * 
-	 */
-	static String getIdFieldName(Class<?> fromClazz) {
-		if (fromClazz == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return null;
-		}
-
-		// 
-		// 首先从字典里找一下这个类对应的 Id 字段名称, 
-		// 获取 Id 字段名称
-		String idFieldName = _IdFieldNameMap.get(fromClazz);
-
-		if (idFieldName != null) {
-			// 如果字典里有, 
-			// 则直接返回...
-			return idFieldName;
-		}
-
-		// 
-		// 接下来就要处理在字典中没找到的情况,
-		// 从类中获取标注了 Id 的字段
-		Field idField = ClazzUtil.getField(
-			fromClazz, f -> f != null && f.getAnnotation(Id.class) != null
-		);
-
-		if (idField == null) {
-			// 如果字段为空, 
-			// 则抛出异常!
-			throw new DaoError(MessageFormat.format(
-				"在 {0} 类中没有找到标注了 @Id 注解的字段", fromClazz.getName()
-			));
-		}
-
-		// 获取字段名称
-		idFieldName = idField.getName();
-		// 添加 Id 字段名称到字典
-		_IdFieldNameMap.put(fromClazz, idFieldName);
-
-		return idFieldName;
 	}
 
 	/**
@@ -209,7 +159,7 @@ interface IDao_Del {
 		}
 
 		// 获取 Id 字段名称
-		String IdFieldName = getIdFieldName(entityClazz);
+		String IdFieldName = CommDao.OBJ.getIdFieldName(entityClazz);
 		// 构建 HQL 查询
 		final String hql = MessageFormat.format(
 			JPQL_del, 

@@ -16,8 +16,8 @@ import javax.persistence.Table;
 @Table(name = "t_human")
 public class HumanEntity {
     /** 玩家角色 UId */
-    @Id @Column(name = "human_uid", length = 32)
-    public String _humanUId = null;
+    @Id @Column(name = "human_uid")
+    public Long _humanUId = null;
     /** 玩家角色名称 */
     @Column(name = "human_name", length = 32, updatable = false)
     public String _humanName = null;

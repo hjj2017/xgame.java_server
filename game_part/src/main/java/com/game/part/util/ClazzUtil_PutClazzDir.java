@@ -10,18 +10,18 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 
 /**
- * 将 class 目录添加到 classpath 中
+ * 设置 class 目录
  *
  * @author hjj2017
  * @since 2015/7/15
  *
  */
-final class ClazzUtil_AddClazzDir {
+final class ClazzUtil_PutClazzDir {
     /**
      * 类默认构造器
      *
      */
-    private ClazzUtil_AddClazzDir() {
+    private ClazzUtil_PutClazzDir() {
     }
 
     /**
@@ -39,7 +39,7 @@ final class ClazzUtil_AddClazzDir {
             // 如果不存在或者不是目录,
             // 则抛出异常!
             throw new GameError(MessageFormat.format(
-                "{0} 不存在或不是目录",
+                "{0} 不存在或不是目录! 如果是在开发环境下, 请先编译整个工程",
                 fromDir
             ));
         }
