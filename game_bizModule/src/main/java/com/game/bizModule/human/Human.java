@@ -1,6 +1,6 @@
 package com.game.bizModule.human;
 
-import com.game.bizModule.guid.bizServ.Guid64Serv__;
+import com.game.bizModule.guid.bizServ.Guid64Serv;
 import com.game.bizModule.guid.bizServ.Guid64TypeEnum;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
@@ -68,7 +68,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 		}
 
 		// 获取角色 UId
-		final long humanUId = Guid64Serv__.OBJ.nextUId(Guid64TypeEnum.human);
+		final long humanUId = Guid64Serv.OBJ.nextUId(Guid64TypeEnum.human);
 		// 创建角色对象并设置玩家引用
 		Human h = new Human(humanUId);
 		h._pRef = new WeakReference<>(byPlayer);

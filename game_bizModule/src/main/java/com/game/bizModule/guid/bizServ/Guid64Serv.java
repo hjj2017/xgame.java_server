@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2015/7/18
  *
  */
-public final class Guid64Serv__ extends AbstractBizServ {
+public final class Guid64Serv extends AbstractBizServ {
     /** 单例对象 */
-    public static final Guid64Serv__ OBJ = new Guid64Serv__();
+    public static final Guid64Serv OBJ = new Guid64Serv();
 
     /**
      * 最大位数,
@@ -48,7 +48,7 @@ public final class Guid64Serv__ extends AbstractBizServ {
      * 类默认构造器
      *
      */
-    private Guid64Serv__() {
+    private Guid64Serv() {
         super.needToInit(this);
     }
 
@@ -69,7 +69,7 @@ public final class Guid64Serv__ extends AbstractBizServ {
             guid.init();
 
             // 添加到字典
-            Guid64Serv__.OBJ._guidDataMap.put(
+            Guid64Serv.OBJ._guidDataMap.put(
                 typeEnum, guid
             );
         });
