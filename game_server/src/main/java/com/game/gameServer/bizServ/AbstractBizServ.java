@@ -3,8 +3,8 @@ package com.game.gameServer.bizServ;
 import com.game.gameServer.framework.FrameworkLog;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 游戏业务服务
@@ -26,43 +26,37 @@ public abstract class AbstractBizServ implements IIoOperExecutable {
 
     /**
      * 告诉框架: 参数中指定的服务对象需要执行初始化过程
+     * 而且一定要在某几个服务初始化之前执行
      *
-     * @param bizServ
-     * @see #needToInit(AbstractBizServ, Class)
+     * @see #needToInit(AbstractBizServ, Set)
      *
      */
-    protected static void needToInit(AbstractBizServ bizServ) {
-        needToInit(bizServ,
-            (Class<AbstractBizServ>)null
-        );
+    protected static void needToInit(
+        AbstractBizServ bizServ, Class<? extends AbstractBizServ> ... aheadOfServClazzArr) {
+        if (aheadOfServClazzArr == null ||
+            aheadOfServClazzArr.length <= 0) {
+            // 如果类数组为空
+            needToInit(bizServ, Collections.emptySet());
+        } else {
+            // 如果类数组不为空
+            needToInit(bizServ,
+                new HashSet<>(Arrays.asList(aheadOfServClazzArr))
+            );
+        }
     }
 
     /**
      * 告诉框架: 参数中指定的服务对象需要执行初始化过程,
-     * 而且一定要在某个服务初始化之前执行
+     * 而且一定要在某几个服务初始化之前执行
      *
      * @param bizServ
-     * @param aheadBizServ
-     * @see #needToInit(AbstractBizServ, Class)
+     * @param aheadOfServClazzSet 要在某几个服务之前初始化
      *
      */
-    protected static void needToInit(
-        AbstractBizServ bizServ, AbstractBizServ aheadBizServ) {
-        needToInit(bizServ,
-            aheadBizServ.getClass()
-        );
-    }
-
-    /**
-     * 告诉框架: 参数中指定的服务对象需要执行初始化过程
-     *
-     * @param bizServ
-     * @param aheadOfServClazz 要在某个服务之前初始化
-     *
-     */
-    protected static void needToInit(
+    private static void needToInit(
         AbstractBizServ bizServ,
-        Class<? extends AbstractBizServ> aheadOfServClazz) {
+        Set<Class<? extends AbstractBizServ>> aheadOfServClazzSet) {
+
         if (bizServ == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -82,23 +76,41 @@ public abstract class AbstractBizServ implements IIoOperExecutable {
             return;
         }
 
-        if (aheadOfServClazz != null) {
-            // 获取服务索引位置
-            AbstractBizServ aheadOfServ = BIZ_SERV_LIST.stream()
-                .filter(BS -> BS.getClass().equals(aheadOfServClazz))
-                .findAny()
-                .orElse(null);
+        if (aheadOfServClazzSet != null &&
+            aheadOfServClazzSet.isEmpty() == false) {
+            //
+            // 如果 aheadOfServClazzSet 集合不为空, 则
+            // 遍历 BIZ_SERV_LIST 列表,
+            // 获取当前元素并判断当前元素是不是在 aheadOfServClazzSet 集合中出现过?
+            // 如果是, 则记录当前位置!
+            // ( 换句话说就是要找到最早出现的位置 )
+            // 这个位置将作为插入 bizServ 参数的位置...
+            //
+            // 插入位置预设为 -1
+            int insertPos = -1;
+            // 服务器列表大小
+            final int SIZE = BIZ_SERV_LIST.size();
 
-            if (aheadOfServ != null) {
-                // 插入到指定服务之前
-                BIZ_SERV_LIST.add(
-                    BIZ_SERV_LIST.indexOf(aheadOfServ),
-                    bizServ
-                );
+            for (int i = 0; i < SIZE; i++) {
+                // 获取位置变量
+                AbstractBizServ currServ = BIZ_SERV_LIST.get(i);
+
+                if (currServ != null &&
+                    aheadOfServClazzSet.contains(currServ.getClass())) {
+                    // 设置插入位置
+                    insertPos = i;
+                    break;
+                }
             }
-        } else {
-            // 添加到列表末尾
-            BIZ_SERV_LIST.add(bizServ);
+
+            if (insertPos != -1) {
+                // 插入到指定服务之前
+                BIZ_SERV_LIST.add(insertPos, bizServ);
+                return;
+            }
         }
+
+        // 添加到列表末尾
+        BIZ_SERV_LIST.add(bizServ);
     }
 }
