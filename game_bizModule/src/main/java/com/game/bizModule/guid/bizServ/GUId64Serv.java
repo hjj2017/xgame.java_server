@@ -1,5 +1,6 @@
 package com.game.bizModule.guid.bizServ;
 
+import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.framework.GameServerConf;
 import com.game.part.util.Assert;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2015/7/18
  *
  */
-public final class Guid64Serv {
+public final class Guid64Serv extends AbstractBizServ {
     /** 单例对象 */
     public static final Guid64Serv OBJ = new Guid64Serv();
 
@@ -48,13 +49,11 @@ public final class Guid64Serv {
      *
      */
     private Guid64Serv() {
+        super.needToInit(this);
     }
 
-    /**
-     * 初始化
-     *
-     */
-    static void init() {
+    @Override
+    public void init() {
         // 获取基值
         final long baseVal = getBaseVal();
 
@@ -98,10 +97,8 @@ public final class Guid64Serv {
         // 获取 Guid 数据
         Guid64Data gd = this._guidDataMap.get(typeEnum);
 
-        if (gd == null) {
-            this.init();
-            gd = this._guidDataMap.get(typeEnum);
-        }
+        // 断言 Guid 数据不为空,
+        Assert.notNull(gd);
 
         // 获取下一 UId
         return gd.next();

@@ -3,6 +3,7 @@ package com.game.gameServer.framework;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.gameServer.scene.IHeartbeat;
@@ -73,6 +74,9 @@ interface IServerInit_BizModule {
 				return;
 			}
 		});
+
+		// 调用业务模块的初始化函数
+		callBizServInitFunc();
 	}
 
 	/**
@@ -187,5 +191,28 @@ interface IServerInit_BizModule {
 			":::: 注册模板类 = {0}",
 			clazzDef.getName()
 		));
+	}
+
+	/**
+	 * 调用业务服务的初始化函数
+	 *
+	 */
+	static void callBizServInitFunc() {
+		AbstractBizServ.BIZ_SERV_LIST.forEach(BS -> {
+			if (BS == null) {
+				// 业务服务为空,
+				// 则直接退出!
+				return;
+			}
+
+			// 记录日志信息
+			FrameworkLog.LOG.info(MessageFormat.format(
+				"业务服务 {0} 执行初始化函数",
+				BS.getClass().getName()
+			));
+
+			// 调用 init 函数
+			BS.init();
+		});
 	}
 }
