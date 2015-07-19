@@ -200,7 +200,7 @@ interface IServerInit_BizModule {
 	static void callBizServInitFunc() {
 		AbstractBizServ.BIZ_SERV_LIST.forEach(BS -> {
 			if (BS == null) {
-				// 业务服务为空,
+				// 如果业务服务为空,
 				// 则直接退出!
 				return;
 			}

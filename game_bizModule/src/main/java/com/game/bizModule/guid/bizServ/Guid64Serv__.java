@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2015/7/18
  *
  */
-public final class Guid64Serv extends AbstractBizServ {
+public final class Guid64Serv__ extends AbstractBizServ {
     /** 单例对象 */
-    public static final Guid64Serv OBJ = new Guid64Serv();
+    public static final Guid64Serv__ OBJ = new Guid64Serv__();
 
     /**
      * 最大位数,
@@ -48,7 +48,7 @@ public final class Guid64Serv extends AbstractBizServ {
      * 类默认构造器
      *
      */
-    private Guid64Serv() {
+    private Guid64Serv__() {
         super.needToInit(this);
     }
 
@@ -56,12 +56,21 @@ public final class Guid64Serv extends AbstractBizServ {
     public void init() {
         // 获取基值
         final long baseVal = getBaseVal();
+        // 获取极限数列
+        final long limitCount = getLimitCount();
 
         Arrays.asList(Guid64TypeEnum.values()).forEach(typeEnum -> {
-            // 添加到字典
-            Guid64Serv.OBJ._guidDataMap.put(
+            // 创建并初始化 Guid
+            Guid64Data guid = new Guid64Data(
                 typeEnum,
-                (new Guid64Data(typeEnum, baseVal)).initAndGet()
+                baseVal,
+                limitCount
+            );
+            guid.init();
+
+            // 添加到字典
+            Guid64Serv__.OBJ._guidDataMap.put(
+                typeEnum, guid
             );
         });
     }
@@ -82,6 +91,23 @@ public final class Guid64Serv extends AbstractBizServ {
         baseVal = baseVal | S_IX << (MAX_BIT - S_MAX_BIT);
 
         return baseVal;
+    }
+
+    /**
+     * 获取极限数量
+     *
+     * @return
+     *
+     */
+    private static long getLimitCount() {
+        // 对基值进行位运算
+        long limitCount = (1 << (MAX_BIT - S_MAX_BIT)) - 2;
+
+        if (limitCount < 0) {
+            limitCount = 0;
+        }
+
+        return limitCount;
     }
 
     /**
