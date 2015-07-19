@@ -1,11 +1,10 @@
 package com.game.bizModule.human;
 
-import com.game.bizModule.guid.bizServ.Guid64Serv;
-import com.game.bizModule.guid.bizServ.Guid64TypeEnum;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
 import com.game.part.lazySaving.ILazySavingObj;
+import com.game.part.util.Assert;
 
 import java.lang.ref.WeakReference;
 
@@ -54,24 +53,25 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 	 * 创建新角色
 	 *
 	 * @param byPlayer
+	 * @param humanUId
+	 * @param humanName
 	 * @param serverName
 	 * @return
 	 *
 	 */
-	public static Human create(Player byPlayer, String serverName) {
-		if (byPlayer == null ||
-			serverName == null ||
-			serverName.isEmpty()) {
-			// 如果参数对象为空,
-			// 则直接退出!
-			return null;
-		}
+	public static Human create(
+		Player byPlayer, final long humanUId, final String humanName, String serverName) {
+		// 断言参数对象不为空
+		Assert.notNull(byPlayer, "byPlayer");
+		Assert.isTrue(humanUId > 0, "humanUId");
+		Assert.notNullOrEmpty(humanName, "humanName");
+		Assert.notNullOrEmpty(serverName, "serverName");
 
-		// 获取角色 UId
-		final long humanUId = Guid64Serv.OBJ.nextUId(Guid64TypeEnum.human);
 		// 创建角色对象并设置玩家引用
 		Human h = new Human(humanUId);
 		h._pRef = new WeakReference<>(byPlayer);
+		h._humanName = humanName;
+		h._serverName = serverName;
 
 		return h;
 	}
@@ -115,12 +115,12 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 
 	@Override
 	public String getUId() {
-		return Human.class.getSimpleName() + "_" + this._UId;
+		return "human_" + this._UId;
 	}
 
 	@Override
 	public String getThreadKey() {
-		return AbstractPlayerOrSceneIoOper.getThreadKey(0L);
+		return AbstractPlayerOrSceneIoOper.getThreadKey(this._UId);
 	}
 
 	/**

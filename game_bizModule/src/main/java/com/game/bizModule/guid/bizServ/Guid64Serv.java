@@ -76,7 +76,7 @@ public final class Guid64Serv extends AbstractBizServ {
     }
 
     /**
-     * 获取基值
+     * 获取基值, 基值是由平台 Index 和服务器 Index 推算得出
      *
      * @return
      *

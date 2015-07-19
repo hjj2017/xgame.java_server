@@ -24,8 +24,9 @@ final class Guid64Data {
      * 类参数构造器
      *
      * @param typeEnum
-     * @param baseVal 基值, 一般是由平台 Id + 服务器 Index 推算出来的
+     * @param baseVal 基值,基值是由平台 Index 和服务器 Index 推算得出
      * @param limitCount 极限数量
+     * @see Guid64Serv#getBaseVal()
      *
      */
     Guid64Data(Guid64TypeEnum typeEnum, long baseVal, long limitCount) {
@@ -45,20 +46,19 @@ final class Guid64Data {
         // 起始值
         long start = 0;
         // 从数据库里查询最大 Id
-        long maxId = this._typeEnum.queryMaxIdFromDb();
+        long maxIdFromDb = this._typeEnum.queryMaxIdFromDb();
 
-        if (maxId > this._baseVal) {
+        if (maxIdFromDb > this._baseVal) {
             // 如果数据库中的最大值 > 基值,
             // 进行异或运算!
-            start = maxId ^ this._baseVal;
+            start = maxIdFromDb ^ this._baseVal;
         }
 
         if (start >= this._limitCount) {
             // 如果起始位置已经大于极限,
             // 则抛出异常!
             throw new Guid64Error(MessageFormat.format(
-                "起始值 {0} 已经到达极限数量 {1}",
-                String.valueOf(start),
+                "起始值已经到达极限数量 {0}",
                 String.valueOf(this._limitCount)
             ));
         }
@@ -79,8 +79,7 @@ final class Guid64Data {
             // 如果计数器已经到达极限,
             // 则抛出异常!
             throw new Guid64Error(MessageFormat.format(
-                "计数器 {0} 已经到达极限数量 {1}",
-                String.valueOf(this._counter.get()),
+                "计数器已经到达极限数量 {0}",
                 String.valueOf(this._limitCount)
             ));
         } else {
