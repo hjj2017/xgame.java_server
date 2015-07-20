@@ -30,7 +30,13 @@ interface IServ_Disconnect {
         }
 
         // 获取玩家角色
-        Human h = Human.getHuman(p);
+        final Human h = Human.getHuman(p);
+
+        if (h == null) {
+            // 如果角色对象为空,
+            // 则直接退出!
+            return;
+        }
 
         // 触发角色退出游戏事件
         HumanServ.OBJ.fireQuitGameEvent(h);
@@ -38,7 +44,7 @@ interface IServ_Disconnect {
         LazySavingHelper.OBJ.execUpdateWithPredicate(lso -> {
             return lso != null
                 && lso.getGroupKey() != null
-                && lso.getGroupKey().equals(h._UId);
+                && lso.getGroupKey().equals(h.getGroupKey());
         });
 
         // 记录日志信息

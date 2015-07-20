@@ -39,17 +39,17 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 		}
 
 		// 获取管理器对象
-		CdManager mngr = this._mngrMap.get(h._UId);
+		CdManager mngr = this._mngrMap.get(h._humanUId);
 
 		if (mngr == null) {
-			mngr = new CdManager(h._UId);
+			mngr = new CdManager(h._humanUId);
 			// 添加到字典
 			CdManager orig = this._mngrMap.putIfAbsent(
-				h._UId, mngr
+				h._humanUId, mngr
 			);
 
 			if (orig != null) {
-				CdLog.LOG.warn("Cd 管理器不为空, 角色 = " + h._UId);
+				CdLog.LOG.warn("Cd 管理器不为空, 角色 = " + h._humanUId);
 				mngr = orig;
 			}
 		}
@@ -65,6 +65,7 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 			// 并添加到字典!
 			tmpMap = el.stream()
 				.map(e -> new CdTimer(
+					h._humanUId,
 					CdTypeEnum.parse(e._cdTypeInt), 
 					e._startTime, 
 					e._endTime

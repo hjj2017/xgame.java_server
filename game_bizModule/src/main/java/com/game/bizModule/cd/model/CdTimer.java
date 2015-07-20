@@ -3,6 +3,7 @@ package com.game.bizModule.cd.model;
 import java.text.MessageFormat;
 
 import com.game.bizModule.cd.entity.CdTimerEntity;
+import com.game.bizModule.human.AbstractHumanBelonging;
 import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
 import com.game.part.lazySaving.ILazySavingObj;
 import com.game.part.util.Assert;
@@ -14,9 +15,7 @@ import com.game.part.util.Assert;
  * @since 2013/4/8
  * 
  */
-public class CdTimer implements ILazySavingObj<CdTimerEntity> {
-	/** 玩家角色 UId */
-	public long _humanUId = -1;
+public class CdTimer extends AbstractHumanBelonging<CdTimerEntity> {
 	/** 队列类型 */
 	public final CdTypeEnum _cdType;
 	/** 开始时间 */
@@ -28,15 +27,14 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 
 	/**
 	 * 类参数构造器
-	 * 
+	 *
+	 * @param humanUId
 	 * @param cdType 冷却类型
 	 * 
 	 */
-	public CdTimer(CdTypeEnum cdType) {
-		// 断言参数不为空
-		Assert.notNull(cdType, "cdType");
-		// 设置 Cd 类型
-		this._cdType = cdType;
+	public CdTimer(long humanUId, CdTypeEnum cdType) {
+		// 调用参数构造器
+		this(humanUId, cdType, 0L, 0L);
 	}
 
 	/**
@@ -47,7 +45,12 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 	 * @param endTime 
 	 * 
 	 */
-	public CdTimer(CdTypeEnum cdType, long startTime, long endTime) {
+	public CdTimer(long humanUId, CdTypeEnum cdType, long startTime, long endTime) {
+		// 调用父类构造器
+		super(humanUId);
+		// 断言参数不为空
+		Assert.notNull(cdType, "cdType");
+		// Cd 类型及开始、结束时间
 		this._cdType = cdType;
 		this._startTime = startTime;
 		this._endTime = endTime;
@@ -85,20 +88,14 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 	@Override
 	public String getStoreKey() {
 		return MessageFormat.format(
-			"{0}-{1}-{2}",
-			this.getClass().getSimpleName(),
+			"CdTimer_{0}_{1}",
 			this._cdType.getIntVal(),
-			this._humanUId
+			super._humanUId
 		);
 	}
 
 	@Override
 	public CdTimerEntity toEntity() {
 		return null;
-	}
-
-	@Override
-	public String getThreadKey() {
-		return AbstractPlayerOrSceneIoOper.getThreadKey(this._humanUId);
 	}
 }
