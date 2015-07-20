@@ -14,9 +14,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_cd_timer")
 public class CdTimerEntity {
-	/** 玩家角色 UUID */
-	@Id @Column(name = "human_uuid")
-	public Long _humanUUID = null;
+	/** 玩家角色 UId */
+	@Id @Column(name = "human_uid")
+	public Long _humanUId = null;
 	/** Cd 类型 int 值 */
 	@Column(name = "cd_type_int")
 	public Integer _cdTypeInt = null;

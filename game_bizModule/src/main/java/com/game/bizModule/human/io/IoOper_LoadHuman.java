@@ -45,7 +45,7 @@ public class IoOper_LoadHuman extends AbstractPlayerOrSceneIoOper {
             // 如果角色实体为空,
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
-                "角色实体为空, platformUIdStr = {0}, humanUUId = {1}",
+                "角色实体为空, platformUIdStr = {0}, humanUId = {1}",
                 this._p._platformUIdStr,
                 String.valueOf(this._humanUId)
             ));

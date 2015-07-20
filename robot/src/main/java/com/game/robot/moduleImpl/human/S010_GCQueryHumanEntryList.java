@@ -1,7 +1,9 @@
 package com.game.robot.moduleImpl.human;
 
 import com.game.bizModule.human.msg.CGCreateHuman;
+import com.game.bizModule.human.msg.CGEnterHuman;
 import com.game.bizModule.human.msg.GCQueryHumanEntryList;
+import com.game.bizModule.human.msg.HumanEntryMO;
 import com.game.bizModule.login.msg.GCLogin;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgStr;
@@ -39,9 +41,24 @@ public class S010_GCQueryHumanEntryList extends AbstractGCMsgHandler<GCQueryHuma
 			// 发送 CG 消息
 			robotObj.sendMsg(cgMSG);
 			return;
-		}
+		} else {
+			// 进入角色
+			HumanEntryMO entryMo = msgObj._humanEntryList.get(0);
 
-		RobotLog.LOG.info("有角色");
+			if (entryMo == null) {
+				// 如果角色入口为空,
+				// 则直接退出!
+				RobotLog.LOG.error("角色入口为空");
+				return;
+			}
+
+			// 进入角色!
+			CGEnterHuman cgMSG = new CGEnterHuman();
+			cgMSG._humanUId = entryMo._humanUId;
+			cgMSG._humanUIdStr = entryMo._humanUIdStr;
+			// 发送 CG 消息
+			robotObj.sendMsg(cgMSG);
+		}
 	}
 
 	@Override
