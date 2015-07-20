@@ -61,26 +61,39 @@ interface IServ_CreateHuman {
         }
 
         // 获取角色状态表
-        HumanStateTable hStateTable = p.getPropValOrCreate(HumanStateTable.class);
+        HumanStateTable hStateTbl = p.getPropValOrCreate(HumanStateTable.class);
 
-        if (hStateTable._serverName.equals(serverName) == false) {
+        if (hStateTbl._serverName.equals(serverName) == false) {
             // 如果服务器名称不对,
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 所选择的服务器名称不对! 查询角色时用的是 ''{1}'', 但在创建角色时用的是 ''{2}''",
                 p._platformUIdStr,
-                hStateTable._serverName,
+                hStateTbl._serverName,
                 serverName
             ));
             return;
         }
 
-        if (hStateTable._execQueryHumanEntryList ||
-            hStateTable._hasHuman ||
-            hStateTable._execCreateHuman) {
+        if (hStateTbl._queryHumanEntryListTimes <= 0 ||
+            hStateTbl._hasHuman) {
+            // 如果还没有查询过角色入口列表,
+            // 或者是已有角色,
+            // 则直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 还没有查询过角色入口列表, 或者玩家已有角色",
+                p._platformUIdStr
+            ));
+            return;
+        }
+
+        if (hStateTbl._execQueryHumanEntryList ||
+            hStateTbl._execCreateHuman ||
+            hStateTbl._execEnterHuman) {
             // 如果正在查询角色入口列表,
-            // 或者已经有角色,
-            // 直接退出!
+            // 或者正在创建角色,
+            // 再或者正在进入角色,
+            // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 已有角色或正在操作中",
                 p._platformUIdStr
@@ -89,7 +102,7 @@ interface IServ_CreateHuman {
         }
 
         // 执行建角过程
-        hStateTable._execCreateHuman = true;
+        hStateTbl._execCreateHuman = true;
 
         // 获取角色 UId
         final long newUId = Guid64Serv.OBJ.nextUId(Guid64TypeEnum.human);

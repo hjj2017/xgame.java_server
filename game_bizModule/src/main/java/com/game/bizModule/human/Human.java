@@ -7,7 +7,8 @@ import com.game.part.util.Assert;
 import java.lang.ref.WeakReference;
 
 /**
- * 玩家角色
+ * 玩家角色,
+ * <font color="#990000">注意: 角色自己就是自己的财务</font>
  * 
  * @author hjj2017
  * @since 2015/7/11
@@ -108,11 +109,6 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		} else {
 			return null;
 		}
-	}
-
-	@Override
-	public String getStoreKey() {
-		return "human_" + this._humanUId;
 	}
 
 	/**

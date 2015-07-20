@@ -43,14 +43,18 @@ public final class AllMsgSerialUId {
     public static final short CG_QUERY_HUMAN_ENTRY_LIST = ++MSG_BASE_HUMAN;
     /** 获取玩家角色列表 GC 消息 */
     public static final short GC_QUERY_HUMAN_ENTRY_LIST = ++MSG_BASE_HUMAN;
-    /** 准备创建角色 CG 消息 */
-    public static final short CG_PRE_CREATE_HUMAN = ++MSG_BASE_HUMAN;
-    /** 准备创建角色 GC 消息 */
-    public static final short GC_PRE_CREATE_HUMAN = ++MSG_BASE_HUMAN;
+    /** 随机角色名称 CG 消息 */
+    public static final short CG_RAND_HUMAN_NAME = ++MSG_BASE_HUMAN;
+    /** 随机角色名称 GC 消息 */
+    public static final short GC_RAND_HUMAN_NAME = ++MSG_BASE_HUMAN;
     /** 创建角色 CG 消息 */
     public static final short CG_CREATE_HUMAN = ++MSG_BASE_HUMAN;
     /** 创建角色 GC 消息 */
     public static final short GC_CREATE_HUMAN = ++MSG_BASE_HUMAN;
+    /** 进入角色 CG 消息 */
+    public static final short CG_ENTER_HUMAN = ++MSG_BASE_HUMAN;
+    /** 进入角色 GC 消息 */
+    public static final short GC_ENTER_HUMAN = ++MSG_BASE_HUMAN;
 
     /**
      * 类默认构造器

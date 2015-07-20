@@ -5,7 +5,11 @@ import com.game.part.lazySaving.ILazySavingObj;
 
 /**
  * 角色财物或附属品,
- * 该类的目的是封装 ILazySavingObj 接口
+ * 提出这个概念,
+ * 是为了保证所有与角色相关的数据, 都能在同一个线程里存取!
+ * 该类的另外一个目的,
+ * 是封装 ILazySavingObj 接口,
+ * 通过封装该接口来达到上述目的...
  *
  * @author hjj2017
  * @since 2015/7/20
@@ -57,7 +61,11 @@ public abstract class AbstractHumanBelonging<TEntity> implements ILazySavingObj<
             return this._threadKey;
         }
 
+        //
         // 设置线程关键字并返回
+        // 注意: 这里使用了 AbstractPlayerOrSceneIoOper 类,
+        // 这说明所有与玩家相关的 IO 操作,
+        // 全部提交到该类所对应的 IO 线程上...
         this._threadKey = AbstractPlayerOrSceneIoOper.getThreadKey(
             this._humanUId
         );

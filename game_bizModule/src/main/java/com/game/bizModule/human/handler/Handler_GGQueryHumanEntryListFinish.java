@@ -25,8 +25,10 @@ public class Handler_GGQueryHumanEntryListFinish extends AbstractGGMsgHandler<GG
 
         // 获取玩家角色状态表
         HumanStateTable stateTbl = ggMSG._p.getPropValOrCreate(HumanStateTable.class);
-        // 执行结束, 更新服务器名称
+        // 执行结束, 令查询次数 +1
         stateTbl._execQueryHumanEntryList = false;
+        stateTbl._queryHumanEntryListTimes++;
+        // 更新服务器名称
         stateTbl._serverName = ggMSG._serverName;
 
         // 创建 GC 消息

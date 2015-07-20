@@ -1,12 +1,10 @@
 package com.game.bizModule.cd.model;
 
-import java.text.MessageFormat;
-
 import com.game.bizModule.cd.entity.CdTimerEntity;
 import com.game.bizModule.human.AbstractHumanBelonging;
-import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
-import com.game.part.lazySaving.ILazySavingObj;
 import com.game.part.util.Assert;
+
+import java.text.MessageFormat;
 
 /**
  * 冷却计时器

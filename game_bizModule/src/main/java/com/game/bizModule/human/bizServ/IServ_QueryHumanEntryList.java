@@ -47,8 +47,12 @@ interface IServ_QueryHumanEntryList {
         // 获取角色状态表
         HumanStateTable humanStateTbl = p.getPropValOrCreate(HumanStateTable.class);
 
-        if (humanStateTbl._execQueryHumanEntryList) {
+        if (humanStateTbl._execQueryHumanEntryList ||
+            humanStateTbl._execCreateHuman ||
+            humanStateTbl._execEnterHuman) {
             // 如果正在执行查询角色入口列表的任务,
+            // 或者正在创建角色,
+            // 再或者正在进入角色,
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 正在操作中",
