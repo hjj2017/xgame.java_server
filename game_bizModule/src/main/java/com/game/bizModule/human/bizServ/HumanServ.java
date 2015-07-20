@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2015/7/11
  *
  */
-public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryList, IServ_CreateHuman {
+public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryList, IServ_CreateHuman, IServ_EnterHuman {
     /** 单例对象 */
     public static final HumanServ OBJ = new HumanServ();
     /** 角色时间监听列表 */

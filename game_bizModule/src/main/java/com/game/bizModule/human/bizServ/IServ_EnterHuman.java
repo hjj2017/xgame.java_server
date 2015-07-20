@@ -2,7 +2,7 @@ package com.game.bizModule.human.bizServ;
 
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.HumanStateTable;
-import com.game.bizModule.human.io.IoOper_EnterHuman;
+import com.game.bizModule.human.io.IoOper_LoadHuman;
 import com.game.bizModule.login.LoginStateTable;
 import com.game.gameServer.framework.Player;
 
@@ -80,7 +80,7 @@ interface IServ_EnterHuman {
         hStateTable._execEnterHuman = true;
 
         // 创建异步操作对象
-        IoOper_EnterHuman op = new IoOper_EnterHuman();
+        IoOper_LoadHuman op = new IoOper_LoadHuman();
         op._p = p;
         op._humanUId = humanUId;
         // 执行异步操作
