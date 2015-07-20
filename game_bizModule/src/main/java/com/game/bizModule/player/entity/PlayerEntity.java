@@ -13,9 +13,9 @@ import javax.persistence.Id;
  */
 @Entity(name = "t_player")
 public class PlayerEntity {
-	/** 账号 Id */
-	@Id @Column(name = "platform_uid", length = 64, updatable = false)
-	public String _platformUId = null;
+	/** 平台 UId 字符串 */
+	@Id @Column(name = "platform_uid_str", length = 64, updatable = false)
+	public String _platformUIdStr = null;
 	/** 用户名 */
 	@Column(name = "user_name", length = 32, updatable = false)
 	public String _userName = null;

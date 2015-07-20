@@ -21,9 +21,9 @@ public class HumanEntity {
     /** 玩家角色名称 */
     @Column(name = "human_name", length = 32, updatable = false)
     public String _humanName = null;
-    /** 平台 UId */
-    @Column(name = "platform_uid", length = 64, updatable = false)
-    public String _platformUId = null;
+    /** 平台 UId 字符串 */
+    @Column(name = "platform_uid_str", length = 64, updatable = false)
+    public String _platformUIdStr = null;
     /** 服务器名称 */
     @Column(name = "server_name", length = 16, updatable = false)
     public String _serverName = null;

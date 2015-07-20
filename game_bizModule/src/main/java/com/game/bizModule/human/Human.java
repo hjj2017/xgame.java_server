@@ -114,7 +114,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 	}
 
 	@Override
-	public String getUId() {
+	public String getStoreKey() {
 		return "human_" + this._UId;
 	}
 
@@ -135,7 +135,7 @@ public final class Human implements ILazySavingObj<HumanEntity> {
 		HumanEntity he = new HumanEntity();
 		// 设置实体属性
 		he._humanUId = this._UId;
-		he._platformUId = this.getPlayer()._platformUId;
+		he._platformUIdStr = this.getPlayer()._platformUIdStr;
 		he._serverName = this._serverName;
 		he._humanName = this._humanName;
 

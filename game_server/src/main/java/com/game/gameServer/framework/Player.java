@@ -13,7 +13,7 @@ public final class Player {
 	/** 会话 Id, 主要是用于通信层 */
 	public long _sessionUId = -1L;
 	/** 平台 UId */
-	public String _platformUId = null;
+	public String _platformUIdStr = null;
 	/** 用户名 */
 	public String _userName = null;
 	/** Pf */

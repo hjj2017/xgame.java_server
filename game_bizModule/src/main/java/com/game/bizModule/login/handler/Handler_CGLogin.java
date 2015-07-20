@@ -23,7 +23,7 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 		// 创建玩家对象
 		Player p = new Player();
 		// 设置平台 UId 和会话 UId
-		p._platformUId = cgMSG._platformUId.getStrVal();
+		p._platformUIdStr = cgMSG._platformUIdStr.getStrVal();
 		p._sessionUId = this._sessionUId;
 		// 安装玩家对象
 		super.setupPlayer(p);

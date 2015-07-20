@@ -37,14 +37,14 @@ interface IServ_Disconnect {
         // 立即写入延迟数据
         LazySavingHelper.OBJ.execUpdateWithPredicate(lso -> {
             return lso != null
-                && lso.getGroupUId() != null
-                && lso.getGroupUId().equals(h._UId);
+                && lso.getGroupKey() != null
+                && lso.getGroupKey().equals(h._UId);
         });
 
         // 记录日志信息
         LoginLog.LOG.info(MessageFormat.format(
             "玩家 {0} 已经退出游戏",
-            p._platformUId
+            p._platformUIdStr
         ));
     }
 }

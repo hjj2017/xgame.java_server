@@ -83,7 +83,7 @@ public class CdTimer implements ILazySavingObj<CdTimerEntity> {
 	}
 
 	@Override
-	public String getUId() {
+	public String getStoreKey() {
 		return MessageFormat.format(
 			"{0}-{1}-{2}",
 			this.getClass().getSimpleName(),

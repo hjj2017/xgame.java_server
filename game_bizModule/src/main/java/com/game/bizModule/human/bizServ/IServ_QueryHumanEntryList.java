@@ -39,7 +39,7 @@ interface IServ_QueryHumanEntryList {
             // 那还是退出吧!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 还没有通过登陆验证",
-                p._platformUId
+                p._platformUIdStr
             ));
             return;
         }
@@ -52,7 +52,7 @@ interface IServ_QueryHumanEntryList {
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 正在操作中",
-                p._platformUId
+                p._platformUIdStr
             ));
             return;
         }

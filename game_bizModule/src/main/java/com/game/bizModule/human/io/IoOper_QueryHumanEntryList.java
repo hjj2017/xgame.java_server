@@ -33,14 +33,14 @@ public class IoOper_QueryHumanEntryList extends AbstractLoginIoOper {
         // 创建参数字典
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put(
-            "platformUId",
-            this._p._platformUId
+            "platformUIdStr",
+            this._p._platformUIdStr
         );
 
         // 获取玩家角色入口列表
         List<HumanEntryEntity> heel = CommDao.OBJ.getResultList(
             HumanEntryEntity.class,
-            "entity._platformUId = :platformUId",
+            "entity._platformUIdStr = :platformUIdStr",
             paramMap
         );
 

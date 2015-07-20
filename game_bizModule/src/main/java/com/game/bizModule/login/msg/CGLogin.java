@@ -14,8 +14,8 @@ import com.game.part.msg.type.MsgStr;
  *
  */
 public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
-	/** 平台 UId */
-	public MsgStr _platformUId;
+	/** 平台 UId 字符串 */
+	public MsgStr _platformUIdStr;
 	/** 登陆字符串 */
 	public MsgStr _loginStr;
 
@@ -29,12 +29,14 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	/**
 	 * 类参数构造器
 	 *
-	 * @param platformUId
+	 * @param platformUIdStr
 	 * @param loginStr
 	 *
 	 */
-	public CGLogin(String platformUId, String loginStr) {
-		this._platformUId = new MsgStr(platformUId);
+	public CGLogin(
+		String platformUIdStr,
+		String loginStr) {
+		this._platformUIdStr = new MsgStr(platformUIdStr);
 		this._loginStr = new MsgStr(loginStr);
 	}
 

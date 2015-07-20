@@ -65,8 +65,8 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 	 */
 	protected boolean setupPlayer(Player newP) {
 		if (newP == null ||
-			newP._platformUId == null ||
-			newP._platformUId.isEmpty() ||
+			newP._platformUIdStr == null ||
+			newP._platformUIdStr.isEmpty() ||
 			newP._sessionUId <= 0L) {
 			// 如果参数对象为空,
 			// 则直接退出!
@@ -85,7 +85,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
 				"sessionUId = {0}, 已有老玩家 {1}",
-				String.valueOf(newP._sessionUId), oldP._platformUId
+				String.valueOf(newP._sessionUId), oldP._platformUIdStr
 			));
 			this.disconnect(newP);
 			this.disconnect(oldP);
@@ -93,14 +93,14 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> 
 		}
 
 		// 获取会话对象
-		IoSession sessionObj = mngrObj.getSessionByPlatformUId(newP._platformUId);
+		IoSession sessionObj = mngrObj.getSessionByPlatformUIdStr(newP._platformUIdStr);
 
 		if (sessionObj != null) {
 			// 如果有会话对象,
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
-				"platformUId = {0}, 已有会话对象",
-				newP._platformUId
+				"platformUIdStr = {0}, 已有会话对象",
+				newP._platformUIdStr
 			));
 			this.disconnect(newP);
 			sessionObj.close(false);

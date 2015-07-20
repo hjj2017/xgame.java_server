@@ -55,7 +55,7 @@ interface IServ_CreateHuman {
             // 直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 还没有通过登陆验证",
-                p._platformUId
+                p._platformUIdStr
             ));
             return;
         }
@@ -68,7 +68,7 @@ interface IServ_CreateHuman {
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 所选择的服务器名称不对! 查询角色时用的是 ''{1}'', 但在创建角色时用的是 ''{2}''",
-                p._platformUId,
+                p._platformUIdStr,
                 hStateTable._serverName,
                 serverName
             ));
@@ -83,7 +83,7 @@ interface IServ_CreateHuman {
             // 直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 已有角色或正在操作中",
-                p._platformUId
+                p._platformUIdStr
             ));
             return;
         }

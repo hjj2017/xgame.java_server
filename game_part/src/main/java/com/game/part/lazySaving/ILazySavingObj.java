@@ -11,20 +11,20 @@ package com.game.part.lazySaving;
  */
 public interface ILazySavingObj<TEntity> {
 	/**
-	 * 获取全局 Id
+	 * 获取存储关键字
 	 * 
 	 * @return
 	 * 
 	 */
-	String getUId();
+	String getStoreKey();
 
 	/**
-	 * 获取分组 UId
+	 * 获取分组关键字
 	 * 
 	 * @return
 	 * 
 	 */
-	default String getGroupUId() {
+	default String getGroupKey() {
 		return null;
 	}
 
