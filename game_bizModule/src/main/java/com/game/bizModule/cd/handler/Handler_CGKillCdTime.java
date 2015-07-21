@@ -2,8 +2,8 @@ package com.game.bizModule.cd.handler;
 
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.cd.msg.CGKillCdTimeMsg;
-import com.game.bizModule.cd.serv.CdServ;
-import com.game.bizModule.cd.serv.Result_KillCdTime;
+import com.game.bizModule.cd.bizServ.CdServ;
+import com.game.bizModule.cd.bizServ.Result_KillCdTime;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.part.util.Assert;
 

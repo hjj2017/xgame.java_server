@@ -1,16 +1,10 @@
 package com.game.bizModule.human.bizServ;
 
-import com.game.bizModule.human.Human;
-import com.game.bizModule.human.HumanLog;
-import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.entity.HumanEntryEntity;
-import com.game.bizModule.human.event.IHumanEventListen;
 import com.game.gameServer.bizServ.AbstractBizServ;
-import com.game.gameServer.framework.Player;
 import com.game.part.dao.CommDao;
 
-import java.text.MessageFormat;
-import java.util.*;
+import java.util.List;
 
 /**
  * 玩家角色服务
@@ -40,6 +34,4 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
             HumanNaming.OBJ._fullNameSet.add(hee._fullName);
         });
     }
-
-
 }

@@ -11,23 +11,34 @@ import com.game.part.util.EnumHelper;
  */
 public enum CdTypeEnum implements EnumHelper.ICustomEnum {
 	/** 战斗冷却 */
-	battle(1, "battle"),
-
+	battle("battle", 1001),
 	/** 建筑队列 - 1 */
-	building1(2001, "building1"),
+	building1("building1", 2001),
 	/** 建筑队列 - 2 */
-	building2(2002, "building2"),
+	building2("building2", 2002),
 	/** 建筑队列 - 3 */
-	building3(2003, "building3"),
+	building3("building3", 2003),
+	/** 征收 */
+	levy("levy", 4001),
+	/** 装备强化 */
+	equipEnhance("equipEnhance", 3001),
+	/** 单人竞技场 */
+	singleArena("singleArena", 5001),
+	/** 世界聊天 */
+	worldChat("worldChat", 6001),
 ;
 
 	/** 建筑类型 Cd 数组 */
-	private static final CdTypeEnum[] BUILDING_CD_TYPE_ARR = { building1, building2, building3 };
+	public static final CdTypeEnum[] BUILDING_CD_TYPE_ARR = {
+		building1,
+		building2,
+		building3
+	};
 
-	/** 整数值 */
-	private int _intVal = -1;
 	/** 字符串值 */
 	private String _strVal = null;
+	/** 整数值 */
+	private int _intVal = -1;
 
 	/**
 	 * 枚举参数构造器
@@ -36,14 +47,9 @@ public enum CdTypeEnum implements EnumHelper.ICustomEnum {
 	 * @param strVal
 	 * 
 	 */
-	private CdTypeEnum(int intVal, String strVal) {
-		this._intVal = intVal;
+	CdTypeEnum(String strVal, int intVal) {
 		this._strVal = strVal;
-	}
-
-	@Override
-	public int getIntVal() {
-		return this._intVal;
+		this._intVal = intVal;
 	}
 
 	@Override
@@ -51,22 +57,17 @@ public enum CdTypeEnum implements EnumHelper.ICustomEnum {
 		return this._strVal;
 	}
 
-	/**
-	 * 获取建筑 Cd 类型数组
-	 * 
-	 * @return 
-	 * 
-	 */
-	public static CdTypeEnum[] getBuildingCdTypeArray() {
-		return BUILDING_CD_TYPE_ARR;
+	@Override
+	public int getIntVal() {
+		return this._intVal;
 	}
 
 	/**
 	 * 将整数值解析为枚举对象
-	 * 
+	 *
 	 * @param intVal
 	 * @return
-	 * 
+	 *
 	 */
 	public static CdTypeEnum parse(int intVal) {
 		return EnumHelper.parse(intVal, CdTypeEnum.values());

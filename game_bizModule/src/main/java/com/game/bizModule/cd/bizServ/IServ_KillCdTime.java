@@ -1,4 +1,4 @@
-package com.game.bizModule.cd.serv;
+package com.game.bizModule.cd.bizServ;
 
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.part.util.Assert;

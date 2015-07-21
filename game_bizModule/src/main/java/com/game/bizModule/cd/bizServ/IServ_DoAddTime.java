@@ -1,7 +1,8 @@
-package com.game.bizModule.cd.serv;
+package com.game.bizModule.cd.bizServ;
 
 import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
+import com.game.bizModule.time.TimeServ;
 import com.game.part.util.Assert;
 import com.game.part.util.BizResultPool;
 
@@ -16,14 +17,14 @@ interface IServ_DoAddTime {
 	/**
 	 * 增加 Cd 时间
 	 * 
-	 * @param humanUUID
+	 * @param humanUId
 	 * @param cdType
 	 * @param ms
 	 * @return 
 	 * 
 	 */
 	default Result_DoAddTime doAddTime(
-		long humanUUID, 
+		long humanUId,
 		CdTypeEnum cdType, 
 		long ms) {
 		// 断言参数对象不为空
@@ -32,7 +33,7 @@ interface IServ_DoAddTime {
 		Result_DoAddTime result = BizResultPool.borrow(Result_DoAddTime.class);
 		// 是否可以增加 Cd 时间 ?
 		Result_CanAddTime result_1 = CdServ.OBJ.canAddTime(
-			humanUUID, cdType
+			humanUId, cdType
 		);
 
 		if (result_1._can == false) {
@@ -43,11 +44,11 @@ interface IServ_DoAddTime {
 		}
 
 		// 获取管理器
-		CdManager mngr = CdServ.OBJ._mngrMap.get(humanUUID);
+		CdManager mngrObj = CdServ.OBJ._mngrMap.get(humanUId);
 		// 获取计时器
-		CdTimer t = mngr._cdMap.get(cdType);
+		CdTimer t = mngrObj._cdTimerMap.get(cdType);
 		// 获取当前时间
-		long now = CdServ.OBJ.getCurrTime();
+		long now = TimeServ.OBJ.now();
 		// 获取当前时间与结束时间的时间差
 		long diffTime_0 = t.getDiffTime(now);
 		// 更新开始时间和结束时间

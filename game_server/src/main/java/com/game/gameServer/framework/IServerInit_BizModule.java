@@ -75,6 +75,8 @@ interface IServerInit_BizModule {
 			}
 		});
 
+		// 验证所有模板数据
+		XlsxTmplServ.OBJ.validateAll();
 		// 调用业务模块的初始化函数
 		callBizServInitFunc();
 	}
@@ -184,8 +186,9 @@ interface IServerInit_BizModule {
 			XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
 		}
 
-		// 加载模板对象列表
+		// 加载模板对象列表并打包
 		XlsxTmplServ.OBJ.loadTmplData(clazzDef);
+		XlsxTmplServ.OBJ.packUp(clazzDef);
 		// 记录模板注册日志
 		FrameworkLog.LOG.info(MessageFormat.format(
 			":::: 注册模板类 = {0}",

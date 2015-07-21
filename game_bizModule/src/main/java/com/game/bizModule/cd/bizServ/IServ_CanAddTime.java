@@ -1,4 +1,4 @@
-package com.game.bizModule.cd.serv;
+package com.game.bizModule.cd.bizServ;
 
 import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
@@ -34,19 +34,17 @@ interface IServ_CanAddTime {
 			// 如果管理器对象为空, 
 			// 则直接退出!
 			result._can = false;
-			result._errorCode = CdLangDef.ERROR_NULL_MNGR;
 			return result;
 		}
 
 		// 获取计时器
-		CdTimer t = mngr._cdMap.get(cdType);
+		CdTimer t = mngr._cdTimerMap.get(cdType);
 
 		if (t == null || 
 			t._opened == false) {
 			// 如果定时器不存在或者还没有开启, 
 			// 则直接跳过!
 			result._can = false;
-			result._errorCode = CdLangDef.ERROR_CD_NOT_OPEN;
 			return result;
 		}
 
@@ -59,7 +57,6 @@ interface IServ_CanAddTime {
 			// 如果时间间隔大于阈值, 
 			// 则直接跳过!
 			result._can = false;
-			result._errorCode = CdLangDef.ERROR_CD_TOO_HOT;
 			return result;
 		}
 
@@ -75,13 +72,13 @@ interface IServ_CanAddTime {
 	 */
 	static long getThreshold(CdTypeEnum cdType) {
 		// 获取计时器模板对象
-		CdTimerTmpl cdTimer = CdTimerTmpl.get(cdType);
+		CdTimerTmpl tmplObj = CdTimerTmpl.getByCdType(cdType);
 
-		if (cdTimer == null || 
-			cdTimer._threshold == null) {
+		if (tmplObj == null ||
+			tmplObj._threshold == null) {
 			return 0L;
 		} else {
-			return cdTimer._threshold;
+			return tmplObj._threshold.getLongVal();
 		}
 	}
 }

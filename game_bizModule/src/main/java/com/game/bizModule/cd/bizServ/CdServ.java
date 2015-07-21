@@ -1,17 +1,20 @@
-package com.game.bizModule.cd.serv;
+package com.game.bizModule.cd.bizServ;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.game.bizModule.cd.CdLog;
-import com.game.bizModule.cd.entity.CdTimerEntity;
+import com.game.bizModule.cd.entity.CdTimerEntity_X;
 import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
+import com.game.bizModule.cd.tmpl.CdTimerTmpl;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.event.IHumanEventListen;
+import com.game.bizModule.time.TimeServ;
 import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.framework.Player;
 import com.game.part.dao.CommDao;
@@ -57,48 +60,63 @@ public final class CdServ extends AbstractBizServ implements IHumanEventListen, 
 		if (mngrObj == null) {
 			mngrObj = new CdManager(h._humanUId);
 			// 添加到字典
-			CdManager old = this._mngrMap.putIfAbsent(
+			CdManager oldMngr = this._mngrMap.putIfAbsent(
 				h._humanUId, mngrObj
 			);
 
-			if (old != null) {
-				CdLog.LOG.warn("Cd 管理器不为空, 角色 = " + h._humanUId);
-				mngrObj = old;
+			if (oldMngr != null) {
+				CdLog.LOG.warn(MessageFormat.format(
+					"Cd 管理器不为空, 角色 = {0}",
+					String.valueOf(h._humanUId)
+				));
+				mngrObj = oldMngr;
 			}
 		}
 
+		for (CdTypeEnum typeEnum : CdTypeEnum.values()) {
+			// 获取 Cd 计时器模板
+			CdTimerTmpl tmplObj = CdTimerTmpl.getByCdType(typeEnum);
+			// 创建计时器
+			CdTimer timerObj = new CdTimer(
+				h._humanUId,
+				typeEnum,
+				tmplObj._defaultOpen.getBoolVal()
+			);
+			// 添加到字典
+			mngrObj._cdTimerMap.put(typeEnum, timerObj);
+		}
+
 		// 获取 Cd 计时器列表
-		List<CdTimerEntity> el = CommDao.OBJ.getResultList(CdTimerEntity.class, "entity.human_uuid = " + h._humanUId);
+		List<? extends CdTimerEntity_X> el = CommDao.OBJ.getResultList(
+			// 注意: 这里是从分表里读取数据的...
+			CdTimerEntity_X.getSplitEntityClazz(h._humanUId),
+			// 设置 SQL 查询条件
+			"entity._humanUId = " + h._humanUId
+		);
 
 		if (el != null && 
 			el.isEmpty() == false) {
-			// 定义临时字典
-			Map<CdTypeEnum, CdTimer> tmpMap = null;
-			// 将实体对象转换为业务对象, 
-			// 并添加到字典!
-			tmpMap = el.stream()
-				.map(e -> new CdTimer(
-					h._humanUId,
-					CdTypeEnum.parse(e._cdTypeInt), 
-					e._startTime, 
-					e._endTime
-				)).collect(Collectors.toMap(
-					t -> t._cdType, t -> t
-				));
-	
-			// 添加到管理器字典
-			mngrObj._cdMap.putAll(tmpMap);
-		}
-	}
+			for (CdTimerEntity_X e : el) {
+				// 获取计时器对象
+				CdTimer timerObj = mngrObj._cdTimerMap.get(CdTypeEnum.parse(e._cdTypeInt));
 
-	/**
-	 * 获取当前时间
-	 * 
-	 * @return 
-	 * 
-	 */
-	public long getCurrTime() {
-		return 0L;
+				if (timerObj == null) {
+					// 如果计时器对象为空,
+					// 这说明 Excel 配置表里没有该类型的 Cd,
+					// 但是数据库里还有...
+					// 可能策划改表了!
+					// 这时候直接跳过就可以了
+					CdLog.LOG.warn(MessageFormat.format(
+						"Cd 类型 {0} 已经被取消",
+						String.valueOf(e._cdTypeInt)
+					));
+					continue;
+				}
+
+				// 加载数据
+				timerObj.fromEntity(e);
+			}
+		}
 	}
 
 	/**
@@ -112,7 +130,7 @@ public final class CdServ extends AbstractBizServ implements IHumanEventListen, 
 		// 断言参数不为空
 		Assert.notNull(t, "t");
 
-		if (t._endTime <= this.getCurrTime()) {
+		if (t._endTime <= TimeServ.OBJ.now()) {
 			// 如果定时器已过期, 
 			// 即, 结束时间 <= 当前时间, 
 			// 则重置计时器!

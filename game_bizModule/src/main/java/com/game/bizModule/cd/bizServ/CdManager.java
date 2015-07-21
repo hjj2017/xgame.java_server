@@ -1,4 +1,4 @@
-package com.game.bizModule.cd.serv;
+package com.game.bizModule.cd.bizServ;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +17,7 @@ class CdManager {
 	/** 玩家角色 UId */
 	public long _humanUId = 0L;
 	/** 冷却队列字典 */
-	public final Map<CdTypeEnum, CdTimer> _cdMap = new ConcurrentHashMap<>();
+	public final Map<CdTypeEnum, CdTimer> _cdTimerMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 类参数构造器
@@ -37,7 +37,7 @@ class CdManager {
 	 */
 	public void addCdTimer(CdTimer value) {
 		if (value != null) {
-			this._cdMap.put(value._cdType, value);
+			this._cdTimerMap.put(value._cdType, value);
 		}
 	}
 
@@ -49,6 +49,6 @@ class CdManager {
 	 * 
 	 */
 	public CdTimer getCdTimer(CdTypeEnum cdType) {
-		return this._cdMap.get(cdType);
+		return this._cdTimerMap.get(cdType);
 	}
 }

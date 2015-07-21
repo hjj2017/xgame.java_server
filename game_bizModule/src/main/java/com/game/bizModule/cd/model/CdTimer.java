@@ -1,6 +1,6 @@
 package com.game.bizModule.cd.model;
 
-import com.game.bizModule.cd.entity.CdTimerEntity;
+import com.game.bizModule.cd.entity.CdTimerEntity_X;
 import com.game.bizModule.human.AbstractHumanBelonging;
 import com.game.part.util.Assert;
 
@@ -13,7 +13,7 @@ import java.text.MessageFormat;
  * @since 2013/4/8
  * 
  */
-public class CdTimer extends AbstractHumanBelonging<CdTimerEntity> {
+public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 	/** 队列类型 */
 	public final CdTypeEnum _cdType;
 	/** 开始时间 */
@@ -22,28 +22,32 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity> {
 	public long _endTime = -1;
 	/** 是否已开启 ? */
 	public boolean _opened = false;
+	/** 数据实体 */
+	private CdTimerEntity_X _entity = null;
 
 	/**
 	 * 类参数构造器
 	 *
 	 * @param humanUId
 	 * @param cdType 冷却类型
+	 * @param opened
 	 * 
 	 */
-	public CdTimer(long humanUId, CdTypeEnum cdType) {
+	public CdTimer(long humanUId, CdTypeEnum cdType, boolean opened) {
 		// 调用参数构造器
-		this(humanUId, cdType, 0L, 0L);
+		this(humanUId, cdType, opened, 0L, 0L);
 	}
 
 	/**
 	 * 类参数构造器
 	 * 
 	 * @param cdType
+	 * @param opened
 	 * @param startTime
 	 * @param endTime 
 	 * 
 	 */
-	public CdTimer(long humanUId, CdTypeEnum cdType, long startTime, long endTime) {
+	public CdTimer(long humanUId, CdTypeEnum cdType, boolean opened, long startTime, long endTime) {
 		// 调用父类构造器
 		super(humanUId);
 		// 断言参数不为空
@@ -93,7 +97,44 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity> {
 	}
 
 	@Override
-	public CdTimerEntity toEntity() {
-		return null;
+	public CdTimerEntity_X toEntity() {
+		if (this._entity == null) {
+			// 创建数据实体
+			CdTimerEntity_X entityX = new CdTimerEntity_X();
+			// 设置属性
+			entityX._cdTypeInt = this._cdType.getIntVal();
+			entityX._endTime = this._endTime;
+			entityX._humanUId = this._humanUId;
+			entityX._startTime = this._startTime;
+			// 获取分表实体并返回
+			this._entity = entityX.getSplitEntityObj();
+			return this._entity;
+		} else {
+			this._entity._cdTypeInt = this._cdType.getIntVal();
+			this._entity._endTime = this._endTime;
+			this._entity._humanUId = this._humanUId;
+			this._entity._startTime = this._startTime;
+			return this._entity;
+		}
+	}
+
+	/**
+	 * 从实体中加载数据
+	 *
+	 * @param entityX
+	 *
+	 */
+	public void fromEntity(CdTimerEntity_X entityX) {
+		if (entityX == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return;
+		}
+
+		// 设置开始和介绍所时间
+		this._endTime = entityX._endTime;
+		this._startTime = entityX._startTime;
+		// 记住当前实体
+		this._entity = entityX;
 	}
 }
