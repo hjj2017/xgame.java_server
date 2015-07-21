@@ -53,18 +53,13 @@ public class IoOper_LoadHuman extends AbstractPlayerOrSceneIoOper {
         }
 
         // 创建角色
-        Human h = Human.create(
-            this._p,
-            he._humanUId,
-            he._humanName,
-            he._serverName
-        );
-
+        Human h = Human.create(he);
         // 触发建角事件
-        HumanServ.OBJ.fireLoadDbEvent(h);
+        HumanServ.OBJ.fireLoadDbEvent(this._p, h);
 
         // 创建加载完成消息
         GGLoadHumanFinish ggMSG = new GGLoadHumanFinish();
+        ggMSG._p = this._p;
         ggMSG._h = h;
         ggMSG._finish = true;
         // 分派消息

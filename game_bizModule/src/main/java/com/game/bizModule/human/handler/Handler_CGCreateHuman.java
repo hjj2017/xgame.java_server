@@ -1,7 +1,7 @@
 package com.game.bizModule.human.handler;
 
-import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
+import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.human.msg.CGCreateHuman;
 import com.game.bizModule.human.msg.GCCreateHuman;
@@ -32,11 +32,11 @@ public class Handler_CGCreateHuman extends AbstractCGMsgHandler<CGCreateHuman> {
         final String humanName = msgObj._humanName.getStrVal();
 
         // 角色全名
-        final String fullName = Human.getFullName(
+        final String fullName = HumanNaming.OBJ.getFullName(
             serverName, humanName
         );
 
-        if (HumanServ.OBJ._humanFullNameSet.contains(fullName)) {
+        if (HumanNaming.OBJ._fullNameSet.contains(fullName)) {
             // 如果角色全名重复,
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(

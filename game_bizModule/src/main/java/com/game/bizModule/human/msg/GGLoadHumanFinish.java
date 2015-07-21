@@ -15,6 +15,8 @@ import com.game.gameServer.msg.MsgTypeEnum;
  *
  */
 public class GGLoadHumanFinish extends AbstractGGMsgObj<Handler_GGLoadHumanFinish> {
+    /** 玩家 */
+    public Player _p = null;
     /** 角色 */
     public Human _h = null;
     /** 加载完成? */

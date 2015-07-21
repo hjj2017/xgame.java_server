@@ -1,13 +1,17 @@
 package com.game.bizModule.human;
 
+import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
+import com.game.part.GameError;
 import com.game.part.util.Assert;
+import com.game.part.util.NullUtil;
 
 import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
 
 /**
- * 玩家角色,
+ * 角色,
  * <font color="#990000">注意: 角色自己就是自己的财务</font>
  * 
  * @author hjj2017
@@ -15,10 +19,15 @@ import java.lang.ref.WeakReference;
  *
  */
 public final class Human extends AbstractHumanBelonging<HumanEntity> {
-	/** 角色名称 */
-	public String _humanName = null;
 	/** 服务器名称 */
 	public String _serverName = null;
+	/** 角色名称 */
+	public String _humanName = null;
+	/** 角色等级 */
+	public int _humanLevel = 1;
+	/** 金币 */
+	public int _gold = 0;
+
 	/** 玩家引用 */
 	private WeakReference<Player> _pRef = null;
 
@@ -39,7 +48,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	 *
 	 */
 	public String getFullName() {
-		return Human.getFullName(this._serverName, this._humanName);
+		return HumanNaming.OBJ.getFullName(this._serverName, this._humanName);
 	}
 
 	/**
@@ -57,48 +66,31 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	}
 
 	/**
-	 * 获取角色全名
+	 * 抱住玩家的大腿!
 	 *
-	 * @param serverName
-	 * @param humanName
-	 * @return
+	 * @param p
 	 *
 	 */
-	public static String getFullName(String serverName, String humanName) {
-		// 断言参数不为空
-		Assert.notNull(serverName, "serverName");
-		Assert.notNull(humanName, "humanName");
+	public void bindPlayer(Player p) {
+		if (p == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return;
+		}
 
-		// 返回角色全名
-		return serverName + "." + humanName;
-	}
+		if (this._pRef != null &&
+			this._pRef.get() != null) {
+			// 如果已经绑定过玩家,
+			// 则直接抛出异常!
+			throw new GameError(MessageFormat.format(
+				"不能重复绑定玩家, 角色 = {0}, 绑定到玩家 = {1}",
+				String.valueOf(this._humanUId),
+				p._platformUIdStr
+			));
+		}
 
-	/**
-	 * 创建新角色
-	 *
-	 * @param byPlayer
-	 * @param humanUId
-	 * @param humanName
-	 * @param serverName
-	 * @return
-	 *
-	 */
-	public static Human create(
-		Player byPlayer, final long humanUId, final String humanName, String serverName) {
-		// 断言参数对象不为空
-		Assert.notNull(byPlayer, "byPlayer");
-		Assert.isTrue(humanUId > 0, "humanUId");
-		Assert.notNullOrEmpty(humanName, "humanName");
-		Assert.notNullOrEmpty(serverName, "serverName");
-
-		// 创建角色对象并设置玩家引用
-		Human h = new Human(humanUId);
-		h._pRef = new WeakReference<>(byPlayer);
-		// 设置角色名称和服务器名称
-		h._humanName = humanName;
-		h._serverName = serverName;
-
-		return h;
+		// 设置玩家引用
+		this._pRef = new WeakReference<>(p);
 	}
 
 	/**
@@ -108,7 +100,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	 * @return
 	 *
 	 */
-	public static Human getHuman(Player p) {
+	public static Human getHumanByPlayer(Player p) {
 		if (p == null) {
 			return null;
 		} else {
@@ -151,9 +143,46 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		// 设置实体属性
 		he._humanUId = this._humanUId;
 		he._platformUIdStr = this.getPlayer()._platformUIdStr;
-		he._humanName = this._humanName;
+		he._fullName = this.getFullName();
 		he._serverName = this._serverName;
+		he._humanName = this._humanName;
 
 		return he;
+	}
+
+	/**
+	 * 从角色实体中加载数据
+	 *
+	 * @param entity
+	 *
+	 */
+	public void fromEntity(HumanEntity entity) {
+		if (entity == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return;
+		}
+
+		this._serverName = entity._serverName;
+		this._humanName = entity._humanName;
+		this._humanLevel = NullUtil.optVal(entity._humanLevel, this._humanLevel);
+		this._gold = NullUtil.optVal(entity._gold, this._gold);
+	}
+
+	/**
+	 * 创建角色
+	 *
+	 * @param entity
+	 * @return
+	 *
+	 */
+	public static Human create(HumanEntity entity) {
+		// 断言参数不为空
+		Assert.notNull(entity);
+		// 创建角色并加载数据
+		Human h = new Human(entity._humanUId);
+		h.fromEntity(entity);
+
+		return h;
 	}
 }

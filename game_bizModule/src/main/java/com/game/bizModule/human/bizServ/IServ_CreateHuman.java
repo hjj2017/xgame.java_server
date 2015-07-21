@@ -106,17 +106,12 @@ interface IServ_CreateHuman {
 
         // 获取角色 UId
         final long newUId = Guid64Serv.OBJ.nextUId(Guid64TypeEnum.human);
-        // 新建一个角色对象
-        Human h = Human.create(
-            p, newUId, humanName, serverName
-        );
-
-        // 将角色绑定给玩家
-        p.putPropVal(Human.class, h);
-
         // 创建异步操作
         IoOper_CreateHuman op = new IoOper_CreateHuman();
-        op._h = h;
+        op._p = p;
+        op._humanUId = newUId;
+        op._serverName = serverName;
+        op._humanName = humanName;
         // 执行异步操作
         HumanServ.OBJ.execute(op);
     }

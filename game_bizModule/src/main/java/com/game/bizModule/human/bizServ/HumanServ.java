@@ -6,13 +6,12 @@ import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.entity.HumanEntryEntity;
 import com.game.bizModule.human.event.IHumanEventListen;
 import com.game.gameServer.bizServ.AbstractBizServ;
+import com.game.gameServer.framework.Player;
 import com.game.part.dao.CommDao;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 玩家角色服务
@@ -26,8 +25,6 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
     public static final HumanServ OBJ = new HumanServ();
     /** 角色时间监听列表 */
     private final List<IHumanEventListen> _ell = new ArrayList<>();
-    /** 角色名称集合 */
-    public final Set<String> _humanFullNameSet = new HashSet<>();
 
     /**
      * 类默认构造器
@@ -43,7 +40,7 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
         List<HumanEntryEntity> heel = CommDao.OBJ.getResultList(HumanEntryEntity.class);
         // 添加角色名称到集合
         heel.forEach(hee -> {
-            this._humanFullNameSet.add(hee._fullName);
+            HumanNaming.OBJ._fullNameSet.add(hee._fullName);
         });
     }
 
@@ -82,28 +79,44 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
     /**
      * 触发建角事件
      *
-     * @param h
+     * @param byPlayer
+     * @param humanUId
+     * @param serverName
+     * @param humanName
      *
      */
-    public void fireCreateHumanEvent(Human h) {
-        if (h == null) {
+    public void fireCreateHumanEvent(Player byPlayer, long humanUId, String serverName, String humanName) {
+        if (byPlayer == null ||
+            humanUId <= 0 ||
+            humanName == null ||
+            humanName.isEmpty()) {
+            // 如果参数对象为空,
+            // 则直接退出!
             return;
         } else {
-            this._ell.forEach(el -> el.onCreateNew(h));
+            this._ell.forEach(el -> el.onCreateNew(
+                byPlayer,
+                humanUId,
+                serverName,
+                humanName
+            ));
         }
     }
 
     /**
      * 触发数据库加载事件
      *
+     * @param byPlayer
      * @param h
      *
      */
-    public void fireLoadDbEvent(Human h) {
+    public void fireLoadDbEvent(Player byPlayer, Human h) {
         if (h == null) {
             return;
         } else {
-            this._ell.forEach(el -> el.onLoadDb(h));
+            this._ell.forEach(el -> el.onLoadDb(
+                byPlayer, h
+            ));
         }
     }
 
@@ -113,7 +126,7 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
      * @param h
      *
      */
-    public void fireEntryGameEvent(Human h) {
+    public void fireEnterGameEvent(Human h) {
         if (h == null) {
             return;
         } else {

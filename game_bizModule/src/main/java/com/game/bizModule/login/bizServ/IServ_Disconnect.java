@@ -30,7 +30,7 @@ interface IServ_Disconnect {
         }
 
         // 获取玩家角色
-        final Human h = Human.getHuman(p);
+        final Human h = Human.getHumanByPlayer(p);
 
         if (h == null) {
             // 如果角色对象为空,
