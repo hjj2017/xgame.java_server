@@ -33,6 +33,16 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	}
 
 	/**
+	 * 获取角色全名
+	 *
+	 * @return
+	 *
+	 */
+	public String getFullName() {
+		return Human.getFullName(this._serverName, this._humanName);
+	}
+
+	/**
 	 * 获取玩家对象
 	 *
 	 * @return
@@ -44,6 +54,23 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		} else {
 			return this._pRef.get();
 		}
+	}
+
+	/**
+	 * 获取角色全名
+	 *
+	 * @param serverName
+	 * @param humanName
+	 * @return
+	 *
+	 */
+	public static String getFullName(String serverName, String humanName) {
+		// 断言参数不为空
+		Assert.notNull(serverName, "serverName");
+		Assert.notNull(humanName, "humanName");
+
+		// 返回角色全名
+		return serverName + "." + humanName;
 	}
 
 	/**

@@ -3,13 +3,16 @@ package com.game.bizModule.human.bizServ;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.HumanStateTable;
+import com.game.bizModule.human.entity.HumanEntryEntity;
 import com.game.bizModule.human.event.IHumanEventListen;
 import com.game.gameServer.bizServ.AbstractBizServ;
-import com.game.gameServer.framework.Player;
+import com.game.part.dao.CommDao;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 玩家角色服务
@@ -23,12 +26,25 @@ public class HumanServ extends AbstractBizServ implements IServ_QueryHumanEntryL
     public static final HumanServ OBJ = new HumanServ();
     /** 角色时间监听列表 */
     private final List<IHumanEventListen> _ell = new ArrayList<>();
+    /** 角色名称集合 */
+    public final Set<String> _humanFullNameSet = new HashSet<>();
 
     /**
      * 类默认构造器
      *
      */
     private HumanServ() {
+        super.needToInit(this);
+    }
+
+    @Override
+    public void init() {
+        // 获取角色入口列表
+        List<HumanEntryEntity> heel = CommDao.OBJ.getResultList(HumanEntryEntity.class);
+        // 添加角色名称到集合
+        heel.forEach(hee -> {
+            this._humanFullNameSet.add(hee._fullName);
+        });
     }
 
     /**

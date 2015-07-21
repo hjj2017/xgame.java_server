@@ -22,13 +22,17 @@ USE `X_s00_game`;
 DROP TABLE IF EXISTS `t_human`;
 
 CREATE TABLE `t_human` (
-  `human_uid` varchar(20) NOT NULL,
+  `human_uid` bigint(20) NOT NULL DEFAULT '0',
+  `platform_uid_str` varchar(64) DEFAULT NULL,
+  `full_name` varchar(48) DEFAULT NULL,
   `human_name` varchar(32) DEFAULT NULL,
-  `platform_uid` varchar(64) DEFAULT NULL,
   `server_name` varchar(16) DEFAULT NULL,
   `human_level` int(11) DEFAULT NULL,
   `gold` int(11) DEFAULT NULL,
-  PRIMARY KEY (`human_uid`)
+  PRIMARY KEY (`human_uid`),
+  KEY `platform_uid_str` (`platform_uid_str`),
+  UNIQUE KEY `full_name` (`full_name`),
+  KEY `human_name` (`human_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_player` */
@@ -36,14 +40,15 @@ CREATE TABLE `t_human` (
 DROP TABLE IF EXISTS `t_player`;
 
 CREATE TABLE `t_player` (
-  `platform_uid` varchar(64) NOT NULL,
+  `platform_uid_str` varchar(64) NOT NULL,
   `user_name` varchar(32) DEFAULT NULL,
   `user_pass` varchar(128) DEFAULT NULL,
   `create_time` bigint(20) DEFAULT NULL,
   `pf` varchar(32) DEFAULT NULL,
   `last_login_time` bigint(20) DEFAULT NULL,
   `last_login_ip_addr` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`platform_uid`)
+  PRIMARY KEY (`platform_uid_str`),
+  KEY `user_name` (`user_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
