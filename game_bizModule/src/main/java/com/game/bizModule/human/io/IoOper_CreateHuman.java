@@ -2,13 +2,13 @@ package com.game.bizModule.human.io;
 
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.bizServ.HumanNaming;
-import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.msg.GGCreateHumanFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractLoginIoOper;
 import com.game.part.dao.CommDao;
+import com.game.part.util.StringUtil;
 
 import java.text.MessageFormat;
 
@@ -39,11 +39,15 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
     @Override
     public boolean doIo() {
         // 获取角色全名
-        final String fullName = HumanNaming.OBJ.getFullName(this._serverName, this._humanName);
+        final String fullName = HumanNaming.OBJ.getFullName(
+            this._serverName,
+            this._humanName
+        );
+
         // 事先获取旧数据
         HumanEntity oldEntity = CommDao.OBJ.getSingleResult(
             HumanEntity.class,
-            "entity.fullName = " + fullName
+            "entity.fullName = '" + StringUtil.addSlash(fullName) + "'"
         );
 
         if (oldEntity != null) {

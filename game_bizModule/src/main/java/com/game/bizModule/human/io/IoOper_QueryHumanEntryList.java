@@ -9,6 +9,7 @@ import com.game.bizModule.human.msg.GGQueryHumanEntryListFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractLoginIoOper;
 import com.game.part.dao.CommDao;
+import com.game.part.util.StringUtil;
 
 /**
  * 查询玩家角色入口列表
@@ -30,18 +31,18 @@ public class IoOper_QueryHumanEntryList extends AbstractLoginIoOper {
 
     @Override
     public boolean doIo() {
-        // 创建参数字典
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put(
-            "platformUIdStr",
-            this._p._platformUIdStr
-        );
+        if (this._p == null) {
+            // 如果玩家对象为空,
+            // 则直接退出!
+            return false;
+        }
 
+        // 获取平台 UId 字符串
+        final String platformUIdStr = this._p._platformUIdStr;
         // 获取玩家角色入口列表
         List<HumanEntryEntity> heel = CommDao.OBJ.getResultList(
             HumanEntryEntity.class,
-            "entity._platformUIdStr = :platformUIdStr",
-            paramMap
+            "entity._platformUIdStr = '" + StringUtil.addSlash(platformUIdStr) + "'"
         );
 
         // 创建 GG 消息
