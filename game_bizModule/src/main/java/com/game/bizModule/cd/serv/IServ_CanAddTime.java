@@ -1,6 +1,5 @@
 package com.game.bizModule.cd.serv;
 
-import com.game.bizModule.cd.CdLangDef;
 import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.cd.tmpl.CdTimerTmpl;
