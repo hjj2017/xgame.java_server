@@ -4,6 +4,7 @@ import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.human.entity.HumanEntity;
+import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.msg.GGCreateHumanFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractLoginIoOper;
@@ -66,7 +67,7 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
         // 保存数据
         CommDao.OBJ.save(newEntity);
         // 触发建角事件
-        HumanServ.OBJ.fireCreateHumanEvent(
+        HumanEvent.OBJ.fireCreateHumanEvent(
             this._p,
             this._humanUId,
             this._serverName,

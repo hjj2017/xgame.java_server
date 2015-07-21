@@ -4,6 +4,7 @@ import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.bizServ.HumanServ;
 import com.game.bizModule.human.entity.HumanEntity;
+import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.msg.GGLoadHumanFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.io.AbstractPlayerOrSceneIoOper;
@@ -54,8 +55,8 @@ public class IoOper_LoadHuman extends AbstractPlayerOrSceneIoOper {
 
         // 创建角色
         Human h = Human.create(he);
-        // 触发建角事件
-        HumanServ.OBJ.fireLoadDbEvent(this._p, h);
+        // 触发加载数据事件
+        HumanEvent.OBJ.fireLoadDbEvent(this._p, h);
 
         // 创建加载完成消息
         GGLoadHumanFinish ggMSG = new GGLoadHumanFinish();

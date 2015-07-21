@@ -10,8 +10,11 @@ import com.game.bizModule.cd.entity.CdTimerEntity;
 import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.human.Human;
+import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.event.IHumanEventListen;
+import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.framework.Player;
+import com.game.part.dao.CommDao;
 import com.game.part.util.Assert;
 
 /**
@@ -20,7 +23,7 @@ import com.game.part.util.Assert;
  * @author haijiang.jin
  * 
  */
-public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_DoAddTime, IServ_FindAndDoAddTime, IServ_KillCdTime {
+public final class CdServ extends AbstractBizServ implements IHumanEventListen, IServ_CanAddTime, IServ_DoAddTime, IServ_FindAndDoAddTime, IServ_KillCdTime {
 	/** 单例对象 */
 	public static final CdServ OBJ = new CdServ();
 	/** 管理器字典 */
@@ -31,32 +34,41 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 	 * 
 	 */
 	private CdServ() {
+		super.needToInit(this);
+	}
+
+	@Override
+	public void init() {
+		HumanEvent.OBJ.regEventListen(this);
 	}
 
 	@Override
 	public void onLoadDb(Player p, Human h) {
-		if (h == null) {
+		if (p == null ||
+			h == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
 			return;
 		}
 
 		// 获取管理器对象
-		CdManager mngr = this._mngrMap.get(h._humanUId);
+		CdManager mngrObj = this._mngrMap.get(h._humanUId);
 
-		if (mngr == null) {
-			mngr = new CdManager(h._humanUId);
+		if (mngrObj == null) {
+			mngrObj = new CdManager(h._humanUId);
 			// 添加到字典
-			CdManager orig = this._mngrMap.putIfAbsent(
-				h._humanUId, mngr
+			CdManager old = this._mngrMap.putIfAbsent(
+				h._humanUId, mngrObj
 			);
 
-			if (orig != null) {
+			if (old != null) {
 				CdLog.LOG.warn("Cd 管理器不为空, 角色 = " + h._humanUId);
-				mngr = orig;
+				mngrObj = old;
 			}
 		}
 
 		// 获取 Cd 计时器列表
-		List<CdTimerEntity> el = null;
+		List<CdTimerEntity> el = CommDao.OBJ.getResultList(CdTimerEntity.class, "entity.human_uuid = " + h._humanUId);
 
 		if (el != null && 
 			el.isEmpty() == false) {
@@ -75,7 +87,7 @@ public final class CdServ implements IHumanEventListen, IServ_CanAddTime, IServ_
 				));
 	
 			// 添加到管理器字典
-			mngr._cdMap.putAll(tmpMap);
+			mngrObj._cdMap.putAll(tmpMap);
 		}
 	}
 

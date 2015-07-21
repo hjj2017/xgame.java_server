@@ -1,7 +1,7 @@
 package com.game.bizModule.login.bizServ;
 
 import com.game.bizModule.human.Human;
-import com.game.bizModule.human.bizServ.HumanServ;
+import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.login.LoginLog;
 import com.game.gameServer.framework.Player;
 import com.game.part.lazySaving.LazySavingHelper;
@@ -39,7 +39,7 @@ interface IServ_Disconnect {
         }
 
         // 触发角色退出游戏事件
-        HumanServ.OBJ.fireQuitGameEvent(h);
+        HumanEvent.OBJ.fireQuitGameEvent(h);
         // 立即写入延迟数据
         LazySavingHelper.OBJ.execUpdateWithPredicate(lso -> {
             return lso != null
