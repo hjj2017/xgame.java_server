@@ -31,15 +31,20 @@ interface IServ_DoAddTime {
 		Assert.notNull(cdType, "cdType");
 		// 借出结果对象
 		Result_DoAddTime result = BizResultPool.borrow(Result_DoAddTime.class);
+
+		if (ms <= 0) {
+			return result;
+		}
+
 		// 是否可以增加 Cd 时间 ?
-		Result_CanAddTime result_1 = CdServ.OBJ.canAddTime(
+		Result_CanAddTime result_2 = CdServ.OBJ.canAddTime(
 			humanUId, cdType
 		);
 
-		if (result_1._can == false) {
+		if (result_2._ok == false) {
 			// 如果不能增加 Cd 时间, 
 			// 则直接退出!
-			result._errorCode = result_1._errorCode;
+			result._errorCode = result_2._errorCode;
 			return result;
 		}
 

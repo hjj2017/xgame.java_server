@@ -3,6 +3,7 @@ package com.game.bizModule.cd.model;
 import com.game.bizModule.cd.entity.CdTimerEntity_X;
 import com.game.bizModule.human.AbstractHumanBelonging;
 import com.game.part.util.Assert;
+import com.game.part.util.NullUtil;
 
 import java.text.MessageFormat;
 
@@ -132,8 +133,10 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 		}
 
 		// 设置开始和介绍所时间
-		this._endTime = entityX._endTime;
-		this._startTime = entityX._startTime;
+		this._endTime = NullUtil.optVal(entityX._endTime, 0L);
+		this._startTime = NullUtil.optVal(entityX._startTime, 0L);
+		// 是否已开启
+		this._opened = NullUtil.optVal(entityX._opened, (short)0) == 1;
 		// 记住当前实体
 		this._entity = entityX;
 	}

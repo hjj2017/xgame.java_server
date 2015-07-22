@@ -28,6 +28,9 @@ public class CdTimerEntity_X {
 	/** 结束时间 */
 	@Column(name = "end_time")
 	public Long _endTime = null;
+	/** 是否已开启? */
+	@Column(name = "opened")
+	public Short _opened = null;
 
 	/**
 	 * 获取分表数据实体
