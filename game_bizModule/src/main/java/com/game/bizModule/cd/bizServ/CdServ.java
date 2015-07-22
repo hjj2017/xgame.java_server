@@ -26,7 +26,7 @@ import com.game.part.util.Assert;
  * @author haijiang.jin
  * 
  */
-public final class CdServ extends AbstractBizServ implements IHumanEventListen, IServ_CanAddTime, IServ_DoAddTime, IServ_FindAndDoAddTime, IServ_KillCdTime {
+public final class CdServ extends AbstractBizServ implements IHumanEventListen, IServ_CanAddTime, IServ_DoAddTime, IServ_FindAndDoAddTime {
 	/** 单例对象 */
 	public static final CdServ OBJ = new CdServ();
 	/** 管理器字典 */
