@@ -1,6 +1,7 @@
 package com.game.bizModule.building.bizServ;
 
 import com.game.bizModule.building.model.BuildingTypeEnum;
+import com.game.bizModule.building.tmpl.BuildingLevelUpTmpl;
 import com.game.bizModule.cd.bizServ.CdServ;
 import com.game.bizModule.cd.bizServ.Result_FindAndDoAddTime;
 import com.game.bizModule.cd.model.CdTypeEnum;
@@ -18,12 +19,12 @@ interface IServ_LevelUp {
      * 建筑升级
      *
      * @param h
-     * @param buildingType
+     * @param bt
      *
      */
-    default void levelUp(Human h, BuildingTypeEnum buildingType) {
+    default void levelUp(Human h, BuildingTypeEnum bt) {
         if (h == null ||
-            buildingType == null) {
+            bt == null) {
             return;
         }
 
@@ -31,14 +32,56 @@ interface IServ_LevelUp {
         BuildingManager mngrObj = h.getPropVal(BuildingManager.class);
 
         if (mngrObj == null) {
+            // 如果管理器对象为空,
+            // 则直接退出!
             return;
         }
+
+        if (bt == BuildingTypeEnum.home) {
+            // 如果升级的是主城,
+            // 那么看看主城等级是否会超过角色等级?
+            if (mngrObj._homeLevel >= h._humanLevel) {
+                // 如果主城等级 >= 角色等级,
+                // 则直接退出!
+                return;
+            }
+        }
+
+        // 获取目标建筑等级
+        int targetBuildingLevel = mngrObj.getLevel(bt);
+
+        if (targetBuildingLevel <= 0) {
+            // 如果建筑未开启,
+            // 则直接退出!
+            return;
+        }
+
+        // 获取主城等级
+        int homeLevel = mngrObj._homeLevel;
+
+        if (targetBuildingLevel >= homeLevel) {
+            // 如果目标建筑等级 >= 主城等级,
+            // 则直接退出!
+            return;
+        }
+
+        // 获取建筑升级配置
+        BuildingLevelUpTmpl levelUpTmpl = BuildingLevelUpTmpl.getByBuildingTypeAndLevel(
+            bt, targetBuildingLevel + 1
+        );
+
+        // TODO : 消耗银两
+        // if (MoneyServ.OBJ.tryCost(h, levelUpTmpl._needSilver.getIntVal()) == false) {
+        //     // 如果消耗银两失败,
+        //     // 则直接退出!
+        //     return;
+        // }
 
         // 查找并增加 Cd 时间
         Result_FindAndDoAddTime result_2 = CdServ.OBJ.findAndDoAddTime(
             h._humanUId,
             CdTypeEnum.BUILDING_CD_TYPE_ARR,
-            60000
+            levelUpTmpl._needCdTime.getLongVal()
         );
 
         if (result_2.isFail()) {
@@ -48,7 +91,7 @@ interface IServ_LevelUp {
         }
 
         // 增加建筑等级并保存
-        mngrObj.addLevel(buildingType, +1);
+        mngrObj.addLevel(bt, +1);
         mngrObj.saveOrUpdate();
     }
 }

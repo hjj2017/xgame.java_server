@@ -15,7 +15,7 @@ import com.game.part.dao.CommDao;
  * @since 2015/7/24
  *
  */
-public class BuildingServ extends AbstractBizServ implements IHumanEventListen {
+public class BuildingServ extends AbstractBizServ implements IHumanEventListen, IServ_LevelUp {
     /** 单例对象 */
     public static final BuildingServ OBJ = new BuildingServ();
 

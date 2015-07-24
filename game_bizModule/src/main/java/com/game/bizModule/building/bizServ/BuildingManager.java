@@ -58,6 +58,29 @@ public class BuildingManager extends AbstractHumanBelonging<BuildingEntity> {
         }
     }
 
+    /**
+     * 获取建筑等级
+     *
+     * @param bt
+     * @return
+     *
+     */
+    public int getLevel(BuildingTypeEnum bt) {
+        if (bt == null) {
+            return -1;
+        }
+
+        if (bt == BuildingTypeEnum.home) {
+            return this._homeLevel;
+        } else if (bt == BuildingTypeEnum.camp) {
+            return this._campLevel;
+        } else if (bt == BuildingTypeEnum.forge) {
+            return this._forgeLevel;
+        } else {
+            return -1;
+        }
+    }
+
     @Override
     public BuildingEntity toEntity() {
         // 创建数据实体
