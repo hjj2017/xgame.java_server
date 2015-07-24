@@ -59,6 +59,8 @@ interface IServ_DoAddTime {
 		// 更新开始时间和结束时间
 		t._startTime = now;
 		t._endTime = now + diffTime_0 + ms;
+		// 保存数据
+		t.saveOrUpdate();
 
 		return result;
 	}
