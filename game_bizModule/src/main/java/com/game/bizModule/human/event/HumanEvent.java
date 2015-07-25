@@ -49,6 +49,30 @@ public final class HumanEvent {
     }
 
     /**
+     * 在第一个位置注册事件监听
+     *
+     * @param newEL
+     *
+     */
+    public void regEventListenAtFirst(IHumanEventListen newEL) {
+        if (newEL != null) {
+            this._ell.add(0, newEL);
+        }
+    }
+
+    /**
+     * 在最后的位置注册事件监听
+     *
+     * @param newEL
+     *
+     */
+    public void regEventListenAtLast(IHumanEventListen newEL) {
+        if (newEL != null) {
+            this._ell.add(newEL);
+        }
+    }
+
+    /**
      * 注册角色事件监听
      *
      * @param newEL

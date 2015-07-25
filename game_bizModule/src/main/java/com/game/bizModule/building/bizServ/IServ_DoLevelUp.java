@@ -7,6 +7,7 @@ import com.game.bizModule.cd.bizServ.CdServ;
 import com.game.bizModule.cd.bizServ.Result_FindAndDoAddTime;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.human.Human;
+import com.game.part.util.BizResultPool;
 import sun.plugin2.message.Message;
 
 import java.text.MessageFormat;
@@ -33,10 +34,15 @@ interface IServ_DoLevelUp {
      * @param bt
      *
      */
-    default void doLevelUp(Human h, BuildingTypeEnum bt) {
+    default Result_DoLevelUp doLevelUp(Human h, BuildingTypeEnum bt) {
+        // 借出结果对象
+        Result_DoLevelUp result = BizResultPool.borrow(Result_DoLevelUp.class);
+
         if (h == null ||
             bt == null) {
-            return;
+            // 如果参数对象为空,
+            // 则直接退出!
+            return result;
         }
 
         // 获取建筑管理器
@@ -45,54 +51,54 @@ interface IServ_DoLevelUp {
         if (mngrObj == null) {
             // 如果管理器对象为空,
             // 则直接退出!
-            return;
+            return result;
         }
 
-//        if (bt == BuildingTypeEnum.home) {
-//            // 如果升级的是主城,
-//            // 那么看看主城等级是否会超过角色等级?
-//            if (mngrObj._homeLevel >= h._humanLevel) {
-//                // 如果主城等级 >= 角色等级,
-//                // 则直接退出!
-//                BuildingLog.LOG.error(MessageFormat.format(
-//                    "主城等级不能大于角色等级, 角色 = {0}",
-//                    String.valueOf(h._humanUId)
-//                ));
-//                return;
-//            }
-//        }
+        if (bt == BuildingTypeEnum.home) {
+            // 如果升级的是主城,
+            // 那么看看主城等级是否会超过角色等级?
+            if (mngrObj._homeLevel >= h._humanLevel) {
+                // 如果主城等级 >= 角色等级,
+                // 则直接退出!
+                BuildingLog.LOG.error(MessageFormat.format(
+                    "主城等级不能大于角色等级, 角色 = {0}",
+                    String.valueOf(h._humanUId)
+                ));
+                return result;
+            }
+        } else {
+            // 获取目标建筑等级
+            final int targetBuildingLevel = mngrObj.getLevel(bt);
 
-        // 获取目标建筑等级
-        final int BLevel = mngrObj.getLevel(bt);
-//
-//        if (BLevel <= 0) {
-//            // 如果建筑未开启,
-//            // 则直接退出!
-//            BuildingLog.LOG.error(MessageFormat.format(
-//                "建筑尚未开启, 角色 = {0}, 建筑 = {1}",
-//                String.valueOf(h._humanUId),
-//                bt.getStrVal()
-//            ));
-//            return;
-//        }
+            if (targetBuildingLevel <= 0) {
+                // 如果建筑未开启,
+                // 则直接退出!
+                BuildingLog.LOG.error(MessageFormat.format(
+                    "建筑尚未开启, 角色 = {0}, 建筑 = {1}",
+                    String.valueOf(h._humanUId),
+                    bt.getStrVal()
+                ));
+                return result;
+            }
 
-//        // 获取主城等级
-//        int homeLevel = mngrObj._homeLevel;
-//
-//        if (BLevel >= homeLevel) {
-//            // 如果目标建筑等级 >= 主城等级,
-//            // 则直接退出!
-//            BuildingLog.LOG.error(MessageFormat.format(
-//                "建筑等级不能超过主城等级, 角色 = {0}, 建筑 = {1}",
-//                String.valueOf(h._humanUId),
-//                bt.getStrVal()
-//            ));
-//            return;
-//        }
+            // 获取主城等级
+            int homeLevel = mngrObj._homeLevel;
+
+            if (targetBuildingLevel >= homeLevel) {
+                // 如果目标建筑等级 >= 主城等级,
+                // 则直接退出!
+                BuildingLog.LOG.error(MessageFormat.format(
+                    "建筑等级不能超过主城等级, 角色 = {0}, 建筑 = {1}",
+                    String.valueOf(h._humanUId),
+                    bt.getStrVal()
+                ));
+                return result;
+            }
+        }
 
         // 获取建筑升级配置
         BuildingLevelUpTmpl levelUpTmpl = BuildingLevelUpTmpl.getByBuildingTypeAndLevel(
-            bt, BLevel + 1
+            bt, mngrObj.getLevel(bt) + 1
         );
 
         // TODO : 消耗银两
@@ -117,11 +123,14 @@ interface IServ_DoLevelUp {
                 String.valueOf(h._humanUId),
                 bt.getStrVal()
             ));
-            return;
+            result._errorCode = result_2._errorCode;
+            return result;
         }
 
         // 增加建筑等级并保存
         mngrObj.addLevel(bt, +1);
         mngrObj.saveOrUpdate();
+
+        return result;
     }
 }

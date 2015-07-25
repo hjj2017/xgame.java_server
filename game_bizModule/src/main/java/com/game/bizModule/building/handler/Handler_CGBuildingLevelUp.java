@@ -1,6 +1,7 @@
 package com.game.bizModule.building.handler;
 
 import com.game.bizModule.building.bizServ.BuildingServ;
+import com.game.bizModule.building.bizServ.Result_DoLevelUp;
 import com.game.bizModule.building.msg.CGBuildingLevelUp;
 import com.game.bizModule.human.Human;
 import com.game.gameServer.framework.Player;
@@ -21,6 +22,6 @@ public class Handler_CGBuildingLevelUp extends AbstractCGMsgHandler<CGBuildingLe
         // 获取角色对象
         Human h = Human.getHumanByPlayer(p);
         // 执行建筑升级
-        BuildingServ.OBJ.doLevelUp(h, msgObj.getBuildingType());
+        Result_DoLevelUp result = BuildingServ.OBJ.doLevelUp(h, msgObj.getBuildingType());
     }
 }

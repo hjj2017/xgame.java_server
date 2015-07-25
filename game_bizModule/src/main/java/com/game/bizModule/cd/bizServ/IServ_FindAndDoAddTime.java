@@ -32,11 +32,18 @@ interface IServ_FindAndDoAddTime {
 		CdTypeEnum targetCdType = firstCanAdd(humanUId, fromCdTypeArr);
 
 		if (targetCdType == null) {
+			result._errorCode = 1;
 			return result;
 		}
 
 		// 增加 Cd 时间
-		CdServ.OBJ.doAddTime(humanUId, targetCdType, ms);
+		Result_DoAddTime result_2 = CdServ.OBJ.doAddTime(humanUId, targetCdType, ms);
+
+		if (result_2.isFail()) {
+			result._errorCode = result_2._errorCode;
+			return result;
+		}
+
 		return result;
 	}
 

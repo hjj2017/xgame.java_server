@@ -31,7 +31,7 @@ public abstract class BizResultObj {
 	 * 
 	 */
 	public boolean isFail() {
-		return this._errorCode != 0;
+		return this._errorCode != -1;
 	}
 
 	/**
