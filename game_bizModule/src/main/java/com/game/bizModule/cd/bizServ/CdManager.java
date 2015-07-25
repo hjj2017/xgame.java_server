@@ -13,7 +13,7 @@ import com.game.bizModule.cd.model.CdTypeEnum;
  * @since 2014/5/18
  * 
  */
-class CdManager {
+public class CdManager {
 	/** 玩家角色 UId */
 	public long _humanUId = 0L;
 	/** 冷却队列字典 */

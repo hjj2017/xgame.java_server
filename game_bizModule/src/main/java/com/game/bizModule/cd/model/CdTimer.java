@@ -1,7 +1,11 @@
 package com.game.bizModule.cd.model;
 
 import com.game.bizModule.cd.entity.CdTimerEntity_X;
+import com.game.bizModule.cd.msg.CdTimerMO;
 import com.game.bizModule.human.AbstractHumanBelonging;
+import com.game.part.msg.type.MsgBool;
+import com.game.part.msg.type.MsgInt;
+import com.game.part.msg.type.MsgLong;
 import com.game.part.util.Assert;
 import com.game.part.util.NullUtil;
 
@@ -25,6 +29,8 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 	public boolean _opened = false;
 	/** 数据实体 */
 	private CdTimerEntity_X _entity = null;
+	/** 消息对象 */
+	private CdTimerMO _mo = null;
 
 	/**
 	 * 类参数构造器
@@ -139,5 +145,27 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 		this._opened = NullUtil.optVal(entityX._opened, (short)0) == 1;
 		// 记住当前实体
 		this._entity = entityX;
+	}
+
+	/**
+	 * 获取消息对象
+	 *
+	 * @return
+	 *
+	 */
+	public CdTimerMO toMsgObj() {
+		if (this._mo == null) {
+			this._mo = new CdTimerMO();
+		}
+
+		// Cd 类型
+		this._mo._cdTypeInt = new MsgInt(this._cdType.getIntVal());
+		// 开始时间和结束时间
+		this._mo._startTime = new MsgLong(this._startTime);
+		this._mo._endTime = new MsgLong(this._endTime);
+		// 是否已开启?
+		this._mo._opened = new MsgBool(this._opened);
+
+		return this._mo;
 	}
 }

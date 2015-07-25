@@ -101,13 +101,17 @@ interface IServ_DoLevelUp {
             bt, mngrObj.getLevel(bt) + 1
         );
 
+        // 获取所需银两
+        final int needSilver = levelUpTmpl._needSilver.getIntVal();
         // TODO : 消耗银两
-        // if (MoneyServ.OBJ.tryCost(h, levelUpTmpl._needSilver.getIntVal()) == false) {
+        // if (MoneyServ.OBJ.tryCost(h, needSilver) == false) {
         //     // 如果消耗银两失败,
         //     // 则直接退出!
         //     return;
         // }
 
+        // 设置所需银两
+        result._usedSilver = needSilver;
         // 查找并增加 Cd 时间
         Result_FindAndDoAddTime result_2 = CdServ.OBJ.findAndDoAddTime(
             h._humanUId,
@@ -126,6 +130,9 @@ interface IServ_DoLevelUp {
             result._errorCode = result_2._errorCode;
             return result;
         }
+
+        // 设置已使用的 Cd 类型
+        result._usedCdType = result_2._usedCdType;
 
         // 增加建筑等级并保存
         mngrObj.addLevel(bt, +1);

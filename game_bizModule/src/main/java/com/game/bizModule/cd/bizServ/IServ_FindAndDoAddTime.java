@@ -36,6 +36,8 @@ interface IServ_FindAndDoAddTime {
 			return result;
 		}
 
+		// 记录已使用的 Cd 类型
+		result._usedCdType = targetCdType;
 		// 增加 Cd 时间
 		Result_DoAddTime result_2 = CdServ.OBJ.doAddTime(humanUId, targetCdType, ms);
 

@@ -1,5 +1,6 @@
 package com.game.bizModule.building.bizServ;
 
+import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.part.util.BizResultObj;
 
 /**
@@ -10,6 +11,11 @@ import com.game.part.util.BizResultObj;
  *
  */
 public class Result_DoLevelUp extends BizResultObj {
+    /** 已使用的 Cd 类型 */
+    public CdTypeEnum _usedCdType = null;
+    /** 已使用的银两 */
+    public int _usedSilver = 0;
+
     @Override
     protected void clearContent() {
     }

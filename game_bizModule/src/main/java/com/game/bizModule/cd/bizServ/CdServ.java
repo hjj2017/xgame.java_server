@@ -30,7 +30,7 @@ public final class CdServ extends AbstractBizServ implements IHumanEventListen, 
 	/** 单例对象 */
 	public static final CdServ OBJ = new CdServ();
 	/** 管理器字典 */
-	final ConcurrentHashMap<Long, CdManager> _mngrMap = new ConcurrentHashMap<>();
+	public final ConcurrentHashMap<Long, CdManager> _mngrMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 类默认构造器
