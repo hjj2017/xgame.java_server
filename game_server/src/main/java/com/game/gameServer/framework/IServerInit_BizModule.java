@@ -1,6 +1,7 @@
 package com.game.gameServer.framework;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Set;
 
 import com.game.gameServer.bizServ.AbstractBizServ;
@@ -184,6 +185,13 @@ interface IServerInit_BizModule {
 		if (XlsxTmplServ.OBJ._xlsxFileDir == null) {
 			// 设置 Excel 文件目录
 			XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
+		}
+
+		if (XlsxTmplServ.OBJ._propMap == null &&
+			GameServerConf.OBJ._lang != null) {
+			// 设置语言变量
+			XlsxTmplServ.OBJ._propMap = new HashMap<>();
+			XlsxTmplServ.OBJ._propMap.put("lang", GameServerConf.OBJ._lang);
 		}
 
 		// 加载模板对象列表并打包

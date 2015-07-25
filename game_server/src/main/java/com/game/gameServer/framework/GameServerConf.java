@@ -30,6 +30,8 @@ public final class GameServerConf {
     public String _dbUser = "root";
     /** 数据库密码 */
     public String _dbPass = "root";
+    /** 语言 */
+    public String _lang = "zh_CN";
 
     /**
      * 类默认构造器
@@ -63,5 +65,7 @@ public final class GameServerConf {
         this._dbConn = jsonObj.optString("dbConn", this._dbConn);
         this._dbUser = jsonObj.optString("dbUser", this._dbUser);
         this._dbPass = jsonObj.optString("dbUser", this._dbPass);
+        // 语言
+        this._lang = jsonObj.optString("lang", this._lang);
     }
 }

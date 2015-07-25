@@ -1,6 +1,8 @@
 package com.game.part.tmpl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.game.part.util.Assert;
@@ -18,6 +20,16 @@ public class XlsxTmplServ implements IServ_LoadTmplData, IServ_PackUp, IServ_Val
 	public static final XlsxTmplServ OBJ = new XlsxTmplServ();
 	/** Excel 文件所在目录 */
 	public String _xlsxFileDir = null;
+
+	/**
+	 * 属性字典,
+	 * <font color="#990000">但目前只被应用于 &#64;FromXlsxFile 注解!</font>
+	 *
+	 * @see com.game.part.tmpl.anno.FromXlsxFile
+	 *
+	 */
+	public Map<String, String> _propMap = null;
+
 	/** 输出类文件到目标目录, 主要用于调试 */
 	public String _debugClazzToDir = null;
 	/** 对象列表字典 */
