@@ -28,13 +28,6 @@ public enum CdTypeEnum implements EnumHelper.ICustomEnum {
 	worldChat("worldChat", 6001),
 ;
 
-	/** 建筑类型 Cd 数组 */
-	public static final CdTypeEnum[] BUILDING_CD_TYPE_ARR = {
-		building1,
-		building2,
-		building3
-	};
-
 	/** 字符串值 */
 	private String _strVal = null;
 	/** 整数值 */

@@ -189,24 +189,52 @@ final class XlsxPackerMaker {
 
 		pl.forEach(p -> {
 			if (p._oneToOne) {
-				// 如果是一对一, 则构建如下代码 :
-				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O._IdMap); 或者是 : 
+				//
+				// 如果是一对一, 则构建如下代码中的一种:
+				//
+				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O._IdMap);
+				// AbstractXlsxTmpl.packOneToOne(O.getId(), O, O._IdMap);
 				// AbstractXlsxTmpl.packOneToOne(O._Id, O, O.getIdMap());
+				// AbstractXlsxTmpl.packOneToOne(O.getId(), O, O.getIdMap());
+				//
+				// 注意: 主键和字典都有两种情况,
+				// 一个是字段类型;
+				// 一个是函数类型;
+				//
 				codeCtx._codeText
-					.append("AbstractXlsxTmpl.packOneToOne(O.")
-					.append(p._keyDef.getName())
-					.append(", O, O.")
-					.append(p._mapDef.getName());
+					.append("AbstractXlsxTmpl.packOneToOne(");
+
+				if (p._keyDef instanceof Method) {
+					// 主键是函数类型的
+					codeCtx._codeText
+						.append("O.")
+						.append(p._keyDef.getName())
+						.append("()");
+				} else {
+					// 主键是字段类型的
+					codeCtx._codeText
+						.append("O.")
+						.append(p._keyDef.getName());
+				}
+
+				codeCtx._codeText.append(", O, ");
 	
 				if (p._mapDef instanceof Method) {
-					// 如果是函数, 
-					// 就增加一对括号 
-					codeCtx._codeText.append("()");
+					// 字典是函数类型的
+					codeCtx._codeText
+						.append("O.")
+						.append(p._mapDef.getName())
+						.append("()");
+				} else {
+					// 字典是字段类型的
+					codeCtx._codeText
+						.append("O.")
+						.append(p._mapDef.getName());
 				}
 
 				codeCtx._codeText.append(");\n");
 			} else {
-				// 如果是一对一, 则构建如下代码 :
+				// 如果是一对多, 则构建如下代码 :
 				// AbstractXlsxTmpl.packOneToMany(O._cityId, O, O._cityBuildingMap); 或者是 : 
 				// AbstractXlsxTmpl.packOneToMany(O._cityId, O, O.getCityBuildingMap());
 				codeCtx._codeText

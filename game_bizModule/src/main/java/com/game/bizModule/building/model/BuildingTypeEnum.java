@@ -13,8 +13,8 @@ import com.game.part.util.EnumHelper.ICustomEnum;
 public enum BuildingTypeEnum implements ICustomEnum {
     /** 主城 */
     home("home", 1001),
-    /** 兵营 */
-    camp("camp", 1002),
+    /** 酒馆 */
+    pub("pub", 1002),
     /** 铁匠铺 */
     forge("forge", 1003),
 ;
@@ -44,5 +44,16 @@ public enum BuildingTypeEnum implements ICustomEnum {
     @Override
     public int getIntVal() {
         return this._intVal;
+    }
+
+    /**
+     * 将整数值解析为枚举
+     *
+     * @param intVal
+     * @return
+     *
+     */
+    public static BuildingTypeEnum parse(int intVal) {
+        return EnumHelper.parse(intVal, BuildingTypeEnum.values());
     }
 }

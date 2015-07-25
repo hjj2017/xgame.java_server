@@ -38,7 +38,7 @@ public class CdTimerTmpl extends AbstractXlsxTmpl {
 
 	/** Cd 字典 */
 	@OneToOne(groupName = "_typeInt")
-	public static Map<Integer, CdTimerTmpl> _typeIntMap = new HashMap<>();
+	public static final Map<Integer, CdTimerTmpl> _typeIntMap = new HashMap<>();
 
 	/**
 	 * 获取计时器模板

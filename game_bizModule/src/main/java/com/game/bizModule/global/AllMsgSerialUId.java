@@ -56,6 +56,14 @@ public final class AllMsgSerialUId {
     /** 进入角色 GC 消息 */
     public static final short GC_ENTER_HUMAN = ++MSG_BASE_HUMAN;
 
+// 建筑
+///////////////////////////////////////////////////////////////////////
+
+    /** 消息基址 */
+    private static short MSG_BASE_BUILDING = 1200;
+    /** 建筑升级 */
+    public static final short CG_BUILDING_LEVEL_UP = ++MSG_BASE_BUILDING;
+
     /**
      * 类默认构造器
      *

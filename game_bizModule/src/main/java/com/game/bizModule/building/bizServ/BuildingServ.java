@@ -1,12 +1,16 @@
 package com.game.bizModule.building.bizServ;
 
 import com.game.bizModule.building.entity.BuildingEntity;
+import com.game.bizModule.building.model.BuildingTypeEnum;
+import com.game.bizModule.building.tmpl.BuildingTmpl;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.event.IHumanEventListen;
 import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.framework.Player;
 import com.game.part.dao.CommDao;
+
+import java.util.Arrays;
 
 /**
  * 建筑业务服务
@@ -15,7 +19,7 @@ import com.game.part.dao.CommDao;
  * @since 2015/7/24
  *
  */
-public class BuildingServ extends AbstractBizServ implements IHumanEventListen, IServ_LevelUp {
+public class BuildingServ extends AbstractBizServ implements IHumanEventListen, IServ_DoLevelUp {
     /** 单例对象 */
     public static final BuildingServ OBJ = new BuildingServ();
 
@@ -42,7 +46,27 @@ public class BuildingServ extends AbstractBizServ implements IHumanEventListen, 
         }
 
         // 获取管理器对象
-        BuildingManager mngrObj = h.getPropValOrCreate(BuildingManager.class);
+        BuildingManager mngrObj = new BuildingManager(h._humanUId);
+        // 设置属性值
+        p.putPropVal(
+            BuildingManager.class,
+            mngrObj
+        );
+
+        Arrays.asList(BuildingTypeEnum.values())
+            .forEach(bt -> {
+            // 获取建筑模版
+            BuildingTmpl tmplObj = BuildingTmpl.getByBuildingType(bt);
+            // 建筑开启所需角色等级
+            final int openingNeedHumanLevel = tmplObj._openingNeedHumanLevel.getIntVal();
+
+            if (h._humanLevel >= openingNeedHumanLevel) {
+                // 如果角色等级 >= 所需等级,
+                // 则默认为 1 级
+                mngrObj.setLevel(bt, +1);
+            }
+        });
+
         // 获取建筑实体
         BuildingEntity entity = CommDao.OBJ.getSingleResult(
             BuildingEntity.class,
