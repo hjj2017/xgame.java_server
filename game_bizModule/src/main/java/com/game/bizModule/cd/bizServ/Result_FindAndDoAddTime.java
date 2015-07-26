@@ -16,5 +16,6 @@ public class Result_FindAndDoAddTime extends BizResultObj {
 
 	@Override
 	protected void clearContent() {
+		this._usedCdType = null;
 	}
 }

@@ -94,6 +94,28 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 		}
 	}
 
+	/**
+	 * 增加累计时间
+	 *
+	 * @param now
+	 * @param addTime
+	 *
+	 */
+	public void addTime(long now, long addTime) {
+		if (now <= 0L ||
+			addTime <= 0L) {
+			// 如果参数对象为空,
+			// 则直接推出!
+			return;
+		}
+
+		// 获取当前时间与结束时间的时间差
+		long diffTime = this.getDiffTime(now);
+		// 更新开始时间和结束时间
+		this._startTime = now;
+		this._endTime = now + diffTime + addTime;
+	}
+
 	@Override
 	public String getStoreKey() {
 		return MessageFormat.format(

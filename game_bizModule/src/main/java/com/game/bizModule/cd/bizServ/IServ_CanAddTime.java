@@ -4,6 +4,7 @@ import com.game.bizModule.cd.CdLog;
 import com.game.bizModule.cd.model.CdTimer;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.cd.tmpl.CdTimerTmpl;
+import com.game.bizModule.multiLang.MultiLangDef;
 import com.game.part.util.BizResultPool;
 
 import java.text.MessageFormat;
@@ -40,7 +41,8 @@ interface IServ_CanAddTime {
 				"管理器为空, 角色 = {0}",
 				String.valueOf(humanUId)
 			));
-			result._ok = false;
+			result._errorCode = MultiLangDef.LANG_COMM_nullMngrObj;
+			result._canAddTime = false;
 			return result;
 		}
 
@@ -56,7 +58,8 @@ interface IServ_CanAddTime {
 				String.valueOf(humanUId),
 				cdType.getStrVal()
 			));
-			result._ok = false;
+			result._errorCode = MultiLangDef.LANG_CD_cdTypeNotOpened;
+			result._canAddTime = false;
 			return result;
 		}
 
@@ -68,11 +71,12 @@ interface IServ_CanAddTime {
 		if (diffTime >= getThreshold(cdType)) {
 			// 如果时间间隔大于阈值, 
 			// 则直接跳过!
-			result._ok = false;
+			result._errorCode = MultiLangDef.LANG_CD_diffTimeGeqThreshold;
+			result._canAddTime = false;
 			return result;
 		}
 
-		result._ok = true;
+		result._canAddTime = true;
 		return result;
 	}
 

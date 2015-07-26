@@ -1,5 +1,6 @@
 package com.game.bizModule.cd.bizServ;
 
+import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.part.util.BizResultObj;
 
 /**
@@ -10,7 +11,11 @@ import com.game.part.util.BizResultObj;
  * 
  */
 public class Result_DoAddTime extends BizResultObj {
+	/** 已使用的 Cd 类型 */
+	public CdTypeEnum _usedCdType = null;
+
 	@Override
 	protected void clearContent() {
+		this._usedCdType = null;
 	}
 }

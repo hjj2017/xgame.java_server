@@ -7,8 +7,8 @@ import com.game.bizModule.cd.bizServ.CdServ;
 import com.game.bizModule.cd.bizServ.Result_FindAndDoAddTime;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.human.Human;
+import com.game.bizModule.multiLang.MultiLangDef;
 import com.game.part.util.BizResultPool;
-import sun.plugin2.message.Message;
 
 import java.text.MessageFormat;
 
@@ -34,7 +34,9 @@ interface IServ_DoLevelUp {
      * @param bt
      *
      */
-    default Result_DoLevelUp doLevelUp(Human h, BuildingTypeEnum bt) {
+    default Result_DoLevelUp doLevelUp(
+        Human h,
+        BuildingTypeEnum bt) {
         // 借出结果对象
         Result_DoLevelUp result = BizResultPool.borrow(Result_DoLevelUp.class);
 
@@ -42,6 +44,7 @@ interface IServ_DoLevelUp {
             bt == null) {
             // 如果参数对象为空,
             // 则直接退出!
+            result._errorCode = MultiLangDef.LANG_COMM_paramError;
             return result;
         }
 
@@ -51,6 +54,7 @@ interface IServ_DoLevelUp {
         if (mngrObj == null) {
             // 如果管理器对象为空,
             // 则直接退出!
+            result._errorCode = MultiLangDef.LANG_COMM_nullMngrObj;
             return result;
         }
 
@@ -64,6 +68,7 @@ interface IServ_DoLevelUp {
                     "主城等级不能大于角色等级, 角色 = {0}",
                     String.valueOf(h._humanUId)
                 ));
+                result._errorCode = MultiLangDef.LANG_BUILDING_homeLevelCannotGTHumanLevel;
                 return result;
             }
         } else {
@@ -92,6 +97,7 @@ interface IServ_DoLevelUp {
                     String.valueOf(h._humanUId),
                     bt.getStrVal()
                 ));
+                result._errorCode = MultiLangDef.LANG_BUILDING_buildingLevelCannotGTHomeLevel;
                 return result;
             }
         }
@@ -114,8 +120,7 @@ interface IServ_DoLevelUp {
         result._usedSilver = needSilver;
         // 查找并增加 Cd 时间
         Result_FindAndDoAddTime result_2 = CdServ.OBJ.findAndDoAddTime(
-            h._humanUId,
-            BUILDING_CD_TYPE_ARR,
+            h, BUILDING_CD_TYPE_ARR,
             levelUpTmpl._needCdTime.getLongVal()
         );
 
