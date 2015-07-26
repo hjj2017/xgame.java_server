@@ -50,7 +50,7 @@ public final class SceneFacade implements IMsgReceiver {
             // 添加场景到字典
             this._sceneMap.put(
                 msgType,
-                new InnerScene(msgType.getStrVal())
+                new InnerScene(msgType.getStrVal(), msgType)
             );
         }
     }

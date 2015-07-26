@@ -6,6 +6,7 @@ import com.game.bizModule.human.msg.GCEnterHuman;
 import com.game.bizModule.human.msg.GGLoadHumanFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
+import com.game.gameServer.msg.MsgTypeEnum;
 
 /**
  * 查询玩家角色入口列表完成
@@ -44,7 +45,11 @@ public class Handler_GGLoadHumanFinish extends AbstractGGMsgHandler<GGLoadHumanF
             new GCEnterHuman(ggMSG._finish), p
         );
 
-        // 告诉玩家可以处理 game 状态的 CG 消息了
-        p._canExecGameCGMsg.set(true);
+        // 玩家可以处理游戏消息和聊天消息
+        p._allowMsgTypeMap.put(MsgTypeEnum.game, true);
+        p._allowMsgTypeMap.put(MsgTypeEnum.chat, true);
+        // 玩家不可以处理登陆消息
+        p._allowMsgTypeMap.remove(MsgTypeEnum.login);
+        // 注意: 到这里为止, 玩家已经进入另外一个阶段!
     }
 }

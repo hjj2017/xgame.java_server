@@ -1,15 +1,9 @@
 package com.game.bizModule.login.handler;
 
-import com.game.bizModule.human.Human;
-import com.game.bizModule.human.bizServ.HumanServ;
-import com.game.bizModule.login.LoginLog;
 import com.game.bizModule.login.bizServ.LoginServ;
 import com.game.bizModule.login.msg.CGDisconnect;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
-import com.game.part.lazySaving.LazySavingHelper;
-
-import java.text.MessageFormat;
 
 /**
  * 断开连接消息
@@ -36,8 +30,8 @@ public class Handler_CGDisconnect extends AbstractCGMsgHandler<CGDisconnect> {
 			return;
 		}
 
-		// 告诉玩家不能处理 game 状态的 CG 消息了
-		p._canExecGameCGMsg.set(false);
+		// 玩家不能处理任何类型的 CG 消息
+		p._allowMsgTypeMap.clear();
 
 		// 玩家断线
 		LoginServ.OBJ.disconnect(p);
