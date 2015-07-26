@@ -43,5 +43,8 @@ public class Handler_GGLoadHumanFinish extends AbstractGGMsgHandler<GGLoadHumanF
         this.sendMsgToClient(
             new GCEnterHuman(ggMSG._finish), p
         );
+
+        // 告诉玩家可以处理 game 状态的 CG 消息了
+        p._canExecGameCGMsg.set(true);
     }
 }

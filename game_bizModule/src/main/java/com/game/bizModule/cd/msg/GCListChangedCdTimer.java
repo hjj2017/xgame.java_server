@@ -1,5 +1,6 @@
 package com.game.bizModule.cd.msg;
 
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.part.msg.type.MsgArrayList;
 
@@ -18,6 +19,6 @@ public class GCListChangedCdTimer extends AbstractGCMsgObj {
 
     @Override
     public short getSerialUId() {
-        return 0;
+        return AllMsgSerialUId.GC_LIST_CHANGED_TIMER;
     }
 }

@@ -64,6 +64,18 @@ public final class AllMsgSerialUId {
     /** 建筑升级 */
     public static final short CG_BUILDING_LEVEL_UP = ++MSG_BASE_BUILDING;
 
+// Cd
+///////////////////////////////////////////////////////////////////////
+
+    /** 消息基址 */
+    private static short MSG_BASE_CD = 1300;
+    /** 列表所有计时器 CG 消息 */
+    public static final short CG_LIST_ALL_TIMER = ++MSG_BASE_CD;
+    /** 列表所有计时器 GC 消息 */
+    public static final short GC_LIST_ALL_TIMER = ++MSG_BASE_CD;
+    /** 列表已修改的计时器 GC 消息 */
+    public static final short GC_LIST_CHANGED_TIMER = ++MSG_BASE_CD;
+
     /**
      * 类默认构造器
      *

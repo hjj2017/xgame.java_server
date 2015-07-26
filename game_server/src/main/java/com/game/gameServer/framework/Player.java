@@ -2,6 +2,7 @@ package com.game.gameServer.framework;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 玩家
@@ -26,6 +27,8 @@ public final class Player {
 	public long _loginTime = 0L;
 	/** 玩家的属性字典 */
 	private final Map<Object, Object> _propMap = new ConcurrentHashMap<>();
+	/** 是否可以执行 game 类型的 CG 消息? */
+	public final AtomicBoolean _canExecGameCGMsg = new AtomicBoolean(false);
 
 	/**
 	 * 类默认构造器

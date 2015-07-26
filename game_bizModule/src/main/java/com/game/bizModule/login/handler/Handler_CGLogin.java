@@ -1,9 +1,12 @@
 package com.game.bizModule.login.handler;
 
+import com.game.bizModule.login.LoginLog;
 import com.game.bizModule.login.msg.CGLogin;
 import com.game.bizModule.login.bizServ.LoginServ;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
+
+import java.text.MessageFormat;
 
 /**
  * 进入场景
@@ -25,8 +28,17 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 		// 设置平台 UId 和会话 UId
 		p._platformUIdStr = cgMSG._platformUIdStr.getStrVal();
 		p._sessionUId = this._sessionUId;
-		// 安装玩家对象
-		super.setupPlayer(p);
+
+		if (super.setupPlayer(p) == false) {
+			// 如果安装玩家对象失败,
+			// 则直接退出!
+			LoginLog.LOG.error(MessageFormat.format(
+				"安装玩家失败, platformUIdStr = {0}, sessionUId = {1}",
+				p._platformUIdStr,
+				String.valueOf(p._sessionUId)
+			));
+			return;
+		}
 
 		// 获取登录串
 		String loginStr = cgMSG._loginStr.getStrVal();

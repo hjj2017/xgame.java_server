@@ -30,11 +30,8 @@ public class Handler_CGCreateHuman extends AbstractCGMsgHandler<CGCreateHuman> {
         // 获取服务器名称和角色名称
         final String serverName = msgObj._serverName.getStrVal();
         final String humanName = msgObj._humanName.getStrVal();
-
         // 角色全名
-        final String fullName = HumanNaming.OBJ.getFullName(
-            serverName, humanName
-        );
+        final String fullName = HumanNaming.OBJ.getFullName(serverName, humanName);
 
         if (HumanNaming.OBJ._fullNameSet.contains(fullName)) {
             // 如果角色全名重复,

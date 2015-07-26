@@ -117,16 +117,6 @@ public final class SceneFacade implements IMsgReceiver {
             return;
         }
 
-        if (InnerScene.isExecutable(msgObj) == false) {
-            // 如果不是可执行消息,
-            // 则直接退出!
-            SceneLog.LOG.error(MessageFormat.format(
-                "消息 {0} 不是可执行消息",
-                msgObj.getClass().getName()
-            ));
-            return;
-        }
-
         // 获取消息类型
         MsgTypeEnum msgType = ((AbstractExecutableMsgObj)msgObj).getMsgType();
         // 获取场景对象

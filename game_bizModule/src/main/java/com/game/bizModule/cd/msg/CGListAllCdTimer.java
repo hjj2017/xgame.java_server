@@ -1,6 +1,7 @@
 package com.game.bizModule.cd.msg;
 
 import com.game.bizModule.cd.handler.Handler_CGListAllCdTimer;
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.type.MsgArrayList;
 import com.game.part.msg.type.MsgBool;
@@ -18,7 +19,7 @@ public class CGListAllCdTimer extends AbstractCGMsgObj<Handler_CGListAllCdTimer>
 
 	@Override
 	public short getSerialUId() {
-		return 0;
+		return AllMsgSerialUId.CG_LIST_ALL_TIMER;
 	}
 
 	@Override

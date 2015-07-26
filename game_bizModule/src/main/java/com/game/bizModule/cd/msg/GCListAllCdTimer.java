@@ -1,5 +1,6 @@
 package com.game.bizModule.cd.msg;
 
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 
 /**
@@ -12,6 +13,6 @@ import com.game.gameServer.msg.AbstractGCMsgObj;
 public class GCListAllCdTimer extends AbstractGCMsgObj {
     @Override
     public short getSerialUId() {
-        return 0;
+        return AllMsgSerialUId.GC_LIST_ALL_TIMER;
     }
 }
