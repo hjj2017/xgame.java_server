@@ -5,9 +5,25 @@
 	<persistence-unit name="Xgame-gameServer" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
+		<!--// 玩家 & 角色 //-->
 		<class>com.game.bizModule.player.entity.PlayerEntity</class>
 		<class>com.game.bizModule.human.entity.HumanEntryEntity</class>
 		<class>com.game.bizModule.human.entity.HumanEntity</class>
+
+		<!--// Cd 系统 //-->
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_0</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_1</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_2</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_3</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_4</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_5</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_6</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_7</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_8</class>
+		<class>com.game.bizModule.cd.entity.CdTimerEntity_9</class>
+
+		<!--// 建筑系统 //-->
+		<class>com.game.bizModule.building.entity.BuildingEntity</class>
 
         <properties>
         	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />

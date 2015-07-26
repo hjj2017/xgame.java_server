@@ -22,6 +22,7 @@
 	# 测试时的执行顺序, 就是以下文本行的顺序!
     { "currModule" : "connect" },
     { "currModule" : "login" },
-	{ "currModule" : "human", "nextModule" : "disconnect" },
+	{ "currModule" : "human" },
+    { "currModule" : "building", "nextModule" : "disconnect" },
 ]
 }

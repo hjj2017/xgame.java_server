@@ -3,6 +3,7 @@ package com.game.bizModule.human.msg;
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.part.msg.type.MsgBool;
+import com.game.part.msg.type.MsgStr;
 
 /**
  * 创建角色 GC 消息
@@ -14,6 +15,8 @@ import com.game.part.msg.type.MsgBool;
 public class GCCreateHuman extends AbstractGCMsgObj {
     /** 建角成功? */
     public MsgBool _success;
+    /** 失败消息 */
+    public MsgStr _errorMsg;
 
     /**
      * 类默认构造器

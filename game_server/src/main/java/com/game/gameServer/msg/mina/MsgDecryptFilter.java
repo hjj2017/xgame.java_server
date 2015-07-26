@@ -160,17 +160,17 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 	 * <font color="#990000">注意 : 创建过程中会修改 buff 的 position 值</font>
 	 * 
 	 * @param buff
-	 * @param fromSessionUUId 
+	 * @param fromSessionUId
 	 * @return 
 	 * 
 	 */
-	private static MsgStruct createMsgStruct(IoBuffer buff, long fromSessionUUId) {
+	private static MsgStruct createMsgStruct(IoBuffer buff, long fromSessionUId) {
 		if (buff == null || 
 			buff.remaining() < 4) {
 			// 如果参数对象为空, 
 			// 或者剩余字节数 < 4 ( 没法分析出消息长度和类型 )
 			// 则直接退出!
-			MsgLog.LOG.error("null buff or remaining < 4, sessionUId = " + fromSessionUUId);
+			MsgLog.LOG.error("null buff or remaining < 4, sessionUId = " + fromSessionUId);
 			return null;
 		}
 
@@ -178,8 +178,8 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 		buff.position(0);
 		// 创建消息结构
 		MsgStruct msg = new MsgStruct();
-		// 来自会话 UUId
-		msg._sessionUId = fromSessionUUId;
+		// 来自会话 UId
+		msg._sessionUId = fromSessionUId;
 		// 获取消息长度
 		msg._len = IoBuffUtil.readShort(buff);
 		// 获取消息类型
@@ -202,7 +202,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			msg._md5.isEmpty()) {
 			// 如果 MD5 字符串为空, 
 			// 则直接退出!
-			MsgLog.LOG.error("null or empty md5, sessionUId " + fromSessionUUId);
+			MsgLog.LOG.error("null or empty md5, sessionUId " + fromSessionUId);
 			return null;
 		}
 
@@ -214,7 +214,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 			// 则直接退出!
 			MsgLog.LOG.error(
 				"bodyLen < 0, msgTypeID = " + msg._serialUId 
-				+ ", sessionUId = " + fromSessionUUId
+				+ ", sessionUId = " + fromSessionUId
 			);
 			return null;
 		}
@@ -305,7 +305,7 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 	 *
 	 */
 	private static class MsgStruct {
-		/** 会话 UUId */
+		/** 会话 UId */
 		private long _sessionUId = -1L;
 		/** 消息长度 */
 		private short _len = -1;

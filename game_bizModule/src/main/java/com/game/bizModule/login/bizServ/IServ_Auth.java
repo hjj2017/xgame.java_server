@@ -51,20 +51,20 @@ interface IServ_Auth {
 
 		// 记录日志信息
 		LoginLog.LOG.info(MessageFormat.format(
-			"platformUId = {0}, 登陆字符串 = {1}",
-			p._platformUId,
+			"platformUIdStr = {0}, 登陆字符串 = {1}",
+			p._platformUIdStr,
 			loginStr
 		));
 
-		if (p._platformUId == null ||
-			p._platformUId.isEmpty()) {
+		if (p._platformUIdStr == null ||
+			p._platformUIdStr.isEmpty()) {
 			// 如果是谁都不知道,
 			// 则直接退出!
 			// 这就跟实名购买火车票一样,
 			// 你连最基本的身份证号都不告诉我...
 			// 那对不起, 88!
 			LoginLog.LOG.error(MessageFormat.format(
-				"platformUId 为空, 登陆字符串 = {0}",
+				"platformUIdStr 为空, 登陆字符串 = {0}",
 				loginStr
 			));
 			return;
@@ -77,8 +77,8 @@ interface IServ_Auth {
 			// 如果是正在执行授权过程,
 			// 则直接退出!
 			LoginLog.LOG.error(MessageFormat.format(
-				"platformUId = {0}, 正在授权",
-				p._platformUId
+				"platformUIdStr = {0}, 正在授权",
+				p._platformUIdStr
 			));
 			return;
 		}

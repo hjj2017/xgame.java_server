@@ -125,4 +125,20 @@ public class StringUtil {
 		return value == null
 			|| value.isEmpty();
 	}
+
+	/**
+	 * 将字符串中的单引号 ' 替换成斜杠 + 单引号 \'
+	 *
+	 * @param value
+	 * @return
+	 *
+	 */
+	public static String addSlash(String value) {
+		if (value == null ||
+			value.isEmpty()) {
+			return value;
+		} else {
+			return value.replaceAll("\'", "\\\'");
+		}
+	}
 }

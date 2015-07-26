@@ -1,6 +1,10 @@
 package com.game.gameServer.scene;
 
+import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.AbstractExecutableMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
+import com.game.gameServer.msg.mina.OnlineSessionManager;
 import com.game.part.ThreadNamingFactory;
 import com.game.part.msg.type.AbstractMsgObj;
 
@@ -73,10 +77,13 @@ class InnerScene {
 			return;
 		}
 
-		if (isExecutable(msgObj) == false) {
-			// 如果不是可执行消息, 
+		if (canExec(msgObj) == false) {
+			// 如果消息不可以被执行,
 			// 则直接退出!
-			SceneLog.LOG.error("消息不是可执行消息");
+			SceneLog.LOG.error(MessageFormat.format(
+				"消息 {0} 不能被执行",
+				msgObj.getClass().getName()
+			));
 			return;
 		}
 
@@ -103,14 +110,78 @@ class InnerScene {
 	}
 
 	/**
+	 * 消息是否可以执行?
+	 *
+	 * @param msgObj
+	 * @return
+	 *
+	 */
+	private static boolean canExec(AbstractMsgObj msgObj) {
+		if (isExecutable(msgObj) == false) {
+			// 如果不是可执行消息,
+			// 则直接退出!
+			SceneLog.LOG.error(MessageFormat.format(
+				"消息 {0} 不是可执行消息",
+				msgObj.getClass().getName()
+			));
+			return false;
+		}
+
+		if (msgObj instanceof AbstractCGMsgObj &&
+			canExecGameCGMsg((AbstractCGMsgObj)msgObj) == false) {
+			// 如果是 CG 消息,
+			// 其如果还不能执行 game 类型的 CG 消息,
+			// 则直接退出!
+			SceneLog.LOG.error(MessageFormat.format(
+				"不能执行消息 {0}, 玩家还没有进入 game 状态! " +
+				"具体请参见 com.game.gameServer.framework.Player 类 _canExecGameCGMsg 属性",
+				msgObj.getClass().getName()
+			));
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * 是否为可执行的消息
 	 *
 	 * @param msgObj
 	 * @return
 	 *
 	 */
-	static boolean isExecutable(
+	private static boolean isExecutable(
 		AbstractMsgObj msgObj) {
 		return msgObj != null && msgObj instanceof AbstractExecutableMsgObj;
+	}
+
+	/**
+	 * 是不是可以执行 game 类型的 CG 消息?
+	 *
+	 * @see MsgTypeEnum
+	 * @see MsgTypeEnum#game
+	 *
+	 * @param msgObj
+	 * @return
+	 *
+	 */
+	private static boolean canExecGameCGMsg(AbstractCGMsgObj msgObj) {
+		if (msgObj == null) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return false;
+		}
+
+		if (msgObj.getMsgType() == MsgTypeEnum.game) {
+			// 获取会话 UId
+			final long sessionUId = msgObj.getSelfHandler()._sessionUId;
+			// 获取玩家对象
+			Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+			// 看看玩家是不是可以执行 game 类型的 CG 消息?
+			return p != null
+				&& p._canExecGameCGMsg.get();
+		}
+
+		return true;
 	}
 }

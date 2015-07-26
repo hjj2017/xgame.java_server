@@ -354,6 +354,6 @@ public final class ClazzUtil {
 	 */
 	public static void putClazzDir(
 		String fromDir) {
-		ClazzUtil_AddClazzDir.process(fromDir);
+		ClazzUtil_PutClazzDir.process(fromDir);
 	}
 }

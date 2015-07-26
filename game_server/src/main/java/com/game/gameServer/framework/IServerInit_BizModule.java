@@ -1,8 +1,10 @@
 package com.game.gameServer.framework;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Set;
 
+import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.gameServer.scene.IHeartbeat;
@@ -73,6 +75,11 @@ interface IServerInit_BizModule {
 				return;
 			}
 		});
+
+		// 验证所有模板数据
+		XlsxTmplServ.OBJ.validateAll();
+		// 调用业务模块的初始化函数
+		callBizServInitFunc();
 	}
 
 	/**
@@ -180,12 +187,43 @@ interface IServerInit_BizModule {
 			XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
 		}
 
-		// 加载模板对象列表
+		if (XlsxTmplServ.OBJ._propMap == null &&
+			GameServerConf.OBJ._lang != null) {
+			// 设置语言变量
+			XlsxTmplServ.OBJ._propMap = new HashMap<>();
+			XlsxTmplServ.OBJ._propMap.put("lang", GameServerConf.OBJ._lang);
+		}
+
+		// 加载模板对象列表并打包
 		XlsxTmplServ.OBJ.loadTmplData(clazzDef);
+		XlsxTmplServ.OBJ.packUp(clazzDef);
 		// 记录模板注册日志
 		FrameworkLog.LOG.info(MessageFormat.format(
 			":::: 注册模板类 = {0}",
 			clazzDef.getName()
 		));
+	}
+
+	/**
+	 * 调用业务服务的初始化函数
+	 *
+	 */
+	static void callBizServInitFunc() {
+		AbstractBizServ.BIZ_SERV_LIST.forEach(BS -> {
+			if (BS == null) {
+				// 如果业务服务为空,
+				// 则直接退出!
+				return;
+			}
+
+			// 记录日志信息
+			FrameworkLog.LOG.info(MessageFormat.format(
+				"业务服务 {0} 执行初始化函数",
+				BS.getClass().getName()
+			));
+
+			// 调用 init 函数
+			BS.init();
+		});
 	}
 }

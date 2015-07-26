@@ -29,9 +29,18 @@ public class Handler_CGDisconnect extends AbstractCGMsgHandler<CGDisconnect> {
 
 		// 获取玩家对象
 		final Player p = this.getPlayer();
+
+		if (p == null) {
+			// 如果玩家对象为空,
+			// 则直接退出!
+			return;
+		}
+
+		// 告诉玩家不能处理 game 状态的 CG 消息了
+		p._canExecGameCGMsg.set(false);
+
 		// 玩家断线
 		LoginServ.OBJ.disconnect(p);
-
 		// 删除玩家对象
 		this.uninstallPlayer(p);
 		// 清除所有属性

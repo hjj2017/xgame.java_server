@@ -42,8 +42,8 @@ class CommUpdater {
 			// 如果实体数据为空, 
 			// 则直接退出!
 			LazySavingLog.LOG.error(MessageFormat.format(
-				"无法保存实体数据, 实体对象为空! UId = {0}", 
-				lso.getUId()
+				"无法保存实体数据, 实体对象为空! storeKey = {0}",
+				lso.getStoreKey()
 			));
 			return;
 		}
@@ -75,8 +75,8 @@ class CommUpdater {
 			// 如果实体数据为空, 
 			// 则直接退出!
 			LazySavingLog.LOG.error(MessageFormat.format(
-				"无法删除实体数据, 实体对象为空! UId = {0}", 
-				lso.getUId()
+				"无法删除实体数据, 实体对象为空! storeKey = {0}",
+				lso.getStoreKey()
 			));
 			return;
 		}

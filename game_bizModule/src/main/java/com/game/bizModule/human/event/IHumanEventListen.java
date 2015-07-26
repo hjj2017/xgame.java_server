@@ -1,6 +1,7 @@
 package com.game.bizModule.human.event;
 
 import com.game.bizModule.human.Human;
+import com.game.gameServer.framework.Player;
 
 /**
  * 玩家事件监听
@@ -12,19 +13,23 @@ public interface IHumanEventListen {
 	/**
 	 * 创建角色
 	 *
-	 * @param h
+	 * @param byPlayer
+	 * @param humanUId
+	 * @param serverName
+	 * @param humanName
 	 *
 	 */
-	default void onCreateNew(Human h) {
+	default void onCreateNew(Player byPlayer, long humanUId, String serverName, String humanName) {
 	}
 
 	/**
 	 * 从数据库中加载数据
-	 * 
+	 *
+	 * @param byPlayer
 	 * @param h 
 	 * 
 	 */
-	default void onLoadDb(Human h) {
+	default void onLoadDb(Player byPlayer, Human h) {
 	}
 
 	/**

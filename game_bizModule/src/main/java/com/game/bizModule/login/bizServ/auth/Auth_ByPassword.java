@@ -7,6 +7,7 @@ import java.util.Map;
 import com.game.bizModule.login.LoginLog;
 import com.game.gameServer.framework.Player;
 import com.game.part.util.NullUtil;
+import com.game.part.util.StringUtil;
 import net.sf.json.JSONObject;
 
 import com.game.bizModule.player.entity.PlayerEntity;
@@ -24,8 +25,6 @@ public class Auth_ByPassword implements IAuthorize {
 	private static final String JK_userName = "userName";
 	/** 密码 */
 	private static final String JK_password = "password";
-	/** Pf 值 */
-	private static final String JK_pf = "pf";
 
 	@Override
 	public boolean auth(Player p, String loginStr) {
@@ -50,15 +49,10 @@ public class Auth_ByPassword implements IAuthorize {
 			return false;
 		}
 
-		// 创建参数字典
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("userName", userName);
-
 		// 获取用户实体
 		PlayerEntity pe = CommDao.OBJ.getSingleResult(
 			PlayerEntity.class,
-			"entity._userName = :userName",
-			paramMap
+			"entity._userName = '" + StringUtil.addSlash(userName) +"'"
 		);
 
 		if (pe == null ||

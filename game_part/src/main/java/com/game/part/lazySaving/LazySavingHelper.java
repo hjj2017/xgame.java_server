@@ -85,18 +85,18 @@ public final class LazySavingHelper {
 			return;
 		}
 
-		// 获取业务对象 UId
-		final String lsoUId = lso.getUId();
+		// 获取业务对象存储键
+		final String storeKey = lso.getStoreKey();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = mapX.get(lsoUId);
+		UpdateEntry oldEntry = mapX.get(storeKey);
 
 		if (oldEntry != null) {
 			if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
 				// 如果已有的入口是删除操作,
 				// 放弃本次更新操作!
 				LazySavingLog.LOG.error(MessageFormat.format(
-					"准备将对象标记为更新操作, 但是已存在一个 key ( = {0} ) 相同的删除操作, 所以放弃本次更新操作", 
-					lsoUId
+					"准备将对象标记为更新操作, 但是已存在一个 storeKey ( = {0} ) 相同的删除操作, 所以放弃本次更新操作",
+					storeKey
 				));
 				return;
 			}
@@ -120,7 +120,7 @@ public final class LazySavingHelper {
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典中
-		mapX.put(lsoUId, newEntry);
+		mapX.put(storeKey, newEntry);
 
 		return;
 	}
@@ -162,10 +162,10 @@ public final class LazySavingHelper {
 			return;
 		}
 
-		// 获取业务对象 UId
-		final String lsoUId = lso.getUId();
+		// 获取业务对象存储键
+		final String storeKey = lso.getStoreKey();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = mapX.get(lsoUId);
+		UpdateEntry oldEntry = mapX.get(storeKey);
 
 		if (oldEntry != null) {
 			do {
@@ -173,8 +173,8 @@ public final class LazySavingHelper {
 					// 如果已有的入口是更新操作,
 					// 我擦, 那到底是删除还是更新啊...
 					LazySavingLog.LOG.error(MessageFormat.format(
-						"准备将对象标记为删除操作, 但是已存在一个 key ( = {0} ) 相同的更新操作, 所以替换更新操作为删除操作!", 
-						lsoUId
+						"准备将对象标记为删除操作, 但是已存在一个 storeKey ( = {0} ) 相同的更新操作, 所以替换更新操作为删除操作!",
+						storeKey
 					));
 					break;
 					// 注意, 这里的 break 打破了 do ... while 循环, 
@@ -206,7 +206,7 @@ public final class LazySavingHelper {
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典
-		mapX.put(lsoUId, newEntry);
+		mapX.put(storeKey, newEntry);
 	}
 
 	/**

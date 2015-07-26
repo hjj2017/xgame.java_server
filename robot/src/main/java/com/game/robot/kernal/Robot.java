@@ -38,8 +38,8 @@ public final class Robot {
 	public String _userName = "";
 	/** 用户密码 */
 	public String _userPass = "";
-	/** 玩家角色 UUId */
-	public long _humanUUId = -1L;
+	/** 玩家角色 UId */
+	public long _humanUId = -1L;
 
 	/** 运行策略 */
 	private FocusModule _currFocusModule = null;

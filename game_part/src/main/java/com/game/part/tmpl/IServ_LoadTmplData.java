@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -104,10 +105,33 @@ interface IServ_LoadTmplData {
 			));
 		}
 
-		// 断言注解不为空
-		Assert.notNull(annoXlsxTmpl, "annoXlsxTmpl");
+		// 获取文件名
+		String fileName = annoXlsxTmpl.fileName();
+		// 获取属性字典
+		Map<String, String> propMap = XlsxTmplServ.OBJ._propMap;
+
+		if (propMap != null &&
+			propMap.isEmpty() == false) {
+			// 如果属性字典不为空,
+			// 则尝试替换文件名中的变量!
+			// 注意: 变量必须是以 '$' 字符开头的
+			for (Map.Entry<String, String> entry : propMap.entrySet()) {
+				// 替换 $var 字符串
+				fileName = fileName.replace(
+					"$" + entry.getKey(),
+					entry.getValue()
+				);
+
+				// 替换 ${var} 字符串
+				fileName = fileName.replace(
+					"${" + entry.getKey() + "}",
+					entry.getValue()
+				);
+			}
+		}
+
 		// 获取 Excel 文件名和页签索引
-		Out.putVal(outExcelFileName, annoXlsxTmpl.fileName());
+		Out.putVal(outExcelFileName, fileName);
 		Out.putVal(outSheetIndex, annoXlsxTmpl.sheetIndex());
 
 		// 从第几行开始读取

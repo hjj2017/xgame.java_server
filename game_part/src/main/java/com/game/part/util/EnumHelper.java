@@ -90,19 +90,19 @@ public final class EnumHelper {
 	 */
 	public static interface ICustomEnum {
 		/**
-		 * 获取整数值
-		 *
-		 * @return
-		 *
-		 */
-		int getIntVal();
-
-		/**
 		 * 获取字符串值
 		 *
 		 * @return
 		 *
 		 */
 		String getStrVal();
+
+		/**
+		 * 获取整数值
+		 *
+		 * @return
+		 *
+		 */
+		int getIntVal();
 	}
 }

@@ -1,7 +1,10 @@
 package com.game.bizModule.human.handler;
 
+import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanStateTable;
-import com.game.bizModule.human.msg.*;
+import com.game.bizModule.human.bizServ.HumanNaming;
+import com.game.bizModule.human.msg.GCCreateHuman;
+import com.game.bizModule.human.msg.GGCreateHumanFinish;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
 
 /**
@@ -20,6 +23,12 @@ public class Handler_GGCreateHumanFinish extends AbstractGGMsgHandler<GGCreateHu
             // 则直接退出!
             return;
         }
+
+        // 获取角色
+        Human h = Human.getHumanByPlayer(ggMSG._p);
+        // 添加角色全名到集合,
+        // 以避免创建新角色时角色全名重复
+        HumanNaming.OBJ._fullNameSet.add(h.getFullName());
 
         // 获取角色状态表
         HumanStateTable hStateTbl = ggMSG._p.getPropValOrCreate(HumanStateTable.class);
