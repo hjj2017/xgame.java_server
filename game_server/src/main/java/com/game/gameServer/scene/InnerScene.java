@@ -213,8 +213,11 @@ class InnerScene {
 
 		if (p == null) {
 			// 如果玩家对象为空,
-			// 则直接退出!
-			return false;
+			// 则看看消息是不是登陆消息?
+			// 也就是说:
+			// 当玩家对象为空时,
+			// 还是允许处理登陆消息的!
+			return msgObj.getMsgType() == MsgTypeEnum.login;
 		}
 
 		// 看看玩家目前是否允许执行该类型的消息?
