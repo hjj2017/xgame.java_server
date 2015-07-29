@@ -2,12 +2,13 @@ package com.game.bizModule.human.bizServ;
 
 import com.game.bizModule.guid.bizServ.Guid64Serv;
 import com.game.bizModule.guid.bizServ.Guid64TypeEnum;
-import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.io.IoOper_CreateHuman;
 import com.game.bizModule.login.LoginStateTable;
 import com.game.gameServer.framework.Player;
+import com.game.part.util.Out;
+import com.game.part.util.OutBool;
 
 import java.text.MessageFormat;
 
@@ -25,10 +26,11 @@ interface IServ_CreateHuman {
      * @param p
      * @param serverName
      * @param humanName
-     * @param tmplId
+     * @param usingTmplId
+     * @param hasDuplicateName 是否有重复的角色名?
      *
      */
-    default void asyncCreateHuman(Player p, String serverName, String humanName, int tmplId) {
+    default void asyncCreateHuman(Player p, String serverName, String humanName, int usingTmplId, OutBool hasDuplicateName) {
         if (p == null ||
             serverName == null ||
             serverName.isEmpty() ||
@@ -50,7 +52,7 @@ interface IServ_CreateHuman {
         LoginStateTable loginStateTbl = p.getPropValOrCreate(LoginStateTable.class);
 
         if (loginStateTbl._platformUIdOk == false ||
-            loginStateTbl._authSuccess == false) {
+            loginStateTbl._loginFinished == false) {
             // 平台验证都没过,
             // 直接退出!
             HumanLog.LOG.error(MessageFormat.format(
@@ -84,6 +86,30 @@ interface IServ_CreateHuman {
                 "玩家 {0} 还没有查询过角色入口列表, 或者玩家已有角色",
                 p._platformUIdStr
             ));
+            return;
+        }
+
+        if (hStateTbl._inGame) {
+            // 如果玩家已经进入游戏,
+            // 则直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 已经进入游戏, 不能再查询玩家入口",
+                p._platformUIdStr
+            ));
+            return;
+        }
+
+        // 获取角色全名
+        final String fullName = HumanNaming.OBJ.getFullName(serverName, humanName);
+
+        if (HumanNaming.OBJ._fullNameSet.contains(fullName)) {
+            // 如果角色全名重复,
+            // 则直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "角色全名 ''{0}'' 重复",
+                fullName
+            ));
+            Out.putVal(hasDuplicateName, true);
             return;
         }
 

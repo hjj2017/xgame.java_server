@@ -34,7 +34,7 @@ interface IServ_QueryHumanEntryList {
         LoginStateTable loginStateTbl = p.getPropValOrCreate(LoginStateTable.class);
 
         if (loginStateTbl._platformUIdOk == false ||
-            loginStateTbl._authSuccess == false) {
+            loginStateTbl._loginFinished == false) {
             // 如果登陆验证都没成功,
             // 那还是退出吧!
             HumanLog.LOG.error(MessageFormat.format(
@@ -56,6 +56,16 @@ interface IServ_QueryHumanEntryList {
             // 则直接退出!
             HumanLog.LOG.error(MessageFormat.format(
                 "玩家 {0} 正在操作中",
+                p._platformUIdStr
+            ));
+            return;
+        }
+
+        if (humanStateTbl._inGame) {
+            // 如果玩家已经进入游戏,
+            // 则直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 已经进入游戏, 不能再查询玩家入口",
                 p._platformUIdStr
             ));
             return;

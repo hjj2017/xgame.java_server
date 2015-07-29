@@ -184,7 +184,7 @@ public final class HumanEvent {
         if (h == null) {
             return;
         } else {
-            this._ell.forEach(el -> el.onEntryGame(h));
+            this._ell.forEach(el -> el.onEnterGame(h));
         }
     }
 

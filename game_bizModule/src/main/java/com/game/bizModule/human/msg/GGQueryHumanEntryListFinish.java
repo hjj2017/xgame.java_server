@@ -27,9 +27,4 @@ public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj<Handler_GGQuer
     protected Handler_GGQueryHumanEntryListFinish newHandlerObj() {
         return new Handler_GGQueryHumanEntryListFinish();
     }
-
-    @Override
-    public MsgTypeEnum getMsgType() {
-        return MsgTypeEnum.login;
-    }
 }

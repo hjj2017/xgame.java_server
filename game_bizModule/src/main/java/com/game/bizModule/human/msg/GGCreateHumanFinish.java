@@ -22,9 +22,4 @@ public class GGCreateHumanFinish extends AbstractGGMsgObj<Handler_GGCreateHumanF
     protected Handler_GGCreateHumanFinish newHandlerObj() {
         return new Handler_GGCreateHumanFinish();
     }
-
-    @Override
-    public MsgTypeEnum getMsgType() {
-        return MsgTypeEnum.login;
-    }
 }

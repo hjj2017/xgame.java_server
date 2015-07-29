@@ -49,9 +49,4 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	public Handler_CGLogin newHandlerObj() {
 		return new Handler_CGLogin();
 	}
-
-	@Override
-	public MsgTypeEnum getMsgType() {
-		return MsgTypeEnum.login;
-	}
 }

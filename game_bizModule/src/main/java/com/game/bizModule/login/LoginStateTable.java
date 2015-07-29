@@ -10,8 +10,8 @@ package com.game.bizModule.login;
 public class LoginStateTable {
     /** 是否已经有了平台 UId? */
     public boolean _platformUIdOk = false;
-    /** 授权中... */
+    /** 正在执行授权操作 */
     public boolean _execAuth = false;
-    /** 验证完成? */
-    public boolean _authSuccess = false;
+    /** 登陆完成? */
+    public boolean _loginFinished = false;
 }

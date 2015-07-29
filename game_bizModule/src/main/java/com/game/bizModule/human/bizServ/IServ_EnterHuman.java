@@ -35,7 +35,7 @@ interface IServ_EnterHuman {
         LoginStateTable loginStateTbl = p.getPropValOrCreate(LoginStateTable.class);
 
         if (loginStateTbl._platformUIdOk == false ||
-            loginStateTbl._authSuccess == false) {
+            loginStateTbl._loginFinished == false) {
             // 平台验证都没过,
             // 直接退出!
             HumanLog.LOG.error(MessageFormat.format(
@@ -46,10 +46,10 @@ interface IServ_EnterHuman {
         }
 
         // 获取角色状态表
-        HumanStateTable hStateTable = p.getPropValOrCreate(HumanStateTable.class);
+        HumanStateTable hStateTbl = p.getPropValOrCreate(HumanStateTable.class);
 
-        if (hStateTable._queryHumanEntryListTimes <= 0 ||
-            hStateTable._hasHuman == false) {
+        if (hStateTbl._queryHumanEntryListTimes <= 0 ||
+            hStateTbl._hasHuman == false) {
             // 如果还没有查询过角色入口列表,
             // 或者是已有角色,
             // 则直接退出!
@@ -61,9 +61,9 @@ interface IServ_EnterHuman {
             return;
         }
 
-        if (hStateTable._execQueryHumanEntryList ||
-            hStateTable._execCreateHuman ||
-            hStateTable._execEnterHuman) {
+        if (hStateTbl._execQueryHumanEntryList ||
+            hStateTbl._execCreateHuman ||
+            hStateTbl._execEnterHuman) {
             // 如果正在查询角色入口列表,
             // 或者正在创建角色,
             // 再或者正在进入角色,
@@ -75,9 +75,19 @@ interface IServ_EnterHuman {
             return;
         }
 
+        if (hStateTbl._inGame) {
+            // 如果玩家已经进入游戏,
+            // 则直接退出!
+            HumanLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 已经进入游戏, 不能再查询玩家入口",
+                p._platformUIdStr
+            ));
+            return;
+        }
+
         // 修改状态表值
-        hStateTable._humanLoadFromDbOk = false;
-        hStateTable._execEnterHuman = true;
+        hStateTbl._humanLoadFromDbOk = false;
+        hStateTbl._execEnterHuman = true;
 
         // 创建异步操作对象
         IoOper_LoadHuman op = new IoOper_LoadHuman();

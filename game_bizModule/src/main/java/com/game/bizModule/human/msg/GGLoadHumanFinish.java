@@ -26,9 +26,4 @@ public class GGLoadHumanFinish extends AbstractGGMsgObj<Handler_GGLoadHumanFinis
     protected Handler_GGLoadHumanFinish newHandlerObj() {
         return new Handler_GGLoadHumanFinish();
     }
-
-    @Override
-    public MsgTypeEnum getMsgType() {
-        return MsgTypeEnum.login;
-    }
 }

@@ -2,6 +2,7 @@ package com.game.bizModule.human.handler;
 
 import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanStateTable;
+import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.msg.GCEnterHuman;
 import com.game.bizModule.human.msg.GGLoadHumanFinish;
 import com.game.gameServer.framework.Player;
@@ -40,16 +41,13 @@ public class Handler_GGLoadHumanFinish extends AbstractGGMsgHandler<GGLoadHumanF
         hStateTbl._execEnterHuman = false;
         hStateTbl._humanLoadFromDbOk = true;
 
+        // 玩家进入游戏
+        hStateTbl._inGame = true;
+        HumanEvent.OBJ.fireEnterGameEvent(h);
+
         // 发送 GC 消息
         this.sendMsgToClient(
             new GCEnterHuman(ggMSG._finish), p
         );
-
-        // 玩家可以处理游戏消息和聊天消息
-        p._allowMsgTypeMap.put(MsgTypeEnum.game, true);
-        p._allowMsgTypeMap.put(MsgTypeEnum.chat, true);
-        // 玩家不可以处理登陆消息
-        p._allowMsgTypeMap.remove(MsgTypeEnum.login);
-        // 注意: 到这里为止, 玩家已经进入另外一个阶段!
     }
 }

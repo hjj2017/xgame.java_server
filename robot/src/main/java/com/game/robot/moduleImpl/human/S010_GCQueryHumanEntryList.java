@@ -4,7 +4,6 @@ import com.game.bizModule.human.msg.CGCreateHuman;
 import com.game.bizModule.human.msg.CGEnterHuman;
 import com.game.bizModule.human.msg.GCQueryHumanEntryList;
 import com.game.bizModule.human.msg.HumanEntryMO;
-import com.game.bizModule.login.msg.GCLogin;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgStr;
 import com.game.robot.RobotLog;
@@ -36,7 +35,7 @@ public class S010_GCQueryHumanEntryList extends AbstractGCMsgHandler<GCQueryHuma
 			// 创建角色!
 			CGCreateHuman cgMSG = new CGCreateHuman();
 			cgMSG._humanName = new MsgStr(robotObj._userName);
-			cgMSG._humanTmplId = new MsgInt(1);
+			cgMSG._usingTmplId = new MsgInt(1);
 			cgMSG._serverName = new MsgStr(robotObj._gameServerName);
 			// 发送 CG 消息
 			robotObj.sendMsg(cgMSG);

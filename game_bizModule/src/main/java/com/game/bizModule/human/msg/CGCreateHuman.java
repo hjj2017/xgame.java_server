@@ -20,8 +20,8 @@ public class CGCreateHuman extends AbstractCGMsgObj<Handler_CGCreateHuman> {
     public MsgStr _serverName;
     /** 角色名称 */
     public MsgStr _humanName;
-    /** 模版 Id */
-    public MsgInt _humanTmplId;
+    /** 所使用的模版 Id */
+    public MsgInt _usingTmplId;
 
     @Override
     public short getSerialUId() {
@@ -31,10 +31,5 @@ public class CGCreateHuman extends AbstractCGMsgObj<Handler_CGCreateHuman> {
     @Override
     protected Handler_CGCreateHuman newHandlerObj() {
         return new Handler_CGCreateHuman();
-    }
-
-    @Override
-    public MsgTypeEnum getMsgType() {
-        return MsgTypeEnum.login;
     }
 }

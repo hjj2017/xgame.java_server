@@ -22,9 +22,4 @@ public class GGAuthFinish extends AbstractGGMsgObj<Handler_GGAuthFinish> {
     protected Handler_GGAuthFinish newHandlerObj() {
         return new Handler_GGAuthFinish();
     }
-
-    @Override
-    public MsgTypeEnum getMsgType() {
-        return MsgTypeEnum.login;
-    }
 }

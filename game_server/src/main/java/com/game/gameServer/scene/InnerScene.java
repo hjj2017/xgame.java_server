@@ -100,25 +100,6 @@ class InnerScene {
 		// 提交到线程池
 		this._execServ.submit(() -> {
 			try {
-				if (execMsgObj instanceof AbstractCGMsgObj &&
-					InnerScene.this.isAllowCGMsg((AbstractCGMsgObj)execMsgObj) == false) {
-					// 如果是 CG 消息,
-					// 且如果不允许执行 CG 消息,
-					// 则直接退出!
-					SceneLog.LOG.error(MessageFormat.format(
-						"二次验证时不能执行消息 {0}, 场景或玩家不允许执行 {1} 类型的消息",
-						msgObj.getClass().getName(),
-						((AbstractCGMsgObj)msgObj).getMsgType()
-					));
-					return;
-					// 注意: 在这里是二次验证!
-					// 因为消息对象本身在提交到线程池的时候, 其 allow = true,
-					// 但是到了执行期,
-					// 由于 Player 对象可能已经发生变化, 导致 allow = false,
-					// 最常见的情况就是玩家突然断线...
-					// 所在执行之前还需要再作一次验证
-				}
-
 				// 执行消息
 				execMsgObj.exec();
 			} catch (Exception ex) {
@@ -152,18 +133,22 @@ class InnerScene {
 			return false;
 		}
 
-		if (msgObj instanceof AbstractCGMsgObj &&
-			this.isAllowCGMsg((AbstractCGMsgObj)msgObj) == false) {
-			// 如果是 CG 消息,
-			// 其如果还不能执行 game 类型的 CG 消息,
-			// 则直接退出!
-			SceneLog.LOG.error(MessageFormat.format(
-				"不能执行消息 {0}, 场景或玩家不允许执行 {1} 类型的消息! " +
-				"具体请参见 com.game.gameServer.framework.Player 类 _allowMsgTypeMap 属性",
-				msgObj.getClass().getName(),
-				((AbstractCGMsgObj)msgObj).getMsgType()
-			));
-			return false;
+		if (msgObj instanceof AbstractCGMsgObj) {
+			// 转型为 CG 消息
+			final AbstractCGMsgObj<?> cgMsgObj = (AbstractCGMsgObj)msgObj;
+
+			if (this.isAllowCGMsg(cgMsgObj) == false) {
+				// 如果是 CG 消息,
+				// 其如果还不能执行 game 类型的 CG 消息,
+				// 则直接退出!
+				SceneLog.LOG.error(MessageFormat.format(
+					"不能执行消息 {0}, 场景 {1} 不允许执行 {2} 类型的消息! ",
+					cgMsgObj.getClass().getName(),
+					this._name,
+					cgMsgObj.getMsgType()
+				));
+				return false;
+			}
 		}
 
 		return true;
@@ -187,7 +172,6 @@ class InnerScene {
 	 *
 	 * @see MsgTypeEnum
 	 * @see Player
-	 * @see Player#_allowMsgTypeMap
 	 *
 	 * @param msgObj
 	 * @return
@@ -198,37 +182,8 @@ class InnerScene {
 			// 如果参数对象为空,
 			// 则直接退出!
 			return false;
-		}
-
-		if (msgObj.getMsgType() != this._allowMsgType) {
-			// 如果根本不是当前场景运行的消息类型,
-			// 则直接推出!
-			return false;
-		}
-
-		// 获取会话 UId
-		final long sessionUId = msgObj.getSelfHandler()._sessionUId;
-		// 获取玩家对象
-		Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
-
-		if (p == null) {
-			// 如果玩家对象为空,
-			// 则看看消息是不是登陆消息?
-			// 也就是说:
-			// 当玩家对象为空时,
-			// 还是允许处理登陆消息的!
-			return msgObj.getMsgType() == MsgTypeEnum.login;
-		}
-
-		// 看看玩家目前是否允许执行该类型的消息?
-		Boolean objBool = p._allowMsgTypeMap.get(msgObj.getMsgType());
-
-		if (objBool == null) {
-			// 如果值为空,
-			// 则默认为不允许!
-			return false;
 		} else {
-			return objBool.booleanValue();
+			return msgObj.getMsgType() != this._allowMsgType;
 		}
 	}
 }

@@ -29,9 +29,4 @@ public class CGEnterHuman extends AbstractCGMsgObj<Handler_CGEnterHuman> {
     protected Handler_CGEnterHuman newHandlerObj() {
         return new Handler_CGEnterHuman();
     }
-
-    @Override
-    public MsgTypeEnum getMsgType() {
-        return MsgTypeEnum.login;
-    }
 }

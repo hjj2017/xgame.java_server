@@ -38,7 +38,7 @@ public interface IHumanEventListen {
 	 * @param h
 	 *
 	 */
-	default void onEntryGame(Human h) {
+	default void onEnterGame(Human h) {
 	}
 
 	/**

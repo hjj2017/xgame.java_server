@@ -4,7 +4,6 @@ import com.game.bizModule.login.LoginStateTable;
 import com.game.bizModule.login.msg.GCLogin;
 import com.game.bizModule.login.msg.GGAuthFinish;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
-import com.game.gameServer.msg.MsgTypeEnum;
 
 /**
  * 验证完成
@@ -25,9 +24,10 @@ public class Handler_GGAuthFinish extends AbstractGGMsgHandler<GGAuthFinish> {
 
         // 获取登陆状态表
         LoginStateTable stateTbl = msgObj._p.getPropValOrCreate(LoginStateTable.class);
-        // 结束授权过程, 授权是否成功?
+        // 结束授权过程
         stateTbl._execAuth = false;
-        stateTbl._authSuccess = msgObj._success;
+        // 如果授权成功, 则标志登陆完成!
+        stateTbl._loginFinished = msgObj._success;
 
         // 给客户端发消息
         this.sendMsgToClient(

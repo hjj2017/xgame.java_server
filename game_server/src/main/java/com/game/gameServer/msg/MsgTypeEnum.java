@@ -12,8 +12,6 @@ import com.game.part.util.EnumHelper;
 public enum MsgTypeEnum implements EnumHelper.ICustomEnum{
     /** 游戏 */
     game("game", 1),
-    /** 登陆 */
-    login("login", 99),
     /** 聊天 */
     chat("chat", 2),
 ;
