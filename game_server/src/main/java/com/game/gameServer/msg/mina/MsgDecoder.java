@@ -1,5 +1,6 @@
 package com.game.gameServer.msg.mina;
 
+import java.nio.ByteOrder;
 import java.text.MessageFormat;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -29,6 +30,8 @@ public class MsgDecoder extends ProtocolDecoderAdapter {
 			return;
 		}
 
+		// 按照字节序
+		buff.order(ByteOrder.LITTLE_ENDIAN);
 		// 获取原始位置
 		final int oldPos = buff.position();
 
@@ -56,6 +59,11 @@ public class MsgDecoder extends ProtocolDecoderAdapter {
 		buff.position(oldPos);
 		// 令消息读取数据
 		msgObj.readBuff(buff);
+
+		// 清零 Buff
+		buff.position(0);
+		buff.capacity(0);
+		buff.limit(0);
 
 		// 向下处理
 		output.write(msgObj);

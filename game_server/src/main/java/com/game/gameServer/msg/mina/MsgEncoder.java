@@ -7,6 +7,8 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
 import com.game.part.msg.type.AbstractMsgObj;
 
+import java.nio.ByteOrder;
+
 /**
  * 消息编码器
  * 
@@ -38,6 +40,7 @@ public class MsgEncoder extends ProtocolEncoderAdapter {
 
 		// 创建 IoBuff 对象
 		IoBuffer buff = IoBuffer.allocate(MSG_DEFAULT_CAPCITY);
+		buff.order(ByteOrder.LITTLE_ENDIAN);
 		// 设置为自动扩展
 		buff.setAutoExpand(true);
 		buff.position(0);

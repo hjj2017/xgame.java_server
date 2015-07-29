@@ -1,15 +1,14 @@
 package com.game.gameServer.msg.mina;
 
-import java.net.InetSocketAddress;
-
+import com.game.gameServer.framework.FrameworkError;
+import com.game.part.msg.MsgLog;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import com.game.gameServer.framework.FrameworkError;
-import com.game.part.msg.MsgLog;
+import java.net.InetSocketAddress;
 
 /**
  * 开始端口监听

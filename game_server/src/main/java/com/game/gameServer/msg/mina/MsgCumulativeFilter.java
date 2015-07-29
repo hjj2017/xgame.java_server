@@ -1,5 +1,6 @@
 package com.game.gameServer.msg.mina;
 
+import java.nio.ByteOrder;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -68,6 +69,7 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 
 		// 获取输入 Buff
 		IoBuffer inBuff = (IoBuffer)msgObj;
+		inBuff.order(ByteOrder.LITTLE_ENDIAN);
 
 		if (!inBuff.hasRemaining()) {
 			// 如果没有剩余内容, 
@@ -127,10 +129,13 @@ public class MsgCumulativeFilter extends IoFilterAdapter {
 			return;
 		}
 
+		// 高位字节在末尾
+		inBuff.order(ByteOrder.LITTLE_ENDIAN);
 		// 获取会话 UId
 		long sessionUId = sessionObj.getId();
 		// 获取容器 Buff
 		IoBuffer containerBuff = getContainerBuff(sessionObj);
+		containerBuff.order(ByteOrder.LITTLE_ENDIAN);
 
 		// 添加新 Buff 到容器 Buff 的末尾
 		IoBuffUtil.append(containerBuff, inBuff);

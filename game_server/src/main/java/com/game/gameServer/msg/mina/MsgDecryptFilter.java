@@ -1,5 +1,6 @@
 package com.game.gameServer.msg.mina;
 
+import java.nio.ByteOrder;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -86,8 +87,9 @@ public class MsgDecryptFilter extends IoFilterAdapter {
 
 		// 获取 Buff
 		IoBuffer buff = (IoBuffer)msgObj;
-		// 位置归零
+		// 位置归零并且是高位结尾
 		buff.position(0);
+		buff.order(ByteOrder.LITTLE_ENDIAN);
 
 		if (buff.hasRemaining() && 
 			validateBuffContent(buff, sessionUId) == false) {

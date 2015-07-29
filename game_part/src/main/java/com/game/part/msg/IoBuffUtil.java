@@ -280,6 +280,11 @@ public final class IoBuffUtil {
 
 		// 获取字符串长度
 		short len = buff.getShort();
+
+		if (len <= 0) {
+			return "";
+		}
+
 		// 创建字节数组
 		byte[] byteArr = new byte[len];
 		// 从 Buff 对象中获取字节数组
