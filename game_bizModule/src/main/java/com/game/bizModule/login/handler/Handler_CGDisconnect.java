@@ -30,6 +30,9 @@ public class Handler_CGDisconnect extends AbstractCGMsgHandler<CGDisconnect> {
 			return;
 		}
 
+		// 玩家不能处理任何类型的 CG 消息
+		p._allowMsgTypeMap.clear();
+
 		// 玩家断线
 		LoginServ.OBJ.disconnect(p);
 		// 删除玩家对象

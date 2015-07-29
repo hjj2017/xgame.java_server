@@ -1,5 +1,7 @@
 package com.game.gameServer.framework;
 
+import com.game.gameServer.msg.MsgTypeEnum;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +26,38 @@ public final class Player {
 	public String _loginIpAddr = null;
 	/** 登陆时间 */
 	public long _loginTime = 0L;
+
+	/**
+	 * 允许的消息类型,
+	 * 注意: 这里可能会引出一个比较复杂的状态判断的问题
+	 * 消息类型, 主要分为 3 个:
+	 *
+	 * <ul>
+	 * <li>login, 登录消息</li>
+	 * <li>chat, 聊天消息</li>
+	 * <li>game, 游戏消息</li>
+	 * </ul>
+	 *
+	 * 3 个类型的消息将对应不同的场景!
+	 * 当玩家还处于登录过程中的时候, 是不可能处理 chat 和 game 类型的消息的!
+	 * 同样的,
+	 * 当玩家已经选好角色正式进入游戏世界之后,
+	 * 就不能再处理 login 类型的消息了...
+	 *
+	 * 在框架中, 只规划出大的逻辑架构,
+	 * 具体的实现细节, 将推迟到业务模块项目 ( game_bizModule )
+	 * 我举个例子:
+	 * 例如在登录的时候, 可能需要经历 "预验证"、"验证中"、"验证后" 这 3 种状态,
+	 * 当然, 这 3 个状态是由业务模块项目来定义的.
+	 * 但是不管在登录过程中有多少种状态, 消息类型都是属于 login 类型的
+	 * 也就是说, 这些状态始终没有逾越 login 类型...
+	 *
+	 * @see MsgTypeEnum
+	 * @see com.game.gameServer.scene.InnerScene
+	 *
+	 */
+	public final Map<MsgTypeEnum, Boolean> _allowMsgTypeMap = new ConcurrentHashMap<>();
+
 	/** 玩家的属性字典 */
 	private final Map<Object, Object> _propMap = new ConcurrentHashMap<>();
 
@@ -32,6 +66,7 @@ public final class Player {
 	 * 
 	 */
 	public Player() {
+		this._allowMsgTypeMap.put(MsgTypeEnum.login, true);
 	}
 
 	/**

@@ -22,4 +22,9 @@ public class CGDisconnect extends AbstractCGMsgObj<Handler_CGDisconnect> {
     protected Handler_CGDisconnect newHandlerObj() {
         return new Handler_CGDisconnect();
     }
+
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.logout;
+    }
 }

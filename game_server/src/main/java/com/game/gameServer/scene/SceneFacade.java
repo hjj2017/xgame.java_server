@@ -1,9 +1,6 @@
 package com.game.gameServer.scene;
 
-import com.game.gameServer.msg.AbstractCGMsgObj;
-import com.game.gameServer.msg.AbstractExecutableMsgObj;
-import com.game.gameServer.msg.AbstractGCMsgObj;
-import com.game.gameServer.msg.MsgTypeEnum;
+import com.game.gameServer.msg.*;
 import com.game.part.lazySaving.LazySavingHelper;
 import com.game.part.msg.IMsgReceiver;
 import com.game.part.msg.type.AbstractMsgObj;
@@ -36,7 +33,7 @@ public final class SceneFacade implements IMsgReceiver {
     public final List<IHeartbeat> _heartbeatList = new ArrayList<>();
 
     /** 场景字典 */
-    private final Map<MsgTypeEnum, InnerScene> _sceneMap;
+    private final Map<MsgOrigTypeEnum, InnerScene> _sceneMap;
 
     /**
      * 类默认构造器
@@ -46,11 +43,11 @@ public final class SceneFacade implements IMsgReceiver {
         // 创建场景字典
         this._sceneMap = new ConcurrentHashMap<>();
 
-        for (MsgTypeEnum msgType : MsgTypeEnum.values()) {
+        for (MsgOrigTypeEnum superTypeEnum : MsgOrigTypeEnum.values()) {
             // 添加场景到字典
             this._sceneMap.put(
-                msgType,
-                new InnerScene(msgType.getStrVal(), msgType)
+                superTypeEnum,
+                new InnerScene(superTypeEnum.getStrVal(), superTypeEnum)
             );
         }
     }
@@ -109,7 +106,7 @@ public final class SceneFacade implements IMsgReceiver {
      * @param msgObj
      *
      */
-    public void execMsg(AbstractMsgObj msgObj) {
+    private void execMsg(AbstractMsgObj msgObj) {
         if (msgObj == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -120,14 +117,14 @@ public final class SceneFacade implements IMsgReceiver {
         // 获取消息类型
         MsgTypeEnum msgType = ((AbstractExecutableMsgObj)msgObj).getMsgType();
         // 获取场景对象
-        InnerScene sceneObj = this._sceneMap.get(msgType);
+        InnerScene sceneObj = this._sceneMap.get(msgType._origType);
 
         if (sceneObj == null) {
             // 如果场景对象为空,
             // 则直接退出!
             SceneLog.LOG.error(MessageFormat.format(
                 "场景为空, 消息类型 = {0}",
-                msgType.getStrVal()
+                msgType._origType.getStrVal()
             ));
             return;
         }

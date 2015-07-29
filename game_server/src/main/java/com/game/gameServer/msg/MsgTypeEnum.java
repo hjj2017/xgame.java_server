@@ -9,26 +9,47 @@ import com.game.part.util.EnumHelper;
  * @since 2015/7/11
  *
  */
-public enum MsgTypeEnum implements EnumHelper.ICustomEnum{
+public enum MsgTypeEnum implements EnumHelper.ICustomEnum {
+    /** 登陆 */
+    login("login", 999),
     /** 游戏 */
     game("game", 1),
     /** 聊天 */
-    chat("chat", 2),
+    chat(MsgOrigTypeEnum.chat, "chat", 2),
+    /** 登出 */
+    logout("logout", 44),
 ;
 
+    /** 消息源类型 */
+    public final MsgOrigTypeEnum _origType;
     /** 字符串值 */
     private final String _strVal;
     /** 整数值 */
     private final int _intVal;
 
     /**
-     * 类参数构造器
+     * 类参数构造器, 注意: 源类型 = game
      *
      * @param strVal
      * @param intVal
      *
      */
     MsgTypeEnum(String strVal, int intVal) {
+        this._origType = MsgOrigTypeEnum.game;
+        this._strVal = strVal;
+        this._intVal = intVal;
+    }
+
+    /**
+     * 类参数构造器
+     *
+     * @param superType
+     * @param strVal
+     * @param intVal
+     *
+     */
+    MsgTypeEnum(MsgOrigTypeEnum superType, String strVal, int intVal) {
+        this._origType = superType;
         this._strVal = strVal;
         this._intVal = intVal;
     }

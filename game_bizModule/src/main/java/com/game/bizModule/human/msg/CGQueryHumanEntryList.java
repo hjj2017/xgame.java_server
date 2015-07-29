@@ -3,6 +3,7 @@ package com.game.bizModule.human.msg;
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.human.handler.Handler_CGQueryHumanEntryList;
 import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgStr;
 
 /**
@@ -25,5 +26,10 @@ public class CGQueryHumanEntryList extends AbstractCGMsgObj<Handler_CGQueryHuman
     @Override
     protected Handler_CGQueryHumanEntryList newHandlerObj() {
         return new Handler_CGQueryHumanEntryList();
+    }
+
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.login;
     }
 }

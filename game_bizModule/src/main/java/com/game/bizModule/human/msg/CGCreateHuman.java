@@ -2,7 +2,6 @@ package com.game.bizModule.human.msg;
 
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.human.handler.Handler_CGCreateHuman;
-import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgInt;
@@ -31,5 +30,10 @@ public class CGCreateHuman extends AbstractCGMsgObj<Handler_CGCreateHuman> {
     @Override
     protected Handler_CGCreateHuman newHandlerObj() {
         return new Handler_CGCreateHuman();
+    }
+
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.login;
     }
 }
