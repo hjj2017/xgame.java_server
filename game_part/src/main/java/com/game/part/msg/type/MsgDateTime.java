@@ -15,7 +15,7 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgDateTime extends BasicTypeField<LocalDateTime> {
+public class MsgDateTime extends PrimitiveTypeField<LocalDateTime> {
 	/**
 	 * 类默认构造器
 	 * 

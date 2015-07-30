@@ -11,7 +11,7 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgShort extends BasicTypeField<Short> {
+public class MsgShort extends PrimitiveTypeField<Short> {
 	/**
 	 * 类默认构造器
 	 * 

@@ -194,7 +194,7 @@ public final class WriteHelperMaker {
 		}
 
 		fl.forEach(f -> {
-			if (ClazzUtil.isDrivedClazz(f.getType(), BasicTypeField.class)) {
+			if (ClazzUtil.isDrivedClazz(f.getType(), PrimitiveTypeField.class)) {
 				// 如果是普通字段, 生成如下代码 : 
 				// msgObj._funcId = MsgInt.ifNullThenCreate(msgObj._funcId);
 				// msgObj._worker = MsgStr.ifNullThenCreate(msgObj._worker);

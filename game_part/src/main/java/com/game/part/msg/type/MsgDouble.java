@@ -11,7 +11,7 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgDouble extends BasicTypeField<Double> {
+public class MsgDouble extends PrimitiveTypeField<Double> {
 	/**
 	 * 类默认构造器
 	 * 

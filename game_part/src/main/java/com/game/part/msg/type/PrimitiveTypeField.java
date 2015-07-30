@@ -11,7 +11,7 @@ import java.time.temporal.Temporal;
  * @param <T>
  * 
  */
-abstract class BasicTypeField<T> extends AbstractMsgField {
+abstract class PrimitiveTypeField<T> extends AbstractMsgField {
 	/** 字段值 */
 	private T _objVal = null;
 
@@ -19,7 +19,7 @@ abstract class BasicTypeField<T> extends AbstractMsgField {
 	 * 类默认构造器
 	 * 
 	 */
-	public BasicTypeField() {
+	public PrimitiveTypeField() {
 		this._objVal = null;
 	}
 
@@ -29,7 +29,7 @@ abstract class BasicTypeField<T> extends AbstractMsgField {
 	 * @param objVal 
 	 * 
 	 */
-	public BasicTypeField(T objVal) {
+	public PrimitiveTypeField(T objVal) {
 		this._objVal = objVal;
 	}
 
