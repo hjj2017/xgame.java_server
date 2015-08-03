@@ -127,12 +127,12 @@ final class OneToXDefPair {
 		Assert.notNull(clazz, "clazz");
 
 		// 创建辅助字典
-		Map<String, OneToXDefPair_X> assistMap = new HashMap<>();
+		Map<String, OneToXDefPair_X> helpMap = new HashMap<>();
 
 		// 找到标注 OneToOne 和 OneToMany 注解的字段
 		ClazzUtil.listField(
 			clazz, f -> {
-				putToMap(f, assistMap); 
+				findAnno(f, helpMap);
 				return true;
 			}
 		);
@@ -140,22 +140,22 @@ final class OneToXDefPair {
 		// 找到标注 OneToOne 和 OneToMany 注解的函数
 		ClazzUtil.listMethod(
 			clazz, m -> {
-				putToMap(m, assistMap);
+				findAnno(m, helpMap);
 				return true;
 			}
 		);
 
-		return assistMap;
+		return helpMap;
 	}
 
 	/**
-	 * 将注解添加到字典
+	 * 查找注解并将注解添加到字典
 	 * 
-	 * @param annoArr
+	 * @param m
 	 * @param targetMap
 	 * 
 	 */
-	private static void putToMap(
+	private static void findAnno(
 		Member m, Map<String, OneToXDefPair_X> targetMap) {
 		if (m == null ||  
 			targetMap == null) {

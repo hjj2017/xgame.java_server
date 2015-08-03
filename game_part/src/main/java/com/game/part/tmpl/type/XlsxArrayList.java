@@ -138,7 +138,7 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
 	}
 
 	@Override
-	public<X> X[] toArray(X[] a) {
+	public<A> A[] toArray(A[] a) {
 		return this._objValList.toArray(a);
 	}
 

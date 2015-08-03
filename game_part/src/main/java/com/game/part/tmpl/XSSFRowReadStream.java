@@ -42,6 +42,12 @@ public final class XSSFRowReadStream {
 		this._currCellIndex = 0;
 	}
 
+	/**
+	 * 获取 Xlsx 文件名称
+	 *
+	 * @return
+	 *
+	 */
 	public String getXlsxFileName() {
 		return this._xlsxFileName;
 	}

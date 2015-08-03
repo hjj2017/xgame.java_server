@@ -3,9 +3,11 @@ package com.game.part.tmpl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.text.MessageFormat;
 import java.util.List;
 
+import com.game.part.tmpl.type.AbstractXlsxCol;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.tmpl.type.XlsxArrayList;
 import com.game.part.util.Assert;
@@ -13,13 +15,25 @@ import com.game.part.util.ClazzUtil;
 import com.game.part.util.FieldUtil;
 
 /**
- * 类定义验证器
+ * 模版类定义验证器
+ * <font color="#990000">注意: 在验证过程中我没有验证 "循环引用"!</font> 例如:
+ * <code>
+ * class MyTmplObj extends AbstractXlsxTmpl {
+ *     public MyTmplObj _tmplObj;
+ * }
+ * </code>
+ *
+ * 这种方式有可能会引起无限递归, 最终导致程序死循环...
+ * 所以最好还是尽量避免这么定义!
  * 
  * @author hjj2017
  * @since 2015/3/18
  * 
  */
 final class ClazzDefValidator {
+	/** 代码提醒 : XlsxArrayList */
+	private static final String CODE_HINT_xlsxArrayList = "请使用类似 : public XlsxArrayList<XlsxInt> _funcIdList; 这样的定义";
+
 	/**
 	 * 类默认构造器
 	 * 
@@ -51,10 +65,12 @@ final class ClazzDefValidator {
 		}
 
 		// 2: 验证构造器
-		validateConstructor(tmplClazz);
+		validateCtor(tmplClazz);
 
 		// 获取字段列表
-		List<Field> fl = ClazzUtil.listField(tmplClazz, null);
+		List<Field> fl = ClazzUtil.listField(tmplClazz, f -> {
+			return f != null && AbstractXlsxCol.class.isAssignableFrom(f.getType());
+		});
 
 		if (fl == null || 
 			fl.isEmpty()) {
@@ -75,7 +91,7 @@ final class ClazzDefValidator {
 	 * @param tmplClazz
 	 * 
 	 */
-	private static void validateConstructor(Class<?> tmplClazz) {
+	private static void validateCtor(Class<?> tmplClazz) {
 		// 断言参数不为空
 		Assert.notNull(tmplClazz, "tmplClazz");
 		
@@ -122,33 +138,96 @@ final class ClazzDefValidator {
 		// 断言参数不为空
 		Assert.notNull(f, "f");
 
-		if (f.getType().equals(XlsxArrayList.class)) {
-			// 如果字段类型是 XlsxArrayList 类型, 
-			// 首先, 获取泛型参数的真实类型
-			// 例如: XlsxArrayList<XlsxInt> 类型, 
-			// 我们将取到尖括号中的 XlsxInt
-			Class<?> aType = (Class<?>)FieldUtil.getGenericTypeA(f);
+		// 获取定义这个字段的类
+		Class<?> fromClazz = f.getDeclaringClass();
 
-			if (aType == null) {
-				// 如果不是 XlsxPlainList 类型, 
-				// 或者是不带有泛型参数, 
-				// 则直接抛出异常!
-				throw new XlsxTmplError(MessageFormat.format(
-					"{0} 类 {1} 字段没有声明泛型类型, 应使用类似 XlsxArrayList<XlsxInt> _funcIdList; 这样的定义", 
-					f.getDeclaringClass().getName(), 
-					f.getName()
-				));
-			}
+		if ((f.getModifiers() & Modifier.ABSTRACT) != 0) {
+			// 如果字段是 abstract 的,
+			// 则直接抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"类 {0} 字段 {1} 不能冠以 abstract",
+				fromClazz.getName(),
+				f.getName()
+			));
+		}
 
-			if (AbstractXlsxTmpl.class.isAssignableFrom(aType)) {
-				// 如果真实类型是 AbstractXlsxTmpl 的子类, 
-				// 则验证子类!
-				validate(aType);
-			}
-		} else if (AbstractXlsxTmpl.class.isAssignableFrom(f.getType())) {
-			// 如果字段类型本身就是 AbstractXlsxTmpl 的子类, 
-			// 则验证字段类型!
-			validate(f.getType());
+		if ((f.getModifiers() & Modifier.PUBLIC) == 0) {
+			// 如果字段是 private 或者 protected 的,
+			// 则直接抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"类 {0} 字段 {1}, 没有定义为公有的 ( public ) !!",
+				fromClazz.getName(),
+				f.getName()
+			));
+		}
+
+		if ((f.getModifiers() & Modifier.STATIC) != 0) {
+			// 如果字段是 static 的,
+			// 则直接抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"类 {0} 字段 {1} 不能冠以 static",
+				fromClazz.getName(),
+				f.getName()
+			));
+		}
+
+		// 获取字段类型
+		final Class<?> fType = f.getType();
+
+		if (XlsxArrayList.class.isAssignableFrom(fType)) {
+			// 如果字段是 XlsxArrayList 类型,
+			// 验证消息数组列表字段
+			validateXlsxArrayListField(f);
+		} else if (AbstractXlsxTmpl.class.isAssignableFrom(fType)) {
+			// 如果字段的类型是 AbstractXlsxTmpl 的子类,
+			// 则递归验证字段的类型
+			validate(fType);
+		}
+	}
+
+	/**
+	 * 验证 XlsxArrayList 类型的字段
+	 *
+	 * @param f
+	 *
+	 */
+	private static void validateXlsxArrayListField(Field f) {
+		// 断言参数不为空
+		Assert.notNull(f, "f");
+		// 获取字段类型
+		Class<?> fType = f.getType();
+
+		if (XlsxArrayList.class.isAssignableFrom(fType) == false) {
+			// 如果字段不是 XlsxArrayList 类型,
+			// 则直接退出!
+			throw new XlsxTmplError(MessageFormat.format(
+				"类 {0} 字段 {1} 不是 XlsxArrayList 类型",
+				fType.getName(),
+				f.getName()
+			));
+		}
+
+		// 获取定义这个字段的类
+		Class<?> fromClazz = f.getDeclaringClass();
+		// 如果字段是 XlsxArrayList 类型,
+		// 获取泛型类型中的真实类型
+		Type aType = FieldUtil.getGenericTypeA(f);
+
+		if (aType == null) {
+			// 如果没有定义真实类型,
+			// 则直接抛出异常!
+			throw new XlsxTmplError(MessageFormat.format(
+				"类 {0} 字段 {1} 为 XlsxArrayList 类型, 但是没有定义泛型参数! {2}",
+				fromClazz.getName(),
+				f.getName(),
+				CODE_HINT_xlsxArrayList
+			));
+		}
+
+		if (AbstractXlsxTmpl.class.isAssignableFrom((Class<?>)aType)) {
+			// 如果真实类型是 AbstractXlsxTmpl 的子类,
+			// 则递归验证真实类型
+			validate((Class<?>)aType);
 		}
 	}
 }

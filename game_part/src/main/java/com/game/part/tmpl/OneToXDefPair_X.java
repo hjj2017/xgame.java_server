@@ -148,17 +148,16 @@ class OneToXDefPair_X {
 	/**
 	 * 查找成员
 	 * 
-	 * @param fromClazz
-	 * @param groupName
+	 * @param mSet
 	 * @param findMap
 	 * @return 
 	 * 
 	 */
-	private static Member findMember(Set<Member> ms, boolean findMap) {
+	private static Member findMember(Set<Member> mSet, boolean findMap) {
 		// 断言参数不为空
-		Assert.notNull(ms, "ms");
+		Assert.notNull(mSet, "mSet");
 		
-		return ms.stream().filter(m -> {
+		return mSet.stream().filter(m -> {
 			// 定义成员类型
 			final Class<?> mType;
 			
