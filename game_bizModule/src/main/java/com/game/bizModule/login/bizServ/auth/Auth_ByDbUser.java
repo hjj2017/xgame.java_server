@@ -20,7 +20,7 @@ import com.game.part.dao.CommDao;
  * @since 2014/9/15 
  * 
  */
-public class Auth_ByPassword implements IAuthorize {
+public class Auth_ByDbUser implements IAuthorize {
 	/** 用户名 */
 	private static final String JK_userName = "userName";
 	/** 密码 */

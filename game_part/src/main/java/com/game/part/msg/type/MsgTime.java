@@ -9,13 +9,13 @@ import org.apache.mina.core.buffer.IoBuffer;
 import com.game.part.msg.IoBuffUtil;
 
 /**
- * 消息中的 Int 类型字段
+ * 消息中的 Time 类型字段
  * 
  * @author hjj2017
  * @since 2015/3/15
  * 
  */
-public class MsgTime extends PrimitiveTypeField<LocalTime> {
+public final class MsgTime extends PrimitiveTypeField<LocalTime> {
 	/**
 	 * 类默认构造器
 	 * 

@@ -33,6 +33,13 @@ public final class WriteHelperMaker {
 	private static final Map<Class<?>, IWriteHelper> _helperMap = new ConcurrentHashMap<>();
 
 	/**
+	 * 类默认构造器
+	 *
+	 */
+	private WriteHelperMaker() {
+	}
+
+	/**
 	 * 构建帮助器
 	 * 
 	 * @param byClazz

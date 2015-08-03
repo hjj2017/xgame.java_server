@@ -11,7 +11,7 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgFloat extends PrimitiveTypeField<Float> {
+public final class MsgFloat extends PrimitiveTypeField<Float> {
 	/**
 	 * 类默认构造器
 	 * 

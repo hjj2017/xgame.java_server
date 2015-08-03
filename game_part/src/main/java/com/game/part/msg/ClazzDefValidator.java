@@ -15,13 +15,22 @@ import com.game.part.util.ClazzUtil;
 import com.game.part.util.FieldUtil;
 
 /**
- * 类定义验证器
+ * 消息类定义验证器,
+ * <font color="#990000">注意: 在验证过程中我没有验证 "循环引用"!</font> 例如:
+ * <code>
+ * class MyMsgObj extends AbstractMsgObj {
+ *     public MyMsgObj _msgObj;
+ * }
+ * </code>
+ *
+ * 这种方式有可能会引起无限递归, 最终导致程序死循环...
+ * 所以最好还是尽量避免这么定义!
  * 
  * @author hjj2017
  * @since 2015/3/17
  * 
  */
-class ClazzDefValidator {
+final class ClazzDefValidator {
 	/** 代码提醒 : MsgArrayList */
 	private static final String CODE_HINT_msgArrayList = "请使用类似 : public MsgArrayList<MsgInt> _funcIdList = new MsgArrayList<>(() -> new MsgInt()); 这样的定义";
 
@@ -42,7 +51,8 @@ class ClazzDefValidator {
 		// 断言参数不为空
 		Assert.notNull(msgClazz, "msgClazz");
 
-		if (ClazzUtil.isConcreteDrivedClass(msgClazz, AbstractMsgObj.class) == false) {
+		if (ClazzUtil.isConcreteDrivedClass(
+			msgClazz, AbstractMsgObj.class) == false) {
 			// 1: 看看 msgClazz 是不是 AbstractMsgObj 的具体子类, 
 			// 如果不是, 
 			// 则直接抛出异常!
@@ -56,7 +66,7 @@ class ClazzDefValidator {
 		}
 
 		// 2: 验证构造器
-		validateConstructor(msgClazz);
+		validateCtor(msgClazz);
 
 		// 获取字段列表
 		List<Field> fl = ClazzUtil.listField(
@@ -81,7 +91,7 @@ class ClazzDefValidator {
 	 * @param msgClazz
 	 * 
 	 */
-	private static void validateConstructor(Class<?> msgClazz) {
+	private static void validateCtor(Class<?> msgClazz) {
 		// 断言参数不为空
 		Assert.notNull(msgClazz, "msgClazz");
 		
@@ -135,7 +145,8 @@ class ClazzDefValidator {
 			// 则直接抛出异常!
 			throw new MsgError(MessageFormat.format(
 				"类 {0} 字段 {1} 不能冠以 abstract", 
-				fromClazz, f.getName()
+				fromClazz.getName(),
+				f.getName()
 			));
 		}
 
@@ -144,7 +155,8 @@ class ClazzDefValidator {
 			// 则直接抛出异常!
 			throw new MsgError(MessageFormat.format(
 				"类 {0} 字段 {1}, 没有定义为公有的 ( public ) !!", 
-				fromClazz, f.getName()
+				fromClazz.getName(),
+				f.getName()
 			));
 		}
 
@@ -153,16 +165,19 @@ class ClazzDefValidator {
 			// 则直接抛出异常!
 			throw new MsgError(MessageFormat.format(
 				"类 {0} 字段 {1} 不能冠以 static", 
-				fromClazz, f.getName()
+				fromClazz.getName(),
+				f.getName()
 			));
 		}
 
-		// 验证消息数组列表字段
-		validateField_msgArrayList(f);
 		// 获取字段类型
 		final Class<?> fType = f.getType();
 
-		if (AbstractMsgObj.class.isAssignableFrom(fType)) {
+		if (MsgArrayList.class.isAssignableFrom(fType)) {
+			// 如果字段是 MsgArrayList 类型,
+			// 验证消息数组列表字段
+			validateMsgArrayListField(f);
+		} else if (AbstractMsgObj.class.isAssignableFrom(fType)) {
 			// 如果字段的类型是 AbstractMsgObj 的子类, 
 			// 则递归验证字段的类型
 			validate(fType);
@@ -175,16 +190,20 @@ class ClazzDefValidator {
 	 * @param f
 	 * 
 	 */
-	private static void validateField_msgArrayList(Field f) {
+	private static void validateMsgArrayListField(Field f) {
 		// 断言参数不为空
 		Assert.notNull(f, "f");
 		// 获取字段类型
 		Class<?> fType = f.getType();
 
 		if (MsgArrayList.class.isAssignableFrom(fType) == false) {
-			// 如果字段不是 MsgArrayList 类型, 
+			// 如果字段不是 MsgArrayList 类型,
 			// 则直接退出!
-			return;
+			throw new MsgError(MessageFormat.format(
+				"类 {0} 字段 {1} 不是 MsgArrayList 类型",
+				fType.getName(),
+				f.getName()
+			));
 		}
 
 		// 获取定义这个字段的类
@@ -198,7 +217,7 @@ class ClazzDefValidator {
 			// 则直接抛出异常!
 			throw new MsgError(MessageFormat.format(
 				"类 {0} 字段 {1} 为 MsgArrayList 类型, 但是没有定义泛型参数! {2}", 
-				fromClazz, 
+				fromClazz.getName(),
 				f.getName(), 
 				CODE_HINT_msgArrayList
 			));

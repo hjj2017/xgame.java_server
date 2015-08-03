@@ -18,7 +18,7 @@ import com.game.part.util.Assert;
  * @param <T>
  * 
  */
-public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField implements List<T> {
+public final class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField implements List<T> {
 	/** 数值列表 */
 	private final List<T> _objValList = new ArrayList<>();
 	/** 列表项目创建器 */
@@ -100,7 +100,7 @@ public class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgField i
 	}
 
 	@Override
-	public<X> X[] toArray(X[] a) {
+	public<A> A[] toArray(A[] a) {
 		return this._objValList.toArray(a);
 	}
 

@@ -11,7 +11,7 @@ import com.game.part.msg.IoBuffUtil;
  * @since 2015/3/15
  * 
  */
-public class MsgByte extends PrimitiveTypeField<Byte> {
+public final class MsgByte extends PrimitiveTypeField<Byte> {
 	/**
 	 * 类默认构造器
 	 * 

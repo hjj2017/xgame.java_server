@@ -4,9 +4,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.mina.core.buffer.IoBuffer;
 
-import com.game.part.msg.MsgError;
-import com.game.part.msg.MsgLog;
-
 /**
  * 抽象的消息字段
  * 
@@ -30,29 +27,6 @@ public abstract class AbstractMsgField {
 	 * 
 	 */
 	public abstract void writeBuff(IoBuffer buff);
-
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @param objClazz
-	 * @return
-	 * 
-	 */
-	public static<T extends AbstractMsgField> T ifNullThenCreate(T objVal, Class<T> objClazz) {
-		try {
-			if (objVal == null) {
-				// 创建对象
-				objVal = objClazz.newInstance();
-			}
-
-			return objVal;
-		} catch (Exception ex) {
-			// 抛出异常
-			MsgLog.LOG.error(ex.getMessage(), ex);
-			throw new MsgError(ex);
-		}
-	}
 
 	@Override
 	public String toString() {

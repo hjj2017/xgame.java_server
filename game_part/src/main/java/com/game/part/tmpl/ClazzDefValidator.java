@@ -19,7 +19,7 @@ import com.game.part.util.FieldUtil;
  * @since 2015/3/18
  * 
  */
-class ClazzDefValidator {
+final class ClazzDefValidator {
 	/**
 	 * 类默认构造器
 	 * 

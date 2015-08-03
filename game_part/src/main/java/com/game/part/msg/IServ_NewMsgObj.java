@@ -15,7 +15,6 @@ interface IServ_NewMsgObj {
 	 * 
 	 * @param msgSerialUId
 	 * @return
-	 * @see MsgSerialUId
 	 * 
 	 */
 	default<T extends AbstractMsgObj> T newMsgObj(short msgSerialUId) {

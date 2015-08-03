@@ -1,20 +1,25 @@
 package com.game.part.msg;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.game.part.msg.type.AbstractMsgObj;
 
 /**
- * 主消息分派
- * 
+ * 消息服务, 主要完成以下几件事情:
+ * <ul>
+ *     <li>根据序列化 UId 注册消息类</li>
+ *     <li>根据序列化 UId 创建消息对象</li>
+ *     <li>分派消息给接收者, 接收者必须实现 {@link IMsgReceiver} 接口</li>
+ * </ul>
+ *
+ * @see IMsgReceiver
+ *
  * @author hjj2017
  * @since 2014/5/2
  * 
  */
-public class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
+public final class MsgServ implements IServ_RegMsgClazz, IServ_NewMsgObj {
 	/** 单例对象 */
 	public static final MsgServ OBJ = new MsgServ();
 	/** 输出类文件到目标目录 */

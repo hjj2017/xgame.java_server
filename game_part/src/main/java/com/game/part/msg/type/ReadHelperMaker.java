@@ -35,6 +35,13 @@ public final class ReadHelperMaker {
 	private static final Map<Class<?>, IReadHelper> _helperMap = new ConcurrentHashMap<>();
 
 	/**
+	 * 类默认构造器
+	 *
+	 */
+	private ReadHelperMaker() {
+	}
+
+	/**
 	 * 构建帮助器
 	 * 
 	 * @param byClazz
