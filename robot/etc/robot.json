@@ -23,6 +23,7 @@
     { "currModule" : "connect" },
     { "currModule" : "login" },
 	{ "currModule" : "human" },
+	{ "currModule" : "chat" },
     { "currModule" : "building", "nextModule" : "disconnect" },
 ]
 }

@@ -76,6 +76,16 @@ public final class AllMsgSerialUId {
     /** 列表已修改的计时器 GC 消息 */
     public static final short GC_LIST_CHANGED_TIMER = ++MSG_BASE_CD;
 
+// 聊天
+///////////////////////////////////////////////////////////////////////
+
+    /** 消息基址 */
+    private static short MSG_BASE_CHAT = 1400;
+    /** 世界聊天 CG 消息 */
+    public static final short CG_WORLD_CHAT = ++MSG_BASE_CHAT;
+    /** 通用的聊天 GC 消息 */
+    public static final short GC_COMM_CHAT = ++MSG_BASE_CHAT;
+
     /**
      * 类默认构造器
      *

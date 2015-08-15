@@ -26,7 +26,7 @@ public class S000_CGLogin extends AbstractModuleReady {
 		JSONObject jsonObj = new JSONObject();
 
 		// 创建登陆协议文本
-		jsonObj.put("protocol", "password");
+		jsonObj.put("protocol", "dbUser");
 		jsonObj.put("userName", robotObj._userName);
 		jsonObj.put("password", robotObj._userPass);
 		// 创建并发送 GC 消息

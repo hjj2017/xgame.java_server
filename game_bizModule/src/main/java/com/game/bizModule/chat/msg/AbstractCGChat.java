@@ -18,6 +18,23 @@ public abstract class AbstractCGChat extends AbstractCGMsgObj<Handler_AllCGChat>
     public MsgStr _text;
 
     /**
+     * 类默认构造器
+     *
+     */
+    public AbstractCGChat() {
+    }
+
+    /**
+     * 类参数构造器
+     *
+     * @param text
+     *
+     */
+    public AbstractCGChat(String text) {
+       this._text = new MsgStr(text);
+    }
+
+    /**
      * 注意 : 聊天 CG 消息, 一定是由 Handler_AllCGChat 来处理的!
      * 这是不能被改写的!
      *

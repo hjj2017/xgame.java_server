@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.game.bizModule.chat.msg.CGWorldChat;
-import com.game.bizModule.chat.msg.GCChat;
+import com.game.bizModule.chat.msg.GCCommChat;
+import com.game.bizModule.chat.tmpl.ChatConfTmpl;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.multiLang.MultiLangDef;
 import com.game.bizModule.multiLang.bizServ.MultiLangServ;
@@ -23,6 +24,7 @@ import com.game.part.util.Assert;
 public final class WorldChatTypist implements ITypist<CGWorldChat> {
     /** 单例对象 */
     public static final WorldChatTypist OBJ = new WorldChatTypist();
+
     /** Cd 字典 */
     private Map<Long, Long> _cdMap = new HashMap<>();
 
@@ -34,16 +36,18 @@ public final class WorldChatTypist implements ITypist<CGWorldChat> {
     }
 
     @Override
-    public GCChat type(Human h, CGWorldChat cgMSG, final List<Long> outHumanUIdList) {
+    public GCCommChat type(Human h, CGWorldChat cgMSG, final List<Long> outHumanUIdList) {
         // 断言参数不为空
         Assert.notNull(h, "h");
         Assert.notNull(cgMSG, "cgMSG");
 
         // 创建 GC 消息
-        GCChat gcMSG = new GCChat();
+        GCCommChat gcMSG = new GCCommChat();
 
         // 看看是否有 Cd?
         if (this.hasCd(h)) {
+            // 如果还有 Cd 时间,
+            // 那么直接退出!
             gcMSG._text = new MsgStr(MultiLangServ.OBJ.getLangText(MultiLangDef.LANG_CHAT_hasCd));
             return gcMSG;
         }
@@ -84,13 +88,8 @@ public final class WorldChatTypist implements ITypist<CGWorldChat> {
         // 获取上一次说话时间
         Long lastChatTime = this._cdMap.get(h._humanUId);
 
-        if (lastChatTime == null) {
-            // 如果字典值为空,
-            // 则直接退出!
-            return false;
-        }
-
-        if (lastChatTime >= (TimeServ.OBJ.now() - 1000L)) {
+        if (lastChatTime != null &&
+            isInCdTime(lastChatTime)) {
             // 如果距离上次说话时间还不到 1 秒,
             // 则 Cd 时间未结束
             return true;
@@ -109,7 +108,10 @@ public final class WorldChatTypist implements ITypist<CGWorldChat> {
      *
      */
     private static boolean isInCdTime(long time) {
-        return time >= (TimeServ.OBJ.now() - 1000L);
+        // 获取当前时间
+        long now = TimeServ.OBJ.now();
+        // 比较时间点
+        return time >= (now - ChatConfTmpl.getWorldChatCdTime());
     }
 
     /**
@@ -128,6 +130,8 @@ public final class WorldChatTypist implements ITypist<CGWorldChat> {
         // 更新 Cd 字典
         this._cdMap.put(h._humanUId, TimeServ.OBJ.now());
         // 清理过期数据
-        this._cdMap.entrySet().removeIf(e -> e.getValue() == null || isInCdTime(e.getValue()));
+        this._cdMap.entrySet().removeIf(e -> {
+            return e.getValue() == null || isInCdTime(e.getValue());
+        });
     }
 }

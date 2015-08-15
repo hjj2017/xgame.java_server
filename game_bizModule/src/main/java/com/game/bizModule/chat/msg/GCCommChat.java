@@ -1,5 +1,6 @@
 package com.game.bizModule.chat.msg;
 
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.part.msg.type.MsgLong;
 import com.game.part.msg.type.MsgStr;
@@ -11,7 +12,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2015/8/17
  *
  */
-public class GCChat extends AbstractGCMsgObj {
+public class GCCommChat extends AbstractGCMsgObj {
     /** 聊天信息来自角色 UId */
     public MsgLong _fromHumanUId;
     /** 聊天信息来自角色 UId 字符串 */
@@ -23,6 +24,6 @@ public class GCChat extends AbstractGCMsgObj {
 
     @Override
     public short getSerialUId() {
-        return 0;
+        return AllMsgSerialUId.GC_COMM_CHAT;
     }
 }

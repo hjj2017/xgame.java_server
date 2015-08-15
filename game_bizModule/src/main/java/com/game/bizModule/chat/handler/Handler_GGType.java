@@ -7,7 +7,7 @@ import java.util.List;
 import com.game.bizModule.chat.ChatLog;
 import com.game.bizModule.chat.bizServ.ITypist;
 import com.game.bizModule.chat.msg.AbstractCGChat;
-import com.game.bizModule.chat.msg.GCChat;
+import com.game.bizModule.chat.msg.GCCommChat;
 import com.game.bizModule.chat.msg.GGPost;
 import com.game.bizModule.chat.msg.GGType;
 import com.game.bizModule.human.Human;
@@ -58,7 +58,7 @@ public class Handler_GGType extends AbstractGGMsgHandler<GGType> {
         // 创建输出参数
         List<Long> outHumanUIdList = new LinkedList<>();
         // 获取 GC 消息
-        GCChat gcMSG = typist.type(
+        GCCommChat gcMSG = typist.type(
             h, cgMSG,
             outHumanUIdList
         );

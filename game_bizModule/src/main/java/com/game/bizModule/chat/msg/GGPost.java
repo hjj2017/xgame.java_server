@@ -14,7 +14,7 @@ import com.game.gameServer.msg.AbstractGGMsgObj;
  */
 public final class GGPost extends AbstractGGMsgObj<Handler_GGPost> {
     /** GC 消息 */
-    public GCChat _gcMSG = null;
+    public GCCommChat _gcMSG = null;
     /** 角色 UId 列表 */
     public List<Long> _humanUIdList = null;
 
