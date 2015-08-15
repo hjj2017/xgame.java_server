@@ -36,6 +36,13 @@ public final class MultiLangDef {
     @LangText("不能超过阈值")
     public static final int LANG_CD_diffTimeGeqThreshold = ++INNER_VAL;
 
+// 聊天系统
+///////////////////////////////////////////////////////////////////////
+
+    @LangText("找不到可以累计时间的 Cd 类型")
+    public static final int LANG_CHAT_hasCd = ++INNER_VAL;
+
+
     /**
      * 类默认构造器
      *

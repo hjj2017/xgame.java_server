@@ -3,16 +3,21 @@ package com.game.bizModule.human;
 import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.mina.OnlineSessionManager;
 import com.game.part.GameError;
 import com.game.part.util.Assert;
 import com.game.part.util.NullUtil;
 
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 角色,
- * <font color="#990000">注意: 角色自己就是自己的财务</font>
+ * <font color="#990000">注意: 角色自己就是自己的财物</font>
  * 
  * @author hjj2017
  * @since 2015/7/11
@@ -184,5 +189,84 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		h.fromEntity(entity);
 
 		return h;
+	}
+
+	/**
+	 * 获取角色列表
+	 *
+	 * @param humanUIdList
+	 * @return
+	 *
+	 */
+	public static List<Human> getHumanList(List<Long> humanUIdList) {
+		if (humanUIdList == null ||
+			humanUIdList.isEmpty()) {
+			// 如果参数对象为空,
+			// 则直接退出!
+			return null;
+		}
+
+		// 获取会话 UId 集合
+		Set<Long> sessionUIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
+
+		if (sessionUIdSet == null ||
+			sessionUIdSet.isEmpty()) {
+			// 如果会话 UId 集合为空,
+			// 则直接退出!
+			return null;
+		}
+
+		return sessionUIdSet.stream().map(sessionUId -> {
+			// 根据会话 UId 获取玩家对象
+			Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+
+			if (p == null) {
+				// 如果玩家对象为空,
+				// 则直接退出!
+				return null;
+			}
+
+			// 获取角色对象
+			Human h = Human.getHumanByPlayer(p);
+
+			if (h != null &&
+				humanUIdList.contains(h._humanUId)) {
+				return h;
+			} else {
+				return null;
+			}
+		}).filter(h -> h != null).collect(Collectors.toList());
+	}
+
+	/**
+	 * 获取所有在线的角色列表
+	 *
+	 * @return
+	 *
+	 */
+	public static List<Human> getAllOnlineHuman() {
+		// 获取会话 UId 集合
+		Set<Long> sessionUIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
+
+		if (sessionUIdSet == null ||
+			sessionUIdSet.isEmpty()) {
+			// 如果会话 UId 集合为空,
+			// 则直接退出!
+			return null;
+		}
+
+		return sessionUIdSet.stream().map(sessionUId -> {
+			// 根据会话 UId 获取玩家对象
+			Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+
+			if (p == null) {
+				// 如果玩家对象为空,
+				// 则直接退出!
+				return null;
+			}
+
+			// 获取角色对象
+			return Human.getHumanByPlayer(p);
+		}).filter(h -> h != null).collect(Collectors.toList());
 	}
 }
