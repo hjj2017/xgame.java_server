@@ -16,7 +16,7 @@ import com.game.part.tmpl.type.XlsxStr;
  * @since 2015/8/15
  *
  */
-@FromXlsxFile(fileName = "chat.xlsx", sheetIndex = 1)
+@FromXlsxFile(fileName = "chat.xlsx", sheetIndex = 0)
 public class ChatConfTmpl extends AbstractXlsxTmpl {
     /** 世界聊天 */
     private static final int KEY_WORLD_CHAT = 1001;
