@@ -1,13 +1,12 @@
 package com.game.part.util;
 
-import com.game.part.GameError;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
-import java.util.Arrays;
+
+import com.game.part.GameError;
 
 /**
  * 设置 class 目录

@@ -1,8 +1,6 @@
 package com.game.bizModule.human.io;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.game.bizModule.human.entity.HumanEntryEntity;
 import com.game.bizModule.human.msg.GGQueryHumanEntryListFinish;

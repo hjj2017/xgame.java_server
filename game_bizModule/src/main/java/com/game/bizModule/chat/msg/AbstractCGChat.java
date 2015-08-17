@@ -45,6 +45,7 @@ public abstract class AbstractCGChat extends AbstractCGMsgObj {
      *
      */
     @Override
+    @SuppressWarnings("unchecked")
     protected final AbstractCGMsgHandler<AbstractCGChat> newHandlerObj() {
         return new Handler_AllCGChat();
     }

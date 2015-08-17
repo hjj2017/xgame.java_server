@@ -1,15 +1,11 @@
 package com.game.bizModule.building.tmpl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.game.bizModule.building.model.BuildingTypeEnum;
-import com.game.gameServer.framework.GameServerConf;
 import com.game.part.tmpl.anno.FromXlsxFile;
-import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.OneToOne;
-import com.game.part.tmpl.anno.Validator;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.tmpl.type.XlsxInt;
 import com.game.part.tmpl.type.XlsxStr;

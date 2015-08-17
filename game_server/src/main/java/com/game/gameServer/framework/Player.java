@@ -77,13 +77,15 @@ public final class Player {
 	 * @return
 	 *
 	 */
-	public<T> T getPropVal(Class<T> byClazz) {
+	public <T> T getPropVal(Class<T> byClazz) {
 		if (byClazz == null) {
 			// 如果参数对象为空,
 			// 则直接退出!
 			return null;
 		} else {
-			return (T)this._propMap.get(byClazz);
+			@SuppressWarnings("unchecked")
+			T val = (T)this._propMap.get(byClazz);
+			return val;
 		}
 	}
 
@@ -95,7 +97,8 @@ public final class Player {
 	 * @return
 	 *
 	 */
-	public<T> T getPropValOrCreate(Class<T> byClazz) {
+	@SuppressWarnings("unchecked")
+	public <T> T getPropValOrCreate(Class<T> byClazz) {
 		if (byClazz == null) {
 			// 如果参数对象为空,
 			// 则直接退出!

@@ -4,7 +4,6 @@ import com.game.bizModule.building.bizServ.BuildingServ;
 import com.game.bizModule.building.bizServ.Result_DoLevelUp;
 import com.game.bizModule.building.msg.CGBuildingLevelUp;
 import com.game.bizModule.cd.handler.CdGCMsgHelper;
-import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.cd.msg.GCListChangedCdTimer;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.msgBox.handler.MsgBoxGCMsgHelper;

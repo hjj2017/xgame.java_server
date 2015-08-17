@@ -27,6 +27,7 @@ public class CGEnterHuman extends AbstractCGMsgObj {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractCGMsgHandler<CGEnterHuman> newHandlerObj() {
         return new Handler_CGEnterHuman();
     }

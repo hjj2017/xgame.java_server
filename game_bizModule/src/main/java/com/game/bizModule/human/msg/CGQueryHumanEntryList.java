@@ -25,6 +25,7 @@ public class CGQueryHumanEntryList extends AbstractCGMsgObj {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractCGMsgHandler<CGQueryHumanEntryList> newHandlerObj() {
         return new Handler_CGQueryHumanEntryList();
     }

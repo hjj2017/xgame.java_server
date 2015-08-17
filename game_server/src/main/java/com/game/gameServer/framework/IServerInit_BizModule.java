@@ -55,7 +55,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				IHeartbeat.class)) {
 				// 如果是心跳接口,
-				regHeartbeatObj((Class<IHeartbeat>)currClazz);
+				regHeartbeatObj(autoCast(currClazz));
 				return;
 			}
 
@@ -63,7 +63,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				AbstractMsgObj.class)) {
 				// 如果是消息类,
-				regMsgClazz((Class<AbstractMsgObj>)currClazz);
+				regMsgClazz(autoCast(currClazz));
 				return;
 			}
 
@@ -71,7 +71,7 @@ interface IServerInit_BizModule {
 				currClazz,
 				AbstractXlsxTmpl.class)) {
 				// 如果是模板类,
-				loadXlsxTmpl((Class<AbstractXlsxTmpl>)currClazz);
+				loadXlsxTmpl(autoCast(currClazz));
 				return;
 			}
 		});
@@ -80,6 +80,18 @@ interface IServerInit_BizModule {
 		XlsxTmplServ.OBJ.validateAll();
 		// 调用业务模块的初始化函数
 		callBizServInitFunc();
+	}
+
+	/**
+	 * 将对象转型为制定类型
+	 * 
+	 * @param obj
+	 * @return
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	static <TClazz> TClazz autoCast(Object obj) {
+		return (TClazz)obj;
 	}
 
 	/**

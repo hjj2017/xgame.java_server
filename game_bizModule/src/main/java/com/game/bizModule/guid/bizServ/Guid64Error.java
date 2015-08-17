@@ -10,7 +10,10 @@ import com.game.part.GameError;
  *
  */
 public class Guid64Error extends GameError {
-    /**
+    // serialVersionUID
+	private static final long serialVersionUID = 3924650360910776442L;
+
+	/**
      * 类默认构造器
      *
      */

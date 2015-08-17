@@ -4,7 +4,6 @@ import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgStr;
-import com.game.part.util.Assert;
 
 /**
  * 消息盒子

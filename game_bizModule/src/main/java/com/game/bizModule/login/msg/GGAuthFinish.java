@@ -20,6 +20,7 @@ public class GGAuthFinish extends AbstractGGMsgObj {
     public boolean _success = false;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractGGMsgHandler<GGAuthFinish> newHandlerObj() {
         return new Handler_GGAuthFinish();
     }

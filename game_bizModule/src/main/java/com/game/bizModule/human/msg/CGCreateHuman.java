@@ -29,6 +29,7 @@ public class CGCreateHuman extends AbstractCGMsgObj {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractCGMsgHandler<CGCreateHuman> newHandlerObj() {
         return new Handler_CGCreateHuman();
     }

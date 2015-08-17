@@ -20,6 +20,7 @@ public class GGType extends AbstractGGMsgObj {
     public AbstractCGChat _cgMSG = null;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractGGMsgHandler<GGType> newHandlerObj() {
         return new Handler_GGType();
     }

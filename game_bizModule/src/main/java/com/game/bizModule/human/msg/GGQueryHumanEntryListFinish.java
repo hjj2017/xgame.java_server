@@ -25,6 +25,7 @@ public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj {
     public List<HumanEntryEntity> _heel = null;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractGGMsgHandler<GGQueryHumanEntryListFinish> newHandlerObj() {
         return new Handler_GGQueryHumanEntryListFinish();
     }
