@@ -11,9 +11,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>Xgame</groupId>
     <artifactId>robot</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>robot</name>
 
     <dependencies>
