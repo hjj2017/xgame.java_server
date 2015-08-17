@@ -11,6 +11,8 @@ public final class MultiLangDef {
     /** 内置值 */
     private static int INNER_VAL = 1000000;
 
+    @LangText("系统")
+    public static final int LANG_COMM_system = ++INNER_VAL;
     @LangText("参数错误")
     public static final int LANG_COMM_paramError = ++INNER_VAL;
     @LangText("管理器对象为空")
@@ -39,8 +41,8 @@ public final class MultiLangDef {
 // 聊天系统
 ///////////////////////////////////////////////////////////////////////
 
-    @LangText("找不到可以累计时间的 Cd 类型")
-    public static final int LANG_CHAT_hasCd = ++INNER_VAL;
+    @LangText("Cd 时间未结束, 不能发送世界消息")
+    public static final int LANG_CHAT_worldChatHasCd = ++INNER_VAL;
 
 
     /**

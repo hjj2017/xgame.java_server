@@ -11,6 +11,7 @@ import com.game.bizModule.human.Human;
 import com.game.bizModule.multiLang.MultiLangDef;
 import com.game.bizModule.multiLang.bizServ.MultiLangServ;
 import com.game.bizModule.time.TimeServ;
+import com.game.part.msg.type.MsgLong;
 import com.game.part.msg.type.MsgStr;
 import com.game.part.util.Assert;
 
@@ -48,7 +49,16 @@ public final class WorldChatTypist implements ITypist<CGWorldChat> {
         if (this.hasCd(h)) {
             // 如果还有 Cd 时间,
             // 那么直接退出!
-            gcMSG._text = new MsgStr(MultiLangServ.OBJ.getLangText(MultiLangDef.LANG_CHAT_hasCd));
+            //
+            // 获取 SYSTEM 多语言 Id 和名称
+            final int systemLangId = MultiLangDef.LANG_COMM_system;
+            final String systemName = MultiLangServ.OBJ.getLangText(systemLangId);
+            // 设置发送者 UId 和名称
+            gcMSG._fromHumanUId = new MsgLong(systemLangId);
+            gcMSG._fromHumanUIdStr = new MsgStr(String.valueOf(systemLangId));
+            gcMSG._fromHumanName = new MsgStr(systemName);
+            // 设置失败原因
+            gcMSG._text = new MsgStr(MultiLangServ.OBJ.getLangText(MultiLangDef.LANG_CHAT_worldChatHasCd));
             return gcMSG;
         }
 
