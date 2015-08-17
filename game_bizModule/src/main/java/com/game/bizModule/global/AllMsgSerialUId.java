@@ -23,6 +23,8 @@ public final class AllMsgSerialUId {
     public static final short SESSION_OPENED = SpecialMsgSerialUId.SESSION_OPENED;
     /** @see SpecialMsgSerialUId#SESSION_CLOSED */
     public static final short SESSION_CLOSED = SpecialMsgSerialUId.SESSION_CLOSED;
+    /** 消息盒子 */
+    public static final short GC_MSG_BOX = 100;
 
 // 登陆模
 ///////////////////////////////////////////////////////////////////

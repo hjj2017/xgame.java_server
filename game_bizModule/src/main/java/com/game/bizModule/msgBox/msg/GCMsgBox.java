@@ -1,5 +1,6 @@
 package com.game.bizModule.msgBox.msg;
 
+import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.gameServer.msg.AbstractGCMsgObj;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgStr;
@@ -53,6 +54,6 @@ public class GCMsgBox extends AbstractGCMsgObj {
 
     @Override
     public short getSerialUId() {
-        return 0;
+        return AllMsgSerialUId.GC_MSG_BOX;
     }
 }
