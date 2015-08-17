@@ -17,7 +17,6 @@ import com.game.part.msg.type.MsgStr;
  * 
  */
 public class CGListAllCdTimer extends AbstractCGMsgObj {
-
 	@Override
 	public short getSerialUId() {
 		return AllMsgSerialUId.CG_LIST_ALL_TIMER;
