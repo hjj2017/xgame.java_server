@@ -2,6 +2,7 @@ package com.game.bizModule.chat.msg;
 
 import com.game.bizModule.chat.handler.Handler_GGType;
 import com.game.bizModule.human.Human;
+import com.game.gameServer.msg.AbstractGGMsgHandler;
 import com.game.gameServer.msg.AbstractGGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 
@@ -12,14 +13,14 @@ import com.game.gameServer.msg.MsgTypeEnum;
  * @since 2015/8/15
  *
  */
-public class GGType extends AbstractGGMsgObj<Handler_GGType> {
+public class GGType extends AbstractGGMsgObj {
     /** 角色 */
     public Human _h = null;
     /** 聊天 CG 消息 */
     public AbstractCGChat _cgMSG = null;
 
     @Override
-    protected Handler_GGType newHandlerObj() {
+    protected AbstractGGMsgHandler<GGType> newHandlerObj() {
         return new Handler_GGType();
     }
 

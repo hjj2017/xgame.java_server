@@ -10,5 +10,5 @@ import com.game.gameServer.msg.mina.OnlineSessionManager;
  * @param <TMsgObj>
  * 
  */
-public abstract class AbstractGGMsgHandler<TMsgObj extends AbstractGGMsgObj<?>> extends AbstractExecutableMsgHandler<TMsgObj> {
+public abstract class AbstractGGMsgHandler<TMsgObj extends AbstractGGMsgObj> extends AbstractExecutableMsgHandler<TMsgObj> {
 }

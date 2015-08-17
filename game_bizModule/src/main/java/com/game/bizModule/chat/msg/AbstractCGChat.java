@@ -2,6 +2,7 @@ package com.game.bizModule.chat.msg;
 
 import com.game.bizModule.chat.bizServ.ITypist;
 import com.game.bizModule.chat.handler.Handler_AllCGChat;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgStr;
@@ -13,7 +14,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2015/8/17
  *
  */
-public abstract class AbstractCGChat extends AbstractCGMsgObj<Handler_AllCGChat> {
+public abstract class AbstractCGChat extends AbstractCGMsgObj {
     /** 聊天文本 */
     public MsgStr _text;
 
@@ -35,13 +36,16 @@ public abstract class AbstractCGChat extends AbstractCGMsgObj<Handler_AllCGChat>
     }
 
     /**
-     * 注意 : 聊天 CG 消息, 一定是由 Handler_AllCGChat 来处理的!
+     * 注意 : 聊天 CG 消息,
+     * 一定是由 AbstractCGMsgHandler<AbstractCGChat> 的实现类,
+     * 也就是 Handler_AllCGChat 来处理的!
      * 这是不能被改写的!
      *
      * @return
+     *
      */
     @Override
-    protected final Handler_AllCGChat newHandlerObj() {
+    protected final AbstractCGMsgHandler<AbstractCGChat> newHandlerObj() {
         return new Handler_AllCGChat();
     }
 

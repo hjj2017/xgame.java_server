@@ -3,6 +3,7 @@ package com.game.bizModule.chat.msg;
 import java.util.List;
 
 import com.game.bizModule.chat.handler.Handler_GGPost;
+import com.game.gameServer.msg.AbstractGGMsgHandler;
 import com.game.gameServer.msg.AbstractGGMsgObj;
 
 /**
@@ -12,14 +13,14 @@ import com.game.gameServer.msg.AbstractGGMsgObj;
  * @since 2015/8/17
  *
  */
-public final class GGPost extends AbstractGGMsgObj<Handler_GGPost> {
+public final class GGPost extends AbstractGGMsgObj {
     /** GC 消息 */
     public GCCommChat _gcMSG = null;
     /** 角色 UId 列表 */
     public List<Long> _humanUIdList = null;
 
     @Override
-    protected Handler_GGPost newHandlerObj() {
+    protected AbstractGGMsgHandler<GGPost> newHandlerObj() {
         return new Handler_GGPost();
     }
 }

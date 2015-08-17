@@ -14,7 +14,7 @@ import java.text.MessageFormat;
  * @param <TMsgObj>
  * 
  */
-public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj<?>> extends AbstractExecutableMsgHandler<TMsgObj> {
+public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> extends AbstractExecutableMsgHandler<TMsgObj> {
 	/**
 	 * 会话 Id, 会在 MsgIoHandler 中赋值.
 	 *

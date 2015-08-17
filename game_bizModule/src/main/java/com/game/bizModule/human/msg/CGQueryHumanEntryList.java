@@ -2,6 +2,7 @@ package com.game.bizModule.human.msg;
 
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.human.handler.Handler_CGQueryHumanEntryList;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgStr;
@@ -14,7 +15,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2015/7/11
  *
  */
-public class CGQueryHumanEntryList extends AbstractCGMsgObj<Handler_CGQueryHumanEntryList> {
+public class CGQueryHumanEntryList extends AbstractCGMsgObj {
     /** 服务器名称 */
     public MsgStr _serverName = null;
 
@@ -24,7 +25,7 @@ public class CGQueryHumanEntryList extends AbstractCGMsgObj<Handler_CGQueryHuman
     }
 
     @Override
-    protected Handler_CGQueryHumanEntryList newHandlerObj() {
+    protected AbstractCGMsgHandler<CGQueryHumanEntryList> newHandlerObj() {
         return new Handler_CGQueryHumanEntryList();
     }
 

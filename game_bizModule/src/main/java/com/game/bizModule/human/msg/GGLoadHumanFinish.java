@@ -4,6 +4,7 @@ import com.game.bizModule.human.Human;
 import com.game.bizModule.human.handler.Handler_GGCreateHumanFinish;
 import com.game.bizModule.human.handler.Handler_GGLoadHumanFinish;
 import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.AbstractGGMsgHandler;
 import com.game.gameServer.msg.AbstractGGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 
@@ -14,7 +15,7 @@ import com.game.gameServer.msg.MsgTypeEnum;
  * @since 2015/7/12
  *
  */
-public class GGLoadHumanFinish extends AbstractGGMsgObj<Handler_GGLoadHumanFinish> {
+public class GGLoadHumanFinish extends AbstractGGMsgObj {
     /** 玩家 */
     public Player _p = null;
     /** 角色 */
@@ -23,7 +24,7 @@ public class GGLoadHumanFinish extends AbstractGGMsgObj<Handler_GGLoadHumanFinis
     public boolean _finish = false;
 
     @Override
-    protected Handler_GGLoadHumanFinish newHandlerObj() {
+    protected AbstractGGMsgHandler<GGLoadHumanFinish> newHandlerObj() {
         return new Handler_GGLoadHumanFinish();
     }
 

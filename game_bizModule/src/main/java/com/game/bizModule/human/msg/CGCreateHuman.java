@@ -2,6 +2,7 @@ package com.game.bizModule.human.msg;
 
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.human.handler.Handler_CGCreateHuman;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgInt;
@@ -14,7 +15,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2015/7/12
  *
  */
-public class CGCreateHuman extends AbstractCGMsgObj<Handler_CGCreateHuman> {
+public class CGCreateHuman extends AbstractCGMsgObj {
     /** 服务器名称 */
     public MsgStr _serverName;
     /** 角色名称 */
@@ -28,7 +29,7 @@ public class CGCreateHuman extends AbstractCGMsgObj<Handler_CGCreateHuman> {
     }
 
     @Override
-    protected Handler_CGCreateHuman newHandlerObj() {
+    protected AbstractCGMsgHandler<CGCreateHuman> newHandlerObj() {
         return new Handler_CGCreateHuman();
     }
 

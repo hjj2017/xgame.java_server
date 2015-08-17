@@ -2,6 +2,7 @@ package com.game.bizModule.cd.msg;
 
 import com.game.bizModule.cd.handler.Handler_CGListAllCdTimer;
 import com.game.bizModule.global.AllMsgSerialUId;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.type.MsgArrayList;
 import com.game.part.msg.type.MsgBool;
@@ -15,7 +16,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2014/6/24
  * 
  */
-public class CGListAllCdTimer extends AbstractCGMsgObj<Handler_CGListAllCdTimer> {
+public class CGListAllCdTimer extends AbstractCGMsgObj {
 
 	@Override
 	public short getSerialUId() {
@@ -23,7 +24,7 @@ public class CGListAllCdTimer extends AbstractCGMsgObj<Handler_CGListAllCdTimer>
 	}
 
 	@Override
-	public Handler_CGListAllCdTimer newHandlerObj() {
+	public AbstractCGMsgHandler<CGListAllCdTimer> newHandlerObj() {
 		return new Handler_CGListAllCdTimer();
 	}
 }

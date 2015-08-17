@@ -2,6 +2,7 @@ package com.game.bizModule.login.msg;
 
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.login.handler.Handler_CGLogin;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgStr;
@@ -13,7 +14,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2015/7/12
  *
  */
-public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
+public class CGLogin extends AbstractCGMsgObj {
 	/** 平台 UId 字符串 */
 	public MsgStr _platformUIdStr;
 	/** 登陆字符串 */
@@ -46,7 +47,7 @@ public class CGLogin extends AbstractCGMsgObj<Handler_CGLogin> {
 	}
 
 	@Override
-	public Handler_CGLogin newHandlerObj() {
+	public AbstractCGMsgHandler<CGLogin> newHandlerObj() {
 		return new Handler_CGLogin();
 	}
 

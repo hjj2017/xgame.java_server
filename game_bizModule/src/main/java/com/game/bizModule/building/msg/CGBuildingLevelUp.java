@@ -3,6 +3,7 @@ package com.game.bizModule.building.msg;
 import com.game.bizModule.building.handler.Handler_CGBuildingLevelUp;
 import com.game.bizModule.building.model.BuildingTypeEnum;
 import com.game.bizModule.global.AllMsgSerialUId;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.part.msg.type.MsgInt;
 
@@ -13,7 +14,7 @@ import com.game.part.msg.type.MsgInt;
  * @since 2015/7/25
  *
  */
-public class CGBuildingLevelUp extends AbstractCGMsgObj<Handler_CGBuildingLevelUp> {
+public class CGBuildingLevelUp extends AbstractCGMsgObj {
     /** 建筑类型整数值 */
     public MsgInt _buildingTypeInt;
 
@@ -60,7 +61,7 @@ public class CGBuildingLevelUp extends AbstractCGMsgObj<Handler_CGBuildingLevelU
     }
 
     @Override
-    protected Handler_CGBuildingLevelUp newHandlerObj() {
+    protected AbstractCGMsgHandler<CGBuildingLevelUp> newHandlerObj() {
         return new Handler_CGBuildingLevelUp();
     }
 }

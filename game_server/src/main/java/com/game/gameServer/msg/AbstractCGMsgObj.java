@@ -1,7 +1,10 @@
 package com.game.gameServer.msg;
 
 import com.game.part.msg.IoBuffUtil;
+import com.game.part.msg.MsgError;
 import org.apache.mina.core.buffer.IoBuffer;
+
+import java.text.MessageFormat;
 
 /**
  * 抽象的 CG 的消息
@@ -10,14 +13,13 @@ import org.apache.mina.core.buffer.IoBuffer;
  * @since 2015/01/25
  *
  */
-public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>> extends AbstractExecutableMsgObj {
+public abstract class AbstractCGMsgObj extends AbstractExecutableMsgObj {
 	/** 版本修订, 主要用于消息加密 */
 	public int _revision;
 	/** Md5 字符串, 主要用于消息加密 */
 	public String _md5;
-
 	/** 处理器对象 */
-	private THandler _h = null;
+	private AbstractCGMsgHandler<AbstractCGMsgObj> _h = null;
 
 	/**
 	 * 获取消息序列化 Id
@@ -100,41 +102,47 @@ public abstract class AbstractCGMsgObj<THandler extends AbstractCGMsgHandler<?>>
 
 	@Override
 	public final void exec() {
-		@SuppressWarnings("unchecked")
-		AbstractCGMsgHandler<AbstractCGMsgObj<?>> 
-			handler = (AbstractCGMsgHandler<AbstractCGMsgObj<?>>)this.getSelfHandler();
-
-		if (handler == null) {
-			// 如果处理器为空, 
-			// 则直接退出!
-			return;
-		}
-
 		// 获取消息处理器
-		handler.handle(this);
+		AbstractCGMsgHandler<AbstractCGMsgObj> hObj = this.getSelfHandler();
+
+		if (hObj != null) {
+			// 处理当前消息对象
+			hObj.handle(this);
+		}
 	}
 
 	/**
 	 * 获取消息处理器
-	 * 
+	 *
+	 * @param <TCGMsgObj>
 	 * @return
 	 * 
 	 */
-	public final THandler getSelfHandler() {
+	public final <TCGMsgObj extends AbstractCGMsgObj> AbstractCGMsgHandler<TCGMsgObj> getSelfHandler() {
 		if (this._h == null) {
 			// 如果处理器对象为空,
 			// 则新建处理器!
 			this._h = this.newHandlerObj();
+
+			if (this._h == null) {
+				// 如果消息处理器为空,
+				// 则抛出异常!
+				throw new MsgError(MessageFormat.format(
+					"{0} 消息处理器为空值",
+					this.getClass().getName()
+				));
+			}
 		}
 
-		return this._h;
+		return (AbstractCGMsgHandler<TCGMsgObj>)this._h;
 	}
 
 	/**
 	 * 创建新的处理器对象
 	 *
+	 * @param <TCGMsgObj>
 	 * @return
 	 *
 	 */
-	protected abstract THandler newHandlerObj();
+	protected abstract <TCGMsgObj extends AbstractCGMsgObj> AbstractCGMsgHandler<TCGMsgObj> newHandlerObj();
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.game.bizModule.human.entity.HumanEntryEntity;
 import com.game.bizModule.human.handler.Handler_GGQueryHumanEntryListFinish;
 import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.AbstractGGMsgHandler;
 import com.game.gameServer.msg.AbstractGGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 
@@ -15,7 +16,7 @@ import com.game.gameServer.msg.MsgTypeEnum;
  * @since 2015/7/11
  *
  */
-public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj<Handler_GGQueryHumanEntryListFinish> {
+public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj {
     /** 玩家对象 */
     public Player _p = null;
     /** 服务器名称 */
@@ -24,7 +25,7 @@ public class GGQueryHumanEntryListFinish extends AbstractGGMsgObj<Handler_GGQuer
     public List<HumanEntryEntity> _heel = null;
 
     @Override
-    protected Handler_GGQueryHumanEntryListFinish newHandlerObj() {
+    protected AbstractGGMsgHandler<GGQueryHumanEntryListFinish> newHandlerObj() {
         return new Handler_GGQueryHumanEntryListFinish();
     }
 

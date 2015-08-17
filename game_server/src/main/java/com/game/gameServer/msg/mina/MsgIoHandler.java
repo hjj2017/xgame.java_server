@@ -28,7 +28,7 @@ class MsgIoHandler extends IoHandlerAdapter {
 		// 添加会话对象
 		OnlineSessionManager.OBJ.addSession(sessionObj);
 		// 获取消息对象
-		AbstractCGMsgObj<?> cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_OPENED);
+		AbstractCGMsgObj cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_OPENED);
 		// 发送消息
 		this.postMsg(sessionObj, cgMsgObj);
 	}
@@ -48,7 +48,7 @@ class MsgIoHandler extends IoHandlerAdapter {
 			));
 
 			// 发送消息
-			this.postMsg(sessionObj, (AbstractCGMsgObj<?>)obj);
+			this.postMsg(sessionObj, (AbstractCGMsgObj)obj);
 		}
 	}
 
@@ -58,7 +58,7 @@ class MsgIoHandler extends IoHandlerAdapter {
 		Assert.notNull(sessionObj);
 
 		// 获取消息对象
-		AbstractCGMsgObj<?> cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_CLOSED);
+		AbstractCGMsgObj cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.SESSION_CLOSED);
 		// 发送消息
 		this.postMsg(sessionObj, cgMsgObj);
 	}
@@ -71,7 +71,7 @@ class MsgIoHandler extends IoHandlerAdapter {
 	 * 
 	 */
 	private void postMsg(
-		IoSession fromSessionObj, AbstractCGMsgObj<?> cgMsgObj) {
+		IoSession fromSessionObj, AbstractCGMsgObj cgMsgObj) {
 		if (fromSessionObj == null || 
 			cgMsgObj == null) {
 			// 如果参数对象为空, 

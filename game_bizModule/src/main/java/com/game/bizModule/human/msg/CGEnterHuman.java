@@ -2,6 +2,7 @@ package com.game.bizModule.human.msg;
 
 import com.game.bizModule.global.AllMsgSerialUId;
 import com.game.bizModule.human.handler.Handler_CGEnterHuman;
+import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.msg.type.MsgLong;
@@ -14,7 +15,7 @@ import com.game.part.msg.type.MsgStr;
  * @since 2015/7/20
  *
  */
-public class CGEnterHuman extends AbstractCGMsgObj<Handler_CGEnterHuman> {
+public class CGEnterHuman extends AbstractCGMsgObj {
     /** 角色 UId */
     public MsgLong _humanUId = null;
     /** 角色 UId 字符串 */
@@ -26,7 +27,7 @@ public class CGEnterHuman extends AbstractCGMsgObj<Handler_CGEnterHuman> {
     }
 
     @Override
-    protected Handler_CGEnterHuman newHandlerObj() {
+    protected AbstractCGMsgHandler<CGEnterHuman> newHandlerObj() {
         return new Handler_CGEnterHuman();
     }
 
