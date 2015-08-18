@@ -97,6 +97,12 @@ public class XlsxStr extends BasicTypeCol<String> {
 				// 调用父类验证函数
 				super.validate();
 
+				if (this.getObjVal() == null) {
+					// 如果字符串为空,
+					// 则直接退出!
+					return;
+				}
+
 				// 创建正则表达式对象
 				Pattern p = Pattern.compile(regEx, flag);
 				Matcher m = p.matcher(this.getStrVal());

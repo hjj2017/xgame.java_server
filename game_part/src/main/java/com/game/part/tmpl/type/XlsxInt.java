@@ -97,6 +97,12 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 				// 调用父类验证函数
 				super.validate();
 
+				if (this.getObjVal() == null) {
+					// 如果数值为空,
+					// 则直接退出!
+					return;
+				}
+
 				if (this.getIntVal() >= minVal &&
 					this.getIntVal() <= maxVal) {
 					// 如果在指定范围之内,
