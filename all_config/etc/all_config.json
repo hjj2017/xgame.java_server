@@ -6,7 +6,7 @@
 	"gameServer" : {
 		# 基础配置
 		"serverIndex" : 1,
-		"bindIpAddr" : "127.0.0.1",
+		"bindIpAddr" : "0.0.0.0",
 		"port" : 4400,
 		"msgEncrypt" : 0,
 		# IO 配置
