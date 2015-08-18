@@ -1,11 +1,9 @@
 package com.game.robot.moduleImpl.human;
 
 import com.game.bizModule.human.msg.CGQueryHumanEntryList;
-import com.game.bizModule.login.msg.CGLogin;
 import com.game.part.msg.type.MsgStr;
 import com.game.robot.kernal.AbstractModuleReady;
 import com.game.robot.kernal.Robot;
-import net.sf.json.JSONObject;
 
 /**
  * 获取玩家角色入口列表

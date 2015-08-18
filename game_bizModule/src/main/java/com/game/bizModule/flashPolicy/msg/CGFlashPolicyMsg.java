@@ -19,6 +19,7 @@ public class CGFlashPolicyMsg extends AbstractCGMsgObj {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public AbstractCGMsgHandler<CGFlashPolicyMsg> newHandlerObj() {
 		// 返回消息处理器
 		return new Handler_CGFlashPolicyMsg();

@@ -2,6 +2,7 @@
 /log/
 /out/
 /target/
+/.settings/
 /*.iml
 /.classpath
 /.project

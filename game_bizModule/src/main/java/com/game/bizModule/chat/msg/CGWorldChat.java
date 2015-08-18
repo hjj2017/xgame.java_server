@@ -37,6 +37,7 @@ public class CGWorldChat extends AbstractCGChat {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ITypist<CGWorldChat> newTypist() {
         return WorldChatTypist.OBJ;
     }

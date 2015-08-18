@@ -20,6 +20,7 @@ public class GGCreateHumanFinish extends AbstractGGMsgObj {
     public boolean _success = false;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractGGMsgHandler<GGCreateHumanFinish> newHandlerObj() {
         return new Handler_GGCreateHumanFinish();
     }

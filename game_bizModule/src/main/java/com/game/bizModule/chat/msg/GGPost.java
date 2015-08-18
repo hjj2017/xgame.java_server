@@ -20,6 +20,7 @@ public final class GGPost extends AbstractGGMsgObj {
     public List<Long> _humanUIdList = null;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractGGMsgHandler<GGPost> newHandlerObj() {
         return new Handler_GGPost();
     }

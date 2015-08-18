@@ -118,6 +118,7 @@ public abstract class AbstractCGMsgObj extends AbstractExecutableMsgObj {
 	 * @return
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	public final <TCGMsgObj extends AbstractCGMsgObj> AbstractCGMsgHandler<TCGMsgObj> getSelfHandler() {
 		if (this._h == null) {
 			// 如果处理器对象为空,

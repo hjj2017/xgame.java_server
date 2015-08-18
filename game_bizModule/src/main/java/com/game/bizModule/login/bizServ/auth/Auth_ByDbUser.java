@@ -1,17 +1,15 @@
 package com.game.bizModule.login.bizServ.auth;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.game.bizModule.login.LoginLog;
+import com.game.bizModule.player.entity.PlayerEntity;
 import com.game.gameServer.framework.Player;
+import com.game.part.dao.CommDao;
 import com.game.part.util.NullUtil;
 import com.game.part.util.StringUtil;
-import net.sf.json.JSONObject;
 
-import com.game.bizModule.player.entity.PlayerEntity;
-import com.game.part.dao.CommDao;
+import net.sf.json.JSONObject;
 
 /**
  * 根据用户名和密码验证, 用户名密码一般是存在数据库中

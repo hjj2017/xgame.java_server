@@ -47,6 +47,7 @@ public class CGLogin extends AbstractCGMsgObj {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public AbstractCGMsgHandler<CGLogin> newHandlerObj() {
 		return new Handler_CGLogin();
 	}

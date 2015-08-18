@@ -20,6 +20,7 @@ public class CGDisconnect extends AbstractCGMsgObj {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractCGMsgHandler<CGDisconnect> newHandlerObj() {
         return new Handler_CGDisconnect();
     }

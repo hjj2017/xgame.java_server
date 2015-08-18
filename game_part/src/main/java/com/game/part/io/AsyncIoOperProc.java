@@ -4,7 +4,6 @@ import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.game.part.ThreadNamingFactory;
 import com.game.part.util.Assert;
@@ -117,30 +116,34 @@ class AsyncIoOperProc implements IIoOperProc<IIoOper> {
 		Assert.notNull(threadKey, "threadKey");
 
 		// 获取线程池
-		ExecutorService es = this._execServMap.get(threadKey);
+		ExecutorService oldES = this._execServMap.get(threadKey);
 
-		if (es == null) {
+		if (oldES == null) {
 			// 如果线程池为空,
 			// 则新建!
 			// 在新建线程池之前需要加锁以避免创建多个对象...
 			synchronized (this) {
 				// 从字典中重新获取线程池,
 				// 并做二次判断
-				es = this._execServMap.get(threadKey);
+				oldES = this._execServMap.get(threadKey);
 
-				if (es == null) {
+				if (oldES == null) {
 					// 如果二次判断之后还是空,
-					// 那么创建线程池!
-					es = Executors.newSingleThreadExecutor(new ThreadNamingFactory(
+					// 那么创建新线程池!
+					ExecutorService newES = Executors.newSingleThreadExecutor(new ThreadNamingFactory(
 						THREAD_NAME_PREFIX + "::" + threadKey
 					));
 					// 将线程池添加到字典
-					this._execServMap.put(threadKey, es);
+					oldES = this._execServMap.putIfAbsent(threadKey, newES);
+					
+					if (oldES == null) {
+						oldES = newES;
+					}
 				}
 			}
 		}
 
-		return es;
+		return oldES;
 	}
 
 	/**

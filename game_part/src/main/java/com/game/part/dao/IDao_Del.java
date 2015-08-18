@@ -1,16 +1,11 @@
 package com.game.part.dao;
 
-import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Id;
 import javax.persistence.Query;
-
-import com.game.part.util.ClazzUtil;
 
 /**
  * 删除数据库实体

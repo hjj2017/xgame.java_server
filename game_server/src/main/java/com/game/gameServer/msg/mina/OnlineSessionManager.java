@@ -104,7 +104,7 @@ public final class OnlineSessionManager {
 		// 获取 IP 地址
 		InetSocketAddress ipAddr = (InetSocketAddress)sessionObj.getRemoteAddress();
 
-		if (ipAddr != null ||
+		if (ipAddr != null &&
 			ipAddr.getAddress() != null) {
 			// 设置登陆 IP 地址和时间
 			p._loginIpAddr = ipAddr.getAddress().getHostAddress();

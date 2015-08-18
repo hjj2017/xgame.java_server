@@ -1,5 +1,11 @@
 package com.game.bizModule.human;
 
+import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
@@ -7,13 +13,6 @@ import com.game.gameServer.msg.mina.OnlineSessionManager;
 import com.game.part.GameError;
 import com.game.part.util.Assert;
 import com.game.part.util.NullUtil;
-
-import java.lang.ref.WeakReference;
-import java.text.MessageFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 角色,

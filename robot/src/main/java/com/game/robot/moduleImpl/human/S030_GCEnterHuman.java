@@ -1,9 +1,6 @@
 package com.game.robot.moduleImpl.human;
 
-import com.game.bizModule.human.msg.CGQueryHumanEntryList;
-import com.game.bizModule.human.msg.GCCreateHuman;
 import com.game.bizModule.human.msg.GCEnterHuman;
-import com.game.part.msg.type.MsgStr;
 import com.game.robot.RobotLog;
 import com.game.robot.kernal.AbstractGCMsgHandler;
 import com.game.robot.kernal.Robot;

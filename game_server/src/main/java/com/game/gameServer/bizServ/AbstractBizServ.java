@@ -1,10 +1,14 @@
 package com.game.gameServer.bizServ;
 
-import com.game.gameServer.framework.FrameworkLog;
-
 import java.text.MessageFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.game.gameServer.framework.FrameworkLog;
 
 /**
  * 游戏业务服务
@@ -32,7 +36,7 @@ public abstract class AbstractBizServ implements IIoOperExecutable {
      *
      */
     protected static void needToInit(
-        AbstractBizServ bizServ, Class<? extends AbstractBizServ> ... aheadOfServClazzArr) {
+        AbstractBizServ bizServ, Class<?> ... aheadOfServClazzArr) {
         if (aheadOfServClazzArr == null ||
             aheadOfServClazzArr.length <= 0) {
             // 如果类数组为空
@@ -55,7 +59,7 @@ public abstract class AbstractBizServ implements IIoOperExecutable {
      */
     private static void needToInit(
         AbstractBizServ bizServ,
-        Set<Class<? extends AbstractBizServ>> aheadOfServClazzSet) {
+        Set<Class<?>> aheadOfServClazzSet) {
 
         if (bizServ == null) {
             // 如果参数对象为空,

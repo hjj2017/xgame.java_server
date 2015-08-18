@@ -1,8 +1,5 @@
 package com.game.gameServer.msg;
 
-import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.mina.OnlineSessionManager;
-
 /**
  * 抽象的消息处理器
  * 

@@ -1,7 +1,6 @@
 package com.game.bizModule.human.msg;
 
 import com.game.bizModule.human.Human;
-import com.game.bizModule.human.handler.Handler_GGCreateHumanFinish;
 import com.game.bizModule.human.handler.Handler_GGLoadHumanFinish;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
@@ -24,6 +23,7 @@ public class GGLoadHumanFinish extends AbstractGGMsgObj {
     public boolean _finish = false;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractGGMsgHandler<GGLoadHumanFinish> newHandlerObj() {
         return new Handler_GGLoadHumanFinish();
     }

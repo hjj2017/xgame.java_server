@@ -1,8 +1,9 @@
 package com.game.part.dao;
 
-import javax.persistence.EntityManager;
 import java.text.MessageFormat;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 /**
  * 获取最大 Id
@@ -53,7 +54,7 @@ interface IDao_GetMaxId {
             );
 
             // 查询并返回结果
-            List<Object> resultList = em.createQuery(jpql).getResultList();
+            List<?> resultList = em.createQuery(jpql).getResultList();
 
             if (resultList == null ||
                 resultList.isEmpty()) {
@@ -63,7 +64,8 @@ interface IDao_GetMaxId {
             }
 
             // 转型为真实 Id
-            TId realId = (TId)resultList.get(0);
+            @SuppressWarnings("unchecked")
+			TId realId = (TId)resultList.get(0);
             // 返回 Id
             return realId;
         } catch (Exception ex) {

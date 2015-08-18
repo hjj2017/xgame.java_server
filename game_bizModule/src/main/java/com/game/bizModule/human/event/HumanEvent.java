@@ -35,7 +35,7 @@ public final class HumanEvent {
      * @param aheadOfArr
      *
      */
-    public void regEventListen(IHumanEventListen newEL, Class<? extends IHumanEventListen> ... aheadOfArr) {
+    public void regEventListen(IHumanEventListen newEL, Class<?> ... aheadOfArr) {
         if (aheadOfArr == null ||
             aheadOfArr.length <= 0) {
             // 如果类数组为空
@@ -80,8 +80,7 @@ public final class HumanEvent {
      *
      */
     public void regEventListen(
-        IHumanEventListen newEL,
-        Set<Class<? extends IHumanEventListen>> aheadOfSet) {
+        IHumanEventListen newEL, Set<Class<?>> aheadOfSet) {
         if (newEL == null) {
             // 如果参数对象为空,
             // 则直接退出!

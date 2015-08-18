@@ -2,10 +2,8 @@ package com.game.robot.moduleImpl.building;
 
 import com.game.bizModule.building.model.BuildingTypeEnum;
 import com.game.bizModule.building.msg.CGBuildingLevelUp;
-import com.game.bizModule.login.msg.CGLogin;
 import com.game.robot.kernal.AbstractModuleReady;
 import com.game.robot.kernal.Robot;
-import net.sf.json.JSONObject;
 
 /**
  * 玩家登陆

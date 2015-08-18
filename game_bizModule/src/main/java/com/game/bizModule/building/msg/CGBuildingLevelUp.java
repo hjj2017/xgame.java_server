@@ -61,6 +61,7 @@ public class CGBuildingLevelUp extends AbstractCGMsgObj {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected AbstractCGMsgHandler<CGBuildingLevelUp> newHandlerObj() {
         return new Handler_CGBuildingLevelUp();
     }
