@@ -132,6 +132,29 @@ public final class Assert {
     }
 
 	/**
+	 * 断言短整型数组不为空
+	 *
+	 * @param shortArr
+	 *
+	 */
+	public static void notNullOrEmpty(short[] shortArr) {
+		notNullOrEmpty(shortArr, null);
+	}
+
+	/**
+	 * 断言短整型数组不为空
+	 *
+	 * @param shortArr
+	 *
+	 */
+	public static void notNullOrEmpty(short[] shortArr, String msg) {
+		if (shortArr == null ||
+			shortArr.length <= 0) {
+			throw new IllegalArgumentException(msg);
+		}
+	}
+
+	/**
 	 * 断言表达式为真
 	 * 
 	 * @param expr 
