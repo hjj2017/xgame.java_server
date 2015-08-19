@@ -1,10 +1,10 @@
-**³õÊ¼»¯ XlsxTmplServ**
+**åˆå§‹åŒ– XlsxTmplServ**
 
-1¡¢£¨±ØÑ¡£©¼ÓÔØ D ÅÌ Temp_Test Ä¿Â¼ÏÂµÄ building.xlsx ÎÄ¼ş£»
+1ã€ï¼ˆå¿…é€‰ï¼‰åŠ è½½ D ç›˜ Temp_Test ç›®å½•ä¸‹çš„ building.xlsx æ–‡ä»¶ï¼›
 
-2¡¢£¨¿ÉÑ¡£©½«ÏµÍ³¶¯Ì¬Éú³ÉµÄ JAVA ÀàÔ´Âë±£´æµ½ D ÅÌ Temp_Test Ä¿Â¼ÏÂµÄ Debug Ä¿Â¼£»
+2ã€ï¼ˆå¯é€‰ï¼‰å°†ç³»ç»ŸåŠ¨æ€ç”Ÿæˆçš„ JAVA ç±»æºç ä¿å­˜åˆ° D ç›˜ Temp_Test ç›®å½•ä¸‹çš„ Debug ç›®å½•ï¼›
 
-3¡¢£¨¿ÉÑ¡£©ÉèÖÃ»·¾³±äÁ¿ lang = zh_CN£»
+3ã€ï¼ˆå¯é€‰ï¼‰è®¾ç½®ç¯å¢ƒå˜é‡ lang = zh_CNï¼›
 
 ```
 XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test/building.xlsx";
@@ -15,14 +15,14 @@ XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
 
 ----
 
-**×¢²áÄ£°æÀà**
+**æ³¨å†Œæ¨¡ç‰ˆç±»**
 
-1¡¢¼ÓÔØ BuildingTmpl Àà£»
+1ã€åŠ è½½ BuildingTmpl ç±»ï¼›
 
-2¡¢ÑéÖ¤ËùÓĞÄ£°æÀà£»
+2ã€éªŒè¯æ‰€æœ‰æ¨¡ç‰ˆç±»ï¼›
 
 ```
-// Ä£°æÀàÊı×é
+// æ¨¡ç‰ˆç±»æ•°ç»„
 Class<?>[] tmplClazzArr = {
     BuildingTmpl.class, 
     Shop.class,
@@ -30,45 +30,45 @@ Class<?>[] tmplClazzArr = {
 };
 
 for (Class<?> tmplClazz : tmplClazzArr) {
-    // ¼ÓÔØÄ£°æÀàÊı¾İ²¢´ò°ü
+    // åŠ è½½æ¨¡ç‰ˆç±»æ•°æ®å¹¶æ‰“åŒ…
     XlsxTmplServ.OBJ.loadTmplData(tmplClazz);
     XlsxTmplServ.OBJ.packUp(tmplClazz);
 }
 
-// ÑéÖ¤ËùÓĞÄ£°æÀà
+// éªŒè¯æ‰€æœ‰æ¨¡ç‰ˆç±»
 XlsxTmplServ.OBJ.validateAll();
 ```
 
 ----
 
-**BuildingTmpl Àà**
+**BuildingTmpl ç±»**
 
-1¡¢´Ó building.xlsx ÎÄ¼şµÄµÚ 1 ¸öÒ³Ç©¿ªÊ¼¶ÁÊı¾İ£»
+1ã€ä» building.xlsx æ–‡ä»¶çš„ç¬¬ 1 ä¸ªé¡µç­¾å¼€å§‹è¯»æ•°æ®ï¼›
 
-2¡¢¶¨Òå½¨Öş Id£¬²»ÔÊĞíÎª¿ÕÖµ£»
+2ã€å®šä¹‰å»ºç­‘ Idï¼Œä¸å…è®¸ä¸ºç©ºå€¼ï¼›
 
-3¡¢¶¨Òå½¨ÖşÀàĞÍ£¬²»ÔÊĞíÎª¿Õ£¬²¢ÇÒÖ»ÄÜÊÇ£º1¡¢2¡¢3¡¢4£¬Õâ 4 ¸öÖµÖĞµÄÒ»¸ö£»
+3ã€å®šä¹‰å»ºç­‘ç±»å‹ï¼Œä¸å…è®¸ä¸ºç©ºï¼Œå¹¶ä¸”åªèƒ½æ˜¯ï¼š1ã€2ã€3ã€4ï¼Œè¿™ 4 ä¸ªå€¼ä¸­çš„ä¸€ä¸ªï¼›
 
-4¡¢¶¨Òå½¨ÖşÃû³Æ£¬¿ÉÒÔÎª¿ÕÖµ£»
+4ã€å®šä¹‰å»ºç­‘åç§°ï¼Œå¯ä»¥ä¸ºç©ºå€¼ï¼›
 
-5¡¢¶¨Òå½¨ÖşËµÃ÷£¬¿ÉÒÔÎª¿ÕÖµ£¬µ«×î´ó³¤¶È²»ÄÜ³¬¹ı 200 ¸ö×Ö·û£»
+5ã€å®šä¹‰å»ºç­‘è¯´æ˜ï¼Œå¯ä»¥ä¸ºç©ºå€¼ï¼Œä½†æœ€å¤§é•¿åº¦ä¸èƒ½è¶…è¿‡ 200 ä¸ªå­—ç¬¦ï¼›
 
-6¡¢¶¨Òå½¨Öş Id ×Öµä£¬¿ÉÒÔÍ¨¹ı½¨Öş Id ÊıÖµÈ¡µÃ BuildingTmpl ¶ÔÏó£»
+6ã€å®šä¹‰å»ºç­‘ Id å­—å…¸ï¼Œå¯ä»¥é€šè¿‡å»ºç­‘ Id æ•°å€¼å–å¾— BuildingTmpl å¯¹è±¡ï¼›
 
-7¡¢¶¨Òå½¨ÖşÀàĞÍ×Öµä£¬¿ÉÒÔÍ¨¹ı½¨ÖşÀàĞÍÈ¡µÃ BuildingTmpl ¶ÔÏóÁĞ±í£»
+7ã€å®šä¹‰å»ºç­‘ç±»å‹å­—å…¸ï¼Œå¯ä»¥é€šè¿‡å»ºç­‘ç±»å‹å–å¾— BuildingTmpl å¯¹è±¡åˆ—è¡¨ï¼›
 
 ```
 @FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0)
 public class BuildingTmpl extends AbstractXlsxTmpl {
-    /** ½¨Öş Id */
+    /** å»ºç­‘ Id */
     @OneToOne(groupName = "_Id")
     public XlsxInt _Id = new XlsxInt(false);
-    /** ½¨ÖşÀàĞÍ */
+    /** å»ºç­‘ç±»å‹ */
     @OneToMany(groupName = "_Type")
     public XlsxInt _typeInt = XlsxInt.createByEnum(false, 1, 1, 2, 3, 4);
-    /** ½¨ÖşÃû³Æ */
+    /** å»ºç­‘åç§° */
     public XlsxStr _buildingName;
-    /** ½¨ÖşËµÃ÷ */
+    /** å»ºç­‘è¯´æ˜ */
     public XlsxStr _buildingDesc = new XlsxStr(true) {
         @Override
         public void validate() {
@@ -76,15 +76,15 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 
             if (this.getStrVal() != null && 
                 this.getStrVal().length() > 200) {
-                throw new XlsxTmplError(this, "½¨ÖşËµÃ÷´óÓÚ 200 ¸ö×Ö·û");
+                throw new XlsxTmplError(this, "å»ºç­‘è¯´æ˜å¤§äº 200 ä¸ªå­—ç¬¦");
             }
         }
     };
 
-    /** Id ×Öµä */
+    /** Id å­—å…¸ */
     @OneToOne(groupName = "_Id")
     public static Map<Integer, BuildingTmpl> _IdMap = new HashMap<>();
-    /** ÀàĞÍ×Öµä */
+    /** ç±»å‹å­—å…¸ */
     @OneToMany(groupName = "_Type")
     public static Map<Integer, List<BuildingTmpl>> _typeMap = new HashMap<>();
 }
@@ -92,13 +92,13 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 
 ----
 
-**Ê¹ÓÃ BuildingTmpl**
+**ä½¿ç”¨ BuildingTmpl**
 
-0¡¢Ò»¶¨ÏÈÒªÈ·±£ÒÑ¾­µ÷ÓÃ¹ı£ºXlsxTmplServ.OBJ.packUp(...); ÕâÒ»²½£»
+0ã€ä¸€å®šå…ˆè¦ç¡®ä¿å·²ç»è°ƒç”¨è¿‡ï¼šXlsxTmplServ.OBJ.packUp(...); è¿™ä¸€æ­¥ï¼›
 
-1¡¢¸ù¾İ½¨Öş Id »ñÈ¡ BuildingTmpl ¶ÔÏó£»
+1ã€æ ¹æ®å»ºç­‘ Id è·å– BuildingTmpl å¯¹è±¡ï¼›
 
-2¡¢¸ù¾İ½¨ÖşÀàĞÍ»ñÈ¡ BuildingTmpl ¶ÔÏóÁĞ±í£»
+2ã€æ ¹æ®å»ºç­‘ç±»å‹è·å– BuildingTmpl å¯¹è±¡åˆ—è¡¨ï¼›
 
 ```
 BuildingTmpl tmplObj = BuildingTmpl._IdMap.get(1);
@@ -107,52 +107,52 @@ List<BuildingTmpl> tmplObjList = BuildingTmpl._typeMap.get(1);
 
 ----
 
-**¸´ÔÓµÄ BuildingTmpl**
+**å¤æ‚çš„ BuildingTmpl**
 
-1¡¢´Ó building.xlsx ÎÄ¼şµÄµÚ 1 ¸öÒ³Ç©¿ªÊ¼¶ÁÊı¾İ£»
+1ã€ä» building.xlsx æ–‡ä»¶çš„ç¬¬ 1 ä¸ªé¡µç­¾å¼€å§‹è¯»æ•°æ®ï¼›
 
-2¡¢A ÁĞÎª½¨Öş Id£¬²»ÔÊĞíÎª¿ÕÖµ£»
+2ã€A åˆ—ä¸ºå»ºç­‘ Idï¼Œä¸å…è®¸ä¸ºç©ºå€¼ï¼›
 
-3¡¢B ÁĞ ~ D ÁĞ£¬Îª½¨Öş¹¦ÄÜÅäÖÃ£»
+3ã€B åˆ— ~ D åˆ—ï¼Œä¸ºå»ºç­‘åŠŸèƒ½é…ç½®ï¼›
 
 ```
 @FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0)
 public class BuildingTmpl extends AbstractXlsxTmpl {
-    /** ½¨Öş Id */
+    /** å»ºç­‘ Id */
     public XlsxInt _Id = new XlsxInt(false);
-    /** ½¨Öş¹¦ÄÜ */
+    /** å»ºç­‘åŠŸèƒ½ */
     public FuncTmplObj _func;
 }
 
-// ÕâÀïÎŞĞè @FromXlsxFile ×¢½â
+// è¿™é‡Œæ— éœ€ @FromXlsxFile æ³¨è§£
 public class FuncTmplObj extends AbstractXlsxTmpl {
-    /** ¹¦ÄÜ Id */
-    public XlsxInt _funcId; // ½«¶ÔÓ¦ B ÁĞ
-    /** ¹¦ÄÜÃû³Æ */
-    public XlsxStr _funcName; // ½«¶ÔÓ¦ C ÁĞ
-    /** ¹¦ÄÜËµÃ÷ */
-    public XlsxStr _funcDesc; // ½«¶ÔÓ¦ D ÁĞ
+    /** åŠŸèƒ½ Id */
+    public XlsxInt _funcId; // å°†å¯¹åº” B åˆ—
+    /** åŠŸèƒ½åç§° */
+    public XlsxStr _funcName; // å°†å¯¹åº” C åˆ—
+    /** åŠŸèƒ½è¯´æ˜ */
+    public XlsxStr _funcDesc; // å°†å¯¹åº” D åˆ—
 }
 ```
 
 ----
 
-**ÔÙ¸´ÔÓÒ»µãµÄ BuildingTmpl**
+**å†å¤æ‚ä¸€ç‚¹çš„ BuildingTmpl**
 
-1¡¢´Ó building.xlsx ÎÄ¼şµÄµÚ 1 ¸öÒ³Ç©¿ªÊ¼¶ÁÊı¾İ£»
+1ã€ä» building.xlsx æ–‡ä»¶çš„ç¬¬ 1 ä¸ªé¡µç­¾å¼€å§‹è¯»æ•°æ®ï¼›
 
-2¡¢A ÁĞÎª½¨Öş Id£¬²»ÔÊĞíÎª¿ÕÖµ£»
+2ã€A åˆ—ä¸ºå»ºç­‘ Idï¼Œä¸å…è®¸ä¸ºç©ºå€¼ï¼›
 
-3¡¢B ÁĞ ~ D ÁĞ£¬Îª½¨Öş¹¦ÄÜ 1 ÅäÖÃ£»
+3ã€B åˆ— ~ D åˆ—ï¼Œä¸ºå»ºç­‘åŠŸèƒ½ 1 é…ç½®ï¼›
 
-4¡¢E ÁĞ ~ G ÁĞ£¬Îª½¨Öş¹¦ÄÜ 2 ÅäÖÃ£»
+4ã€E åˆ— ~ G åˆ—ï¼Œä¸ºå»ºç­‘åŠŸèƒ½ 2 é…ç½®ï¼›
 
 ```
 @FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0)
 public class BuildingTmpl extends AbstractXlsxTmpl {
-    /** ½¨Öş Id */
+    /** å»ºç­‘ Id */
     public XlsxInt _Id = new XlsxInt(false);
-    /** ½¨Öş¹¦ÄÜ */
+    /** å»ºç­‘åŠŸèƒ½ */
     @ElementNum(2)
     public XlsxArrayList<FuncTmplObj> _func;
 }
@@ -160,22 +160,22 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 
 ----
 
-ShopTmpl ¶¨Òå
+ShopTmpl å®šä¹‰
 
-1¡¢´Ó shop.xlsx ÎÄ¼şµÄµÚ 1 ¸öÒ³Ç©¿ªÊ¼¶ÁÊı¾İ£»
+1ã€ä» shop.xlsx æ–‡ä»¶çš„ç¬¬ 1 ä¸ªé¡µç­¾å¼€å§‹è¯»æ•°æ®ï¼›
 
-2¡¢A ÁĞÎªÉÌµêÀàĞÍ£¬²»ÔÊĞíÎª¿ÕÖµ£»
+2ã€A åˆ—ä¸ºå•†åº—ç±»å‹ï¼Œä¸å…è®¸ä¸ºç©ºå€¼ï¼›
 
-3¡¢B ÁĞ ~ F ÁĞ£¬ÎªµÀ¾ß Id¡£¼´£¬µÀ¾ß Id Êı×é£¬³¤¶ÈÎª 5£»
+3ã€B åˆ— ~ F åˆ—ï¼Œä¸ºé“å…· Idã€‚å³ï¼Œé“å…· Id æ•°ç»„ï¼Œé•¿åº¦ä¸º 5ï¼›
 
-4¡¢B ÁĞ¾ø¶Ô²»ÄÜÎª¿ÕÖµ£¡¼´£¬ÉÌµêÀïÖÁÉÙÓ¦¸ÃÓĞ 1 ¸öµÀ¾ß£»
+4ã€B åˆ—ç»å¯¹ä¸èƒ½ä¸ºç©ºå€¼ï¼å³ï¼Œå•†åº—é‡Œè‡³å°‘åº”è¯¥æœ‰ 1 ä¸ªé“å…·ï¼›
 
 ```
 @FromXlsxFile(fileName = "shop.xlsx", sheetIndex = 0)
 public class ShopTmpl extends AbstractXlsxTmpl {
-    /** ÉÌµêÀàĞÍ */
+    /** å•†åº—ç±»å‹ */
     public XlsxInt _typeInt = new XlsxInt(false);
-    /** µÀ¾ß Id ÁĞ±í */
+    /** é“å…· Id åˆ—è¡¨ */
     @ElementNum(5)
     public XlsxArrayList<XlsxInt> _itemIdList = new XlsxArrayList(
         new XlsxInt(false)
@@ -185,22 +185,22 @@ public class ShopTmpl extends AbstractXlsxTmpl {
 
 ----
 
-**SysLangTmpl ¶¨Òå**
+**SysLangTmpl å®šä¹‰**
 
-0¡¢Ò»¶¨ÏÈÒªÈ·±£ÒÑ¾­µôÓÃ¹ı£ºXlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
+0ã€ä¸€å®šå…ˆè¦ç¡®ä¿å·²ç»æ‰ç”¨è¿‡ï¼šXlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
 
-1¡¢ĞèÒª¶ÁÈ¡ i18n Ä¿Â¼ÏÂµÄ zh_CN Ä¿Â¼ÖĞµÄ sysLang.xlsx ÎÄ¼ş£»
+1ã€éœ€è¦è¯»å– i18n ç›®å½•ä¸‹çš„ zh_CN ç›®å½•ä¸­çš„ sysLang.xlsx æ–‡ä»¶ï¼›
 
-2¡¢¶¨ÒåÖĞÎÄÎÄ±¾×Ö¶Î£»
+2ã€å®šä¹‰ä¸­æ–‡æ–‡æœ¬å­—æ®µï¼›
 
-3¡¢¶¨Òå¶àÓïÑÔÎÄ±¾×Ö¶Î£»
+3ã€å®šä¹‰å¤šè¯­è¨€æ–‡æœ¬å­—æ®µï¼›
 
 ```
 @FromXlsxFile(fileName = "i18n/${lang}/sysLang.xlsx")
 public class SysLangTmpl extends AbstractXlsxTmpl {
-    /** ÖĞÎÄÎÄ±¾ */
+    /** ä¸­æ–‡æ–‡æœ¬ */
     public XlsxStr _zhText;
-    /** ¶àÓïÑÔÎÄ±¾ */
+    /** å¤šè¯­è¨€æ–‡æœ¬ */
     public XlsxStr _langText;
 }
 ```
