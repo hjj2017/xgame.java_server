@@ -2,15 +2,15 @@
 
 1、（必选）加载 D 盘 Temp_Test 目录下的 building.xlsx 文件；
 
-2、（可选）将系统动态生成的 JAVA 类源码保存到 D 盘 Temp_Test 目录下的 Debug 目录；
+2、（可选）将系统动态生成的 Java 类源码保存到 D 盘 Temp_Test 目录下的 Debug 目录；
 
 3、（可选）设置环境变量 lang = zh_CN；
 
 ```
 XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test/building.xlsx";
-XlsxTmplServ.OBJ._debugClazzToDir = "/D:/Temp_Test/Debug";
-XlsxTmplServ.OBJ._propMap = new HashMap<>();
-XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
+// XlsxTmplServ.OBJ._debugClazzToDir = "/D:/Temp_Test/Debug";
+// XlsxTmplServ.OBJ._propMap = new HashMap<>();
+// XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
 ```
 
 ----
@@ -47,7 +47,7 @@ XlsxTmplServ.OBJ.validateAll();
 
 2、定义建筑 Id，不允许为空值；
 
-3、定义建筑类型，不允许为空，并且只能是：1、2、3、4，这 4 个值中的一个；
+3、定义建筑类型，不允许为空值，并且只能是：1、2、3、4，这 4 个值中的一个；
 
 4、定义建筑名称，可以为空值；
 
@@ -60,14 +60,18 @@ XlsxTmplServ.OBJ.validateAll();
 ```
 @FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0)
 public class BuildingTmpl extends AbstractXlsxTmpl {
+
     /** 建筑 Id */
     @OneToOne(groupName = "_Id")
     public XlsxInt _Id = new XlsxInt(false);
+
     /** 建筑类型 */
     @OneToMany(groupName = "_Type")
-    public XlsxInt _typeInt = XlsxInt.createByEnum(false, 1, 1, 2, 3, 4);
+    public XlsxInt _typeInt = XlsxInt.createByEnum(false, 1, 2, 3, 4);
+
     /** 建筑名称 */
     public XlsxStr _buildingName;
+
     /** 建筑说明 */
     public XlsxStr _buildingDesc = new XlsxStr(true) {
         @Override
@@ -84,6 +88,7 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
     /** Id 字典 */
     @OneToOne(groupName = "_Id")
     public static Map<Integer, BuildingTmpl> _IdMap = new HashMap<>();
+
     /** 类型字典 */
     @OneToMany(groupName = "_Type")
     public static Map<Integer, List<BuildingTmpl>> _typeMap = new HashMap<>();
