@@ -89,7 +89,7 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	 * @throws XlsxTmplError
 	 *
 	 */
-	public static XlsxShort createByInterval(boolean nullable, short defaultVal, short minVal, short maxVal) {
+	public static XlsxShort createByInterval(boolean nullable, Short defaultVal, short minVal, short maxVal) {
 		// 创建 XlsxInt 对象
 		return new XlsxShort(nullable, defaultVal) {
 			@Override
@@ -122,6 +122,65 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	}
 
 	/**
+	 * @see #createByInterval(boolean, Short, short, short)
+	 */
+	public static XlsxShort createByInterval(boolean nullable, short minVal, short maxVal) {
+		return createByInterval(
+			nullable, null, minVal, maxVal
+		);
+	}
+
+	/**
+	 * 创建 Short 字段对象,
+	 * 该字段数值必须在大于等于 minVal!
+	 * 否则抛出 XlsxTmplError 异常
+	 *
+	 * @param nullable
+	 * @param defaultVal
+	 * @param minVal
+	 * @return
+	 */
+	public static XlsxShort createByMin(boolean nullable, Short defaultVal, short minVal) {
+		return createByInterval(
+			nullable, defaultVal, minVal, Short.MAX_VALUE
+		);
+	}
+
+	/**
+	 * @see #createByMin(boolean, Short, short)
+	 */
+	public static XlsxShort createByMin(boolean nullable, short minVal) {
+		return createByInterval(
+			nullable, null, minVal, Short.MAX_VALUE
+		);
+	}
+
+	/**
+	 * 创建 Short 字段对象,
+	 * 该字段数值必须在小于等于 maxVal!
+	 * 否则抛出 XlsxTmplError 异常
+	 *
+	 * @param nullable
+	 * @param defaultVal
+	 * @param maxVal
+	 * @return
+	 */
+	public static XlsxShort createByMax(boolean nullable, Short defaultVal, short maxVal) {
+		return createByInterval(
+			nullable, defaultVal, Short.MIN_VALUE, maxVal
+		);
+	}
+
+	/**
+	 * @see #createByMax(boolean, Short, short)
+	 */
+	public static XlsxShort createByMax(boolean nullable, short maxVal) {
+		return createByInterval(
+			nullable, null, Short.MIN_VALUE, maxVal
+		);
+	}
+
+	/**
 	 * 创建 Short 字段对象,
 	 * 该字段数值必须是 enumIntArr 数组中的一个!
 	 * 否则抛出 XlsxTmplError 异常
@@ -133,7 +192,7 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	 * @throws XlsxTmplError
 	 *
 	 */
-	public static XlsxShort createByEnum(boolean nullable, short defaultVal, short ... enumShortArr) {
+	public static XlsxShort createByEnum(boolean nullable, Short defaultVal, short ... enumShortArr) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(enumShortArr, "enumShortArr");
 
@@ -176,5 +235,14 @@ public class XlsxShort extends BasicTypeCol<Short> {
 				));
 			}
 		};
+	}
+
+	/**
+	 * @see #createByEnum(boolean, short...)
+	 */
+	public static XlsxShort createByEnum(boolean nullable, short ... enumShortArr) {
+		return createByEnum(
+			nullable, null, enumShortArr
+		);
 	}
 }

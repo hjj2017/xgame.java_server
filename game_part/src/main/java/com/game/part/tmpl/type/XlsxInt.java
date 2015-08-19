@@ -89,7 +89,7 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 	 * @throws XlsxTmplError
 	 *
 	 */
-	public static XlsxInt createByInterval(boolean nullable, int defaultVal, int minVal, int maxVal) {
+	public static XlsxInt createByInterval(boolean nullable, Integer defaultVal, int minVal, int maxVal) {
 		// 创建 XlsxInt 对象
 		return new XlsxInt(nullable, defaultVal) {
 			@Override
@@ -122,6 +122,69 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 	}
 
 	/**
+	 * @see #createByInterval(boolean, Integer, int, int)
+	 */
+	public static XlsxInt createByInterval(boolean nullable, int minVal, int maxVal) {
+		return createByInterval(
+			nullable, null, minVal, maxVal
+		);
+	}
+
+	/**
+	 * 创建 Int 字段对象,
+	 * 该字段数值必须在大于等于 minVal!
+	 * 否则抛出 XlsxTmplError 异常
+	 *
+	 * @param nullable
+	 * @param defaultVal
+	 * @param minVal
+	 * @return
+	 * @throws XlsxTmplError
+	 *
+	 */
+	public static XlsxInt createByMin(boolean nullable, Integer defaultVal, int minVal) {
+		return createByInterval(
+			nullable, defaultVal, minVal, Integer.MAX_VALUE
+		);
+	}
+
+	/**
+	 * @see #createByMin(boolean, Integer, int)
+	 */
+	public static XlsxInt createByMin(boolean nullable, int minVal) {
+		return createByInterval(
+			nullable, null, minVal, Integer.MAX_VALUE
+		);
+	}
+
+	/**
+	 * 创建 Int 字段对象,
+	 * 该字段数值必须在小于等于 maxVal!
+	 * 否则抛出 XlsxTmplError 异常
+	 *
+	 * @param nullable
+	 * @param defaultVal
+	 * @param maxVal
+	 * @return
+	 * @throws XlsxTmplError
+	 *
+	 */
+	public static XlsxInt createByMax(boolean nullable, Integer defaultVal, int maxVal) {
+		return createByInterval(
+			nullable, defaultVal, Integer.MIN_VALUE, maxVal
+		);
+	}
+
+	/**
+	 * @see #createByMax(boolean, Integer, int)
+	 */
+	public static XlsxInt createByMax(boolean nullable, int maxVal) {
+		return createByInterval(
+			nullable, null, Integer.MIN_VALUE, maxVal
+		);
+	}
+
+	/**
 	 * 创建 Int 字段对象,
 	 * 该字段数值必须是 enumIntArr 数组中的一个!
 	 * 否则抛出 XlsxTmplError 异常
@@ -133,7 +196,7 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 	 * @throws XlsxTmplError
 	 *
 	 */
-	public static XlsxInt createByEnum(boolean nullable, int defaultVal, int ... enumIntArr) {
+	public static XlsxInt createByEnum(boolean nullable, Integer defaultVal, int ... enumIntArr) {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(enumIntArr, "enumIntArr");
 		// 创建 XlsxInt 对象
@@ -175,5 +238,14 @@ public class XlsxInt extends BasicTypeCol<Integer> {
 				));
 			}
 		};
+	}
+
+	/**
+	 * @see #createByEnum(boolean, Integer, int...)
+	 */
+	public static XlsxInt createByEnum(boolean nullable, int ... enumIntArr) {
+		return createByEnum(
+			nullable, null, enumIntArr
+		);
 	}
 }
