@@ -7,7 +7,7 @@
 3、（可选）设置环境变量 lang = zh_CN；
 
 ```
-XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test";
+XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test/Xlsx";
 // XlsxTmplServ.OBJ._debugClazzToDir = "/D:/Temp_Test/Debug";
 // XlsxTmplServ.OBJ._propMap = new HashMap<>();
 // XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
