@@ -60,18 +60,14 @@ XlsxTmplServ.OBJ.validateAll();
 ```
 @FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0)
 public class BuildingTmpl extends AbstractXlsxTmpl {
-
     /** 建筑 Id */
     @OneToOne(groupName = "_Id")
     public XlsxInt _Id = new XlsxInt(false);
-
     /** 建筑类型 */
     @OneToMany(groupName = "_Type")
     public XlsxInt _typeInt = XlsxInt.createByEnum(false, 1, 2, 3, 4);
-
     /** 建筑名称 */
     public XlsxStr _buildingName;
-
     /** 建筑说明 */
     public XlsxStr _buildingDesc = new XlsxStr(true) {
         @Override
@@ -88,7 +84,6 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
     /** Id 字典 */
     @OneToOne(groupName = "_Id")
     public static Map<Integer, BuildingTmpl> _IdMap = new HashMap<>();
-
     /** 类型字典 */
     @OneToMany(groupName = "_Type")
     public static Map<Integer, List<BuildingTmpl>> _typeMap = new HashMap<>();
@@ -132,7 +127,7 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 // 这里无需 @FromXlsxFile 注解
 public class FuncTmplObj extends AbstractXlsxTmpl {
     /** 功能 Id */
-    public XlsxInt _funcId; // 将对应 B 列
+    public XlsxInt _funcId;   // 将对应 B 列
     /** 功能名称 */
     public XlsxStr _funcName; // 将对应 C 列
     /** 功能说明 */
@@ -171,20 +166,61 @@ ShopTmpl 定义
 
 2、A 列为商店类型，不允许为空值；
 
-3、B 列 ~ F 列，为道具 Id。即，道具 Id 数组，长度为 5；
+3、B 列为商店所绑定的建筑 Id；
 
-4、B 列绝对不能为空值！即，商店里至少应该有 1 个道具；
+3、C 列 ~ G 列，为道具 Id。即，道具 Id 数组，长度为 5；
+
+4、C 列绝对不能为空值！即，商店里至少应该有 1 个道具；
 
 ```
 @FromXlsxFile(fileName = "shop.xlsx", sheetIndex = 0)
 public class ShopTmpl extends AbstractXlsxTmpl {
     /** 商店类型 */
     public XlsxInt _typeInt = new XlsxInt(false);
+	/** 绑定的建筑 Id */
+	public XlsxInt _buildingId;
     /** 道具 Id 列表 */
     @ElementNum(5)
     public XlsxArrayList<XlsxInt> _itemIdList = new XlsxArrayList(
         new XlsxInt(false)
     );
+}
+```
+
+----
+
+**高级验证**
+
+1、商店配置表中不能没有数据；
+
+2、商店所绑定的建筑 Id 必须是建筑配置表里定义过的；
+
+```
+@FromXlsxFile(fileName = "shop.xlsx", sheetIndex = 0)
+@Validator(clazz = Validator_ShopTmpl.class)
+public class ShopTmpl extends AbstractXlsxTmpl {
+    // ...
+}
+
+/** 商店配置验证器 */
+public class Validator_ShopTmpl implements IXlsxValidator<ShopTmpl> {
+    @Override
+    public void validate(List<ShopTmpl> objList) {
+        if (objList == null || 
+		    objList.isEmpty()) {
+		    throw new XlsxTmplError("商店配置表中没有数据");
+		}
+
+		objList.forEach(tmplObj -> {
+            // 获取商店所绑定的建筑 Id
+		    int buildingId = tmplObj._buildingId.getIntVal();
+
+		    if (tmplObj._buildingId != null && 
+			    BuildingTmpl._IdMap.get(buildingId) == null) {
+				throw new XlsxTmplError(tmplObj._buildingId, "未找到 Id = " + buildingId + " 的建筑");
+            }
+        });
+    }
 }
 ```
 
