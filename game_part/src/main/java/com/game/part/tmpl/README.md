@@ -197,7 +197,7 @@ public class ShopTmpl extends AbstractXlsxTmpl {
 
 ```
 @FromXlsxFile(fileName = "shop.xlsx", sheetIndex = 0)
-@Validator(clazz = Validator_ShopTmpl.class)
+@Validator(clazz = Validator_ShopTmpl.class) // <-- 注意 : 在这里需要指明验证器
 public class ShopTmpl extends AbstractXlsxTmpl {
     // ...
 }
