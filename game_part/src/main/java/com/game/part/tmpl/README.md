@@ -1,13 +1,13 @@
 **初始化 XlsxTmplServ**
 
-1、（必选）加载 D 盘 Temp_Test 目录下的 building.xlsx 文件；
+1、（必选）加载 D 盘 /Temp_Test/Xlsx 目录下的所有 Excel 文件（2007 格式）；
 
-2、（可选）将系统动态生成的 Java 类源码保存到 D 盘 Temp_Test 目录下的 Debug 目录；
+2、（可选）将系统动态生成的 Java 类源码保存到 D 盘 /Temp_Test/Debug 目录下；
 
 3、（可选）设置环境变量 lang = zh_CN；
 
 ```
-XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test/building.xlsx";
+XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test";
 // XlsxTmplServ.OBJ._debugClazzToDir = "/D:/Temp_Test/Debug";
 // XlsxTmplServ.OBJ._propMap = new HashMap<>();
 // XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
@@ -15,9 +15,9 @@ XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test/building.xlsx";
 
 ----
 
-**注册模版类**
+**注册模版类并验证**
 
-1、加载 BuildingTmpl 类；
+1、加载 BuildingTmpl 类、ShopTmpl 类和 SysLangTmpl 类；
 
 2、验证所有模版类；
 
@@ -92,7 +92,7 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 
 ----
 
-**使用 BuildingTmpl**
+**使用 BuildingTmpl 类**
 
 0、一定先要确保已经调用过：XlsxTmplServ.OBJ.packUp(...); 这一步；
 
@@ -107,7 +107,7 @@ List<BuildingTmpl> tmplObjList = BuildingTmpl._typeMap.get(1);
 
 ----
 
-**复杂的 BuildingTmpl**
+**复杂的 BuildingTmpl 类**
 
 1、从 building.xlsx 文件的第 1 个页签开始读数据；
 
@@ -137,7 +137,7 @@ public class FuncTmplObj extends AbstractXlsxTmpl {
 
 ----
 
-**再复杂一点的 BuildingTmpl**
+**再复杂一点的 BuildingTmpl 类**
 
 1、从 building.xlsx 文件的第 1 个页签开始读数据；
 
@@ -160,13 +160,13 @@ public class BuildingTmpl extends AbstractXlsxTmpl {
 
 ----
 
-ShopTmpl 定义
+**ShopTmpl 类**
 
 1、从 shop.xlsx 文件的第 1 个页签开始读数据；
 
 2、A 列为商店类型，不允许为空值；
 
-3、B 列为商店所绑定的建筑 Id；
+3、B 列为商店所绑定的建筑 Id，不允许为空值；
 
 3、C 列 ~ G 列，为道具 Id。即，道具 Id 数组，长度为 5；
 
@@ -178,7 +178,7 @@ public class ShopTmpl extends AbstractXlsxTmpl {
     /** 商店类型 */
     public XlsxInt _typeInt = new XlsxInt(false);
 	/** 绑定的建筑 Id */
-	public XlsxInt _buildingId;
+	public XlsxInt _buildingId = new XlsxInt(false);
     /** 道具 Id 列表 */
     @ElementNum(5)
     public XlsxArrayList<XlsxInt> _itemIdList = new XlsxArrayList(
@@ -215,8 +215,7 @@ public class Validator_ShopTmpl implements IXlsxValidator<ShopTmpl> {
             // 获取商店所绑定的建筑 Id
 		    int buildingId = tmplObj._buildingId.getIntVal();
 
-		    if (tmplObj._buildingId != null && 
-			    BuildingTmpl._IdMap.get(buildingId) == null) {
+		    if (BuildingTmpl._IdMap.get(buildingId) == null) {
 				throw new XlsxTmplError(tmplObj._buildingId, "未找到 Id = " + buildingId + " 的建筑");
             }
         });
