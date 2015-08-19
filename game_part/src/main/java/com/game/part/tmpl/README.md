@@ -225,9 +225,9 @@ public class Validator_ShopTmpl implements IXlsxValidator<ShopTmpl> {
 
 ----
 
-**SysLangTmpl 定义**
+**SysLangTmpl 类**
 
-0、一定先要确保已经掉用过：XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
+0、一定先要确保已经掉用过：XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN"); 这一步；
 
 1、需要读取 i18n 目录下的 zh_CN 目录中的 sysLang.xlsx 文件；
 
