@@ -10,7 +10,7 @@ enum IoOperStateEnum {
 	/** 初始化完成 */
 	initOk(0, "initOk"),
 	/** IO 执行完成 */
-	ioFinished(1, "ioFinishOk"),
+	ioFinishOk(1, "ioFinishOk"),
 	/** 退出 */
 	exit(-1, "exit"), 
 ;

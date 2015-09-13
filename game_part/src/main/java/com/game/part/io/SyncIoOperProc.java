@@ -87,7 +87,7 @@ class SyncIoOperProc implements IIoOperProc<IIoOper> {
 
 		switch (oper.getCurrState()) {
 			case exit:
-			case ioFinished:
+			case ioFinishOk:
 				return;
 
 			case initOk:

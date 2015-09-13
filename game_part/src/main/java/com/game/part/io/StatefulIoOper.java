@@ -6,7 +6,11 @@ import com.game.part.util.Assert;
 
 /**
  * 有状态的异步操作,
- * 该类的目的是讲一个有无状态的异步操作包装成一个有状态的操作
+ * 该类的目的是将一个有无状态的异步操作包装成一个有状态的操作!
+ * 注意: 该类是在包内部使用的!
+ * 也就是说将所有状态进行封装避免对外暴露...
+ * 而外界操作者,
+ * 只知道通过 bool 值来告诉框架是否继续向下执行, 有效避免了状态回溯和混乱
  * 
  * @author haijiang
  * 
@@ -109,7 +113,7 @@ class StatefulIoOper implements IIoOper {
 		// 则设置当前状态为: 异步操作完成
 		this.setCurrState(
 			result 
-			? IoOperStateEnum.ioFinished 
+			? IoOperStateEnum.ioFinishOk
 			: IoOperStateEnum.exit
 		);
 
