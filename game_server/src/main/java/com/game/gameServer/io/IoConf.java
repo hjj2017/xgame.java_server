@@ -60,7 +60,7 @@ public final class IoConf {
             return 0;
         } else {
             // 获取余数
-            return (int) (bindUId & 0xFFFF) % this._maxBattleThreadNum;
+            return (int)(bindUId % this._maxBattleThreadNum);
         }
     }
 
@@ -78,7 +78,7 @@ public final class IoConf {
             return 0;
         } else {
             // 获取余数
-            return (int)(bindUId & 0xFFFF) % this._maxLoginThreadNum;
+            return (int)(bindUId % this._maxLoginThreadNum);
         }
     }
 
@@ -96,7 +96,7 @@ public final class IoConf {
             return 0;
         } else {
             // 获取余数
-            return (int)(bindUId & 0xFFFF) % this._maxGamePlayerOrSceneThreadNum;
+            return (int)(bindUId % this._maxGamePlayerOrSceneThreadNum);
         }
     }
 }
