@@ -9,7 +9,17 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * @since 2015/10/7
  *
  */
-public class XlsxSkip extends AbstractXlsxCol {
+public final class XlsxSkip extends AbstractXlsxCol {
+    /** 单例对象 */
+    public static final XlsxSkip OBJ = new XlsxSkip();
+
+    /**
+     * 类默认构造器
+     *
+     */
+    private XlsxSkip() {
+    }
+
     @Override
     protected void readImpl(XSSFRowReadStream stream) {
         if (stream != null) {
