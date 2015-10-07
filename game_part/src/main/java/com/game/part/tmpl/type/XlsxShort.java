@@ -90,7 +90,7 @@ public class XlsxShort extends BasicTypeCol<Short> {
 	 *
 	 */
 	public static XlsxShort createByInterval(boolean nullable, Short defaultVal, short minVal, short maxVal) {
-		// 创建 XlsxInt 对象
+		// 创建 XlsxShort 对象
 		return new XlsxShort(nullable, defaultVal) {
 			@Override
 			public final void validate() {
@@ -103,8 +103,8 @@ public class XlsxShort extends BasicTypeCol<Short> {
 					return;
 				}
 
-				if (this.getIntVal() >= minVal &&
-					this.getIntVal() <= maxVal) {
+				if (this.getShortVal() >= minVal &&
+					this.getShortVal() <= maxVal) {
 					// 如果在指定范围之内,
 					// 则直接退出!
 					return;
@@ -113,7 +113,7 @@ public class XlsxShort extends BasicTypeCol<Short> {
 				// 如果数值越界, 则抛出异常
 				throw new XlsxTmplError(this, MessageFormat.format(
 					"数值 {0} 越界 [{1}, {2}]",
-					String.valueOf(this.getIntVal()),
+					String.valueOf(this.getShortVal()),
 					String.valueOf(minVal),
 					String.valueOf(maxVal)
 				));
@@ -196,7 +196,7 @@ public class XlsxShort extends BasicTypeCol<Short> {
 		// 断言参数不为空
 		Assert.notNullOrEmpty(enumShortArr, "enumShortArr");
 
-		// 创建 XlsxInt 对象
+		// 创建 XlsxShort 对象
 		return new XlsxShort(nullable, defaultVal) {
 			@Override
 			public final void validate() {
@@ -212,11 +212,11 @@ public class XlsxShort extends BasicTypeCol<Short> {
 				// 定义数组字符串
 				String shortArrStr = "";
 
-				for (int enumInt : enumShortArr) {
+				for (short enumShort : enumShortArr) {
 					// 记录整数值
-					shortArrStr += ", " + enumInt;
+					shortArrStr += ", " + enumShort;
 
-					if (this.getShortVal() == enumInt) {
+					if (this.getShortVal() == enumShort) {
 						// 如果出现相同的数值,
 						// 则说明是合法的...
 						return;
