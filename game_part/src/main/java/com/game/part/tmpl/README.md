@@ -25,7 +25,7 @@ XlsxTmplServ.OBJ._xlsxFileDir = "/D:/Temp_Test/Xlsx";
 // 模版类数组
 Class<?>[] tmplClazzArr = {
     BuildingTmpl.class, 
-    Shop.class,
+    ShopTmpl.class,
     SysLangTmpl.class,
 };
 
