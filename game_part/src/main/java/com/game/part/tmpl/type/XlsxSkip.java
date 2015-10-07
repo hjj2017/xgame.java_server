@@ -3,7 +3,7 @@ package com.game.part.tmpl.type;
 import com.game.part.tmpl.XSSFRowReadStream;
 
 /**
- * 跳一个列
+ * 跳过一个列
  *
  * @author hjj2017
  * @since 2015/10/7
