@@ -137,7 +137,7 @@ public final class XSSFRowReadStream {
 	 * @return 
 	 * 
 	 */
-	private XSSFCell readCell() {
+	public XSSFCell readCell() {
 		return this._row.getCell(this._currCellIndex++);
 	}
 
