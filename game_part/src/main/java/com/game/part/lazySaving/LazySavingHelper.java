@@ -57,8 +57,7 @@ public final class LazySavingHelper {
 	/**
 	 * 增加要被更新的对象, 注意 : 必须是同一个实例
 	 * 
-	 * @param lso
-	 * @return
+	 * @param lso 延迟保存对象接口
 	 * 
 	 */
 	public void addUpdate(ILazySavingObj<?> lso) {
@@ -71,15 +70,14 @@ public final class LazySavingHelper {
 	/**
 	 * 增加要被更新的对象, 注意 : 必须是同一个实例
 	 * 
-	 * @param lso
-	 * @param nowTime 
-	 * @param mapX 
-	 * @return
+	 * @param lso 延迟保存对象接口
+	 * @param nowTime 当前时间
+	 * @param saveMap 将 lso 对象保存到该字典中
 	 * 
 	 */
-	private static void addUpdate(ILazySavingObj<?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
+	private static void addUpdate(ILazySavingObj<?> lso, long nowTime, Map<String, UpdateEntry> saveMap) {
 		if (lso == null || 
-			mapX == null) {
+			saveMap == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
@@ -88,7 +86,7 @@ public final class LazySavingHelper {
 		// 获取业务对象存储键
 		final String storeKey = lso.getStoreKey();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = mapX.get(storeKey);
+		UpdateEntry oldEntry = saveMap.get(storeKey);
 
 		if (oldEntry != null) {
 			if (oldEntry._operTypeInt == UpdateEntry.OPT_del) {
@@ -120,16 +118,13 @@ public final class LazySavingHelper {
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典中
-		mapX.put(storeKey, newEntry);
-
-		return;
+		saveMap.put(storeKey, newEntry);
 	}
 
 	/**
 	 * 增加要被删除的对象
 	 * 
-	 * @param lso
-	 * @return
+	 * @param lso 延迟保存对象接口
 	 * 
 	 */
 	public void addDel(ILazySavingObj<?> lso) {
@@ -148,15 +143,14 @@ public final class LazySavingHelper {
 	/**
 	 * 增加要被删除的对象
 	 * 
-	 * @param lso
-	 * @param nowTime
-	 * @param mapX
-	 * @return
+	 * @param lso 延迟保存对象接口
+	 * @param nowTime 当前时间
+	 * @param saveMap 将 lso 对象保存到该字典中
 	 * 
 	 */
-	private static void addDel(ILazySavingObj<?> lso, long nowTime, Map<String, UpdateEntry> mapX) {
+	private static void addDel(ILazySavingObj<?> lso, long nowTime, Map<String, UpdateEntry> saveMap) {
 		if (lso == null || 
-			mapX == null) {
+			saveMap == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
@@ -165,7 +159,7 @@ public final class LazySavingHelper {
 		// 获取业务对象存储键
 		final String storeKey = lso.getStoreKey();
 		// 获取旧的进入点
-		UpdateEntry oldEntry = mapX.get(storeKey);
+		UpdateEntry oldEntry = saveMap.get(storeKey);
 
 		if (oldEntry != null) {
 			do {
@@ -206,7 +200,7 @@ public final class LazySavingHelper {
 		// 设置最后修改时间
 		newEntry._lastModifiedTime = nowTime;
 		// 添加到字典
-		mapX.put(storeKey, newEntry);
+		saveMap.put(storeKey, newEntry);
 	}
 
 	/**
@@ -251,7 +245,7 @@ public final class LazySavingHelper {
 	 * 否则, 按照空闲时间来更新.
 	 * 空闲时间参数由 {@link #_idelToUpdate} 指定
 	 * 
-	 * @param pred
+	 * @param pred 更新条件
 	 * 
 	 */
 	public final void execUpdateWithPredicate(ILazySavingPredicate pred) {
@@ -359,8 +353,8 @@ public final class LazySavingHelper {
 	/**
 	 * 将 "来源字典" 中的键值移到 "目标字典"
 	 * 
-	 * @param fromMap
-	 * @param toMap
+	 * @param fromMap 来源字典
+	 * @param toMap 目标字典
 	 * 
 	 */
 	private static void mv(Map<String, UpdateEntry> fromMap, Map<String, UpdateEntry> toMap) {

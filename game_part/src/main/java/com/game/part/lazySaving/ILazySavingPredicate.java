@@ -14,7 +14,7 @@ public interface ILazySavingPredicate {
 	 * 可以用这个条件来完成停服前的数据保存操作...
 	 * 代码示例:
 	 * <pre>
-	 * LazySavingHelper.OBJ.execUpdate(ILazySavingPredicate.unreserved);
+	 * LazySavingHelper.OBJ.execUpdateWithPredicate(ILazySavingPredicate.unreserved);
 	 * </pre>
 	 * 
 	 */

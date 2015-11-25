@@ -35,9 +35,9 @@ final class OneToXDefPair {
 	/**
 	 * 类参数构造器
 	 * 
-	 * @param keyDef
-	 * @param mapDef
-	 * @param oneToOne 
+	 * @param keyDef 关键字字段定义
+	 * @param mapDef 字典字段定义
+	 * @param oneToOne 是否为一对一
 	 * 
 	 */
 	private OneToXDefPair(Member keyDef, Member mapDef, boolean oneToOne) {
