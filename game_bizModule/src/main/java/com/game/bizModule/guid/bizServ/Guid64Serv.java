@@ -36,7 +36,7 @@ public final class Guid64Serv extends AbstractBizServ {
 
     /**
      * 服务器索引位数
-     * 我们这里取的是 pow(2, 12), 最多可以支持到 8191 各服务器
+     * 我们这里取的是 pow(2, 12), 最多可以支持到 8191 个服务器
      *
      */
     private static final int S_MAX_BIT = 12;
