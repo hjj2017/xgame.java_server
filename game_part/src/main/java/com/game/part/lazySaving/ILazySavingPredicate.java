@@ -18,12 +18,7 @@ public interface ILazySavingPredicate {
 	 * </pre>
 	 * 
 	 */
-	public static final ILazySavingPredicate unreserved = new ILazySavingPredicate() {
-		@Override
-		public boolean predicate(ILazySavingObj<?> lso) {
-			return true;
-		}
-	};
+	public static final ILazySavingPredicate unreserved = (lso) -> true;
 
 	/**
 	 * 断言 LSO, 主要用于判断业务对象是否需要保存?
