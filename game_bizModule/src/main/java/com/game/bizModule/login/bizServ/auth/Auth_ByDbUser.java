@@ -50,7 +50,7 @@ public class Auth_ByDbUser implements IAuthorize {
 		// 获取用户实体
 		PlayerEntity pe = CommDao.OBJ.getSingleResult(
 			PlayerEntity.class,
-			"entity._userName = '" + StringUtil.addSlash(userName) +"'"
+			"entity._userName = '" + StringUtil.addSlash(userName) + "'"
 		);
 
 		if (pe == null) {
@@ -70,6 +70,10 @@ public class Auth_ByDbUser implements IAuthorize {
 			));
 			return false;
 		}
+
+		// 更新最后登录 IP 和时间
+		pe._lastLoginIpAddr = p._loginIpAddr;
+		pe._lastLoginTime = p._loginTime;
 
 		// 更新用户实体
 		CommDao.OBJ.save(pe);

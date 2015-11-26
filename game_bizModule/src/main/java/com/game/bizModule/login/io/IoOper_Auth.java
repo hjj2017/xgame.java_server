@@ -33,6 +33,7 @@ public class IoOper_Auth extends AbstractLoginIoOper {
             this._loginStr
         );
 
+
         // 登陆验证完成消息
         GGAuthFinish ggMSG = new GGAuthFinish();
         ggMSG._success = authSuccess;
