@@ -16,6 +16,8 @@ import com.game.gameServer.msg.MsgTypeEnum;
 public class GGCreateHumanFinish extends AbstractGGMsgObj {
     /** 玩家对象 */
     public Player _p = null;
+    /** 角色全名 */
+    public String _humanFullName = null;
     /** 创建功能? */
     public boolean _success = false;
 

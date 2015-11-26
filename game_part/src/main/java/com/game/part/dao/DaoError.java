@@ -1,5 +1,7 @@
 package com.game.part.dao;
 
+import com.game.part.GameError;
+
 /**
  * DAO 错误
  * 
@@ -7,7 +9,7 @@ package com.game.part.dao;
  * @since 2012/6/3
  *
  */
-public class DaoError extends Error {
+public class DaoError extends GameError {
 	/** serialVersionUID */
 	private static final long serialVersionUID = -1L;
 

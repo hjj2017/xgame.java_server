@@ -6,6 +6,7 @@ import com.game.bizModule.human.msg.GCCreateHuman;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.part.msg.type.MsgBool;
 import com.game.part.msg.type.MsgStr;
+import com.game.part.util.Out;
 import com.game.part.util.OutBool;
 
 /**
@@ -29,7 +30,7 @@ public class Handler_CGCreateHuman extends AbstractCGMsgHandler<CGCreateHuman> {
             hasDuplicateName
         );
 
-        if (hasDuplicateName.getVal()) {
+        if (Out.optVal(hasDuplicateName, false)) {
             // 创建 GC 消息
             GCCreateHuman gcMSG = new GCCreateHuman();
             // 建角失败并说明原因

@@ -17,7 +17,9 @@ import java.text.MessageFormat;
  *
  * 可以使用以下命令启动:
  * <pre>
- * java -cp *.jar com.game.gameServer.CLI_GameServer -c ../all_config/etc/all_config.json -l ../all_config/etc/game_server.log4j.properties
+ * java -cp *.jar com.game.gameServer.CLI_GameServer \
+ *      -c ../all_config/etc/all_config.json \
+ *      -l ../all_config/etc/game_server.log4j.properties
  * </pre>
  * <font color='#990000'>
  * 注意 : 命令行中必须给出配置文件 all_config.json 所在位置!</font><br />

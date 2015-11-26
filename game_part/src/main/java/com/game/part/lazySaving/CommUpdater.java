@@ -81,7 +81,6 @@ class CommUpdater {
 			return;
 		}
 
-
 		// 通过 IO 服务执行保存操作...
 		IoOperServ.OBJ.execute(new IoOper_Del(
 			lso.getThreadKey(),

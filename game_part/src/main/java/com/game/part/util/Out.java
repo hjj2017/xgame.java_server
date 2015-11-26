@@ -32,6 +32,19 @@ public class Out<T> {
 	}
 
 	/**
+	 * 获取输出值, 如果输出值为空则使用备选值
+	 *
+	 * @param out
+	 * @param optVal
+	 * @param <T>
+	 * @return
+	 *
+	 */
+	public static<T> T optVal(Out<T> out, T optVal) {
+		return (out.getVal() == null) ? optVal : out.getVal();
+	}
+
+	/**
 	 * 如果输出参数不为空则设置数值
 	 * 
 	 * @param out

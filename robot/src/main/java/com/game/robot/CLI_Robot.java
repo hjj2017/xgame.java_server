@@ -12,7 +12,9 @@ import com.game.robot.kernal.RobotMain;
  *
  * 可以使用以下命令启动:
  * <pre>
- * java -cp *.jar com.game.robot.CLI_Robot -c ./etc/robot.json -l ./etc/robot.log4j.properties
+ * java -cp *.jar com.game.robot.CLI_Robot \
+ *      -c ./etc/robot.json \
+ *      -l ./etc/robot.log4j.properties
  * </pre>
  * <font color='#990000'>
  * 注意 : 命令行中必须给出配置文件 robot.json 所在位置!</font><br />
@@ -23,7 +25,7 @@ import com.game.robot.kernal.RobotMain;
  *     <li>在主菜单中选择 "Run" -> "Edit Configurations ...";</li>
  *     <li>在 "Application" 中选择 "CLI_Robot" ( 如果没有, 先直接运行一次 CLI_Robot );</li>
  *     <li>在 "Program arguments" 文本框里增加: "-c ./etc/robot.json -l ./etc/robot.log4j.properties" ( 注意 : 只要双引号里面的值 );</li>
- *     <li>注意, 需要修改 "Working directory", 在原字符串后面增加 "/game_server";</li>
+ *     <li>注意, 需要修改 "Working directory", 在原字符串后面增加 "/robot";</li>
  *     <li>点击 "Apply" 按钮, 最后点击 "Run" 按钮;</li>
  * </ol>
  * 

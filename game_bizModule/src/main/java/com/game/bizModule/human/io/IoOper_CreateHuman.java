@@ -47,7 +47,7 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
         // 事先获取旧数据
         HumanEntity oldEntity = CommDao.OBJ.getSingleResult(
             HumanEntity.class,
-            "entity.fullName = '" + StringUtil.addSlash(fullName) + "'"
+            "entity._fullName = '" + StringUtil.addSlash(fullName) + "'"
         );
 
         if (oldEntity != null) {
@@ -81,6 +81,7 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
         // 创建消息对象
         GGCreateHumanFinish ggMSG = new GGCreateHumanFinish();
         ggMSG._p = this._p;
+        ggMSG._humanFullName = fullName;
         ggMSG._success = true;
         // 分派消息
         this.msgDispatch(ggMSG);

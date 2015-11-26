@@ -53,12 +53,20 @@ public class Auth_ByDbUser implements IAuthorize {
 			"entity._userName = '" + StringUtil.addSlash(userName) +"'"
 		);
 
-		if (pe == null ||
-			passwd.equals(pe._userPass) == false) {
-			// 如果数据实体为空或者密码不正确,
+		if (pe == null) {
+			// 如果数据实体为空,
 			// 则直接退出!
 			LoginLog.LOG.error(MessageFormat.format(
-				"用户不存在或者密码不正确! userName = {0}", userName
+				"用户 {0} 不存在!", userName
+			));
+			return false;
+		}
+
+		if (!passwd.equals(pe._userPass)) {
+			// 如果密码不正确,
+			// 则直接退出!
+			LoginLog.LOG.error(MessageFormat.format(
+				"用户 {0} 密码不正确!", userName
 			));
 			return false;
 		}
