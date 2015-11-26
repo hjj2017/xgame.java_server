@@ -1,5 +1,7 @@
 package com.game.part.lazySaving;
 
+import com.game.part.GameError;
+
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
@@ -219,25 +221,96 @@ public final class LazySavingHelper {
 	 * 该函数的调用者应该是一个定时器!
 	 * 
 	 * @see #_interval
-	 * @see #execUpdateWithPredicate(ILazySavingPredicate)
 	 * 
 	 */
 	public final void execUpdateWithInterval() {
 		// 获取当前时间
-		long nowTime = this.nowTime();
+		final long nowTime = this.nowTime();
 		// 获取上一次执行更新操作的时间
-		long lastUpdateTime = this._lastUpdateTime.get();
+		final long lastUpdateTime = this._lastUpdateTime.get();
 
 		if ((nowTime - lastUpdateTime) < this._interval) {
-			// 如果还没有到间隔时间, 
+			// 如果还没有到间隔时间,
 			// 则直接退出!
 			return;
 		}
 
-		// 执行更新操作
-		this.execUpdateWithPredicate(null);
-		// 设置最后更新时间
+		if (this._updatingFlag.compareAndSet(false, true) == false) {
+			// 事先检查是否未在更新过程中,
+			// 如果没在更新, 则把标志位设置为 true...
+			// 但如果正在更新中,
+			// 则直接退出!
+			LazySavingLog.LOG.error("正在更新中...");
+			return;
+		}
+
+		// 开始时间
+		final long startTime = nowTime;
+		// (w)rite (c)ount
+		int wc = 0;
+
+		// 将字典 1 中的数据移到字典 0
+		mv(this._changeObjMap1, this._changeObjMap0);
+		// 获取迭代器
+		Iterator<UpdateEntry> it = this._changeObjMap0.values().iterator();
+
+		while (it.hasNext() && wc <= this._writeCount) {
+			// 获取入口
+			UpdateEntry entry = it.next();
+
+			if (entry == null ||
+				entry._LSO == null) {
+				// 如果入口对象为空,
+				// 则直接跳过!
+				it.remove();
+				continue;
+			}
+
+			if ((nowTime - entry._lastModifiedTime) < this._idelToUpdate) {
+				// 如果还没有到时间,
+				// 则直接跳过!
+				continue;
+			}
+
+			// 获取延迟保存对象
+			final ILazySavingObj<?> lso = entry._LSO;
+
+			try {
+				if (entry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
+					// 执行保存或更新操作
+					CommUpdater.OBJ.saveOrUpdate(lso);
+				} else {
+					// 执行删除操作
+					CommUpdater.OBJ.del(lso);
+				}
+
+				// 从字典中移除对象
+				it.remove();
+			} catch (Exception ex) {
+				// 记录异常日志
+				LazySavingLog.LOG.error(ex.getMessage(), ex);
+			}
+
+			// 注意, 只有在这里计数
+			// 使用条件接口时,
+			// 是不做计数的...
+			wc++;
+		}
+
+		// 获取结束时间
+		final long endTime = this.nowTime();
+		// 获取花费时间
+		final long costTime = endTime - startTime;
+
+		// 记录调试信息
+		LazySavingLog.LOG.debug(MessageFormat.format(
+			"更新消耗时间 = {0}(ms)",
+			String.valueOf(costTime)
+		));
+
+		// 设置最后更新时间并修改更新标志
 		this._lastUpdateTime.set(nowTime);
+		this._updatingFlag.set(false);
 	}
 
 	/**
@@ -246,11 +319,17 @@ public final class LazySavingHelper {
 	 * 空闲时间参数由 {@link #_idelToUpdate} 指定
 	 * 
 	 * @param pred 更新条件
+	 * @throws IllegalArgumentException if pred == null
 	 * 
 	 */
 	public final void execUpdateWithPredicate(ILazySavingPredicate pred) {
-		if (this._updatingFlag.compareAndSet(
-			false, true) == false) {
+		if (pred == null) {
+			// 如果更新条件为空,
+			// 则抛出异常!
+			throw new IllegalArgumentException("pred is null");
+		}
+
+		if (this._updatingFlag.compareAndSet(false, true) == false) {
 			// 事先检查是否未在更新过程中,
 			// 如果没在更新, 则把标志位设置为 true...
 			// 但如果正在更新中, 
@@ -260,9 +339,9 @@ public final class LazySavingHelper {
 		}
 
 		// 获取当前时间
-		long nowTime = this.nowTime();
+		final long nowTime = this.nowTime();
 		// 开始时间
-		long startTime = nowTime;
+		final long startTime = nowTime;
 
 		// 将字典 1 中的数据移到字典 0
 		mv(this._changeObjMap1, this._changeObjMap0);
@@ -281,36 +360,14 @@ public final class LazySavingHelper {
 				continue;
 			}
 
-			// (w)rite (c)ount
-			int wc = 0;
-
 			// 获取延迟保存对象
 			final ILazySavingObj<?> lso = entry._LSO;
 
-			if (pred != null) {
-				if (pred.predicate(lso) == false) {
-					// 如果有断言对象, 
-					// 并且当前 LSO 不满足条件, 
-					// 则直接退出!
-					continue;
-				}
-			} else {
-				if ((nowTime - entry._lastModifiedTime) < this._idelToUpdate) {
-					// 如果还没有到时间, 
-					// 则直接跳过!
-					continue;
-				}
-
-				// 注意, 只有在这里计数
-				// 使用条件接口时, 
-				// 是不做计数的...
-				wc++;
-			}
-
-			if (wc > this._writeCount) {
-				// 如果写出数量超过限制, 
+			if (pred.predicate(lso) == false) {
+				// 如果有断言对象,
+				// 并且当前 LSO 不满足条件,
 				// 则直接退出!
-				break;
+				continue;
 			}
 
 			try {
@@ -336,9 +393,9 @@ public final class LazySavingHelper {
 		mv(this._changeObjMap1, this._changeObjMap0);
 
 		// 获取结束时间
-		long endTime = this.nowTime();
+		final long endTime = this.nowTime();
 		// 获取花费时间
-		long costTime = endTime - startTime;
+		final long costTime = endTime - startTime;
 
 		// 记录调试信息
 		LazySavingLog.LOG.debug(MessageFormat.format(
@@ -360,8 +417,7 @@ public final class LazySavingHelper {
 	private static void mv(Map<String, UpdateEntry> fromMap, Map<String, UpdateEntry> toMap) {
 		if (fromMap == null || 
 			fromMap.isEmpty() || 
-			toMap == null || 
-			toMap.isEmpty()) {
+			toMap == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return;
@@ -373,6 +429,8 @@ public final class LazySavingHelper {
 		while (it.hasNext()) {
 			// 获取字典入口
 			Entry<String, UpdateEntry> mapEntry = it.next();
+			// 删除当前键值
+			it.remove();
 
 			if (mapEntry == null || 
 				mapEntry.getValue() == null) {
@@ -399,9 +457,6 @@ public final class LazySavingHelper {
 					toMap
 				);
 			}
-
-			// 从来源字典中删除当前键值
-			it.remove();
 		}
 	}
 }
