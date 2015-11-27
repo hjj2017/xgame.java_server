@@ -199,12 +199,12 @@ DROP TABLE IF EXISTS `t_human`;
 
 CREATE TABLE `t_human` (
   `human_uid` bigint(20) NOT NULL DEFAULT '0',
-  `human_name` varchar(32) DEFAULT NULL,
   `platform_uid_str` varchar(64) DEFAULT NULL,
+  `full_name` varchar(48) DEFAULT NULL,
+  `human_name` varchar(32) DEFAULT NULL,
   `server_name` varchar(16) DEFAULT NULL,
   `human_level` int(11) DEFAULT NULL,
   `gold` int(11) DEFAULT NULL,
-  `full_name` varchar(48) DEFAULT NULL,
   PRIMARY KEY (`human_uid`),
   UNIQUE KEY `full_name` (`full_name`),
   KEY `human_name` (`human_name`),
