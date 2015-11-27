@@ -15,13 +15,13 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.game.part.GameError;
 import com.game.passbookServer.ServerLog;
+import com.game.passbookServer.http.servlet.Servlet_Hello;
 import com.game.passbookServer.http.servlet.Servlet_GetPassbookInfo;
 import com.game.passbookServer.jsonConf.ConnConf;
 
 /**
- * HTTP 服务器, 
- * 启动后, 可以使用如下地址进行测试 :
- * http://127.0.0.1:8001/get_passbook_info?platform_uid_str=qihu360-1001&pf=wan&game_server_id=1
+ * HTTP 服务器,
+ * 启动后可以使用该 URL 进行测试: http://127.0.0.1:8007/hello
  * 
  * @author jinhaijiang
  * @since 2015/2/9
@@ -52,6 +52,8 @@ public class JettyHttpProc {
 	private static Map<String, HttpServlet> getServletMap() {
 		// 创建 Servlet 字典
 		Map<String, HttpServlet> map = new HashMap<>();
+		// 添加 Hello 请求
+		map.put("/hello", new Servlet_Hello());
 		// 添加 GetPassbookInfo 请求
 		map.put("/get_passbook_info", new Servlet_GetPassbookInfo());
 		// 返回字典

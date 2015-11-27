@@ -37,6 +37,10 @@ public class PassbookEntity_X {
 	@Column(name = "last_login_time")
 	public Long _lastLoginTime = 0L;
 
+	/** 最后登录 IP 地址 */
+	@Column(name = "last_login_ip_addr", length = 64)
+	public String _lastLoginIpAddr = null;
+
 	/** 最后登录服务器 Id */
 	@Column(name = "last_game_server_id")
 	public Integer _lastGameServerId = 0;

@@ -18,7 +18,10 @@ import com.game.passbookServer.ServerLog;
 import com.game.passbookServer.entity.PassbookEntity_X;
 
 /**
- * 获取 Passbook 信息
+ * 获取 Passbook 信息, 请求示例 :
+ * <code>
+ * http://127.0.0.1:8001/get_passbook_info?platform_uid_str=qihu360-1001&player_ip_addr=0.0.0.0&pf=wan&game_server_id=1
+ * </code>
  * 
  * @author hjj2019
  * @since 2015/2/9
@@ -53,6 +56,8 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 
 		// 获取平台 UId 字符串
 		String platformUIdStr = req.getParameter("platform_uid_str");
+		// 玩家 IP 地址
+		String playerIpAddr = req.getParameter("player_ip_addr");
 		// 获取平台 Pf 值
 		String pf = req.getParameter("pf");
 		// 获取游戏服 Id
@@ -68,7 +73,8 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 		// 输出结果
 		res.getWriter().println(this.doAction(
 			platformUIdStr,
-			pf, // 平台字符串
+			playerIpAddr,
+			pf, // 游戏平台
 			gameServerId
 		));
 	}
@@ -76,13 +82,14 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 	/**
 	 * 执行动作
 	 * 
-	 * @param platformUIdStr
-	 * @param pf
-	 * @param gameServerId
+	 * @param platformUIdStr 平台 UId 字符串
+	 * @param playerIpAddr 玩家 IP 地址
+	 * @param pf 登陆平台
+	 * @param gameServerId 游戏服 Id
 	 * @return
 	 * 
 	 */
-	private String doAction(String platformUIdStr, String pf, int gameServerId) {
+	private String doAction(String platformUIdStr, String playerIpAddr, String pf, int gameServerId) {
 		if (platformUIdStr == null ||
 			platformUIdStr.isEmpty()) {
 			// 如果参数对象为空, 
@@ -128,7 +135,10 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 
 			// 获取 passbook 数据
 			PassbookEntity_X pe = this.getPassbookEntityAndUpdate(
-				platformUIdStr, pf, gameServerId
+				platformUIdStr,
+				playerIpAddr,
+				pf, // 游戏平台
+				gameServerId
 			);
 
 			if (pe == null) {
@@ -177,14 +187,16 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 	/**
 	 * 获取 passbook 实体并保存
 	 * 
-	 * @param platformUIdStr
-	 * @param pf
-	 * @param gameServerId
+	 * @param platformUIdStr 平台 UId 字符串
+	 * @param playerIpAddr 玩家 IP 地址
+	 * @param pf 游戏平台
+	 * @param gameServerId 游戏服 Id
 	 * @return
 	 * 
 	 */
 	private PassbookEntity_X getPassbookEntityAndUpdate(
 		String platformUIdStr,
+		String playerIpAddr,
 		String pf,
 		int gameServerId) {
 
@@ -219,6 +231,7 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 
 		// 设置最后登录时间和最后服务器 Id
 		pe._lastLoginTime = now;
+		pe._lastLoginIpAddr = playerIpAddr;
 		pe._lastGameServerId = gameServerId;
 		// 保存数据
 		CommDao.OBJ.save(pe.getSplitEntityObj());
