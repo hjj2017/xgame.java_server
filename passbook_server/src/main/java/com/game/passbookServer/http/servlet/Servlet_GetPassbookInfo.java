@@ -51,8 +51,8 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 		res.setContentType("application/json; charset=utf-8");
 		res.setStatus(HttpServletResponse.SC_OK);
 
-		// 获取平台 UUId
-		String platformUUId = req.getParameter("platform_uuid");
+		// 获取平台 UId 字符串
+		String platformUIdStr = req.getParameter("platform_uid_str");
 		// 获取平台 Pf 值
 		String pf = req.getParameter("pf");
 		// 获取游戏服 Id
@@ -60,29 +60,31 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 
 		// 记录日志信息
 		ServerLog.LOG.info(MessageFormat.format(
-			"接到请求 : platform_uuid = {0}, pf = {1}, game_server_id = {2}", 
-			platformUUId, pf, 
+			"接到请求 : platform_uid_str = {0}, pf = {1}, game_server_id = {2}",
+			platformUIdStr, pf,
 			String.valueOf(gameServerId)
 		));
 
 		// 输出结果
-		res.getWriter().println(
-			this.doAction(platformUUId, pf, gameServerId
+		res.getWriter().println(this.doAction(
+			platformUIdStr,
+			pf, // 平台字符串
+			gameServerId
 		));
 	}
 
 	/**
 	 * 执行动作
 	 * 
-	 * @param platformUUId
+	 * @param platformUIdStr
 	 * @param pf
 	 * @param gameServerId
 	 * @return
 	 * 
 	 */
-	private String doAction(String platformUUId, String pf, int gameServerId) {
-		if (platformUUId == null || 
-			platformUUId.isEmpty()) {
+	private String doAction(String platformUIdStr, String pf, int gameServerId) {
+		if (platformUIdStr == null ||
+			platformUIdStr.isEmpty()) {
 			// 如果参数对象为空, 
 			// 则直接退出!
 			return "null_platform_uuid";
@@ -91,14 +93,14 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 		// 创建互斥锁
 		ReentrantLock newLock = new ReentrantLock(true);
 		// 获取老锁
-		ReentrantLock oldLock = _lockMap.putIfAbsent(platformUUId, newLock);
+		ReentrantLock oldLock = _lockMap.putIfAbsent(platformUIdStr, newLock);
 
 		if (oldLock != null) {
 			// 如果老锁不为空, 
 			// 则直接指向老锁 ...
 			ServerLog.LOG.warn(MessageFormat.format(
-				"将引用指向旧锁, platformUUId = {0}", 
-				platformUUId
+				"将引用指向旧锁, platformUIdStr = {0}",
+				platformUIdStr
 			));
 			newLock = oldLock;
 		}
@@ -111,8 +113,8 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 				// 如果加锁失败, 
 				// 则直接退出!
 				ServerLog.LOG.error(MessageFormat.format(
-					"加锁失败, platformUUId = {0}", 
-					platformUUId
+					"加锁失败, platformUIdStr = {0}",
+					platformUIdStr
 				));
 
 				return "lock_error";
@@ -120,13 +122,13 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 
 			// 根据 platformUUId 加锁
 			ServerLog.LOG.error(MessageFormat.format(
-				"加锁成功, platformUUId = {0}", 
-				platformUUId
+				"加锁成功, platformUIdStr = {0}",
+				platformUIdStr
 			));
 
 			// 获取 passbook 数据
 			PassbookEntity_X pe = this.getPassbookEntityAndUpdate(
-					platformUUId, pf, gameServerId
+				platformUIdStr, pf, gameServerId
 			);
 
 			if (pe == null) {
@@ -134,7 +136,7 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 				// 则直接退出!
 				ServerLog.LOG.error(MessageFormat.format(
 					"passbook 数据为空, platformUIdStr = {0}",
-					platformUUId
+					platformUIdStr
 				));
 
 				return "null_passbook_entity";
@@ -156,16 +158,16 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 			// 记录异常信息
 			ServerLog.LOG.error(MessageFormat.format(
 				"加锁时发生异常, platformUIdStr = {0}",
-				platformUUId
+				platformUIdStr
 			), ex);
 		} finally {
 			// 给玩家解锁
 			newLock.unlock();
-			_lockMap.remove(platformUUId);
+			_lockMap.remove(platformUIdStr);
 			// 记录日志信息
 			ServerLog.LOG.info(MessageFormat.format(
 				"给玩家解锁, platformUIdStr = {0}",
-				platformUUId
+				platformUIdStr
 			));
 		}
 
@@ -182,9 +184,9 @@ public class Servlet_GetPassbookInfo extends HttpServlet {
 	 * 
 	 */
 	private PassbookEntity_X getPassbookEntityAndUpdate(
-			String platformUIdStr,
-			String pf,
-			int gameServerId) {
+		String platformUIdStr,
+		String pf,
+		int gameServerId) {
 
 		if (platformUIdStr == null ||
 			platformUIdStr.isEmpty()) {

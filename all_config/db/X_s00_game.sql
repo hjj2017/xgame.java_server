@@ -220,6 +220,7 @@ CREATE TABLE `t_player` (
   `user_name` varchar(32) DEFAULT NULL,
   `user_pass` varchar(128) DEFAULT NULL,
   `create_time` bigint(20) DEFAULT NULL,
+  `passbook_create_time` bigint(20) DEFAULT NULL,
   `pf` varchar(32) DEFAULT NULL,
   `last_login_time` bigint(20) DEFAULT NULL,
   `last_login_ip_addr` varchar(64) DEFAULT NULL,

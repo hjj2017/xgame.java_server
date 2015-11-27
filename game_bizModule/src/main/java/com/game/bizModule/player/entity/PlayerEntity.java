@@ -28,6 +28,9 @@ public class PlayerEntity {
 	/** 创建时间 */
 	@Column(name = "create_time", updatable = false)
 	public Long _createTime = null;
+	/** passbook 创建时间 */
+	@Column(name = "passbook_create_time", updatable = false)
+	public Long _passbookCreateTime = null;
 	/** 最后登陆时间 */
 	@Column(name = "last_login_time")
 	public Long _lastLoginTime = null;
