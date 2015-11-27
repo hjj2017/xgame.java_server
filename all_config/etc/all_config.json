@@ -26,10 +26,10 @@
 	},
 
 # 
-# passport 服务器配置
+# passbook 服务器配置
 # 
 # ///////////////////////////////////////////////////////////////// 
-    "passportServer" : {
+    "passbookServer" : {
     	"serverId" : 1,
     	"connArr" : [
     		{ 
@@ -46,7 +46,7 @@
     		}
     	],
     	# 数据库配置
-        "dbConn" : "jdbc:mysql://127.0.0.1:3306/llz_passport?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
+        "dbConn" : "jdbc:mysql://127.0.0.1:3306/x_passbook?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
         "dbUser" : "root", 
         "dbPass" : ""
     }
