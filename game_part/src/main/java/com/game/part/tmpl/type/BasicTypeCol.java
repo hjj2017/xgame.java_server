@@ -116,6 +116,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	public int getIntVal() {
 		if (this._objVal == null) {
 			return 0;
+		} else if (this._objVal instanceof Boolean){
+			return ((Boolean)this._objVal).booleanValue() ? 1 : 0;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).intValue();
 		} else if (this._objVal instanceof Temporal) {
@@ -134,6 +136,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	public long getLongVal() {
 		if (this._objVal == null) {
 			return 0L;
+		} else if (this._objVal instanceof Boolean){
+			return ((Boolean)this._objVal).booleanValue() ? 1L : 0L;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).longValue();
 		} else if (this._objVal instanceof Temporal) {
@@ -152,6 +156,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	public short getShortVal() {
 		if (this._objVal == null) {
 			return 0;
+		} else if (this._objVal instanceof Boolean){
+			return ((Boolean)this._objVal).booleanValue() ? (short)1 : (short)0;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).shortValue();
 		} else if (this._objVal instanceof Temporal) {
@@ -170,6 +176,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	public float getFloatVal() {
 		if (this._objVal == null) {
 			return 0.0f;
+		} else if (this._objVal instanceof Boolean){
+			return ((Boolean)this._objVal).booleanValue() ? 1.0f : 0.0f;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).floatValue();
 		} else if (this._objVal instanceof Temporal) {
@@ -188,6 +196,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	public double getDoubleVal() {
 		if (this._objVal == null) {
 			return 0.0;
+		} else if (this._objVal instanceof Boolean){
+			return ((Boolean)this._objVal).booleanValue() ? 1.0 : 0.0;
 		} else if (this._objVal instanceof Number) {
 			return ((Number)this._objVal).doubleValue();
 		} else if (this._objVal instanceof Temporal) {
@@ -220,6 +230,8 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	public boolean getBoolVal() {
 		if (this._objVal == null) {
 			return false;
+		} else if (this._objVal instanceof Boolean) {
+			return ((Boolean)this._objVal).booleanValue();
 		} else if (this._objVal instanceof Number) {
 			return this.getIntVal() == 1;
 		} else if (this._objVal instanceof Temporal) {

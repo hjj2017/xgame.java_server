@@ -63,6 +63,7 @@ public class CdTimerEntity_X {
 		}
 
 		splitEntity._cdTypeInt = this._cdTypeInt;
+		splitEntity._opened = this._opened;
 		splitEntity._endTime = this._endTime;
 		splitEntity._humanUId = this._humanUId;
 		splitEntity._startTime = this._startTime;

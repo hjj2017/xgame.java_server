@@ -27,10 +27,6 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 	public long _endTime = -1;
 	/** 是否已开启 ? */
 	public boolean _opened = false;
-	/** 数据实体 */
-	private CdTimerEntity_X _entity = null;
-	/** 消息对象 */
-	private CdTimerMO _mo = null;
 
 	/**
 	 * 类参数构造器
@@ -61,6 +57,7 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 		Assert.notNull(cdType, "cdType");
 		// Cd 类型及开始、结束时间
 		this._cdType = cdType;
+		this._opened = opened;
 		this._startTime = startTime;
 		this._endTime = endTime;
 	}
@@ -127,24 +124,16 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 
 	@Override
 	public CdTimerEntity_X toEntity() {
-		if (this._entity == null) {
-			// 创建数据实体
-			CdTimerEntity_X entityX = new CdTimerEntity_X();
-			// 设置属性
-			entityX._cdTypeInt = this._cdType.getIntVal();
-			entityX._endTime = this._endTime;
-			entityX._humanUId = this._humanUId;
-			entityX._startTime = this._startTime;
-			// 获取分表实体并返回
-			this._entity = entityX.getSplitEntityObj();
-			return this._entity;
-		} else {
-			this._entity._cdTypeInt = this._cdType.getIntVal();
-			this._entity._endTime = this._endTime;
-			this._entity._humanUId = this._humanUId;
-			this._entity._startTime = this._startTime;
-			return this._entity;
-		}
+		// 创建数据实体
+		CdTimerEntity_X entityX = new CdTimerEntity_X();
+		// 设置属性
+		entityX._cdTypeInt = this._cdType.getIntVal();
+		entityX._opened = this._opened ? (short)1 : (short)0;
+		entityX._endTime = this._endTime;
+		entityX._humanUId = this._humanUId;
+		entityX._startTime = this._startTime;
+		// 获取分表实体并返回
+		return entityX.getSplitEntityObj();
 	}
 
 	/**
@@ -165,8 +154,6 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 		this._startTime = NullUtil.optVal(entityX._startTime, 0L);
 		// 是否已开启
 		this._opened = NullUtil.optVal(entityX._opened, (short)0) == 1;
-		// 记住当前实体
-		this._entity = entityX;
 	}
 
 	/**
@@ -176,18 +163,16 @@ public class CdTimer extends AbstractHumanBelonging<CdTimerEntity_X> {
 	 *
 	 */
 	public CdTimerMO toMsgObj() {
-		if (this._mo == null) {
-			this._mo = new CdTimerMO();
-		}
-
+		// 创建消息对象
+		CdTimerMO mo = new CdTimerMO();
 		// Cd 类型
-		this._mo._cdTypeInt = new MsgInt(this._cdType.getIntVal());
+		mo._cdTypeInt = new MsgInt(this._cdType.getIntVal());
 		// 开始时间和结束时间
-		this._mo._startTime = new MsgLong(this._startTime);
-		this._mo._endTime = new MsgLong(this._endTime);
+		mo._startTime = new MsgLong(this._startTime);
+		mo._endTime = new MsgLong(this._endTime);
 		// 是否已开启?
-		this._mo._opened = new MsgBool(this._opened);
+		mo._opened = new MsgBool(this._opened);
 
-		return this._mo;
+		return mo;
 	}
 }
