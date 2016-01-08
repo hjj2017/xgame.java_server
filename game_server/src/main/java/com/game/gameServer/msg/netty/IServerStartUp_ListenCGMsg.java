@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -19,6 +20,14 @@ import com.game.part.msg.MsgLog;
  *
  */
 public interface IServerStartUp_ListenCGMsg {
+    /** 消息处理器数组 */
+    static final ChannelHandler[] HANDLER_ARR = {
+        new CtxUIdHandler(),
+        new MsgDecoder(),
+        new MsgEncoder(),
+        new MyChannelHandler(),
+    };
+
     /**
      * 开始监听 CG 消息
      *
@@ -43,11 +52,7 @@ public interface IServerStartUp_ListenCGMsg {
             .childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) {
-                    ch.pipeline().addLast(
-                        new MsgDecoder(),
-                        new MsgEncoder(),
-                        new MyChannelHandler()
-                    );
+                    ch.pipeline().addLast(HANDLER_ARR);
                 }
             })
             .option(ChannelOption.SO_BACKLOG, 128)
