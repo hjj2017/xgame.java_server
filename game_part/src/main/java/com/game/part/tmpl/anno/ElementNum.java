@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ElementNum {
-	/** 元素个数, 默认 = 1 */
-	int value() default 1;
+    /** 元素个数, 默认 = 1 */
+    int value() default 1;
 }

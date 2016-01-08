@@ -10,12 +10,12 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * 
  */
 public interface IReadHelper {
-	/**
-	 * 读取行数据
-	 * 
-	 * @param tmplObj
-	 * @param stream
-	 * 
-	 */
-	public void readImpl(AbstractXlsxTmpl tmplObj, XSSFRowReadStream stream);
+    /**
+     * 读取行数据
+     *
+     * @param tmplObj
+     * @param stream
+     *
+     */
+    public void readImpl(AbstractXlsxTmpl tmplObj, XSSFRowReadStream stream);
 }

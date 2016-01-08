@@ -10,65 +10,65 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * 
  */
 public class XlsxDouble extends BasicTypeCol<Double> {
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public XlsxDouble() {
-		super();
-	}
+    /**
+     * 类默认构造器
+     *
+     */
+    public XlsxDouble() {
+        super();
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param nullable
-	 * 
-	 */
-	public XlsxDouble(boolean nullable) {
-		super(nullable);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param nullable
+     *
+     */
+    public XlsxDouble(boolean nullable) {
+        super(nullable);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param nullable
-	 * @param defaultVal
-	 * 
-	 */
-	public XlsxDouble(boolean nullable, double defaultVal) {
-		super(nullable, defaultVal);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param nullable
+     * @param defaultVal
+     *
+     */
+    public XlsxDouble(boolean nullable, double defaultVal) {
+        super(nullable, defaultVal);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param defaultVal
-	 * 
-	 */
-	public XlsxDouble(double defaultVal) {
-		super(defaultVal);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param defaultVal
+     *
+     */
+    public XlsxDouble(double defaultVal) {
+        super(defaultVal);
+    }
 
-	@Override
-	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream != null) {
-			super.setObjVal(stream.readDouble());
-		}
-	}
+    @Override
+    protected void readImpl(XSSFRowReadStream stream) {
+        if (stream != null) {
+            super.setObjVal(stream.readDouble());
+        }
+    }
 
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @return
-	 * 
-	 */
-	public static XlsxDouble ifNullThenCreate(XlsxDouble objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new XlsxDouble();
-		}
+    /**
+     * objVal 不能为空, 但如果真为空值, 则自动创建
+     *
+     * @param objVal
+     * @return
+     *
+     */
+    public static XlsxDouble ifNullThenCreate(XlsxDouble objVal) {
+        if (objVal == null) {
+            // 创建对象
+            objVal = new XlsxDouble();
+        }
 
-		return objVal;
-	}
+        return objVal;
+    }
 }

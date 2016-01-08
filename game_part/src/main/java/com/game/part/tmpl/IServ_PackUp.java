@@ -13,40 +13,40 @@ import com.game.part.tmpl.type.AbstractXlsxTmpl;
  * 
  */
 interface IServ_PackUp {
-	/**
-	 * 打包
-	 * 
-	 * @param clazz
-	 * 
-	 */
-	default void packUp(Class<? extends AbstractXlsxTmpl> clazz) {
-		// 获取对象列表
-		List<? extends AbstractXlsxTmpl> objList = XlsxTmplServ.OBJ.getObjList(clazz);
+    /**
+     * 打包
+     *
+     * @param clazz
+     *
+     */
+    default void packUp(Class<? extends AbstractXlsxTmpl> clazz) {
+        // 获取对象列表
+        List<? extends AbstractXlsxTmpl> objList = XlsxTmplServ.OBJ.getTmplObjList(clazz);
 
-		if (objList == null || 
-			objList.isEmpty()) {
-			// 如果模板列表为空, 
-			// 则直接退出!
-			return;
-		}
+        if (objList == null ||
+            objList.isEmpty()) {
+            // 如果模板列表为空,
+            // 则直接退出!
+            return;
+        }
 
-		// 构建打包器
-		IXlsxPacker packer = XlsxPackerMaker.make(clazz);
+        // 构建打包器
+        IXlsxPacker packer = XlsxPackerMaker.make(clazz);
 
-		if (packer == null) {
-			// 如果打包器为空, 
-			// 则抛出异常!
-			throw new XlsxTmplError(MessageFormat.format(
-				"未能构建类 {0} 的打包器", 
-				clazz.getName()
-			));
-		}
+        if (packer == null) {
+            // 如果打包器为空,
+            // 则抛出异常!
+            throw new XlsxTmplError(MessageFormat.format(
+                "未能构建类 {0} 的打包器",
+                clazz.getName()
+            ));
+        }
 
-		// 给每个对象打包
-		objList.forEach(o -> {
-			if (o != null) {
-				packer.packUp(o);
-			}
-		});
-	}
+        // 给每个对象打包
+        objList.forEach(o -> {
+            if (o != null) {
+                packer.packUp(o);
+            }
+        });
+    }
 }

@@ -12,11 +12,11 @@ import com.game.part.tmpl.type.AbstractXlsxTmpl;
  * 
  */
 public interface IXlsxValidator<T extends AbstractXlsxTmpl> {
-	/**
-	 * 验证模板对象列表
-	 * 
-	 * @param objList
-	 * 
-	 */
-	public void validate(List<T> objList);
+    /**
+     * 验证模板对象列表
+     *
+     * @param objList
+     *
+     */
+    public void validate(List<T> objList);
 }

@@ -13,173 +13,176 @@ import com.game.part.tmpl.XlsxTmplError;
  * 
  */
 public class XlsxLong extends BasicTypeCol<Long> {
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public XlsxLong() {
-		super();
-	}
+    /** 0 值 */
+    private static final long ZERO = 0L;
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param nullable
-	 * 
-	 */
-	public XlsxLong(boolean nullable) {
-		super(nullable);
-	}
+    /**
+     * 类默认构造器
+     *
+     */
+    public XlsxLong() {
+        super();
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param nullable
-	 * @param defaultVal
-	 * 
-	 */
-	public XlsxLong(boolean nullable, long defaultVal) {
-		super(nullable, defaultVal);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param nullable
+     *
+     */
+    public XlsxLong(boolean nullable) {
+        super(nullable);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param defaultVal
-	 * 
-	 */
-	public XlsxLong(long defaultVal) {
-		super(defaultVal);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param nullable
+     * @param defaultVal
+     *
+     */
+    public XlsxLong(boolean nullable, long defaultVal) {
+        super(nullable, defaultVal);
+    }
 
-	@Override
-	protected void readImpl(XSSFRowReadStream stream) {
-		if (stream != null) {
-			super.setObjVal(stream.readLong());
-		}
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param defaultVal
+     *
+     */
+    public XlsxLong(long defaultVal) {
+        super(defaultVal);
+    }
 
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @return
-	 * 
-	 */
-	public static XlsxLong ifNullThenCreate(XlsxLong objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new XlsxLong();
-		}
+    @Override
+    protected void readImpl(XSSFRowReadStream stream) {
+        if (stream != null) {
+            super.setObjVal(stream.readLong());
+        }
+    }
 
-		return objVal;
-	}
+    /**
+     * objVal 不能为空, 但如果真为空值, 则自动创建
+     *
+     * @param objVal
+     * @return
+     *
+     */
+    public static XlsxLong ifNullThenCreate(XlsxLong objVal) {
+        if (objVal == null) {
+            // 创建对象
+            objVal = new XlsxLong();
+        }
 
-	/**
-	 * 创建 Long 字段对象,
-	 * 该字段数值必须在大于等于 minVal 且小于等于 maxVal 的闭区间之内!
-	 * 否则抛出 XlsxTmplError 异常
-	 *
-	 * @param nullable
-	 * @param defaultVal
-	 * @param minVal
-	 * @param maxVal
-	 * @return
-	 * @throws XlsxTmplError
-	 *
-	 */
-	public static XlsxLong createByInterval(boolean nullable, Long defaultVal, long minVal, long maxVal) {
-		// 创建 XlsxLong 对象
-		return new XlsxLong(nullable, defaultVal) {
-			@Override
-			public final void validate() {
-				// 调用父类验证函数
-				super.validate();
+        return objVal;
+    }
 
-				if (this.getObjVal() == null) {
-					// 如果数值为空,
-					// 则直接退出!
-					return;
-				}
+    /**
+     * 创建 Long 字段对象,
+     * 该字段数值必须在大于等于 minVal 且小于等于 maxVal 的闭区间之内!
+     * 否则抛出 XlsxTmplError 异常
+     *
+     * @param nullable
+     * @param defaultVal
+     * @param minVal
+     * @param maxVal
+     * @return
+     * @throws XlsxTmplError
+     *
+     */
+    public static XlsxLong createByInterval(boolean nullable, long defaultVal, long minVal, long maxVal) {
+        // 创建 XlsxLong 对象
+        return new XlsxLong(nullable, defaultVal) {
+            @Override
+            public final void validate() {
+                // 调用父类验证函数
+                super.validate();
 
-				if (this.getLongVal() >= minVal &&
-					this.getLongVal() <= maxVal) {
-					// 如果在指定范围之内,
-					// 则直接退出!
-					return;
-				}
+                if (this.getObjVal() == null) {
+                    // 如果数值为空,
+                    // 则直接退出!
+                    return;
+                }
 
-				// 如果数值越界, 则抛出异常
-				throw new XlsxTmplError(this, MessageFormat.format(
-					"数值 {0} 越界 [{1}, {2}]",
-					String.valueOf(this.getLongVal()),
-					String.valueOf(minVal),
-					String.valueOf(maxVal)
-				));
-			}
-		};
-	}
+                if (this.getLongVal() >= minVal &&
+                    this.getLongVal() <= maxVal) {
+                    // 如果在指定范围之内,
+                    // 则直接退出!
+                    return;
+                }
 
-	/**
-	 * @see #createByInterval(boolean, Long, long, long)
-	 */
-	public static XlsxLong createByInterval(boolean nullable, long minVal, long maxVal) {
-		return createByInterval(
-			nullable, null, minVal, maxVal
-		);
-	}
+                // 如果数值越界, 则抛出异常
+                throw new XlsxTmplError(this, MessageFormat.format(
+                    "数值 {0} 越界 [{1}, {2}]",
+                    String.valueOf(this.getLongVal()),
+                    String.valueOf(minVal),
+                    String.valueOf(maxVal)
+                ));
+            }
+        };
+    }
 
-	/**
-	 * 创建 Long 字段对象,
-	 * 该字段数值必须在大于等于 minVal!
-	 * 否则抛出 XlsxTmplError 异常
-	 *
-	 * @param nullable
-	 * @param defaultVal
-	 * @param minVal
-	 * @return
-	 * @throws XlsxTmplError
-	 *
-	 */
-	public static XlsxLong createByMin(boolean nullable, Long defaultVal, long minVal) {
-		return createByInterval(
-			nullable, defaultVal, minVal, Long.MAX_VALUE
-		);
-	}
+    /**
+     * @see #createByInterval(boolean, long, long, long)
+     */
+    public static XlsxLong createByInterval(boolean nullable, long minVal, long maxVal) {
+        return createByInterval(
+            nullable, ZERO, minVal, maxVal
+        );
+    }
 
-	/**
-	 * @see #createByMin(boolean, Long, long)
-	 */
-	public static XlsxLong createByMin(boolean nullable, long minVal) {
-		return createByInterval(
-			nullable, null, minVal, Long.MAX_VALUE
-		);
-	}
+    /**
+     * 创建 Long 字段对象,
+     * 该字段数值必须在大于等于 minVal!
+     * 否则抛出 XlsxTmplError 异常
+     *
+     * @param nullable
+     * @param defaultVal
+     * @param minVal
+     * @return
+     * @throws XlsxTmplError
+     *
+     */
+    public static XlsxLong createByMin(boolean nullable, long defaultVal, long minVal) {
+        return createByInterval(
+            nullable, defaultVal, minVal, Long.MAX_VALUE
+        );
+    }
 
-	/**
-	 * 创建 Long 字段对象,
-	 * 该字段数值必须在小于等于 maxVal!
-	 * 否则抛出 XlsxTmplError 异常
-	 *
-	 * @param nullable
-	 * @param defaultVal
-	 * @param maxVal
-	 * @return
-	 * @throws XlsxTmplError
-	 *
-	 */
-	public static XlsxLong createByMax(boolean nullable, Long defaultVal, long maxVal) {
-		return createByInterval(
-			nullable, defaultVal, Long.MIN_VALUE, maxVal
-		);
-	}
+    /**
+     * @see #createByMin(boolean, long, long)
+     */
+    public static XlsxLong createByMin(boolean nullable, long minVal) {
+        return createByInterval(
+            nullable, ZERO, minVal, Long.MAX_VALUE
+        );
+    }
 
-	/**
-	 * @see #createByMax(boolean, Long, long)
-	 */
-	public static XlsxLong createByMax(boolean nullable, long maxVal) {
-		return createByInterval(
-			nullable, null, Long.MIN_VALUE, maxVal
-		);
-	}
+    /**
+     * 创建 Long 字段对象,
+     * 该字段数值必须在小于等于 maxVal!
+     * 否则抛出 XlsxTmplError 异常
+     *
+     * @param nullable
+     * @param defaultVal
+     * @param maxVal
+     * @return
+     * @throws XlsxTmplError
+     *
+     */
+    public static XlsxLong createByMax(boolean nullable, long defaultVal, long maxVal) {
+        return createByInterval(
+            nullable, defaultVal, Long.MIN_VALUE, maxVal
+        );
+    }
+
+    /**
+     * @see #createByMax(boolean, long, long)
+     */
+    public static XlsxLong createByMax(boolean nullable, long maxVal) {
+        return createByInterval(
+            nullable, ZERO, Long.MIN_VALUE, maxVal
+        );
+    }
 }

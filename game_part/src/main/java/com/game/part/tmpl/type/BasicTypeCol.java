@@ -1,24 +1,10 @@
 package com.game.part.tmpl.type;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import com.game.part.tmpl.XlsxTmplError;
+
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
-
-import com.game.part.msg.type.MsgBool;
-import com.game.part.msg.type.MsgDate;
-import com.game.part.msg.type.MsgDateTime;
-import com.game.part.msg.type.MsgDouble;
-import com.game.part.msg.type.MsgFloat;
-import com.game.part.msg.type.MsgInt;
-import com.game.part.msg.type.MsgLong;
-import com.game.part.msg.type.MsgShort;
-import com.game.part.msg.type.MsgStr;
-import com.game.part.msg.type.MsgTime;
-import com.game.part.tmpl.XlsxTmplError;
 
 /**
  * 基本类型数值列
@@ -38,8 +24,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	 * 
 	 */
 	public BasicTypeCol() {
-		this._nullable  = true;
-		this._objVal = null;
+		this(true, null);
 	}
 
 	/**
@@ -49,8 +34,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	 * 
 	 */
 	public BasicTypeCol(boolean nullable) {
-		this._nullable = nullable;
-		this._objVal = null;
+		this(nullable, null);
 	}
 
 	/**
@@ -72,8 +56,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 	 * 
 	 */
 	public BasicTypeCol(T objVal) {
-		this._nullable = true;
-		this._objVal = objVal;
+		this(true, objVal);
 	}
 
 	/**
@@ -320,105 +303,5 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
 			// 则抛出异常!
 			throw new XlsxTmplError(this, "对象值为空");
 		}
-	}
-
-	/**
-	 * 活取消息类型的 Int 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgInt getMsgInt() {
-		return new MsgInt(this.getIntVal());
-	}
-
-	/**
-	 * 活取消息类型的 Str 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgStr getMsgStr() {
-		return new MsgStr(this.getStrVal());
-	}
-
-	/**
-	 * 活取消息类型的 Bool 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgBool getMsgBool() {
-		return new MsgBool(this.getBoolVal());
-	}
-
-	/**
-	 * 活取消息类型的 Long 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgLong getMsgLong() {
-		return new MsgLong(this.getLongVal());
-	}
-
-	/**
-	 * 活取消息类型的 Short 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgShort getMsgShort() {
-		return new MsgShort(this.getShortVal());
-	}
-
-	/**
-	 * 活取消息类型的 Float 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgFloat getMsgFloat() {
-		return new MsgFloat(this.getFloatVal());
-	}
-
-	/**
-	 * 活取消息类型的 Double 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgDouble getMsgDouble() {
-		return new MsgDouble(this.getDoubleVal());
-	}
-
-	/**
-	 * 活取消息类型的 Date 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgDate getMsgDate() {
-		return new MsgDate(this.getDateVal());
-	}
-
-	/**
-	 * 活取消息类型的 Time 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgTime getMsgTime() {
-		return new MsgTime(this.getTimeVal());
-	}
-
-	/**
-	 * 活取消息类型的 DateTime 数值
-	 * 
-	 * @return
-	 * 
-	 */
-	public MsgDateTime getMsgDateTime() {
-		return new MsgDateTime(this.getDateTimeVal());
 	}
 }

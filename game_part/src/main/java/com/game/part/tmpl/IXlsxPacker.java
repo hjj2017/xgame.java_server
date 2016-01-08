@@ -10,11 +10,11 @@ import com.game.part.tmpl.type.AbstractXlsxTmpl;
  * 
  */
 public interface IXlsxPacker {
-	/**
-	 * 打包模板对象
-	 * 
-	 * @param tmplObj 
-	 * 
-	 */
-	public void packUp(AbstractXlsxTmpl tmplObj);
+    /**
+     * 打包模板对象
+     *
+     * @param tmplObj
+     *
+     */
+    public void packUp(AbstractXlsxTmpl tmplObj);
 }

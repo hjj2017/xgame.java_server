@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OneToOne {
-	/** 分组名称 */
-	String groupName();
+    /** 分组名称 */
+    String groupName();
 }

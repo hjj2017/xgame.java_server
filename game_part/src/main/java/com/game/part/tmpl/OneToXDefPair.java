@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import com.game.part.tmpl.anno.OneToMany;
 import com.game.part.tmpl.anno.OneToOne;
-import com.game.part.util.Assert;
 import com.game.part.util.ClazzUtil;
 
 /**
@@ -23,183 +22,184 @@ import com.game.part.util.ClazzUtil;
  * 
  */
 final class OneToXDefPair {
-	/** 已验证的类列表 */
-	private static final Map<Class<?>, List<OneToXDefPair_X>> _validatedClazzMap = new HashMap<>();
-	/** 关键字定义 */
-	final Member _keyDef;
-	/** 字典的字段定义 */
-	final Member _mapDef;
-	/** 是否为一对一 */
-	final boolean _oneToOne;
+    /** 已验证的类列表 */
+    private static final Map<Class<?>, List<OneToXDefPair_X>> _validatedClazzMap = new HashMap<>();
+    /** 关键字定义 */
+    final Member _keyDef;
+    /** 字典的字段定义 */
+    final Member _mapDef;
+    /** 是否为一对一 */
+    final boolean _oneToOne;
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param keyDef 关键字字段定义
-	 * @param mapDef 字典字段定义
-	 * @param oneToOne 是否为一对一
-	 * 
-	 */
-	private OneToXDefPair(Member keyDef, Member mapDef, boolean oneToOne) {
-		// 断言参数对象不为空
-		Assert.notNull(keyDef, "keyDef");
-		Assert.notNull(mapDef, "mapDef");
-		// 设置属性值
-		this._keyDef = keyDef;
-		this._mapDef = mapDef;
-		this._oneToOne = oneToOne;
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param keyDef 关键字字段定义
+     * @param mapDef 字典字段定义
+     * @param oneToOne 是否为一对一
+     *
+     */
+    private OneToXDefPair(Member keyDef, Member mapDef, boolean oneToOne) {
+        // 断言参数对象不为空
+        assert keyDef != null : "keyDef";
+        assert mapDef != null : "mapDef";
 
-	/**
-	 * 验证类
-	 * 
-	 * @param clazz
-	 * 
-	 */
-	static void validate(Class<?> clazz) {
-		// 断言参数不为空
-		Assert.notNull(clazz, "clazz");
+        // 设置属性值
+        this._keyDef = keyDef;
+        this._mapDef = mapDef;
+        this._oneToOne = oneToOne;
+    }
 
-		if (_validatedClazzMap.containsKey(clazz)) {
-			// 已经验证过的类, 
-			// 就不要重复验证了了了...
-			return;
-		}
+    /**
+     * 验证类
+     *
+     * @param clazz
+     *
+     */
+    static void validate(Class<?> clazz) {
+        // 断言参数不为空
+        assert clazz != null : "clazz";
 
-		// 收集分组名称
-		Map<String, OneToXDefPair_X> pairXMap = collectOneToXAnno(clazz);
-		// 返回配对列表
-		List<OneToXDefPair_X> xl = new ArrayList<>(pairXMap.values());
-		// 逐一验证每个配对
-		xl.forEach(x -> x.validate());
+        if (_validatedClazzMap.containsKey(clazz)) {
+            // 已经验证过的类,
+            // 就不要重复验证了了了...
+            return;
+        }
 
-		// 添加到已验证的字典
-		_validatedClazzMap.put(clazz, xl);
-	}
+        // 收集分组名称
+        Map<String, OneToXDefPair_X> pairXMap = collectOneToXAnno(clazz);
+        // 返回配对列表
+        List<OneToXDefPair_X> xl = new ArrayList<>(pairXMap.values());
+        // 逐一验证每个配对
+        xl.forEach(x -> x.validate());
 
-	/**
-	 * 列表出所有的 key 和 map 字段的配对, 包括 OneToOne, OneToMany
-	 * 
-	 * @param clazz
-	 * @return 
-	 * 
-	 */
-	public static List<OneToXDefPair> listAll(Class<?> clazz) {
-		// 断言参数不为空
-		Assert.notNull(clazz, "clazz");
-		// 获取已验证的列表
-		List<OneToXDefPair_X> xl = _validatedClazzMap.get(clazz);
+        // 添加到已验证的字典
+        _validatedClazzMap.put(clazz, xl);
+    }
 
-		if (xl == null || 
-			xl.isEmpty()) {
-			// 如果列表为空, 
-			// 则直接退出!
-			return Collections.emptyList();
-		}
+    /**
+     * 列表出所有的 key 和 map 字段的配对, 包括 OneToOne, OneToMany
+     *
+     * @param clazz
+     * @return
+     *
+     */
+    public static List<OneToXDefPair> listAll(Class<?> clazz) {
+        // 断言参数不为空
+        assert clazz != null : "clazz";
+        // 获取已验证的列表
+        List<OneToXDefPair_X> xl = _validatedClazzMap.get(clazz);
 
-		return xl.stream().map(pairX -> {
-			try {
-				// 获取键值定义
-				final Member keyDef = pairX.getKeyDef();
-				final Member mapDef = pairX.getMapDef();
-	
-				return new OneToXDefPair(
-					keyDef, mapDef, 
-					pairX.isOneToOne()
-				);
-			} catch (XlsxTmplError ex) {
-				// 记录错误日志
-				XlsxTmplLog.LOG.error(ex.getMessage(), ex);
-				throw ex;
-			}
-		}).collect(Collectors.toList());
-	}
+        if (xl == null ||
+            xl.isEmpty()) {
+            // 如果列表为空,
+            // 则直接退出!
+            return Collections.emptyList();
+        }
 
-	/**
-	 * 遍历所有标注了 OneToOne, OneToMany 的字段或方法, 收集 groupName 值
-	 * 
-	 * @param clazz
-	 * @return 
-	 * 
-	 */
-	private static Map<String, OneToXDefPair_X> collectOneToXAnno(Class<?> clazz) {
-		// 断言参数不为空
-		Assert.notNull(clazz, "clazz");
+        return xl.stream().map(pairX -> {
+            try {
+                // 获取键值定义
+                final Member keyDef = pairX.getKeyDef();
+                final Member mapDef = pairX.getMapDef();
 
-		// 创建辅助字典
-		Map<String, OneToXDefPair_X> helpMap = new HashMap<>();
+                return new OneToXDefPair(
+                    keyDef, mapDef,
+                    pairX.isOneToOne()
+                );
+            } catch (XlsxTmplError ex) {
+                // 记录错误日志
+                XlsxTmplLog.LOG.error(ex.getMessage(), ex);
+                throw ex;
+            }
+        }).collect(Collectors.toList());
+    }
 
-		// 找到标注 OneToOne 和 OneToMany 注解的字段
-		ClazzUtil.listField(
-			clazz, f -> {
-				findAnno(f, helpMap);
-				return true;
-			}
-		);
+    /**
+     * 遍历所有标注了 OneToOne, OneToMany 的字段或方法, 收集 groupName 值
+     *
+     * @param clazz
+     * @return
+     *
+     */
+    private static Map<String, OneToXDefPair_X> collectOneToXAnno(Class<?> clazz) {
+        // 断言参数不为空
+        assert clazz != null : "clazz";
 
-		// 找到标注 OneToOne 和 OneToMany 注解的函数
-		ClazzUtil.listMethod(
-			clazz, m -> {
-				findAnno(m, helpMap);
-				return true;
-			}
-		);
+        // 创建辅助字典
+        Map<String, OneToXDefPair_X> helpMap = new HashMap<>();
 
-		return helpMap;
-	}
+        // 找到标注 OneToOne 和 OneToMany 注解的字段
+        ClazzUtil.listField(
+            clazz, f -> {
+                findAnno(f, helpMap);
+                return true;
+            }
+        );
 
-	/**
-	 * 查找注解并将注解添加到字典
-	 * 
-	 * @param m
-	 * @param targetMap
-	 * 
-	 */
-	private static void findAnno(
-		Member m, Map<String, OneToXDefPair_X> targetMap) {
-		if (m == null ||  
-			targetMap == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
+        // 找到标注 OneToOne 和 OneToMany 注解的函数
+        ClazzUtil.listMethod(
+            clazz, m -> {
+                findAnno(m, helpMap);
+                return true;
+            }
+        );
 
-		List<Annotation> annoList = new ArrayList<>();
+        return helpMap;
+    }
 
-		if (m instanceof AccessibleObject) {
-			// 添加 OneToOne 注解到列表
-			Collections.addAll(
-				annoList, ((AccessibleObject)m).getAnnotationsByType(OneToOne.class)
-			);
+    /**
+     * 查找注解并将注解添加到字典
+     *
+     * @param m
+     * @param targetMap
+     *
+     */
+    private static void findAnno(
+        Member m, Map<String, OneToXDefPair_X> targetMap) {
+        if (m == null ||
+            targetMap == null) {
+            // 如果参数对象为空,
+            // 则直接退出!
+            return;
+        }
 
-			// 添加 OneToMany 注解到列表
-			Collections.addAll(
-				annoList, ((AccessibleObject)m).getAnnotationsByType(OneToMany.class)
-			);
-		}
+        List<Annotation> annoList = new ArrayList<>();
 
-		annoList.forEach(anno -> {
-			// 分组名称
-			final String groupName;
+        if (m instanceof AccessibleObject) {
+            // 添加 OneToOne 注解到列表
+            Collections.addAll(
+                annoList, ((AccessibleObject)m).getAnnotationsByType(OneToOne.class)
+            );
 
-			if (anno instanceof OneToOne) {
-				groupName = ((OneToOne)anno).groupName();
-			} else/* if (anno instanceof OneToMany) */{
-				groupName = ((OneToMany)anno).groupName();
-			}
+            // 添加 OneToMany 注解到列表
+            Collections.addAll(
+                annoList, ((AccessibleObject)m).getAnnotationsByType(OneToMany.class)
+            );
+        }
 
-			// 获取临时对象
-			OneToXDefPair_X pairX = targetMap.get(groupName);
-	
-			if (pairX == null) {
-				pairX = new OneToXDefPair_X(groupName, m.getDeclaringClass());
-				// 添加到字典
-				targetMap.put(groupName, pairX);
-			}
+        annoList.forEach(anno -> {
+            // 分组名称
+            final String groupName;
 
-			// 添加注解类和成员到集合
-			pairX._annoClazzSet.add(anno.annotationType());
-			pairX._memberSet.add(m);
-		});
-	}
+            if (anno instanceof OneToOne) {
+                groupName = ((OneToOne)anno).groupName();
+            } else/* if (anno instanceof OneToMany) */{
+                groupName = ((OneToMany)anno).groupName();
+            }
+
+            // 获取临时对象
+            OneToXDefPair_X pairX = targetMap.get(groupName);
+
+            if (pairX == null) {
+                pairX = new OneToXDefPair_X(groupName, m.getDeclaringClass());
+                // 添加到字典
+                targetMap.put(groupName, pairX);
+            }
+
+            // 添加注解类和成员到集合
+            pairX._annoClazzSet.add(anno.annotationType());
+            pairX._memberSet.add(m);
+        });
+    }
 }
