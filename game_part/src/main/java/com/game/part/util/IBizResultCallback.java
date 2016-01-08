@@ -9,11 +9,11 @@ package com.game.part.util;
  */
 @FunctionalInterface
 public interface IBizResultCallback<R extends BizResultObj> {
-	/**
-	 * 执行回调函数
-	 * 
-	 * @param resultObj
-	 * 
-	 */
-	public void doCallback(R resultObj);
+    /**
+     * 执行回调函数
+     *
+     * @param resultObj
+     *
+     */
+    public void doCallback(R resultObj);
 }

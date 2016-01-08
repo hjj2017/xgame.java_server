@@ -8,20 +8,20 @@ package com.game.part.util;
  * 
  */
 public class BizResultPool {
-	/**
-	 * 取得从对象池中返回的对象
-	 * 
-	 * @param clazz
-	 * @return
-	 * 
-	 */
-	public static <T extends BizResultObj> T borrow(Class<T> clazz) {
-		// 断言参数不为空
-		Assert.notNull(clazz, "clazz");
-		// 获取线程本地对象并清理内容
-		T obj = ThreadLocalObjectPool.get(clazz);
-		obj.clear();
+    /**
+     * 取得从对象池中返回的对象
+     *
+     * @param clazz
+     * @return
+     *
+     */
+    public static <T extends BizResultObj> T borrow(Class<T> clazz) {
+        // 断言参数不为空
+        Assert.notNull(clazz, "clazz");
+        // 获取线程本地对象并清理内容
+        T obj = ThreadLocalObjectPool.get(clazz);
+        obj.clear();
 
-		return obj;
-	}
+        return obj;
+    }
 }

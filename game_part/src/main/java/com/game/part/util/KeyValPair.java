@@ -10,7 +10,7 @@ import java.lang.reflect.Array;
  * 
  */
 public final class KeyValPair<K, V> {
-	/** 键 */
+    /** 键 */
     private K _key;
     /** 值 */
     private V _val;
@@ -30,8 +30,8 @@ public final class KeyValPair<K, V> {
      * 
      */
     public KeyValPair(K key,V val) {
-    	this._key = key;
-    	this._val = val;
+        this._key = key;
+        this._val = val;
     }
 
     /**
@@ -40,55 +40,55 @@ public final class KeyValPair<K, V> {
      * @return 
      * 
      */
-	public K getKey() {
-		return this._key;
-	}
+    public K getKey() {
+        return this._key;
+    }
 
-	/**
-	 * 设置键
-	 * 
-	 * @param value 
-	 * 
-	 */
-	public void setKey(K value) {
-		this._key = value;
-	}
+    /**
+     * 设置键
+     *
+     * @param value
+     *
+     */
+    public void setKey(K value) {
+        this._key = value;
+    }
 
-	/**
-	 * 获取值
-	 * 
-	 * @return 
-	 * 
-	 */
-	public V getVal() {
-		return this._val;
-	}
+    /**
+     * 获取值
+     *
+     * @return
+     *
+     */
+    public V getVal() {
+        return this._val;
+    }
 
-	/**
-	 * 设置值
-	 * 
-	 * @param value 
-	 * 
-	 */
-	public void setVal(V value) {
-		this._val = value;
-	}
+    /**
+     * 设置值
+     *
+     * @param value
+     *
+     */
+    public void setVal(V value) {
+        this._val = value;
+    }
 
-	/**
-	 * 创建键值对数组
-	 * 
-	 * @param size
-	 * @return 
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	public static <K, V> KeyValPair<K, V>[] newKeyValPairArray(int size) {
-		// 创建数组对象
-		Object arr = Array.newInstance(
-			KeyValPair.class, 
-			size
-		);
+    /**
+     * 创建键值对数组
+     *
+     * @param size
+     * @return
+     *
+     */
+    @SuppressWarnings("unchecked")
+    public static <K, V> KeyValPair<K, V>[] newKeyValPairArray(int size) {
+        // 创建数组对象
+        Object arr = Array.newInstance(
+            KeyValPair.class,
+            size
+        );
 
-		return (KeyValPair<K, V>[])arr;
-	}
+        return (KeyValPair<K, V>[])arr;
+    }
 }
