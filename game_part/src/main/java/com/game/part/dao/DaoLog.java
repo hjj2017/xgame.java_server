@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public final class DaoLog {
-	/** 日志对象 */
-	public static final Logger LOG = LoggerFactory.getLogger("game.dao");
+    /** 日志对象 */
+    public static final Logger LOG = LoggerFactory.getLogger("game.dao");
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private DaoLog() {
-	}
+    /**
+     * 类默认构造器
+     *
+     */
+    private DaoLog() {
+    }
 }

@@ -65,7 +65,7 @@ interface IDao_GetMaxId {
 
             // 转型为真实 Id
             @SuppressWarnings("unchecked")
-			TId realId = (TId)resultList.get(0);
+            TId realId = (TId)resultList.get(0);
             // 返回 Id
             return realId;
         } catch (Exception ex) {
