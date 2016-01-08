@@ -1,4 +1,4 @@
-package com.game.gameServer.msg.mina;
+package com.game.gameServer.msg.netty;
 
 import net.sf.json.JSONObject;
 

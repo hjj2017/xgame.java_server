@@ -8,7 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.game.gameServer.framework.FrameworkLog;
 import com.game.gameServer.framework.GameServerConf;
-import com.game.gameServer.msg.mina.SocketConf;
+import com.game.gameServer.msg.netty.SocketConf;
 import com.game.gameServer.io.IoConf;
 
 /**

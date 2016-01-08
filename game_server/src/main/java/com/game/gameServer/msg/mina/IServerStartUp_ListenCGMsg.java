@@ -1,6 +1,7 @@
 package com.game.gameServer.msg.mina;
 
 import com.game.gameServer.framework.FrameworkError;
+import com.game.gameServer.msg.netty.SocketConf;
 import com.game.part.msg.MsgLog;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.session.IdleStatus;

@@ -1,6 +1,5 @@
 package com.game.gameServer.msg.netty;
 
-import javax.management.RuntimeErrorException;
 import java.net.InetSocketAddress;
 
 
@@ -13,7 +12,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import com.game.gameServer.msg.mina.SocketConf;
 import com.game.part.msg.MsgLog;
 
 /**
