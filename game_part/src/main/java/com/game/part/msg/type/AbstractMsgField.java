@@ -1,8 +1,9 @@
 package com.game.part.msg.type;
 
+import java.nio.ByteBuffer;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  * 抽象的消息字段
@@ -18,7 +19,7 @@ public abstract class AbstractMsgField {
 	 * @param buff
 	 * 
 	 */
-	public abstract void readBuff(IoBuffer buff);
+	public abstract void readBuff(ByteBuffer buff);
 
 	/**
 	 * 写出数据到 IoBuff 中
@@ -26,7 +27,7 @@ public abstract class AbstractMsgField {
 	 * @param buff
 	 * 
 	 */
-	public abstract void writeBuff(IoBuffer buff);
+	public abstract void writeBuff(ByteBuffer buff);
 
 	@Override
 	public String toString() {

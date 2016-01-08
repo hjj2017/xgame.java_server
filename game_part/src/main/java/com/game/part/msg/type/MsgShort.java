@@ -1,6 +1,6 @@
 package com.game.part.msg.type;
 
-import org.apache.mina.core.buffer.IoBuffer;
+import java.nio.ByteBuffer;
 
 import com.game.part.msg.IoBuffUtil;
 
@@ -31,12 +31,12 @@ public final class MsgShort extends PrimitiveTypeField<Short> {
 	}
 
 	@Override
-	public void readBuff(IoBuffer buff) {
+	public void readBuff(ByteBuffer buff) {
 		this.setObjVal(IoBuffUtil.readShort(buff));
 	}
 
 	@Override
-	public void writeBuff(IoBuffer buff) {
+	public void writeBuff(ByteBuffer buff) {
 		IoBuffUtil.writeInt(this.getShortVal(), buff);
 	}
 

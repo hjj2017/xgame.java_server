@@ -199,11 +199,9 @@ interface IServerInit_BizModule {
 			XlsxTmplServ.OBJ._xlsxFileDir = GameServerConf.OBJ._xlsxFileDir;
 		}
 
-		if (XlsxTmplServ.OBJ._propMap == null &&
-			GameServerConf.OBJ._lang != null) {
+		if (GameServerConf.OBJ._lang != null) {
 			// 设置语言变量
-			XlsxTmplServ.OBJ._propMap = new HashMap<>();
-			XlsxTmplServ.OBJ._propMap.put("lang", GameServerConf.OBJ._lang);
+			XlsxTmplServ.OBJ._lang = GameServerConf.OBJ._lang;
 		}
 
 		// 加载模板对象列表并打包

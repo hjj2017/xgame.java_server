@@ -1,6 +1,6 @@
 package com.game.part.msg.type;
 
-import org.apache.mina.core.buffer.IoBuffer;
+import java.nio.ByteBuffer;
 
 /**
  * 抽象消息
@@ -11,7 +11,7 @@ import org.apache.mina.core.buffer.IoBuffer;
  */
 public abstract class AbstractMsgObj extends AbstractMsgField {
 	@Override
-	public void readBuff(IoBuffer buff) {
+	public void readBuff(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 0) {
 			// 如果数据流为空, 
@@ -30,7 +30,7 @@ public abstract class AbstractMsgObj extends AbstractMsgField {
 	}
 
 	@Override
-	public void writeBuff(IoBuffer buff) {
+	public void writeBuff(ByteBuffer buff) {
 		if (buff == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!

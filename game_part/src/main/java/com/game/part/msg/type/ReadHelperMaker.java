@@ -2,6 +2,7 @@ package com.game.part.msg.type;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.List;
@@ -14,8 +15,6 @@ import javassist.CtClass;
 import javassist.CtConstructor;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
-
-import org.apache.mina.core.buffer.IoBuffer;
 
 import com.game.part.msg.MsgError;
 import com.game.part.msg.MsgLog;
@@ -114,7 +113,7 @@ public final class ReadHelperMaker {
 			// import org.apache.mina.core.buffer.IoBuffer;
 			// import com.game.part.msg.type.AbstractMsgObj;
 			// import byClazz;
-			codeCtx._importClazzSet.add(IoBuffer.class);
+			codeCtx._importClazzSet.add(ByteBuffer.class);
 			codeCtx._importClazzSet.add(AbstractMsgObj.class);
 			codeCtx._importClazzSet.add(byClazz);
 			// 构建函数体

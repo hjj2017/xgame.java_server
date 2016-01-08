@@ -1,8 +1,7 @@
 package com.game.part.msg;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-
-import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  * IoBuffer 实用工具类
@@ -27,7 +26,7 @@ public final class IoBuffUtil {
 	 * @param to 
 	 * 
 	 */
-	public static void append(IoBuffer to, IoBuffer from) {
+	public static void append(ByteBuffer to, ByteBuffer from) {
 		if (from == null || 
 			from.hasRemaining() == false || 
 			to == null) {
@@ -61,7 +60,7 @@ public final class IoBuffUtil {
 	 * @param b
 	 * 
 	 */
-	public static int indexOf(IoBuffer src, byte b) {
+	public static int indexOf(ByteBuffer src, byte b) {
 		if (src == null || 
 			src.hasRemaining() == false) {
 			// 如果参数对象为空, 
@@ -95,7 +94,7 @@ public final class IoBuffUtil {
 	 * @param container 
 	 * 
 	 */
-	public static void readyToNext(IoBuffer container) {
+	public static void readyToNext(ByteBuffer container) {
 		if (container == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -114,7 +113,7 @@ public final class IoBuffUtil {
 	 * @return 
 	 * 
 	 */
-	public static IoBuffer copy(IoBuffer from, int count) {
+	public static ByteBuffer copy(ByteBuffer from, int count) {
 		if (from == null || 
 			from.hasRemaining() == false || 
 			count <= 0) {
@@ -126,7 +125,7 @@ public final class IoBuffUtil {
 		// 获取旧位置
 		final int origPos = from.position();
 		// 创建新的 Buff
-		IoBuffer newBuff = IoBuffer.allocate(count);
+		ByteBuffer newBuff = ByteBuffer.allocate(count);
 
 		for (int i = 0; i < count; i++) {
 			// 拷贝字节
@@ -147,7 +146,7 @@ public final class IoBuffUtil {
 	 * @param src 
 	 * 
 	 */
-	public static void compact(IoBuffer src) {
+	public static void compact(ByteBuffer src) {
 		if (src == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -181,7 +180,7 @@ public final class IoBuffUtil {
 	 * @throws MsgError 当 buff 对象为空或者字节数不够时
 	 * 
 	 */
-	public static boolean readBool(IoBuffer buff) {
+	public static boolean readBool(ByteBuffer buff) {
 		return readByte(buff) == (byte)1;
 	}
 
@@ -192,7 +191,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeBool(boolean val, IoBuffer buff) {
+	public static void writeBool(boolean val, ByteBuffer buff) {
 		writeByte(
 			val ? (byte)1 : (byte)0, 
 			buff
@@ -207,7 +206,7 @@ public final class IoBuffUtil {
 	 * @throws MsgError 当 buff 对象为空或者字节数不够时
 	 * 
 	 */
-	public static byte readByte(IoBuffer buff) {
+	public static byte readByte(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 1) {
 			// 如果参数对象为空, 
@@ -226,7 +225,7 @@ public final class IoBuffUtil {
 	 * @param buff 
 	 * 
 	 */
-	public static void writeByte(byte val, IoBuffer buff) {
+	public static void writeByte(byte val, ByteBuffer buff) {
 		if (buff != null) {
 			buff.put(val);
 		}
@@ -240,7 +239,7 @@ public final class IoBuffUtil {
 	 * @throws MsgError 当 buff 对象为空或者字节数不够时
 	 * 
 	 */
-	public static int readInt(IoBuffer buff) {
+	public static int readInt(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 4) {
 			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 4");
@@ -256,7 +255,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeInt(int val, IoBuffer buff) {
+	public static void writeInt(int val, ByteBuffer buff) {
 		if (buff != null) {
 			buff.putInt(val);
 		}
@@ -270,7 +269,7 @@ public final class IoBuffUtil {
 	 * @throws MsgError 当 buff 对象为空或者字节数不够时
 	 * 
 	 */
-	public static String readStr(IoBuffer buff) {
+	public static String readStr(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 2) {
 			// 如果参数对象为空, 
@@ -307,7 +306,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeStr(String val, IoBuffer buff) {
+	public static void writeStr(String val, ByteBuffer buff) {
 		// 写出字符串
 		writeStr(
 			val, Charset.forName("utf-8"), 
@@ -323,7 +322,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeStr(String val, Charset charset, IoBuffer buff) {
+	public static void writeStr(String val, Charset charset, ByteBuffer buff) {
 		if (buff == null) {
 			// 如果 buff 对象为空, 
 			// 则直接退出!
@@ -351,7 +350,7 @@ public final class IoBuffUtil {
 	 * @return 
 	 * 
 	 */
-	public static short readShort(IoBuffer buff) {
+	public static short readShort(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 2) {
 			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 2");
@@ -367,7 +366,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeShort(short val, IoBuffer buff) {
+	public static void writeShort(short val, ByteBuffer buff) {
 		if (buff != null) {
 			buff.putShort(val);
 		}
@@ -380,7 +379,7 @@ public final class IoBuffUtil {
 	 * @return 
 	 * 
 	 */
-	public static long readLong(IoBuffer buff) {
+	public static long readLong(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 8) {
 			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 8");
@@ -396,7 +395,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeLong(long val, IoBuffer buff) {
+	public static void writeLong(long val, ByteBuffer buff) {
 		if (buff != null) {
 			buff.putLong(val);
 		}
@@ -409,7 +408,7 @@ public final class IoBuffUtil {
 	 * @return 
 	 * 
 	 */
-	public static float readFloat(IoBuffer buff) {
+	public static float readFloat(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 4) {
 			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 4");
@@ -425,7 +424,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeFloat(float val, IoBuffer buff) {
+	public static void writeFloat(float val, ByteBuffer buff) {
 		if (buff != null) {
 			buff.putFloat(val);
 		}
@@ -438,7 +437,7 @@ public final class IoBuffUtil {
 	 * @return 
 	 * 
 	 */
-	public static double readDouble(IoBuffer buff) {
+	public static double readDouble(ByteBuffer buff) {
 		if (buff == null || 
 			buff.remaining() < 8) {
 			throw new MsgError("buff 对象为空或者剩余的未读取的字节数 < 8");
@@ -454,7 +453,7 @@ public final class IoBuffUtil {
 	 * @param buff
 	 * 
 	 */
-	public static void writeDouble(double val, IoBuffer buff) {
+	public static void writeDouble(double val, ByteBuffer buff) {
 		if (buff != null) {
 			buff.putDouble(val);
 		}

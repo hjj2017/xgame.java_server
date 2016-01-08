@@ -1,12 +1,11 @@
 package com.game.part.msg.type;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.apache.mina.core.buffer.IoBuffer;
 
 import com.game.part.msg.IoBuffUtil;
 import com.game.part.util.Assert;
@@ -38,7 +37,7 @@ public final class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgF
 	}
 
 	@Override
-	public void readBuff(IoBuffer buff) {
+	public void readBuff(ByteBuffer buff) {
 		// 事先读取长度
 		int len = IoBuffUtil.readShort(buff);
 
@@ -56,7 +55,7 @@ public final class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgF
 	}
 
 	@Override
-	public void writeBuff(IoBuffer buff) {
+	public void writeBuff(ByteBuffer buff) {
 		if (buff == null) {
 			// 如果参数对象为空, 
 			// 则直接退出!
@@ -243,7 +242,7 @@ public final class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgF
 	 * @param buff
 	 * 
 	 */
-	public static void readBuff(MsgArrayList<?> arrayList, IoBuffer buff) {
+	public static void readBuff(MsgArrayList<?> arrayList, ByteBuffer buff) {
 		if (buff == null) {
 			// 如果 buff 对象为空, 
 			// 则直接退出!
@@ -263,7 +262,7 @@ public final class MsgArrayList<T extends AbstractMsgField> extends AbstractMsgF
 	 * @param buff
 	 * 
 	 */
-	public static void writeBuff(MsgArrayList<?> arrayList, IoBuffer buff) {
+	public static void writeBuff(MsgArrayList<?> arrayList, ByteBuffer buff) {
 		if (buff == null) {
 			// 如果 buff 对象为空, 
 			// 则直接退出!

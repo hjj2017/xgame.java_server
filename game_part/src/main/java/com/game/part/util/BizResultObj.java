@@ -1,8 +1,8 @@
 package com.game.part.util;
 
+import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.mina.util.ConcurrentHashSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 业务结果
@@ -15,7 +15,7 @@ public abstract class BizResultObj {
     /** 错误代码 */
     public int _errorCode = -1;
     /** 警告集合 */
-    public final Set<Integer> _warnSet = new ConcurrentHashSet<>();
+    public final Set<Integer> _warnSet = new HashSet<>();
 
     /**
      * 类默认构造器

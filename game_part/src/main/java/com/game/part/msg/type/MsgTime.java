@@ -1,10 +1,9 @@
 package com.game.part.msg.type;
 
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
-
-import org.apache.mina.core.buffer.IoBuffer;
 
 import com.game.part.msg.IoBuffUtil;
 
@@ -35,7 +34,7 @@ public final class MsgTime extends PrimitiveTypeField<LocalTime> {
 	}
 
 	@Override
-	public void readBuff(IoBuffer buff) {
+	public void readBuff(ByteBuffer buff) {
 		// 创建时间对象
 		Instant inst = Instant.ofEpochMilli(
 			IoBuffUtil.readLong(buff)
@@ -48,7 +47,7 @@ public final class MsgTime extends PrimitiveTypeField<LocalTime> {
 	}
 
 	@Override
-	public void writeBuff(IoBuffer buff) {
+	public void writeBuff(ByteBuffer buff) {
 		IoBuffUtil.writeLong(this.getLongVal(), buff);
 	}
 

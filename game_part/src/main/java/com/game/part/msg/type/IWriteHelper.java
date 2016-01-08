@@ -1,6 +1,6 @@
 package com.game.part.msg.type;
 
-import org.apache.mina.core.buffer.IoBuffer;
+import java.nio.ByteBuffer;
 
 /**
  * 写出帮助器
@@ -17,5 +17,5 @@ public interface IWriteHelper {
 	 * @param buff
 	 * 
 	 */
-	void writeBuff(AbstractMsgObj msgObj, IoBuffer buff);
+	void writeBuff(AbstractMsgObj msgObj, ByteBuffer buff);
 }

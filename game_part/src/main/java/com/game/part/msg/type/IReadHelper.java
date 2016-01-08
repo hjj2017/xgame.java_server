@@ -1,6 +1,6 @@
 package com.game.part.msg.type;
 
-import org.apache.mina.core.buffer.IoBuffer;
+import java.nio.ByteBuffer;
 
 /**
  * 读取帮助器
@@ -17,5 +17,5 @@ public interface IReadHelper {
 	 * @param buff
 	 * 
 	 */
-	void readBuff(AbstractMsgObj msgObj, IoBuffer buff);
+	void readBuff(AbstractMsgObj msgObj, ByteBuffer buff);
 }
