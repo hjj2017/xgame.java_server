@@ -7,11 +7,11 @@ package com.game.part.io;
  *
  */
 interface IIoOperProc<TIoOper extends IIoOper> {
-	/**
-	 * 开始工作
-	 * 
-	 * @param oper
-	 * 
-	 */
-	void execute(TIoOper oper);
+    /**
+     * 开始工作
+     *
+     * @param oper
+     *
+     */
+    void execute(TIoOper oper);
 }

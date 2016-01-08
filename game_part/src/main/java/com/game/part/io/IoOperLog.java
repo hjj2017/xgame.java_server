@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
  *
  */
 class IoOperLog {
-	/** 单例对象 */
-	static final Logger LOG = LoggerFactory.getLogger("game.io");
+    /** 单例对象 */
+    static final Logger LOG = LoggerFactory.getLogger("game.io");
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private IoOperLog() {
-	}
+    /**
+     * 类默认构造器
+     *
+     */
+    private IoOperLog() {
+    }
 }
