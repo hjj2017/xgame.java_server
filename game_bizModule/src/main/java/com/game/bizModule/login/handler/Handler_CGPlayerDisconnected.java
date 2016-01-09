@@ -1,7 +1,7 @@
 package com.game.bizModule.login.handler;
 
 import com.game.bizModule.login.bizServ.LoginServ;
-import com.game.bizModule.login.msg.CGDisconnect;
+import com.game.bizModule.login.msg.CGPlayerDisconnected;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 
@@ -12,9 +12,9 @@ import com.game.gameServer.msg.AbstractCGMsgHandler;
  * @since 2015/7/12
  * 
  */
-public class Handler_CGDisconnect extends AbstractCGMsgHandler<CGDisconnect> {
+public class Handler_CGPlayerDisconnected extends AbstractCGMsgHandler<CGPlayerDisconnected> {
 	@Override
-	public void handle(CGDisconnect cgMSG) {
+	public void handle(CGPlayerDisconnected cgMSG) {
 		if (cgMSG == null) {
 			// 如果参数对象为空,
 			// 则直接退出!
@@ -34,7 +34,7 @@ public class Handler_CGDisconnect extends AbstractCGMsgHandler<CGDisconnect> {
 		p._allowMsgTypeMap.clear();
 
 		// 玩家断线
-		LoginServ.OBJ.disconnect(p);
+		LoginServ.OBJ.playerDisconnected(p);
 		// 删除玩家对象
 		this.uninstallPlayer(p);
 		// 清除所有属性

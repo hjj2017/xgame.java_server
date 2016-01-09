@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.mina.OnlineSessionManager;
+import com.game.gameServer.msg.netty.CtxManager;
 import com.game.part.GameError;
 import com.game.part.util.Assert;
 import com.game.part.util.NullUtil;
@@ -206,18 +206,18 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		}
 
 		// 获取会话 UId 集合
-		Set<Long> sessionUIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
+		Set<Long> ctxUIdSet = CtxManager.OBJ.getCtxUIdSet();
 
-		if (sessionUIdSet == null ||
-			sessionUIdSet.isEmpty()) {
+		if (ctxUIdSet == null ||
+			ctxUIdSet.isEmpty()) {
 			// 如果会话 UId 集合为空,
 			// 则直接退出!
 			return null;
 		}
 
-		return sessionUIdSet.stream().map(sessionUId -> {
+		return ctxUIdSet.stream().map(ctxUId -> {
 			// 根据会话 UId 获取玩家对象
-			Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+			Player p = CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
 
 			if (p == null) {
 				// 如果玩家对象为空,
@@ -245,18 +245,18 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	 */
 	public static List<Human> getAllOnlineHuman() {
 		// 获取会话 UId 集合
-		Set<Long> sessionUIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
+		Set<Long> ctxUIdSet = CtxManager.OBJ.getCtxUIdSet();
 
-		if (sessionUIdSet == null ||
-			sessionUIdSet.isEmpty()) {
+		if (ctxUIdSet == null ||
+			ctxUIdSet.isEmpty()) {
 			// 如果会话 UId 集合为空,
 			// 则直接退出!
 			return null;
 		}
 
-		return sessionUIdSet.stream().map(sessionUId -> {
+		return ctxUIdSet.stream().map(ctxUId -> {
 			// 根据会话 UId 获取玩家对象
-			Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+			Player p = CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
 
 			if (p == null) {
 				// 如果玩家对象为空,

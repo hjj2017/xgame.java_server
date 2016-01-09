@@ -1,15 +1,18 @@
 package com.game.gameServer.scene;
 
-import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.*;
-import com.game.gameServer.msg.mina.OnlineSessionManager;
-import com.game.part.ThreadNamingFactory;
-import com.game.part.msg.type.AbstractMsgObj;
-
 import java.text.MessageFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.AbstractCGMsgObj;
+import com.game.gameServer.msg.AbstractExecutableMsgObj;
+import com.game.gameServer.msg.MsgOrigTypeEnum;
+import com.game.gameServer.msg.MsgTypeEnum;
+import com.game.gameServer.msg.netty.CtxManager;
+import com.game.part.ThreadNamingFactory;
+import com.game.part.msg.type.AbstractMsgObj;
 
 
 /**
@@ -194,9 +197,9 @@ class InnerScene {
 		}
 
 		// 获取会话 UId
-		final long sessionUId = cgMsgObj.getSelfHandler()._sessionUId;
+		final long ctxUId = cgMsgObj.getSelfHandler()._ctxUId;
 		// 获取玩家对象
-		Player p = OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+		Player p = CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
 
 		if (p == null) {
 			// 如果玩家对象为空,

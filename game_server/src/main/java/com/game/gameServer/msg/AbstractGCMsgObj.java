@@ -1,6 +1,6 @@
 package com.game.gameServer.msg;
 
-import org.apache.mina.core.buffer.IoBuffer;
+import java.nio.ByteBuffer;
 
 import com.game.part.msg.IoBuffUtil;
 import com.game.part.msg.type.AbstractMsgObj;
@@ -27,7 +27,7 @@ public abstract class AbstractGCMsgObj extends AbstractMsgObj {
 	public abstract short getSerialUId();
 
 	@Override
-	public void readBuff(IoBuffer buff) {
+	public void readBuff(ByteBuffer buff) {
 		if (buff == null ||
 			buff.remaining() < 10) {
 			// 如果参数对象为空,
@@ -42,7 +42,7 @@ public abstract class AbstractGCMsgObj extends AbstractMsgObj {
 		}
 
 		// 首先, 跳过消息的前 4 个字节!
-		buff.skip(4);
+		IoBuffUtil.readInt(buff);
 		// 前 2 个字节表示消息长度, 后 2 个字节表示消息的 SerialUId...
 		// 消息长度只会在解码时用到,
 		// 而 SerialUId 是由 #getSerialUId 方法提供的,
@@ -59,7 +59,7 @@ public abstract class AbstractGCMsgObj extends AbstractMsgObj {
 	}
 
 	@Override
-	public void writeBuff(IoBuffer buff) {
+	public void writeBuff(ByteBuffer buff) {
 		if (buff == null) {
 			// 如果参数对象为空,
 			// 则直接退出!

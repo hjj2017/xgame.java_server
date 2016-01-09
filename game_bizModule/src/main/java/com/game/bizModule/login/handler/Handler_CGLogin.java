@@ -27,17 +27,16 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 		Player p = new Player();
 		// 设置平台 UId 和会话 UId
 		p._platformUIdStr = cgMSG._platformUIdStr.getStrVal();
-		p._sessionUId = this._sessionUId;
 
-		if (super.setupPlayer(p) == false) {
+		if (super.installPlayer(p) == false) {
 			// 如果安装玩家对象失败,
 			// 则直接退出!
 			// 注意: 如果玩家重复发送 CGLogin 这条消息,
 			// 那么安装玩家将会失败!
 			LoginLog.LOG.error(MessageFormat.format(
-				"安装玩家失败, platformUIdStr = {0}, sessionUId = {1}",
+				"安装玩家失败, platformUIdStr = {0}, ctxUId = {1}",
 				p._platformUIdStr,
-				String.valueOf(p._sessionUId)
+				String.valueOf(p._ctxUId)
 			));
 			return;
 		}

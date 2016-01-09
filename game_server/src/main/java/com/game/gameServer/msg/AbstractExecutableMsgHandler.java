@@ -4,10 +4,10 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.mina.core.session.IoSession;
+import io.netty.channel.ChannelHandlerContext;
 
 import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.mina.OnlineSessionManager;
+import com.game.gameServer.msg.netty.CtxManager;
 import com.game.part.msg.MsgLog;
 
 /**
@@ -41,7 +41,7 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
             return;
         } else {
             // 发送消息给客户端
-            this.sendMsgToClient(msgObj, p._sessionUId);
+            this.sendMsgToClient(msgObj, p._ctxUId);
         }
     }
 
@@ -49,100 +49,29 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
      * 发送消息给客户端
      *
      * @param msgObj
-     * @param toSessionUId
+     * @param toCtxUId
      *
      */
-    protected void sendMsgToClient(AbstractGCMsgObj msgObj, long toSessionUId) {
+    protected void sendMsgToClient(AbstractGCMsgObj msgObj, long toCtxUId) {
         if (msgObj == null ||
-            toSessionUId <= 0L) {
+            toCtxUId <= 0L) {
             // 如果消息对象为空,
             // 则直接退出!
             return;
         }
 
-        // 根据玩家 Id 获取 IO 会话
-        IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(toSessionUId);
+        ChannelHandlerContext ctx = CtxManager.OBJ.getCtxByUId(toCtxUId);
 
-        if (sessionObj == null) {
+        if (ctx == null) {
             // 如果会话对象为空,
             // 则直接退出!
             MsgLog.LOG.error(MessageFormat.format(
-                "会话对象为空, sessionUId = {0}",
-                String.valueOf(toSessionUId)
+                "会话对象为空, ctxUId = {0}",
+                String.valueOf(toCtxUId)
             ));
             return;
         } else {
-            sessionObj.write(msgObj);
-        }
-    }
-
-    /**
-     * 设置键值对到会话
-     *
-     * @param k
-     * @param v
-     * @param toSessionUId
-     *
-     */
-    protected void putKeyValueToSession(String k, Object v, long toSessionUId) {
-        if (toSessionUId <= 0) {
-            // 如果会话 Id 为空,
-            // 则直接退出!
-            return;
-        }
-
-        if (k == null ||
-            k.isEmpty()) {
-            // 如果关键字为空,
-            // 则直接退出!
-            return;
-        }
-
-        // 获取会话对象
-        IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(toSessionUId);
-
-        if (sessionObj == null) {
-            // 如果会话对象为空,
-            // 则直接退出!
-            return;
-        } else {
-            // 设置会话属性值
-            sessionObj.setAttribute(k, v);
-        }
-    }
-
-    /**
-     * 根据关键字名称和会话 Id 获取数值
-     *
-     * @param k
-     * @param sessionUId
-     * @return
-     *
-     */
-    protected Object getValueByKeyAndSessionUId(String k, long sessionUId) {
-        if (sessionUId <= 0) {
-            // 如果会话 Id 为空,
-            // 则直接退出!
-            return null;
-        }
-
-        if (k == null ||
-            k.isEmpty()) {
-            // 如果关键字为空,
-            // 则直接退出!
-            return null;
-        }
-
-        // 获取会话对象
-        IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(sessionUId);
-
-        if (sessionObj == null) {
-            // 如果会话对象为空,
-            // 则直接退出!
-            return null;
-        } else {
-            // 设置会话属性值
-            return sessionObj.getAttribute(k);
+            ctx.write(msgObj);
         }
     }
 
@@ -159,21 +88,21 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
             return;
         }
 
-        // 获取会话 Id 集合
-        Set<Long> sessionUIdSet = OnlineSessionManager.OBJ.getSessionUIdSet();
+        // 获取会话 UId 集合
+        Set<Long> ctxUIdSet = CtxManager.OBJ.getCtxUIdSet();
 
-        if (sessionUIdSet == null ||
-            sessionUIdSet.size() <= 0) {
+        if (ctxUIdSet == null ||
+            ctxUIdSet.size() <= 0) {
             // 如果会话 UId 列表为空,
             // 则直接退出!
             return;
         }
 
-        sessionUIdSet.forEach(sessionUId -> {
-            if (sessionUId != null &&
-                sessionUId > 0L) {
+        ctxUIdSet.forEach(ctxUId -> {
+            if (ctxUId != null &&
+                ctxUId > 0L) {
                 // 发送消息
-                this.sendMsgToClient(msgObj, sessionUId);
+                this.sendMsgToClient(msgObj, ctxUId);
             }
         });
     }
@@ -205,22 +134,22 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
      * 给所有在线玩家广播消息
      *
      * @param msgObj
-     * @param toSessionUIdArr
+     * @param toCtxUIdArr
      *
      */
-    protected void broadcast(AbstractGCMsgObj msgObj, long[] toSessionUIdArr) {
+    protected void broadcast(AbstractGCMsgObj msgObj, long[] toCtxUIdArr) {
         if (msgObj == null ||
-            toSessionUIdArr == null ||
-            toSessionUIdArr.length <= 0) {
+            toCtxUIdArr == null ||
+            toCtxUIdArr.length <= 0) {
             // 如果参数对象为空,
             // 则直接退出!
             return;
         }
 
-        for (long sessionUId : toSessionUIdArr) {
-            if (sessionUId > 0L) {
+        for (long ctxUId : toCtxUIdArr) {
+            if (ctxUId > 0L) {
                 // 发送消息
-                this.sendMsgToClient(msgObj, sessionUId);
+                this.sendMsgToClient(msgObj, ctxUId);
             }
         }
     }
@@ -233,51 +162,52 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
      */
     protected void disconnect(Player p) {
         if (p != null) {
-            this.disconnect(p._sessionUId);
+            this.disconnect(p._ctxUId);
         }
     }
 
     /**
      * 断开会话
      *
-     * @param sessionUId
+     * @param ctxUId
      *
      */
-    protected void disconnect(long sessionUId) {
-        if (sessionUId <= 0L) {
+    protected void disconnect(long ctxUId) {
+        if (ctxUId <= 0L) {
             // 如果会话 UId 为空,
             // 则直接退出!
             return;
         }
 
         // 获取会话对象
-        IoSession sessionObj = OnlineSessionManager.OBJ.getSessionByUId(sessionUId);
+        ChannelHandlerContext ctx = CtxManager.OBJ.getCtxByUId(ctxUId);
 
-        if (sessionObj == null) {
+        if (ctx == null) {
             // 如果会话对象为空,
             // 则直接退出!
             return;
         } else {
             // 断开连接
-            sessionObj.close(true);
+            ctx.disconnect();
+            ctx.close();
         }
     }
 
     /**
      * 根据会话 UId 获取玩家对象
      *
-     * @param sessionUId
+     * @param ctxUId
      * @return
      *
      */
-    protected Player getPlayerBySessionUId(long sessionUId) {
-        if (sessionUId <= 0L) {
+    protected Player getPlayerByCtxUId(long ctxUId) {
+        if (ctxUId <= 0L) {
             // 如果会话 UId 为空,
             // 则直接退出!
             return null;
         } else {
             // 获取玩家对象
-            return OnlineSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
+            return CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
         }
     }
 }

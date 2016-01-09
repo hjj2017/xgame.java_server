@@ -1,11 +1,12 @@
 package com.game.gameServer.msg;
 
-import com.game.gameServer.msg.mina.OnlineSessionManager;
-import com.game.gameServer.framework.Player;
-import com.game.part.msg.MsgLog;
-import org.apache.mina.core.session.IoSession;
-
 import java.text.MessageFormat;
+
+import io.netty.channel.ChannelHandlerContext;
+
+import com.game.gameServer.framework.Player;
+import com.game.gameServer.msg.netty.CtxManager;
+import com.game.part.msg.MsgLog;
 
 /**
  * 抽象的消息处理器
@@ -16,7 +17,7 @@ import java.text.MessageFormat;
  */
 public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> extends AbstractExecutableMsgHandler<TMsgObj> {
 	/**
-	 * 会话 Id, 会在 MsgIoHandler 中赋值.
+	 * 会话 UId, 会在 MyChannelHandler 中赋值.
 	 *
 	 * <font color="#990000">注意: 该值的作用域不应该超过 com.game.gameServer!</font><br />
 	 * 但比较无奈的是,
@@ -24,7 +25,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 	 * 或者 readonly 这样的关键字...
 	 *
 	 * 而在 Scala 语言中可以使用:
-	 * <_p><code>public [ gameServer ] Long _sessionUId</code></_p>
+	 * <_p><code>public [ gameServer ] Long _ctxUId</code></_p>
 	 * 这样的声明方式来做出明确限制!
 	 * 整个框架可以具备良好、严谨的封闭性.
 	 *
@@ -35,7 +36,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 	 * 还是让我们期待 JAVA 9 吧...
 	 *
 	 */
-	public long _sessionUId;
+	public/*[ gameServer ]*/long _ctxUId;
 
 	/**
 	 * 发送消息给客户端
@@ -52,7 +53,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 
 		// 发送消息给客户端
 		this.sendMsgToClient(
-			msgObj, this._sessionUId
+			msgObj, this._ctxUId
 		);
 	}
 
@@ -63,29 +64,28 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 	 * @return
 	 *
 	 */
-	protected boolean setupPlayer(Player newP) {
+	protected boolean installPlayer(Player newP) {
 		if (newP == null ||
 			newP._platformUIdStr == null ||
-			newP._platformUIdStr.isEmpty() ||
-			newP._sessionUId <= 0L) {
+			newP._platformUIdStr.isEmpty()) {
 			// 如果参数对象为空,
 			// 则直接退出!
 			return false;
 		}
 
 		// 获取管理器对象
-		OnlineSessionManager mngrObj = OnlineSessionManager.OBJ;
+		CtxManager mngrObj = CtxManager.OBJ;
 		// 获旧取玩家对象
-		Player oldP = mngrObj.getPlayerBySessionUId(
-			newP._sessionUId
+		Player oldP = mngrObj.getPlayerByCtxUId(
+			newP._ctxUId
 		);
 
 		if (oldP != null) {
 			// 如果有老玩家,
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
-				"sessionUId = {0}, 已有老玩家 {1}",
-				String.valueOf(newP._sessionUId), oldP._platformUIdStr
+				"ctxUId = {0}, 已有老玩家 {1}",
+				String.valueOf(newP._ctxUId), oldP._platformUIdStr
 			));
 			this.disconnect(newP);
 			this.disconnect(oldP);
@@ -93,9 +93,9 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 		}
 
 		// 获取会话对象
-		IoSession sessionObj = mngrObj.getSessionByPlatformUIdStr(newP._platformUIdStr);
+		ChannelHandlerContext ctx = mngrObj.getCtxByPlatformUIdStr(newP._platformUIdStr);
 
-		if (sessionObj != null) {
+		if (ctx != null) {
 			// 如果有会话对象,
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
@@ -103,12 +103,12 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 				newP._platformUIdStr
 			));
 			this.disconnect(newP);
-			sessionObj.close(false);
+			ctx.close();
 			return false;
 		}
 
 		// 绑定玩家到会话
-		mngrObj.bindPlayerToSession(newP, newP._sessionUId);
+		mngrObj.bindPlayerToCtx(newP, newP._ctxUId);
 		return true;
 	}
 
@@ -126,10 +126,8 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 			return false;
 		}
 
-		// 获取管理器对象
-		OnlineSessionManager mngrObj = OnlineSessionManager.OBJ;
 		// 解除玩家到会话的绑定关系
-		mngrObj.unbindPlayerFromSession(theP._sessionUId);
+		CtxManager.OBJ.unbindPlayerFromCtx(theP._ctxUId);
 
 		return true;
 	}
@@ -141,6 +139,6 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 	 * 
 	 */
 	protected Player getPlayer() {
-		return super.getPlayerBySessionUId(this._sessionUId);
+		return super.getPlayerByCtxUId(this._ctxUId);
 	}
 }

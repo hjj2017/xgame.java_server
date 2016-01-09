@@ -14,10 +14,10 @@ public final class SpecialMsgSerialUId {
 	public static final short CG_QQ_TGW = 0x775f;
 	/** 腾讯网关消息 */
 	public static final short GC_QQ_TGW = 51;
-	/** 会话开启 */
-	public static final short SESSION_OPENED = 1;
-	/** 会话关闭 */
-	public static final short SESSION_CLOSED = 44;
+	/** 玩家连入服务器 */
+	public static final short PLAYER_CONNECTED = 1;
+	/** 玩家断开服务器 */
+	public static final short PLAYER_DISCONNECTED = 44;
 
 	/**
 	 * 类默认构造器

@@ -1,7 +1,7 @@
 package com.game.bizModule.login.msg;
 
 import com.game.bizModule.global.AllMsgSerialUId;
-import com.game.bizModule.login.handler.Handler_CGDisconnect;
+import com.game.bizModule.login.handler.Handler_CGPlayerDisconnected;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.MsgTypeEnum;
@@ -13,16 +13,16 @@ import com.game.gameServer.msg.MsgTypeEnum;
  * @since 2015/7/12
  *
  */
-public class CGDisconnect extends AbstractCGMsgObj {
+public class CGPlayerDisconnected extends AbstractCGMsgObj {
     @Override
     public short getSerialUId() {
-        return AllMsgSerialUId.SESSION_CLOSED;
+        return AllMsgSerialUId.PLAYER_DISCONNECTED;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    protected AbstractCGMsgHandler<CGDisconnect> newHandlerObj() {
-        return new Handler_CGDisconnect();
+    protected AbstractCGMsgHandler<CGPlayerDisconnected> newHandlerObj() {
+        return new Handler_CGPlayerDisconnected();
     }
 
     @Override

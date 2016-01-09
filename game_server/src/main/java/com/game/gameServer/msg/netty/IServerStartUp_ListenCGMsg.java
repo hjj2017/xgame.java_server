@@ -2,7 +2,6 @@ package com.game.gameServer.msg.netty;
 
 import java.net.InetSocketAddress;
 
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
@@ -18,11 +17,13 @@ import com.game.part.msg.MsgLog;
 /**
  * 开始监听 CG 消息
  *
+ * @author hjj2017
+ * @since 2016/1/8
+ *
  */
 public interface IServerStartUp_ListenCGMsg {
     /** 消息处理器数组 */
     static final ChannelHandler[] HANDLER_ARR = {
-        new CtxUIdHandler(),
         new MsgDecoder(),
         new MsgEncoder(),
         new MyChannelHandler(),

@@ -22,14 +22,9 @@ public class MsgEncoder extends MessageToByteEncoder {
 
     @Override
     protected void encode(
-        ChannelHandlerContext ctx,
-        Object o,
-        ByteBuf nettyBuf) throws Exception {
+        ChannelHandlerContext ctx, Object o, ByteBuf nettyBuf) throws Exception {
 
-        // 是否为消息对象?
-        boolean isMsgObj = (o instanceof AbstractMsgObj);
-
-        if (isMsgObj == false) {
+        if (!(o instanceof AbstractMsgObj)) {
             // 如果不是消息对象,
             // 则直接退出!
             return;

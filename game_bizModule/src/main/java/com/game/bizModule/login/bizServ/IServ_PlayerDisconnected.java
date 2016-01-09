@@ -15,14 +15,14 @@ import java.text.MessageFormat;
  * @since 2015/7/12
  *
  */
-interface IServ_Disconnect {
+interface IServ_PlayerDisconnected {
     /**
      * 玩家断线
      *
      * @param p
      *
      */
-    default void disconnect(final Player p) {
+    default void playerDisconnected(final Player p) {
         if (p == null) {
             // 如果参数对象为空,
             // 则直接退出!

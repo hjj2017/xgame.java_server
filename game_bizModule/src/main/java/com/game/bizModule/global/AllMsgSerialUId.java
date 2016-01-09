@@ -19,10 +19,10 @@ public final class AllMsgSerialUId {
     public static final short CG_QQ_TGW = SpecialMsgSerialUId.CG_QQ_TGW;
     /** @see SpecialMsgSerialUId#GC_QQ_TGW */
     public static final short GC_QQ_TGW = SpecialMsgSerialUId.GC_QQ_TGW;
-    /** @see SpecialMsgSerialUId#SESSION_OPENED */
-    public static final short SESSION_OPENED = SpecialMsgSerialUId.SESSION_OPENED;
-    /** @see SpecialMsgSerialUId#SESSION_CLOSED */
-    public static final short SESSION_CLOSED = SpecialMsgSerialUId.SESSION_CLOSED;
+    /** @see SpecialMsgSerialUId#PLAYER_CONNECTED */
+    public static final short PLAYER_CONNECTED = SpecialMsgSerialUId.PLAYER_CONNECTED;
+    /** @see SpecialMsgSerialUId#PLAYER_DISCONNECTED */
+    public static final short PLAYER_DISCONNECTED = SpecialMsgSerialUId.PLAYER_DISCONNECTED;
     /** 消息盒子 */
     public static final short GC_MSG_BOX = 100;
 

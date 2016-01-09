@@ -1,9 +1,9 @@
 package com.game.gameServer.msg;
 
-import com.game.part.msg.MsgError;
-import org.apache.mina.core.buffer.IoBuffer;
-
+import java.nio.ByteBuffer;
 import java.text.MessageFormat;
+
+import com.game.part.msg.MsgError;
 
 /**
  * 抽象的 CG 的消息
@@ -17,13 +17,13 @@ public abstract class AbstractGGMsgObj extends AbstractExecutableMsgObj {
 	private AbstractGGMsgHandler<AbstractGGMsgObj> _h = null;
 
 	@Override
-	public void readBuff(IoBuffer buff) {
+	public void readBuff(ByteBuffer buff) {
 		// 内部消息无需实现该函数
 		return;
 	}
 
 	@Override
-	public void writeBuff(IoBuffer buff) {
+	public void writeBuff(ByteBuffer buff) {
 		// 内部消息无需实现该函数
 		return;
 	}
