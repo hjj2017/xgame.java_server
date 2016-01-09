@@ -1,5 +1,7 @@
 package com.game.robot.moduleImpl.human;
 
+import java.text.MessageFormat;
+
 import com.game.bizModule.human.msg.CGCreateHuman;
 import com.game.bizModule.human.msg.CGEnterHuman;
 import com.game.bizModule.human.msg.GCQueryHumanEntryList;
@@ -9,8 +11,6 @@ import com.game.part.msg.type.MsgStr;
 import com.game.robot.RobotLog;
 import com.game.robot.kernal.AbstractGCMsgHandler;
 import com.game.robot.kernal.Robot;
-
-import java.text.MessageFormat;
 
 /**
  * 接收 GC 消息

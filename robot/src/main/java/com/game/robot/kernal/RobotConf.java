@@ -3,10 +3,9 @@ package com.game.robot.kernal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * 机器人配置

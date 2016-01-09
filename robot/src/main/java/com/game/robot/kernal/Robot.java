@@ -7,14 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.mina.core.future.ConnectFuture;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
-import com.game.gameServer.msg.mina.MsgDecoder;
-import com.game.gameServer.msg.mina.MsgEncoder;
-import com.game.gameServer.msg.mina.MsgCumulativeFilter;
+import com.game.gameServer.msg.netty.MsgDecoder;
+import com.game.gameServer.msg.netty.MsgEncoder;
 import com.game.robot.RobotLog;
 
 /**
@@ -45,13 +48,10 @@ public final class Robot {
 	private FocusModule _currFocusModule = null;
 	/** 消息队列 */
 	final LinkedBlockingQueue<? super Object> _msgQ = new LinkedBlockingQueue<>();
-
-	/** 连接器对象 */
-	private NioSocketConnector _conn = null;
-	/** IO 会话对象 */
-	private IoSession _sessionObj = null;
 	/** 数据字典 */
 	public final Map<Object, Object> _dataMap = new ConcurrentHashMap<>();
+    /** 信道对象 */
+    private ChannelFuture _channelF = null;
 
 	/**
 	 * 类参数构造器
@@ -177,54 +177,49 @@ public final class Robot {
 	 * 
 	 */
 	public void connectToGameServer() {
-		try {
-			// 创建 NIO 连接
-			NioSocketConnector conn = new NioSocketConnector();
+        // 创建事件循环
+		EventLoopGroup workGroup = new NioEventLoopGroup();
 
-			// 网络黏包算法
-			conn.getFilterChain().addLast("msgCumulative", new MsgCumulativeFilter());
-			// 添加消息解码器
-			conn.getFilterChain().addLast("msgCodec", new ProtocolCodecFilter(
-				new MsgEncoder(),
-				new MsgDecoder()
-			));
+        // 创建客户端引导程序
+		Bootstrap b = new Bootstrap();
 
-			// 设置消息处理器
-			conn.setHandler(new MINA_GCMsgIoHandler(this));
-			// 连接到游戏服
-			ConnectFuture cf = conn.connect(new InetSocketAddress(
-				this._gameServerIpAddr, 
-				this._gameServerPort
-			));
+        b.group(workGroup);
+        b.channel(NioSocketChannel.class);
+        b.handler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) throws Exception {
+                ch.pipeline().addLast(
+                    new MsgDecoder(),
+                    new MsgEncoder(),
+                    new MyChannelHandler(Robot.this)
+                );
+            }
+        });
+        b.option(ChannelOption.TCP_NODELAY, true);
 
-			// 等待接受消息
-			cf.awaitUninterruptibly();
-			// 设置连接器和会话对象
-			this._conn = conn;
-			this._sessionObj = cf.getSession();
-		} catch (Exception ex) {
-			// 记录错误日志
-			RobotLog.LOG.error(ex.getMessage(), ex);
-		}
-	}
+        try {
+            this._channelF = b.bind(new InetSocketAddress(
+                this._gameServerIpAddr,
+                this._gameServerPort
+            )).sync();
+
+            this._channelF.channel().closeFuture().sync();
+        } catch (Exception ex) {
+            // 记录并抛出异常
+            RobotLog.LOG.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex);
+        } finally {
+            workGroup.shutdownGracefully();
+        }
+    }
 
 	/**
 	 * 断开连接
 	 * 
 	 */
 	public void disconnect() {
-		if (this._sessionObj != null) {
-			// 关闭会话对象
-			this._sessionObj.close(true);
-		}
-
-		if (this._conn != null) {
-			// 关闭连接
-			this._conn.dispose(true);
-		}
-
-		// 清除数据字典中的数据
-		this._dataMap.clear();
+        this._channelF.channel().disconnect();
+        this._channelF.channel().close();
 	}
 
 	/**
@@ -234,13 +229,6 @@ public final class Robot {
 	 * 
 	 */
 	public void sendMsg(Object msgObj) {
-		if (msgObj != null && 
-			this._sessionObj != null) {
-			// 记录日志信息
-			RobotLog.LOG.info(msgObj.getClass().getSimpleName());
-			// 如果消息对象和会话对象都不为空, 
-			// 才发送消息!
-			this._sessionObj.write(msgObj);
-		}
+        this._channelF.channel().writeAndFlush(msgObj);
 	}
 }
