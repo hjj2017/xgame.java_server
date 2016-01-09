@@ -48,16 +48,16 @@ public interface IServerStartUp_ListenCGMsg {
         // 创建服务器引导程序
         ServerBootstrap b = new ServerBootstrap();
 
-        b.group(bossGroup, bossGroup)
-            .channel(NioServerSocketChannel.class)
-            .childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) {
-                    ch.pipeline().addLast(HANDLER_ARR);
-                }
-            })
-            .option(ChannelOption.SO_BACKLOG, 128)
-            .childOption(ChannelOption.SO_KEEPALIVE, true);
+        b.group(bossGroup, bossGroup);
+        b.channel(NioServerSocketChannel.class);
+        b.option(ChannelOption.SO_BACKLOG, 128);
+        b.childOption(ChannelOption.SO_KEEPALIVE, true);
+        b.childHandler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            public void initChannel(SocketChannel ch) {
+                ch.pipeline().addLast(HANDLER_ARR);
+            }
+        });
 
         try {
             // 绑定 IP 地址和端口号

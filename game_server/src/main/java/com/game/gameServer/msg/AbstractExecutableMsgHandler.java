@@ -71,7 +71,7 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
             ));
             return;
         } else {
-            ctx.write(msgObj);
+            ctx.writeAndFlush(msgObj);
         }
     }
 

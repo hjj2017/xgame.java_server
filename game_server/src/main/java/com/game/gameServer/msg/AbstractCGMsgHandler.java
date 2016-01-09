@@ -77,7 +77,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 		CtxManager mngrObj = CtxManager.OBJ;
 		// 获旧取玩家对象
 		Player oldP = mngrObj.getPlayerByCtxUId(
-			newP._ctxUId
+			this._ctxUId
 		);
 
 		if (oldP != null) {
@@ -108,7 +108,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 		}
 
 		// 绑定玩家到会话
-		mngrObj.bindPlayerToCtx(newP, newP._ctxUId);
+		mngrObj.bindPlayerToCtx(newP, this._ctxUId);
 		return true;
 	}
 

@@ -2,7 +2,9 @@ package com.game.robot.kernal;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import net.sf.json.JSONObject;
 
+import com.game.bizModule.login.msg.CGLogin;
 import com.game.part.msg.MsgLog;
 import com.game.part.util.Assert;
 
@@ -28,6 +30,22 @@ class MyChannelHandler extends ChannelInboundHandlerAdapter {
 		Assert.notNull(robotObj);
 		// 设置机器人对象
 		this._robotObj = robotObj;
+	}
+
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        // 创建 JSON 对象
+        JSONObject jsonObj = new JSONObject();
+
+        // 创建登陆协议文本
+        jsonObj.put("protocol", "dbUser");
+        jsonObj.put("userName", this._robotObj._userName);
+        jsonObj.put("password", this._robotObj._userPass);
+
+		ctx.writeAndFlush(new CGLogin(
+            this._robotObj._userName,
+            jsonObj.toString()
+        ));
 	}
 
 	@Override

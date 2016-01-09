@@ -35,15 +35,19 @@ public class MsgDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        // 按照字节序
-        nettyBuf.order(ByteOrder.LITTLE_ENDIAN);
-        // 获取 NioBuff
+        // 获取 NioBuff 并按字节序
         ByteBuffer nioBuf = nettyBuf.nioBuffer();
+        nioBuf.order(ByteOrder.LITTLE_ENDIAN);
 
+        // 保存原有位置
+        final int oldPos = nioBuf.position();
         // 首先, 跳过消息长度
         IoBuffUtil.readShort(nioBuf);
         // 获取消息序列化 Id
         short msgSerialUId = IoBuffUtil.readShort(nioBuf);
+        // 还原原有位置
+        nioBuf.position(oldPos);
+
         //
         // 获取消息对象, 注意:
         // CG 消息和 GC 消息,
@@ -63,9 +67,10 @@ public class MsgDecoder extends ByteToMessageDecoder {
         // 令消息读取数据
         msgObj.readBuff(nioBuf);
 
-        // 清零 Buff
-        nioBuf.position(0);
-        nioBuf.limit(0);
+        // 修改索引位置
+        nettyBuf.setIndex(
+            nioBuf.position(), nettyBuf.writerIndex()
+        );
 
         // 向下处理
         out_objList.add(msgObj);

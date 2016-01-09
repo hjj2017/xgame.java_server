@@ -198,7 +198,7 @@ public final class Robot {
         b.option(ChannelOption.TCP_NODELAY, true);
 
         try {
-            this._channelF = b.bind(new InetSocketAddress(
+            this._channelF = b.connect(new InetSocketAddress(
                 this._gameServerIpAddr,
                 this._gameServerPort
             )).sync();
