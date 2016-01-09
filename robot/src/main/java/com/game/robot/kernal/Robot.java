@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -28,8 +28,8 @@ import com.game.robot.RobotLog;
  * 
  */
 public final class Robot {
-	/** 等待 GC 消息秒数 */
-	private static final int WAIT_GC_MSG_SEC = 20;
+    // 创建事件循环
+    private static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup();
 
 	/** 游戏服 IP 地址 */
 	public String _gameServerIpAddr = "0.0.0.0";
@@ -51,7 +51,7 @@ public final class Robot {
 	/** 数据字典 */
 	public final Map<Object, Object> _dataMap = new ConcurrentHashMap<>();
     /** 信道对象 */
-    private ChannelFuture _channelF = null;
+    Channel _ch = null;
 
 	/**
 	 * 类参数构造器
@@ -107,48 +107,51 @@ public final class Robot {
 	 * 
 	 */
 	void start() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Robot.this.startMsgLoop();
-			}
-		}).start();
+        if (this._currFocusModule == null) {
+            // 如果当前聚焦模块为空,
+            // 则直接退出!
+            RobotLog.LOG.error(MessageFormat.format(
+                "机器人 {0} 第一个模块为空",
+                this._userName
+            ));
+            return;
+        }
+
+        // 不管怎么说,
+        // 先尝试给第一个模块发送第一条指令! 即,
+        // 让第一个模块发送 CG 消息...
+        this._currFocusModule.test(this, ModuleReadyCmd.OBJ);
+        // 消化所有消息
+        this.digestAllMsg();
 	}
 
 	/**
-	 * 开始消息循环
+	 * 消化所有消息
 	 * 
 	 */
-	private void startMsgLoop() {
-		if (this._currFocusModule == null) {
-			// 如果当前聚焦模块为空, 
-			// 则直接退出!
-			return;
-		}
-
+	private void digestAllMsg() {
 		try {
-			// 不管怎么说, 
-			// 先尝试给第一个模块发送第一条指令! 即, 
-			// 让第一个模块发送 CG 消息...
-			this._currFocusModule.test(this, ModuleReadyCmd.OBJ);
-
 			while (true) {
 				// 获取消息对象, 
 				// 但是最多只等待 20 秒!
 				// 如果超过这个时间, 
 				// 则返回空值...
-				Object msgObj = this._msgQ.poll(WAIT_GC_MSG_SEC, TimeUnit.SECONDS);
+				Object msgObj = this._msgQ.poll();
 	
 				if (msgObj == null) {
-					// 如果已经超过 10 秒没有拿到消息对象了, 
-					// 则跳转到下一个模块!
-					msgObj = ModuleReadyCmd.OBJ;
-					this.gotoNextModule();
+                    // 如果消息对象为空,
+                    // 则直接退出!
+					break;
 				}
 
 				if (this._currFocusModule == null) {
 					// 如果当前聚焦模块为空, 
 					// 则直接退出!
+                    RobotLog.LOG.error(MessageFormat.format(
+                        "机器人 {0} 当前模块为空, 机器人 {0} 已经完成此次测试使命, 即将断开连接...",
+                        this._userName
+                    ));
+                    this.disconnect();
 					break;
 				}
 
@@ -161,15 +164,6 @@ public final class Robot {
 			// 记录错误日志
 			RobotLog.LOG.error(ex.getMessage(), ex);
 		}
-
-		// 全部模块测试完成之后,
-		// 断开服务器连接!
-		this.disconnect();
-		// 记录日志信息
-		RobotLog.LOG.info(MessageFormat.format(
-			"机器人 {0} 已经完成此次测试使命, 光荣的断开了连接", 
-			this._userName
-		));
 	}
 
 	/**
@@ -177,13 +171,12 @@ public final class Robot {
 	 * 
 	 */
 	public void connectToGameServer() {
-        // 创建事件循环
-		EventLoopGroup workGroup = new NioEventLoopGroup();
-
         // 创建客户端引导程序
 		Bootstrap b = new Bootstrap();
 
-        b.group(workGroup);
+        b.group(NETTY_WORK_GROUP);
+        b.option(ChannelOption.TCP_NODELAY, true);
+        b.option(ChannelOption.SO_KEEPALIVE, true);
         b.channel(NioSocketChannel.class);
         b.handler(new ChannelInitializer<SocketChannel>() {
             @Override
@@ -195,21 +188,18 @@ public final class Robot {
                 );
             }
         });
-        b.option(ChannelOption.TCP_NODELAY, true);
 
         try {
-            this._channelF = b.connect(new InetSocketAddress(
+            // 连接服务器后获取信道
+            Channel ch = b.connect(new InetSocketAddress(
                 this._gameServerIpAddr,
                 this._gameServerPort
-            )).sync();
-
-            this._channelF.channel().closeFuture().sync();
+            )).sync().channel();
+            // 设置信道
+            this._ch = ch;
         } catch (Exception ex) {
             // 记录并抛出异常
             RobotLog.LOG.error(ex.getMessage(), ex);
-            throw new RuntimeException(ex);
-        } finally {
-            workGroup.shutdownGracefully();
         }
     }
 
@@ -218,8 +208,9 @@ public final class Robot {
 	 * 
 	 */
 	public void disconnect() {
-        this._channelF.channel().disconnect();
-        this._channelF.channel().close();
+        if (this._ch != null) {
+            this._ch.close();
+        }
 	}
 
 	/**
@@ -229,6 +220,22 @@ public final class Robot {
 	 * 
 	 */
 	public void sendMsg(Object msgObj) {
-        this._channelF.channel().writeAndFlush(msgObj);
+        if (msgObj != null &&
+            this._ch != null) {
+            this._ch.writeAndFlush(msgObj);
+        }
 	}
+
+    /**
+     * 处理消息
+     *
+     * @param msgObj
+     *
+     */
+    public void processMsg(Object msgObj) {
+        if (msgObj != null) {
+            this._msgQ.offer(msgObj);
+            this.digestAllMsg();
+        }
+    }
 }

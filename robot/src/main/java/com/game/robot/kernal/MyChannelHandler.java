@@ -17,7 +17,7 @@ import com.game.part.util.Assert;
  */
 class MyChannelHandler extends ChannelInboundHandlerAdapter {
 	/** 机器人对象 */
-	private Robot _robotObj;
+	private final Robot _robotObj;
 
 	/**
 	 * 类参数构造器
@@ -33,40 +33,15 @@ class MyChannelHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	@Override
-	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // 创建 JSON 对象
-        JSONObject jsonObj = new JSONObject();
-
-        // 创建登陆协议文本
-        jsonObj.put("protocol", "dbUser");
-        jsonObj.put("userName", this._robotObj._userName);
-        jsonObj.put("password", this._robotObj._userPass);
-
-		ctx.writeAndFlush(new CGLogin(
-            this._robotObj._userName,
-            jsonObj.toString()
-        ));
-	}
-
-	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object obj) {
-		if (ctx == null ||
-			obj == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
-
-		// 将消息对象添加到队列
-		this._robotObj._msgQ.offer(obj);
+		// 处理消息
+		this._robotObj.processMsg(obj);
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable err) {
-		// 记录错误日志
+		// 记录错误日志并断线
 		MsgLog.LOG.error(err.getMessage(), err);
-		// 令玩家断开连接
-		ctx.disconnect();
-		ctx.close();
+		this._robotObj.disconnect();
 	}
 }

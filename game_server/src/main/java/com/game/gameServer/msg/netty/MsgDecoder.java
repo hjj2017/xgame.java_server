@@ -29,6 +29,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
         List<Object> out_objList) throws Exception {
 
         if (nettyBuf == null ||
+            nettyBuf.readableBytes() <= 0 ||
             out_objList == null) {
             // 如果参数对象为空,
             // 则直接退出!
