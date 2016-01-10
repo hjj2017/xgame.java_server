@@ -3,7 +3,8 @@ package com.game.gameServer.msg;
 import com.game.part.util.EnumHelper;
 
 /**
- * 消息源类型枚举
+ * 消息源类型枚举, 决定了消息在哪个场景线程里执行?
+ * 注意 : 有个命名相似的 MsgTypeEnum, 决定了玩家能处理什么类型的消息...
  *
  * @author hjj2017
  * @since 2015/7/29

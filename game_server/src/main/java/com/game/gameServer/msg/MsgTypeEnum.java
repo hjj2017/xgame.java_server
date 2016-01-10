@@ -3,10 +3,12 @@ package com.game.gameServer.msg;
 import com.game.part.util.EnumHelper;
 
 /**
- * 消息类型
+ * 消息类型, 决定了玩家能处理什么类型的消息?
+ * 注意 : 有个命名相似的 MsgOrigTypeEnum, 它决定了消息能在哪个场景线程里执行...
  *
  * @author hjj2017
  * @since 2015/7/11
+ * @see MsgOrigTypeEnum
  *
  */
 public enum MsgTypeEnum implements EnumHelper.ICustomEnum {

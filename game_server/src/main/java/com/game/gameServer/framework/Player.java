@@ -66,6 +66,7 @@ public final class Player {
      * 
      */
     public Player() {
+        // 新建玩家可以处理登陆消息
         this._allowMsgTypeMap.put(MsgTypeEnum.login, true);
     }
 
