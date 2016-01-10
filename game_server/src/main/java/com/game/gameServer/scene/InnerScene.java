@@ -10,7 +10,7 @@ import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.AbstractExecutableMsgObj;
 import com.game.gameServer.msg.MsgOrigTypeEnum;
 import com.game.gameServer.msg.MsgTypeEnum;
-import com.game.gameServer.msg.netty.CtxManager;
+import com.game.gameServer.msg.netty.IoSessionManager;
 import com.game.part.ThreadNamingFactory;
 import com.game.part.msg.type.AbstractMsgObj;
 
@@ -197,9 +197,9 @@ class InnerScene {
 		}
 
 		// 获取会话 UId
-		final long ctxUId = cgMsgObj.getSelfHandler()._ctxUId;
+		final long ctxUId = cgMsgObj.getSelfHandler()._sessionUId;
 		// 获取玩家对象
-		Player p = CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
+		Player p = IoSessionManager.OBJ.getPlayerBySessionUId(ctxUId);
 
 		if (p == null) {
 			// 如果玩家对象为空,

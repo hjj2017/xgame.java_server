@@ -1,6 +1,6 @@
 {
 # 游戏服 IP 地址
-"gameServerIpAddr" : "127.0.0.1",
+"gameServerIpAddr" : "192.168.1.2",
 # 游戏服端口号
 "gameServerPort" : 4400,
 # 起始账户 Id

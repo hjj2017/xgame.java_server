@@ -26,7 +26,7 @@ public class MyChannelHandler extends ChannelInboundHandlerAdapter {
         super.channelRegistered(ctx);
 
         // 添加上下文对象
-        CtxManager.OBJ.addCtx(ctx);
+        IoSessionManager.OBJ.createSessionAndAdd(ctx);
         // 获取消息对象
         AbstractCGMsgObj cgMsgObj = MsgServ.OBJ.newMsgObj(SpecialMsgSerialUId.PLAYER_CONNECTED);
         // 发送消息
@@ -44,7 +44,7 @@ public class MyChannelHandler extends ChannelInboundHandlerAdapter {
             MsgLog.LOG.info(MessageFormat.format(
                 "接到消息 {0}, ctxUId = {1}",
                 obj.toString(),
-                String.valueOf(CtxManager.OBJ.getUId(ctx))
+                String.valueOf(IoSessionManager.OBJ.getSessionUId(ctx))
             ));
 
             // 发送消息
@@ -97,7 +97,7 @@ public class MyChannelHandler extends ChannelInboundHandlerAdapter {
 
         if (handler != null) {
             // 设置会话 UId
-            handler._ctxUId = CtxManager.OBJ.getUId(ctx);
+            handler._sessionUId = IoSessionManager.OBJ.getSessionUId(ctx);
         }
 
         // 分派消息对象

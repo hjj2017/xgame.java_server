@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.game.bizModule.human.bizServ.HumanNaming;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.netty.CtxManager;
+import com.game.gameServer.msg.netty.IoSessionManager;
 import com.game.part.GameError;
 import com.game.part.util.Assert;
 import com.game.part.util.NullUtil;
@@ -206,7 +206,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		}
 
 		// 获取会话 UId 集合
-		Set<Long> ctxUIdSet = CtxManager.OBJ.getCtxUIdSet();
+		Set<Long> ctxUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
 
 		if (ctxUIdSet == null ||
 			ctxUIdSet.isEmpty()) {
@@ -217,7 +217,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 
 		return ctxUIdSet.stream().map(ctxUId -> {
 			// 根据会话 UId 获取玩家对象
-			Player p = CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
+			Player p = IoSessionManager.OBJ.getPlayerBySessionUId(ctxUId);
 
 			if (p == null) {
 				// 如果玩家对象为空,
@@ -245,7 +245,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	 */
 	public static List<Human> getAllOnlineHuman() {
 		// 获取会话 UId 集合
-		Set<Long> ctxUIdSet = CtxManager.OBJ.getCtxUIdSet();
+		Set<Long> ctxUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
 
 		if (ctxUIdSet == null ||
 			ctxUIdSet.isEmpty()) {
@@ -256,7 +256,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 
 		return ctxUIdSet.stream().map(ctxUId -> {
 			// 根据会话 UId 获取玩家对象
-			Player p = CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
+			Player p = IoSessionManager.OBJ.getPlayerBySessionUId(ctxUId);
 
 			if (p == null) {
 				// 如果玩家对象为空,

@@ -2,10 +2,9 @@ package com.game.gameServer.msg;
 
 import java.text.MessageFormat;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.netty.CtxManager;
+import com.game.gameServer.msg.netty.IoSession;
+import com.game.gameServer.msg.netty.IoSessionManager;
 import com.game.part.msg.MsgLog;
 
 /**
@@ -25,7 +24,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 	 * 或者 readonly 这样的关键字...
 	 *
 	 * 而在 Scala 语言中可以使用:
-	 * <_p><code>public [ gameServer ] Long _ctxUId</code></_p>
+	 * <_p><code>public [ gameServer ] Long _sessionUId</code></_p>
 	 * 这样的声明方式来做出明确限制!
 	 * 整个框架可以具备良好、严谨的封闭性.
 	 *
@@ -36,12 +35,12 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 	 * 还是让我们期待 JAVA 9 吧...
 	 *
 	 */
-	public/*[ gameServer ]*/long _ctxUId;
+	public/*[ gameServer ]*/long _sessionUId;
 
 	/**
 	 * 发送消息给客户端
 	 * 
-	 * @param msgObj
+	 * @param msgObj 消息对象
 	 * 
 	 */
 	protected void sendMsgToClient(AbstractGCMsgObj msgObj) {
@@ -53,15 +52,15 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 
 		// 发送消息给客户端
 		this.sendMsgToClient(
-			msgObj, this._ctxUId
+			msgObj, this._sessionUId
 		);
 	}
 
 	/**
 	 * 安装玩家对象, 一般是在接到客户端第一个消息时执行
 	 *
-	 * @param newP
-	 * @return
+	 * @param newP 新玩家
+	 * @return 安装成功标志
 	 *
 	 */
 	protected boolean installPlayer(Player newP) {
@@ -74,10 +73,10 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 		}
 
 		// 获取管理器对象
-		CtxManager mngrObj = CtxManager.OBJ;
+		IoSessionManager mngrObj = IoSessionManager.OBJ;
 		// 获旧取玩家对象
-		Player oldP = mngrObj.getPlayerByCtxUId(
-			this._ctxUId
+		Player oldP = mngrObj.getPlayerBySessionUId(
+			this._sessionUId
 		);
 
 		if (oldP != null) {
@@ -85,30 +84,30 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
 				"ctxUId = {0}, 已有老玩家 {1}",
-				String.valueOf(newP._ctxUId), oldP._platformUIdStr
+				String.valueOf(newP._sessionUId), oldP._platformUIdStr
 			));
 			this.disconnect(newP);
 			this.disconnect(oldP);
 			return false;
 		}
 
-		// 获取会话对象
-		ChannelHandlerContext ctx = mngrObj.getCtxByPlatformUIdStr(newP._platformUIdStr);
+		// 获取已有会话对象
+		IoSession oldSession = mngrObj.getSessionByPlatformUIdStr(newP._platformUIdStr);
 
-		if (ctx != null) {
+		if (oldSession != null) {
 			// 如果有会话对象,
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
 				"platformUIdStr = {0}, 已有会话对象",
 				newP._platformUIdStr
 			));
+			oldSession.getChannel().close();
 			this.disconnect(newP);
-			ctx.close();
 			return false;
 		}
 
 		// 绑定玩家到会话
-		mngrObj.bindPlayerToCtx(newP, this._ctxUId);
+		mngrObj.bindPlayerToSession(newP, this._sessionUId);
 		return true;
 	}
 
@@ -127,18 +126,18 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 		}
 
 		// 解除玩家到会话的绑定关系
-		CtxManager.OBJ.unbindPlayerFromCtx(theP._ctxUId);
+		IoSessionManager.OBJ.unbindPlayerFromSession(theP._sessionUId);
 
 		return true;
 	}
 
 	/**
-	 * 根据会话 Id 获取玩家对象
+	 * 根据会话 UId 获取玩家对象
 	 *
 	 * @return 
 	 * 
 	 */
 	protected Player getPlayer() {
-		return super.getPlayerByCtxUId(this._ctxUId);
+		return super.getPlayerBySessionUId(this._sessionUId);
 	}
 }

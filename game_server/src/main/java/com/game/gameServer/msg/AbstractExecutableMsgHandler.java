@@ -7,7 +7,8 @@ import java.util.Set;
 import io.netty.channel.ChannelHandlerContext;
 
 import com.game.gameServer.framework.Player;
-import com.game.gameServer.msg.netty.CtxManager;
+import com.game.gameServer.msg.netty.IoSession;
+import com.game.gameServer.msg.netty.IoSessionManager;
 import com.game.part.msg.MsgLog;
 
 /**
@@ -41,37 +42,37 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
             return;
         } else {
             // 发送消息给客户端
-            this.sendMsgToClient(msgObj, p._ctxUId);
+            this.sendMsgToClient(msgObj, p._sessionUId);
         }
     }
 
     /**
      * 发送消息给客户端
      *
-     * @param msgObj
-     * @param toCtxUId
+     * @param msgObj 消息对象
+     * @param toSessionUId 会话 UId
      *
      */
-    protected void sendMsgToClient(AbstractGCMsgObj msgObj, long toCtxUId) {
+    protected void sendMsgToClient(AbstractGCMsgObj msgObj, long toSessionUId) {
         if (msgObj == null ||
-            toCtxUId <= 0L) {
+            toSessionUId <= 0L) {
             // 如果消息对象为空,
             // 则直接退出!
             return;
         }
 
-        ChannelHandlerContext ctx = CtxManager.OBJ.getCtxByUId(toCtxUId);
+        IoSession sessionObj = IoSessionManager.OBJ.getSessionByUId(toSessionUId);
 
-        if (ctx == null) {
+        if (sessionObj == null) {
             // 如果会话对象为空,
             // 则直接退出!
             MsgLog.LOG.error(MessageFormat.format(
-                "会话对象为空, ctxUId = {0}",
-                String.valueOf(toCtxUId)
+                "会话对象为空, sessionUId = {0}",
+                String.valueOf(toSessionUId)
             ));
             return;
         } else {
-            ctx.writeAndFlush(msgObj);
+            sessionObj.writeAndFlush(msgObj);
         }
     }
 
@@ -89,7 +90,7 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
         }
 
         // 获取会话 UId 集合
-        Set<Long> ctxUIdSet = CtxManager.OBJ.getCtxUIdSet();
+        Set<Long> ctxUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
 
         if (ctxUIdSet == null ||
             ctxUIdSet.size() <= 0) {
@@ -162,52 +163,51 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
      */
     protected void disconnect(Player p) {
         if (p != null) {
-            this.disconnect(p._ctxUId);
+            this.disconnect(p._sessionUId);
         }
     }
 
     /**
      * 断开会话
      *
-     * @param ctxUId
+     * @param sessionUId
      *
      */
-    protected void disconnect(long ctxUId) {
-        if (ctxUId <= 0L) {
+    protected void disconnect(long sessionUId) {
+        if (sessionUId <= 0L) {
             // 如果会话 UId 为空,
             // 则直接退出!
             return;
         }
 
         // 获取会话对象
-        ChannelHandlerContext ctx = CtxManager.OBJ.getCtxByUId(ctxUId);
+        IoSession sessionObj = IoSessionManager.OBJ.getSessionByUId(sessionUId);
 
-        if (ctx == null) {
+        if (sessionObj == null) {
             // 如果会话对象为空,
             // 则直接退出!
             return;
         } else {
             // 断开连接
-            ctx.disconnect();
-            ctx.close();
+            sessionObj.getChannel().close();
         }
     }
 
     /**
      * 根据会话 UId 获取玩家对象
      *
-     * @param ctxUId
+     * @param sessionUId
      * @return
      *
      */
-    protected Player getPlayerByCtxUId(long ctxUId) {
-        if (ctxUId <= 0L) {
+    protected Player getPlayerBySessionUId(long sessionUId) {
+        if (sessionUId <= 0L) {
             // 如果会话 UId 为空,
             // 则直接退出!
             return null;
         } else {
             // 获取玩家对象
-            return CtxManager.OBJ.getPlayerByCtxUId(ctxUId);
+            return IoSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
         }
     }
 }
