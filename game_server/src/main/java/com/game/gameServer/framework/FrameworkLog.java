@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class FrameworkLog {
-	/** 日志对象 */
-	public static final Logger LOG = LoggerFactory.getLogger(FrameworkLog.class);
-	
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private FrameworkLog() {
-	}
+    /** 日志对象 */
+    public static final Logger LOG = LoggerFactory.getLogger(FrameworkLog.class);
+    
+    /**
+     * 类默认构造器
+     * 
+     */
+    private FrameworkLog() {
+    }
 }

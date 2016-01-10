@@ -15,25 +15,25 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S020_GCCreateHuman extends AbstractGCMsgHandler<GCCreateHuman> {
-	@Override
-	public void handleGCMsg(
-		Robot robotObj, GCCreateHuman msgObj) {
-		if (msgObj._success.getBoolVal()) {
-			// 记录日志信息
-			RobotLog.LOG.info("建角成功");
-			// 重新查询角色入口列表
-			// 创建并发送 CG 消息
-			CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
-			cgMSG._serverName = new MsgStr(robotObj._gameServerName);
-			robotObj.sendMsg(cgMSG);
-		} else {
-			// 记录日志信息
-			RobotLog.LOG.info("建角失败");
-		}
-	}
+    @Override
+    public void handleGCMsg(
+        Robot robotObj, GCCreateHuman msgObj) {
+        if (msgObj._success.getBoolVal()) {
+            // 记录日志信息
+            RobotLog.LOG.info("建角成功");
+            // 重新查询角色入口列表
+            // 创建并发送 CG 消息
+            CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
+            cgMSG._serverName = new MsgStr(robotObj._gameServerName);
+            robotObj.sendMsg(cgMSG);
+        } else {
+            // 记录日志信息
+            RobotLog.LOG.info("建角失败");
+        }
+    }
 
-	@Override
-	protected Class<GCCreateHuman> getGCMsgClazzDef() {
-		return GCCreateHuman.class;
-	}
+    @Override
+    protected Class<GCCreateHuman> getGCMsgClazzDef() {
+        return GCCreateHuman.class;
+    }
 }

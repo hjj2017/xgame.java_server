@@ -10,12 +10,12 @@ import java.nio.ByteBuffer;
  * 
  */
 public interface IReadHelper {
-	/**
-	 * 读取 Buff 数据
-	 * 
-	 * @param msgObj
-	 * @param buff
-	 * 
-	 */
-	void readBuff(AbstractMsgObj msgObj, ByteBuffer buff);
+    /**
+     * 读取 Buff 数据
+     * 
+     * @param msgObj
+     * @param buff
+     * 
+     */
+    void readBuff(AbstractMsgObj msgObj, ByteBuffer buff);
 }

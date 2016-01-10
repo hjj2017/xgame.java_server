@@ -19,28 +19,28 @@ import com.game.part.tmpl.type.XlsxStr;
  */
 @FromXlsxFile(fileName = "building.xlsx", sheetIndex = 0)
 public class BuildingTmpl extends AbstractXlsxTmpl {
-	/** Id */
-	@OneToOne(groupName = "_typeInt")
-	public XlsxInt _typeInt = new XlsxInt(false);
-	/** 建筑名称 */
-	public XlsxStr _buildingName;
-	/** 建筑说明 */
-	public XlsxStr _buildingDesc;
-	/** 开启所需角色等级 */
-	public XlsxInt _openingNeedHumanLevel;
+    /** Id */
+    @OneToOne(groupName = "_typeInt")
+    public XlsxInt _typeInt = new XlsxInt(false);
+    /** 建筑名称 */
+    public XlsxStr _buildingName;
+    /** 建筑说明 */
+    public XlsxStr _buildingDesc;
+    /** 开启所需角色等级 */
+    public XlsxInt _openingNeedHumanLevel;
 
-	/** Id 字典 */
-	@OneToOne(groupName = "_typeInt")
-	public static Map<Integer, BuildingTmpl> _typeIntMap = new HashMap<>();
+    /** Id 字典 */
+    @OneToOne(groupName = "_typeInt")
+    public static Map<Integer, BuildingTmpl> _typeIntMap = new HashMap<>();
 
-	/**
-	 * 根据建筑类型获取模版
-	 *
-	 * @param bt
-	 * @return
-	 *
-	 */
-	public static BuildingTmpl getByBuildingType(BuildingTypeEnum bt) {
-		return _typeIntMap.get(bt.getIntVal());
-	}
+    /**
+     * 根据建筑类型获取模版
+     *
+     * @param bt
+     * @return
+     *
+     */
+    public static BuildingTmpl getByBuildingType(BuildingTypeEnum bt) {
+        return _typeIntMap.get(bt.getIntVal());
+    }
 }

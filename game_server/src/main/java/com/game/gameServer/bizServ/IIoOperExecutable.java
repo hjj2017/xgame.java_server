@@ -11,15 +11,15 @@ import com.game.part.io.IoOperServ;
  * 
  */
 public interface IIoOperExecutable {
-	/**
-	 * 执行 IO 操作
-	 * 
-	 * @param oper
-	 * @see IoOperServ#execute(IIoOper)
-	 * 
-	 */
-	default void execute(IIoOper oper) {
-		// 执行异步操作
-		IoOperServ.OBJ.execute(oper);
-	}
+    /**
+     * 执行 IO 操作
+     * 
+     * @param oper
+     * @see IoOperServ#execute(IIoOper)
+     * 
+     */
+    default void execute(IIoOper oper) {
+        // 执行异步操作
+        IoOperServ.OBJ.execute(oper);
+    }
 }

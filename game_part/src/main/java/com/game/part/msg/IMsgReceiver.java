@@ -10,11 +10,11 @@ import com.game.part.msg.type.AbstractMsgObj;
  * 
  */
 public interface IMsgReceiver {
-	/**
-	 * 接收消息对象
-	 * 
-	 * @param msgObj 
-	 * 
-	 */
-	public void receive(AbstractMsgObj msgObj);
+    /**
+     * 接收消息对象
+     *
+     * @param msgObj
+     *
+     */
+    public void receive(AbstractMsgObj msgObj);
 }

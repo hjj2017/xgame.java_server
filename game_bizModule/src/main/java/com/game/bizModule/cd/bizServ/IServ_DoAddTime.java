@@ -16,54 +16,54 @@ import com.game.part.util.BizResultPool;
  * 
  */
 interface IServ_DoAddTime {
-	/**
-	 * 增加 Cd 时间
-	 * 
-	 * @param h
-	 * @param cdType
-	 * @param ms
-	 * @return 
-	 * 
-	 */
-	default Result_DoAddTime doAddTime(
-		Human h,
-		CdTypeEnum cdType, 
-		long ms) {
-		// 断言参数对象不为空
-		Assert.notNull(cdType, "cdType");
-		// 借出结果对象
-		Result_DoAddTime result = BizResultPool.borrow(Result_DoAddTime.class);
+    /**
+     * 增加 Cd 时间
+     * 
+     * @param h
+     * @param cdType
+     * @param ms
+     * @return 
+     * 
+     */
+    default Result_DoAddTime doAddTime(
+        Human h,
+        CdTypeEnum cdType, 
+        long ms) {
+        // 断言参数对象不为空
+        Assert.notNull(cdType, "cdType");
+        // 借出结果对象
+        Result_DoAddTime result = BizResultPool.borrow(Result_DoAddTime.class);
 
-		if (ms <= 0) {
-			// 如果累计时间 <= 0,
-			// 则直接退出!
-			result._errorCode = MultiLangDef.LANG_CD_addTimeLeq0;
-			return result;
-		}
+        if (ms <= 0) {
+            // 如果累计时间 <= 0,
+            // 则直接退出!
+            result._errorCode = MultiLangDef.LANG_CD_addTimeLeq0;
+            return result;
+        }
 
-		// 是否可以增加 Cd 时间 ?
-		Result_CanAddTime result_2 = CdServ.OBJ.canAddTime(
-			h._humanUId, cdType
-		);
+        // 是否可以增加 Cd 时间 ?
+        Result_CanAddTime result_2 = CdServ.OBJ.canAddTime(
+            h._humanUId, cdType
+        );
 
-		if (result_2._canAddTime == false) {
-			// 如果不能增加 Cd 时间, 
-			// 则直接退出!
-			result._errorCode = result_2._errorCode;
-			return result;
-		}
+        if (result_2._canAddTime == false) {
+            // 如果不能增加 Cd 时间, 
+            // 则直接退出!
+            result._errorCode = result_2._errorCode;
+            return result;
+        }
 
-		// 获取管理器
-		CdManager mngrObj = CdServ.OBJ._mngrMap.get(h._humanUId);
-		// 获取计时器
-		CdTimer t = mngrObj._cdTimerMap.get(cdType);
-		// 获取当前时间
-		long now = TimeServ.OBJ.now();
+        // 获取管理器
+        CdManager mngrObj = CdServ.OBJ._mngrMap.get(h._humanUId);
+        // 获取计时器
+        CdTimer t = mngrObj._cdTimerMap.get(cdType);
+        // 获取当前时间
+        long now = TimeServ.OBJ.now();
 
-		// 累计时间并保存
-		t.addTime(now, ms);
-		t.saveOrUpdate();
+        // 累计时间并保存
+        t.addTime(now, ms);
+        t.saveOrUpdate();
 
-		return result;
-	}
+        return result;
+    }
 }

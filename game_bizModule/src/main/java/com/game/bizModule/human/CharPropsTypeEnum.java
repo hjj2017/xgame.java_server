@@ -19,41 +19,41 @@ import com.game.part.util.EnumHelper;
 public enum CharPropsTypeEnum implements EnumHelper.ICustomEnum {
 ;
 
-	@Override
-	public int getIntVal() {
-		return -1;
-	}
+    @Override
+    public int getIntVal() {
+        return -1;
+    }
 
-	@Override
-	public String getStrVal() {
-		return null;
-	}
+    @Override
+    public String getStrVal() {
+        return null;
+    }
 
-	/**
-	 * 将整数值转换为枚举对象
-	 * 
-	 * @param intVal
-	 * @return 
-	 * 
-	 */
-	public static CharPropsTypeEnum parse(int intVal) {
-		return EnumHelper.parse(
-			intVal, 
-			CharPropsTypeEnum.values()
-		);
-	}
+    /**
+     * 将整数值转换为枚举对象
+     * 
+     * @param intVal
+     * @return 
+     * 
+     */
+    public static CharPropsTypeEnum parse(int intVal) {
+        return EnumHelper.parse(
+            intVal, 
+            CharPropsTypeEnum.values()
+        );
+    }
 
-	/**
-	 * 将字符串转换为枚举对象
-	 * 
-	 * @param strVal
-	 * @return 
-	 * 
-	 */
-	public static CharPropsTypeEnum parse(String strVal) {
-		return EnumHelper.parse(
-			strVal, 
-			CharPropsTypeEnum.values()
-		);
-	}
+    /**
+     * 将字符串转换为枚举对象
+     * 
+     * @param strVal
+     * @return 
+     * 
+     */
+    public static CharPropsTypeEnum parse(String strVal) {
+        return EnumHelper.parse(
+            strVal, 
+            CharPropsTypeEnum.values()
+        );
+    }
 }

@@ -39,111 +39,111 @@ import java.text.MessageFormat;
  *
  */
 public class CLI_GameServer {
-	/**
-	 * 应用程序主函数
-	 * 
-	 * @param argArr
-	 * 
-	 */
-	public static void main(String[] argArr) {
-		System.out.println("GameServer X");
-		System.out.println("+-------\n");
+    /**
+     * 应用程序主函数
+     * 
+     * @param argArr
+     * 
+     */
+    public static void main(String[] argArr) {
+        System.out.println("GameServer X");
+        System.out.println("+-------\n");
 
-		// 创建命令行对象
-		CommandLine cmdLn = createCmdLn(argArr);
+        // 创建命令行对象
+        CommandLine cmdLn = createCmdLn(argArr);
 
-		if (cmdLn == null) {
-			// 如果命令行对象为空,
-			// 则直接退出!
-			System.err.println("命令行对象为空");
-			return;
-		}
+        if (cmdLn == null) {
+            // 如果命令行对象为空,
+            // 则直接退出!
+            System.err.println("命令行对象为空");
+            return;
+        }
 
-		if (cmdLn.hasOption("l")) {
-			// 如果有 -l 参数,
-			// 设置 log4j 配置文件
-			PropertyConfigurator.configureAndWatch(
-				// 读取配置文件
-				cmdLn.getOptionValue("l")
-			);
-		}
+        if (cmdLn.hasOption("l")) {
+            // 如果有 -l 参数,
+            // 设置 log4j 配置文件
+            PropertyConfigurator.configureAndWatch(
+                // 读取配置文件
+                cmdLn.getOptionValue("l")
+            );
+        }
 
-		if (cmdLn.hasOption("c") == false) {
-			// 如果没有 -c 参数,
-			// 则直接退出!
-			System.err.print("未指定配置文件, 请使用 -c 参数指定配置文件");
-			return;
-		}
+        if (cmdLn.hasOption("c") == false) {
+            // 如果没有 -c 参数,
+            // 则直接退出!
+            System.err.print("未指定配置文件, 请使用 -c 参数指定配置文件");
+            return;
+        }
 
-		// 加载指定的配置文件
-		ConfFacade.OBJ.readFromFile(cmdLn.getOptionValue("c"));
-		// 扫描所有的 jar 和 class 文件
-		scanAllJarAndClazz();
+        // 加载指定的配置文件
+        ConfFacade.OBJ.readFromFile(cmdLn.getOptionValue("c"));
+        // 扫描所有的 jar 和 class 文件
+        scanAllJarAndClazz();
 
-		// 初始化并启动服务器
-		App_GameServer.OBJ.init();
-		App_GameServer.OBJ.startUp();
-	}
+        // 初始化并启动服务器
+        App_GameServer.OBJ.init();
+        App_GameServer.OBJ.startUp();
+    }
 
-	/**
-	 * 创建命令行对象
-	 *
-	 * @param argArr
-	 * @return
-	 *
-	 */
-	private static CommandLine createCmdLn(String[] argArr) {
-		// 创建参数选项
-		Options op = new Options();
-		// -c 选项
-		op.addOption("c", true, "配置文件");
-		// -l 选项
-		op.addOption("l", true, "log4j.properties 日志配置文件");
+    /**
+     * 创建命令行对象
+     *
+     * @param argArr
+     * @return
+     *
+     */
+    private static CommandLine createCmdLn(String[] argArr) {
+        // 创建参数选项
+        Options op = new Options();
+        // -c 选项
+        op.addOption("c", true, "配置文件");
+        // -l 选项
+        op.addOption("l", true, "log4j.properties 日志配置文件");
 
-		try {
-			// 创建默认解析器
-			DefaultParser dp = new DefaultParser();
-			// 解析命令行参数
-			CommandLine cmdLn = dp.parse(op, argArr);
+        try {
+            // 创建默认解析器
+            DefaultParser dp = new DefaultParser();
+            // 解析命令行参数
+            CommandLine cmdLn = dp.parse(op, argArr);
 
-			return cmdLn;
-		} catch (Exception ex) {
-			// 输出错误日志
-			ex.printStackTrace();
-		}
+            return cmdLn;
+        } catch (Exception ex) {
+            // 输出错误日志
+            ex.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * 扫描所有的 jar 文件和 class 文件添加到 classpath
-	 *
-	 */
-	private static void scanAllJarAndClazz() {
-		if (GameServerConf.OBJ._libDir != null &&
-			GameServerConf.OBJ._libDir.isEmpty() == false) {
-			// 扫描指定目录下所有的 jar 文件,
-			// 添加到 classpath
-			FrameworkLog.LOG.info(MessageFormat.format(
-				"扫描 lib 目录 : {0}",
-				GameServerConf.OBJ._libDir
-			));
-			ClazzUtil.scanAllJar(
-				GameServerConf.OBJ._libDir
-			);
-		}
+    /**
+     * 扫描所有的 jar 文件和 class 文件添加到 classpath
+     *
+     */
+    private static void scanAllJarAndClazz() {
+        if (GameServerConf.OBJ._libDir != null &&
+            GameServerConf.OBJ._libDir.isEmpty() == false) {
+            // 扫描指定目录下所有的 jar 文件,
+            // 添加到 classpath
+            FrameworkLog.LOG.info(MessageFormat.format(
+                "扫描 lib 目录 : {0}",
+                GameServerConf.OBJ._libDir
+            ));
+            ClazzUtil.scanAllJar(
+                GameServerConf.OBJ._libDir
+            );
+        }
 
-		if (GameServerConf.OBJ._clazzDir != null &&
-			GameServerConf.OBJ._clazzDir.isEmpty() == false) {
-			// 扫描指定目录下所有的 class 文件,
-			// 添加到 classpath
-			FrameworkLog.LOG.info(MessageFormat.format(
-				"设置 clazz 目录 : {0}",
-				GameServerConf.OBJ._clazzDir
-			));
-			ClazzUtil.putClazzDir(
-				GameServerConf.OBJ._clazzDir
-			);
-		}
-	}
+        if (GameServerConf.OBJ._clazzDir != null &&
+            GameServerConf.OBJ._clazzDir.isEmpty() == false) {
+            // 扫描指定目录下所有的 class 文件,
+            // 添加到 classpath
+            FrameworkLog.LOG.info(MessageFormat.format(
+                "设置 clazz 目录 : {0}",
+                GameServerConf.OBJ._clazzDir
+            ));
+            ClazzUtil.putClazzDir(
+                GameServerConf.OBJ._clazzDir
+            );
+        }
+    }
 }

@@ -14,41 +14,41 @@ import com.game.bizModule.cd.model.CdTypeEnum;
  * 
  */
 public class CdManager {
-	/** 玩家角色 UId */
-	public long _humanUId = 0L;
-	/** 冷却队列字典 */
-	public final Map<CdTypeEnum, CdTimer> _cdTimerMap = new ConcurrentHashMap<>();
+    /** 玩家角色 UId */
+    public long _humanUId = 0L;
+    /** 冷却队列字典 */
+    public final Map<CdTypeEnum, CdTimer> _cdTimerMap = new ConcurrentHashMap<>();
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param humanUId
-	 * 
-	 */
-	CdManager(long humanUId) {
-		this._humanUId = humanUId;
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param humanUId
+     * 
+     */
+    CdManager(long humanUId) {
+        this._humanUId = humanUId;
+    }
 
-	/**
-	 * 添加 Cd 计时器
-	 * 
-	 * @param value 
-	 * 
-	 */
-	public void addCdTimer(CdTimer value) {
-		if (value != null) {
-			this._cdTimerMap.put(value._cdType, value);
-		}
-	}
+    /**
+     * 添加 Cd 计时器
+     * 
+     * @param value 
+     * 
+     */
+    public void addCdTimer(CdTimer value) {
+        if (value != null) {
+            this._cdTimerMap.put(value._cdType, value);
+        }
+    }
 
-	/**
-	 * 获取 Cd 计时器
-	 * 
-	 * @param cdType
-	 * @return 
-	 * 
-	 */
-	public CdTimer getCdTimer(CdTypeEnum cdType) {
-		return this._cdTimerMap.get(cdType);
-	}
+    /**
+     * 获取 Cd 计时器
+     * 
+     * @param cdType
+     * @return 
+     * 
+     */
+    public CdTimer getCdTimer(CdTypeEnum cdType) {
+        return this._cdTimerMap.get(cdType);
+    }
 }

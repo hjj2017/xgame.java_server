@@ -11,17 +11,17 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S000_ConnectToGameServer extends AbstractModuleReady {
-	@Override
-	public void ready(Robot robotObj) {
-		if (robotObj == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
+    @Override
+    public void ready(Robot robotObj) {
+        if (robotObj == null) {
+            // 如果参数对象为空, 
+            // 则直接退出!
+            return;
+        }
 
-		// 连接到游戏服
-		robotObj.connectToGameServer();
-		// 跳转到下一模块并准备
-		robotObj.gotoNextModuleAndReady();
-	}
+        // 连接到游戏服
+        robotObj.connectToGameServer();
+        // 跳转到下一模块并准备
+        robotObj.gotoNextModuleAndReady();
+    }
 }

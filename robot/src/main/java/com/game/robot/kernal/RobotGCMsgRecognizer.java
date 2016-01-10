@@ -21,58 +21,58 @@ import com.game.robot.RobotLog;
  * 
  */
 public class RobotGCMsgRecognizer {
-	/** 单例对象 */
-	public static final RobotGCMsgRecognizer OBJ = new RobotGCMsgRecognizer();
+    /** 单例对象 */
+    public static final RobotGCMsgRecognizer OBJ = new RobotGCMsgRecognizer();
 
-	/**
-	 * 扫描所有模块
-	 * 
-	 */
-	void scanAllModule() {
-		// 记录日志信息
-		RobotLog.LOG.info("开始扫描游戏服, 注册 GC 消息");
-		// 获取 GCMsg 的所有子类
-		Set<Class<?>> clazzSet = PackageUtil.listSubClazz(
-			"com.game.bizModule",
-			AbstractMsgObj.class
-		);
+    /**
+     * 扫描所有模块
+     * 
+     */
+    void scanAllModule() {
+        // 记录日志信息
+        RobotLog.LOG.info("开始扫描游戏服, 注册 GC 消息");
+        // 获取 GCMsg 的所有子类
+        Set<Class<?>> clazzSet = PackageUtil.listSubClazz(
+            "com.game.bizModule",
+            AbstractMsgObj.class
+        );
 
-		for (Class<?> clazzDef : clazzSet) {
-			try {
-				if (ClazzUtil.isConcreteDrivedClass(
-					clazzDef,
-					AbstractCGMsgObj.class)) {
-					// 创建 CG 消息对象并获取消息 Id
-					AbstractCGMsgObj cgMSG = (AbstractCGMsgObj)clazzDef.newInstance();
-					// 注册消息类
-					MsgServ.OBJ.regMsgClazz(
-						cgMSG.getSerialUId(), cgMSG.getClass()
-					);
-				} else if (ClazzUtil.isConcreteDrivedClass(
-					clazzDef,
-					AbstractGCMsgObj.class)) {
-					// 创建 GC 消息对象并获取消息 Id
-					AbstractGCMsgObj gcMSG = (AbstractGCMsgObj)clazzDef.newInstance();
-					// 注册消息类
-					MsgServ.OBJ.regMsgClazz(
-						gcMSG.getSerialUId(), gcMSG.getClass()
-					);
-				} else {
-					// 跳过消息
-				}
+        for (Class<?> clazzDef : clazzSet) {
+            try {
+                if (ClazzUtil.isConcreteDrivedClass(
+                    clazzDef,
+                    AbstractCGMsgObj.class)) {
+                    // 创建 CG 消息对象并获取消息 Id
+                    AbstractCGMsgObj cgMSG = (AbstractCGMsgObj)clazzDef.newInstance();
+                    // 注册消息类
+                    MsgServ.OBJ.regMsgClazz(
+                        cgMSG.getSerialUId(), cgMSG.getClass()
+                    );
+                } else if (ClazzUtil.isConcreteDrivedClass(
+                    clazzDef,
+                    AbstractGCMsgObj.class)) {
+                    // 创建 GC 消息对象并获取消息 Id
+                    AbstractGCMsgObj gcMSG = (AbstractGCMsgObj)clazzDef.newInstance();
+                    // 注册消息类
+                    MsgServ.OBJ.regMsgClazz(
+                        gcMSG.getSerialUId(), gcMSG.getClass()
+                    );
+                } else {
+                    // 跳过消息
+                }
 
-				// 记录消息注册日志
-				RobotLog.LOG.info(MessageFormat.format(
-					":::: 注册消息类 = {0}",
-					clazzDef.getName()
-				));
-			} catch (Exception ex) {
-				// 记录错误日志
-				RobotLog.LOG.error(ex.getMessage(), ex);
-			}
-		}
+                // 记录消息注册日志
+                RobotLog.LOG.info(MessageFormat.format(
+                    ":::: 注册消息类 = {0}",
+                    clazzDef.getName()
+                ));
+            } catch (Exception ex) {
+                // 记录错误日志
+                RobotLog.LOG.error(ex.getMessage(), ex);
+            }
+        }
 
-		// 记录日志信息
-		RobotLog.LOG.info("注册 GC 消息完成");
-	}
+        // 记录日志信息
+        RobotLog.LOG.info("注册 GC 消息完成");
+    }
 }

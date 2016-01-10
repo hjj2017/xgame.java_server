@@ -9,42 +9,42 @@ import com.game.part.GameError;
  *
  */
 public class FrameworkError extends GameError {
-	/** serialVersionUID */
-	private static final long serialVersionUID = -1;
+    /** serialVersionUID */
+    private static final long serialVersionUID = -1;
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public FrameworkError() {
-		super();
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    public FrameworkError() {
+        super();
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param msg
-	 */
-	public FrameworkError(String msg) {
-		super(msg);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param msg
+     */
+    public FrameworkError(String msg) {
+        super(msg);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param error
-	 */
-	public FrameworkError(Throwable error) {
-		super(error);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param error
+     */
+    public FrameworkError(Throwable error) {
+        super(error);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param msg
-	 * @param error
-	 */
-	public FrameworkError(String msg, Throwable error) {
-		super(msg, error);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param msg
+     * @param error
+     */
+    public FrameworkError(String msg, Throwable error) {
+        super(msg, error);
+    }
 }

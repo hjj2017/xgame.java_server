@@ -14,28 +14,28 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S000_Disconnect extends AbstractModuleReady {
-	@Override
-	public void ready(Robot robotObj) {
-		if (robotObj == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
+    @Override
+    public void ready(Robot robotObj) {
+        if (robotObj == null) {
+            // 如果参数对象为空, 
+            // 则直接退出!
+            return;
+        }
 
-		// 思考一小会儿
-		this.thinking(2000);
+        // 思考一小会儿
+        this.thinking(2000);
 
-		// 断开连接
-		robotObj.disconnect();
-		// 记录日志信息
-		RobotLog.LOG.info(MessageFormat.format(
-			"机器人 {0} 已经断开连接", 
-			robotObj._userName
-		));
+        // 断开连接
+        robotObj.disconnect();
+        // 记录日志信息
+        RobotLog.LOG.info(MessageFormat.format(
+            "机器人 {0} 已经断开连接", 
+            robotObj._userName
+        ));
 
-		// 思考一下会儿
-		this.thinking(10000, 15000);
-		// 跳转到下一模块
-		robotObj.gotoNextModuleAndReady();
-	}
+        // 思考一下会儿
+        this.thinking(10000, 15000);
+        // 跳转到下一模块
+        robotObj.gotoNextModuleAndReady();
+    }
 }

@@ -40,112 +40,112 @@ import com.game.passbookServer.jsonConf.PassbookServerConf;
  * 
  */
 public class CLI_PassbookServer {
-	/** 配置对象 */
-	private PassbookServerConf _confObj = null;
+    /** 配置对象 */
+    private PassbookServerConf _confObj = null;
 
-	/**
-	 * 启动服务器
-	 * 
-	 */
-	private void startUp() {
-		// 显示启动信息
-		ServerLog.LOG.info("启动 passbookServer");
-		// 获取当前时间
-		long t0 = System.currentTimeMillis();
+    /**
+     * 启动服务器
+     * 
+     */
+    private void startUp() {
+        // 显示启动信息
+        ServerLog.LOG.info("启动 passbookServer");
+        // 获取当前时间
+        long t0 = System.currentTimeMillis();
 
-		if (this._confObj == null) {
-			// 如果服务器配置对象为空, 
-			// 则设置为默认配置
-			this._confObj = PassbookServerConf.DEFAULT_CONF;
-		}
+        if (this._confObj == null) {
+            // 如果服务器配置对象为空, 
+            // 则设置为默认配置
+            this._confObj = PassbookServerConf.DEFAULT_CONF;
+        }
 
-		/* 初始化 Dao */ {
-			// 自定义字典
-			Map<String, String> myMap = new HashMap<>();
-			myMap.put("javax.persistence.jdbc.url", this._confObj._dbConn);
-			myMap.put("javax.persistence.jdbc.user", this._confObj._dbUser);
-			myMap.put("javax.persistence.jdbc.password", this._confObj._dbPass);
-			// 设置实体管理器工厂
-			CommDao.OBJ.putEMF(Persistence.createEntityManagerFactory("X-passbookServer", myMap));
-		}
-		
-		/* 启动 HTTP 服务器 */ {
-			// 设置服务器 IP 和端口
-			JettyHttpProc.OBJ._connConfList = this._confObj._connConfList;
-			// 启动服务器
-			JettyHttpProc.OBJ.startUp();
-		}
+        /* 初始化 Dao */ {
+            // 自定义字典
+            Map<String, String> myMap = new HashMap<>();
+            myMap.put("javax.persistence.jdbc.url", this._confObj._dbConn);
+            myMap.put("javax.persistence.jdbc.user", this._confObj._dbUser);
+            myMap.put("javax.persistence.jdbc.password", this._confObj._dbPass);
+            // 设置实体管理器工厂
+            CommDao.OBJ.putEMF(Persistence.createEntityManagerFactory("X-passbookServer", myMap));
+        }
+        
+        /* 启动 HTTP 服务器 */ {
+            // 设置服务器 IP 和端口
+            JettyHttpProc.OBJ._connConfList = this._confObj._connConfList;
+            // 启动服务器
+            JettyHttpProc.OBJ.startUp();
+        }
 
-		// 强制 GC 一次
-		System.gc();
-		long t1 = System.currentTimeMillis();
+        // 强制 GC 一次
+        System.gc();
+        long t1 = System.currentTimeMillis();
 
-		// 输出启动信息
-		ServerLog.LOG.info("passbookServer 启动完成");
-		ServerLog.LOG.info("passbookServer 启动时间 : " + (t1 - t0) + " 毫秒");
-	}
+        // 输出启动信息
+        ServerLog.LOG.info("passbookServer 启动完成");
+        ServerLog.LOG.info("passbookServer 启动时间 : " + (t1 - t0) + " 毫秒");
+    }
 
-	/**
-	 * 应用程序主入口
-	 * 
-	 * @param argArr
-	 * 
-	 */
-	public static void main(String[] argArr) {
-		// 创建命令行对象
-		CommandLine cmdLn = createCmdLn(argArr);
+    /**
+     * 应用程序主入口
+     * 
+     * @param argArr
+     * 
+     */
+    public static void main(String[] argArr) {
+        // 创建命令行对象
+        CommandLine cmdLn = createCmdLn(argArr);
 
-		if (cmdLn == null) {
-			// 如果命令行对象为空, 
-			// 则直接退出!
-			System.err.println("命令行对象为空");
-			System.exit(-1);
-			return;
-		}
+        if (cmdLn == null) {
+            // 如果命令行对象为空, 
+            // 则直接退出!
+            System.err.println("命令行对象为空");
+            System.exit(-1);
+            return;
+        }
 
-		// 设置 log4j 配置文件
-		PropertyConfigurator.configureAndWatch(
-			// 读取配置文件
-			cmdLn.getOptionValue("l")
-		);
+        // 设置 log4j 配置文件
+        PropertyConfigurator.configureAndWatch(
+            // 读取配置文件
+            cmdLn.getOptionValue("l")
+        );
 
-		// 定义应用对象
-		final CLI_PassbookServer theApp;
-		// 创建应用对象并启动
-		theApp = new CLI_PassbookServer();
-		// 加载配置文件
-		theApp._confObj = PassbookServerConf.createFromFile(cmdLn.getOptionValue("c"));
-		// 启动服务器
-		theApp.startUp();
-	}
+        // 定义应用对象
+        final CLI_PassbookServer theApp;
+        // 创建应用对象并启动
+        theApp = new CLI_PassbookServer();
+        // 加载配置文件
+        theApp._confObj = PassbookServerConf.createFromFile(cmdLn.getOptionValue("c"));
+        // 启动服务器
+        theApp.startUp();
+    }
 
-	/**
-	 * 创建命令行对象
-	 * 
-	 * @param argArr
-	 * @return
-	 * 
-	 */
-	private static CommandLine createCmdLn(String[] argArr) {
-		// 创建参数选项
-		Options op = new Options();
-		// -c 选项
-		op.addOption("c", true, "配置文件名称");
-		// -l 选项
-		op.addOption("l", true, "log4j.properties 日志配置文件");
+    /**
+     * 创建命令行对象
+     * 
+     * @param argArr
+     * @return
+     * 
+     */
+    private static CommandLine createCmdLn(String[] argArr) {
+        // 创建参数选项
+        Options op = new Options();
+        // -c 选项
+        op.addOption("c", true, "配置文件名称");
+        // -l 选项
+        op.addOption("l", true, "log4j.properties 日志配置文件");
 
-		try {
-			// 创建默认解析器
-			DefaultParser dp = new DefaultParser();
-			// 解析命令行参数
-			CommandLine cmdLn = dp.parse(op, argArr);
+        try {
+            // 创建默认解析器
+            DefaultParser dp = new DefaultParser();
+            // 解析命令行参数
+            CommandLine cmdLn = dp.parse(op, argArr);
 
-			return cmdLn;
-		} catch (Exception ex) {
-			// 输出错误日志
-			ex.printStackTrace();
-		}
+            return cmdLn;
+        } catch (Exception ex) {
+            // 输出错误日志
+            ex.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

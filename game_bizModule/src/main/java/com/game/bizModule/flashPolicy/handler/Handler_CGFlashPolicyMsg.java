@@ -11,7 +11,7 @@ import com.game.gameServer.msg.AbstractCGMsgHandler;
  * 
  */
 public class Handler_CGFlashPolicyMsg extends AbstractCGMsgHandler<CGFlashPolicyMsg> {
-	@Override
-	public void handle(CGFlashPolicyMsg msgObj) {
-	}
+    @Override
+    public void handle(CGFlashPolicyMsg msgObj) {
+    }
 }

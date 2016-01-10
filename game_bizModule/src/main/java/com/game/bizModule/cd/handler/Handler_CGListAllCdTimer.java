@@ -11,7 +11,7 @@ import com.game.gameServer.msg.AbstractCGMsgHandler;
  * 
  */
 public class Handler_CGListAllCdTimer extends AbstractCGMsgHandler<CGListAllCdTimer> {
-	@Override
-	public void handle(CGListAllCdTimer cgMSG) {
-	}
+    @Override
+    public void handle(CGListAllCdTimer cgMSG) {
+    }
 }

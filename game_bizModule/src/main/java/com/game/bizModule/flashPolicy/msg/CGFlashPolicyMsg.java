@@ -13,15 +13,15 @@ import com.game.gameServer.msg.SpecialMsgSerialUId;
  * 
  */
 public class CGFlashPolicyMsg extends AbstractCGMsgObj {
-	@Override
-	public short getSerialUId() {
-		return SpecialMsgSerialUId.CG_FLASH_POLICY;
-	}
+    @Override
+    public short getSerialUId() {
+        return SpecialMsgSerialUId.CG_FLASH_POLICY;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public AbstractCGMsgHandler<CGFlashPolicyMsg> newHandlerObj() {
-		// 返回消息处理器
-		return new Handler_CGFlashPolicyMsg();
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public AbstractCGMsgHandler<CGFlashPolicyMsg> newHandlerObj() {
+        // 返回消息处理器
+        return new Handler_CGFlashPolicyMsg();
+    }
 }

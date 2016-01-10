@@ -14,25 +14,25 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S000_CGLogin extends AbstractModuleReady {
-	@Override
-	public void ready(Robot robotObj) {
-		if (robotObj == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
+    @Override
+    public void ready(Robot robotObj) {
+        if (robotObj == null) {
+            // 如果参数对象为空, 
+            // 则直接退出!
+            return;
+        }
 
-		// 创建 JSON 对象
-		JSONObject jsonObj = new JSONObject();
+        // 创建 JSON 对象
+        JSONObject jsonObj = new JSONObject();
 
-		// 创建登陆协议文本
-		jsonObj.put("protocol", "dbUser");
-		jsonObj.put("userName", robotObj._userName);
-		jsonObj.put("password", robotObj._userPass);
-		// 创建并发送 GC 消息
-		robotObj.sendMsg(new CGLogin(
-			robotObj._userName,
-			jsonObj.toString()
-		));
-	}
+        // 创建登陆协议文本
+        jsonObj.put("protocol", "dbUser");
+        jsonObj.put("userName", robotObj._userName);
+        jsonObj.put("password", robotObj._userPass);
+        // 创建并发送 GC 消息
+        robotObj.sendMsg(new CGLogin(
+            robotObj._userName,
+            jsonObj.toString()
+        ));
+    }
 }

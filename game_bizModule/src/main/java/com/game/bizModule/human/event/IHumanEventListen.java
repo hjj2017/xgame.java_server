@@ -10,43 +10,43 @@ import com.game.gameServer.framework.Player;
  * 
  */
 public interface IHumanEventListen {
-	/**
-	 * 创建角色
-	 *
-	 * @param byPlayer
-	 * @param humanUId
-	 * @param serverName
-	 * @param humanName
-	 *
-	 */
-	default void onCreateNew(Player byPlayer, long humanUId, String serverName, String humanName) {
-	}
+    /**
+     * 创建角色
+     *
+     * @param byPlayer
+     * @param humanUId
+     * @param serverName
+     * @param humanName
+     *
+     */
+    default void onCreateNew(Player byPlayer, long humanUId, String serverName, String humanName) {
+    }
 
-	/**
-	 * 从数据库中加载数据
-	 *
-	 * @param byPlayer
-	 * @param h 
-	 * 
-	 */
-	default void onLoadDb(Player byPlayer, Human h) {
-	}
+    /**
+     * 从数据库中加载数据
+     *
+     * @param byPlayer
+     * @param h 
+     * 
+     */
+    default void onLoadDb(Player byPlayer, Human h) {
+    }
 
-	/**
-	 * 进入游戏
-	 *
-	 * @param h
-	 *
-	 */
-	default void onEnterGame(Human h) {
-	}
+    /**
+     * 进入游戏
+     *
+     * @param h
+     *
+     */
+    default void onEnterGame(Human h) {
+    }
 
-	/**
-	 * 退出游戏
-	 *
-	 * @param h
-	 *
-	 */
-	default void onQuitGame(Human h) {
-	}
+    /**
+     * 退出游戏
+     *
+     * @param h
+     *
+     */
+    default void onQuitGame(Human h) {
+    }
 }

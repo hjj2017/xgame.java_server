@@ -7,10 +7,10 @@ package com.game.bizModule.item.model;
  * 
  */
 public class ItemRef {
-	/** 模板 ID */
-	public int _tmplID = -1;
-	/** 物品 UUID */
-	public String _objUUID = null;
-	/** 堆叠数量 */
-	public int _count = -1;
+    /** 模板 ID */
+    public int _tmplID = -1;
+    /** 物品 UUID */
+    public String _objUUID = null;
+    /** 堆叠数量 */
+    public int _count = -1;
 }

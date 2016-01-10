@@ -10,11 +10,11 @@ import com.game.part.util.BizResultObj;
  * 
  */
 public class Result_Auth extends BizResultObj {
-	/** 验证成功 */
-	public boolean _success = false;
+    /** 验证成功 */
+    public boolean _success = false;
 
-	@Override
-	protected void clearContent() {
-		this._success = false;
-	}
+    @Override
+    protected void clearContent() {
+        this._success = false;
+    }
 }

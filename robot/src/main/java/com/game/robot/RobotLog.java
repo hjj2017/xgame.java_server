@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public final class RobotLog {
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private RobotLog() {
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    private RobotLog() {
+    }
 
-	/** 日志对象 */
-	public static final Logger LOG = LoggerFactory.getLogger(RobotLog.class);
+    /** 日志对象 */
+    public static final Logger LOG = LoggerFactory.getLogger(RobotLog.class);
 }

@@ -13,16 +13,16 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S000_CGBuildingLevelUp extends AbstractModuleReady {
-	@Override
-	public void ready(Robot robotObj) {
-		if (robotObj == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
+    @Override
+    public void ready(Robot robotObj) {
+        if (robotObj == null) {
+            // 如果参数对象为空, 
+            // 则直接退出!
+            return;
+        }
 
-		// 升级主城
-		robotObj.sendMsg(new CGBuildingLevelUp(BuildingTypeEnum.home));
-		robotObj.gotoNextModuleAndReady();
-	}
+        // 升级主城
+        robotObj.sendMsg(new CGBuildingLevelUp(BuildingTypeEnum.home));
+        robotObj.gotoNextModuleAndReady();
+    }
 }

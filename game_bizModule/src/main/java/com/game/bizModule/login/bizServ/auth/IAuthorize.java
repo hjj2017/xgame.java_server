@@ -10,13 +10,13 @@ import com.game.gameServer.framework.Player;
  * 
  */
 public interface IAuthorize {
-	/**
-	 * 根据登陆串进行授权验证
-	 *
-	 * @param p
-	 * @param loginStr
-	 * @return 
-	 * 
-	 */
-	boolean auth(Player p, String loginStr);
+    /**
+     * 根据登陆串进行授权验证
+     *
+     * @param p
+     * @param loginStr
+     * @return 
+     * 
+     */
+    boolean auth(Player p, String loginStr);
 }

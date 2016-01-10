@@ -12,47 +12,47 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public final class MsgDouble extends PrimitiveTypeField<Double> {
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public MsgDouble() {
-		this(0.0);
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    public MsgDouble() {
+        this(0.0);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param value
-	 * 
-	 */
-	public MsgDouble(double value) {
-		this.setObjVal(value);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param value
+     * 
+     */
+    public MsgDouble(double value) {
+        this.setObjVal(value);
+    }
 
-	@Override
-	public void readBuff(ByteBuffer buff) {
-		this.setObjVal(IoBuffUtil.readDouble(buff));
-	}
+    @Override
+    public void readBuff(ByteBuffer buff) {
+        this.setObjVal(IoBuffUtil.readDouble(buff));
+    }
 
-	@Override
-	public void writeBuff(ByteBuffer buff) {
-		IoBuffUtil.writeDouble(this.getDoubleVal(), buff);
-	}
+    @Override
+    public void writeBuff(ByteBuffer buff) {
+        IoBuffUtil.writeDouble(this.getDoubleVal(), buff);
+    }
 
-	/**
-	 * objVal 不能为 null, 但如果真为 null, 则自动创建并返回
-	 * 
-	 * @param objVal
-	 * @return
-	 * 
-	 */
-	public static MsgDouble ifNullThenCreate(MsgDouble objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new MsgDouble();
-		}
+    /**
+     * objVal 不能为 null, 但如果真为 null, 则自动创建并返回
+     * 
+     * @param objVal
+     * @return
+     * 
+     */
+    public static MsgDouble ifNullThenCreate(MsgDouble objVal) {
+        if (objVal == null) {
+            // 创建对象
+            objVal = new MsgDouble();
+        }
 
-		return objVal;
-	}
+        return objVal;
+    }
 }

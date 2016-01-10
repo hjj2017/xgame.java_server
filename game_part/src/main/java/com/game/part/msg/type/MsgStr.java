@@ -12,47 +12,47 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public final class MsgStr extends PrimitiveTypeField<String> {
-	/**
-	 * 类参数构造器
-	 * 
-	 */
-	public MsgStr() {
-		this(null);
-	}
+    /**
+     * 类参数构造器
+     * 
+     */
+    public MsgStr() {
+        this(null);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param value
-	 * 
-	 */
-	public MsgStr(String value) {
-		this.setObjVal(value);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param value
+     * 
+     */
+    public MsgStr(String value) {
+        this.setObjVal(value);
+    }
 
-	@Override
-	public void readBuff(ByteBuffer buff) {
-		this.setObjVal(IoBuffUtil.readStr(buff));
-	}
+    @Override
+    public void readBuff(ByteBuffer buff) {
+        this.setObjVal(IoBuffUtil.readStr(buff));
+    }
 
-	@Override
-	public void writeBuff(ByteBuffer buff) {
-		IoBuffUtil.writeStr(this.getStrVal(), buff);
-	}
+    @Override
+    public void writeBuff(ByteBuffer buff) {
+        IoBuffUtil.writeStr(this.getStrVal(), buff);
+    }
 
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @return
-	 * 
-	 */
-	public static MsgStr ifNullThenCreate(MsgStr objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new MsgStr();
-		}
+    /**
+     * objVal 不能为空, 但如果真为空值, 则自动创建
+     * 
+     * @param objVal
+     * @return
+     * 
+     */
+    public static MsgStr ifNullThenCreate(MsgStr objVal) {
+        if (objVal == null) {
+            // 创建对象
+            objVal = new MsgStr();
+        }
 
-		return objVal;
-	}
+        return objVal;
+    }
 }

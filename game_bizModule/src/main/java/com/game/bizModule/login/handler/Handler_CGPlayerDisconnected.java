@@ -14,32 +14,32 @@ import com.game.gameServer.msg.netty.IoSessionManager;
  * 
  */
 public class Handler_CGPlayerDisconnected extends AbstractCGMsgHandler<CGPlayerDisconnected> {
-	@Override
-	public void handle(CGPlayerDisconnected cgMSG) {
-		if (cgMSG == null) {
-			// 如果参数对象为空,
-			// 则直接退出!
-			return;
-		}
+    @Override
+    public void handle(CGPlayerDisconnected cgMSG) {
+        if (cgMSG == null) {
+            // 如果参数对象为空,
+            // 则直接退出!
+            return;
+        }
 
-		// 获取玩家对象
-		final Player p = this.getPlayer();
+        // 获取玩家对象
+        final Player p = this.getPlayer();
 
-		if (p == null) {
-			// 如果玩家对象为空,
-			// 则直接退出!
-			return;
-		}
+        if (p == null) {
+            // 如果玩家对象为空,
+            // 则直接退出!
+            return;
+        }
 
-		// 玩家不能处理任何类型的 CG 消息
-		p._allowMsgTypeMap.clear();
+        // 玩家不能处理任何类型的 CG 消息
+        p._allowMsgTypeMap.clear();
 
-		// 玩家断线
-		LoginServ.OBJ.playerDisconnected(p);
-		// 删除玩家对象
-		super.uninstallPlayer(p);
-		IoSessionManager.OBJ.removeSession(p._sessionUId);
-		// 清除所有属性
-		p.clearAllProp();
-	}
+        // 玩家断线
+        LoginServ.OBJ.playerDisconnected(p);
+        // 删除玩家对象
+        super.uninstallPlayer(p);
+        IoSessionManager.OBJ.removeSession(p._sessionUId);
+        // 清除所有属性
+        p.clearAllProp();
+    }
 }

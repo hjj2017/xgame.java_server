@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
  *
  */
 public final class CdLog {
-	/** 获取日志记录器 */
-	public static final Logger LOG = LoggerFactory.getLogger(CdLog.class);
+    /** 获取日志记录器 */
+    public static final Logger LOG = LoggerFactory.getLogger(CdLog.class);
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private CdLog() {
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    private CdLog() {
+    }
 }

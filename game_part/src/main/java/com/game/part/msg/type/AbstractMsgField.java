@@ -13,24 +13,24 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  */
 public abstract class AbstractMsgField {
-	/**
-	 * 从 IoBuff 中读取数据
-	 * 
-	 * @param buff
-	 * 
-	 */
-	public abstract void readBuff(ByteBuffer buff);
+    /**
+     * 从 IoBuff 中读取数据
+     * 
+     * @param buff
+     * 
+     */
+    public abstract void readBuff(ByteBuffer buff);
 
-	/**
-	 * 写出数据到 IoBuff 中
-	 * 
-	 * @param buff
-	 * 
-	 */
-	public abstract void writeBuff(ByteBuffer buff);
+    /**
+     * 写出数据到 IoBuff 中
+     * 
+     * @param buff
+     * 
+     */
+    public abstract void writeBuff(ByteBuffer buff);
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

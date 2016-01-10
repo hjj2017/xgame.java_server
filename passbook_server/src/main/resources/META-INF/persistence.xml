@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
-	<persistence-unit name="X-passbookServer" transaction-type="RESOURCE_LOCAL">
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>com.game.passbookServer.entity.PassbookEntity_0</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_1</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_2</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_3</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_4</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_5</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_6</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_7</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_8</class>
-		<class>com.game.passbookServer.entity.PassbookEntity_9</class>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+    <persistence-unit name="X-passbookServer" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.game.passbookServer.entity.PassbookEntity_0</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_1</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_2</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_3</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_4</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_5</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_6</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_7</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_8</class>
+        <class>com.game.passbookServer.entity.PassbookEntity_9</class>
 
         <properties>
-        	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-        	<!-- 
-        	// 注意 : 不要修改一下属性值, 
-        	// 这里的配置属性会被 config.json 文件所覆盖, 
-        	//-->
-			<property name="javax.persistence.jdbc.url" value="" />
-			<property name="javax.persistence.jdbc.user" value="" />
-			<property name="javax.persistence.jdbc.password" value="" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <!-- 
+            // 注意 : 不要修改一下属性值, 
+            // 这里的配置属性会被 config.json 文件所覆盖, 
+            //-->
+            <property name="javax.persistence.jdbc.url" value="" />
+            <property name="javax.persistence.jdbc.user" value="" />
+            <property name="javax.persistence.jdbc.password" value="" />
 
-			<property name="eclipselink.connection-pool.default.initial" value="1" />
+            <property name="eclipselink.connection-pool.default.initial" value="1" />
             <property name="eclipselink.connection-pool.default.min" value="64" />
             <property name="eclipselink.connection-pool.default.max" value="64" />
-		</properties>
-	</persistence-unit>
+        </properties>
+    </persistence-unit>
 </persistence>

@@ -15,55 +15,55 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public final class MsgTime extends PrimitiveTypeField<LocalTime> {
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public MsgTime() {
-		this(LocalTime.now());
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    public MsgTime() {
+        this(LocalTime.now());
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param value
-	 * 
-	 */
-	public MsgTime(LocalTime value) {
-		this.setObjVal(value);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param value
+     * 
+     */
+    public MsgTime(LocalTime value) {
+        this.setObjVal(value);
+    }
 
-	@Override
-	public void readBuff(ByteBuffer buff) {
-		// 创建时间对象
-		Instant inst = Instant.ofEpochMilli(
-			IoBuffUtil.readLong(buff)
-		);
+    @Override
+    public void readBuff(ByteBuffer buff) {
+        // 创建时间对象
+        Instant inst = Instant.ofEpochMilli(
+            IoBuffUtil.readLong(buff)
+        );
 
-		// 创建本地时间
-		LocalTime lt = inst.atZone(ZoneId.systemDefault()).toLocalTime();
-		// 设置数值
-		this.setObjVal(lt);
-	}
+        // 创建本地时间
+        LocalTime lt = inst.atZone(ZoneId.systemDefault()).toLocalTime();
+        // 设置数值
+        this.setObjVal(lt);
+    }
 
-	@Override
-	public void writeBuff(ByteBuffer buff) {
-		IoBuffUtil.writeLong(this.getLongVal(), buff);
-	}
+    @Override
+    public void writeBuff(ByteBuffer buff) {
+        IoBuffUtil.writeLong(this.getLongVal(), buff);
+    }
 
-	/**
-	 * objVal 不能为 null, 但如果真为 null, 则自动创建并返回
-	 * 
-	 * @param objVal
-	 * @return
-	 * 
-	 */
-	public static MsgTime ifNullThenCreate(MsgTime objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new MsgTime();
-		}
+    /**
+     * objVal 不能为 null, 但如果真为 null, 则自动创建并返回
+     * 
+     * @param objVal
+     * @return
+     * 
+     */
+    public static MsgTime ifNullThenCreate(MsgTime objVal) {
+        if (objVal == null) {
+            // 创建对象
+            objVal = new MsgTime();
+        }
 
-		return objVal;
-	}
+        return objVal;
+    }
 }

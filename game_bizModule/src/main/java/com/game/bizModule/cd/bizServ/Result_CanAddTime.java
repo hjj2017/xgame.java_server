@@ -10,11 +10,11 @@ import com.game.part.util.BizResultObj;
  *
  */
 public class Result_CanAddTime extends BizResultObj {
-	/** 是否可以累计 Cd 时间? */
-	public boolean _canAddTime = false;
+    /** 是否可以累计 Cd 时间? */
+    public boolean _canAddTime = false;
 
-	@Override
-	protected void clearContent() {
-		this._canAddTime = false;
-	}
+    @Override
+    protected void clearContent() {
+        this._canAddTime = false;
+    }
 }

@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  * 
  */
 class SceneLog {
-	/** 单例对象 */
-	static final Logger LOG = LoggerFactory.getLogger(SceneLog.class);
+    /** 单例对象 */
+    static final Logger LOG = LoggerFactory.getLogger(SceneLog.class);
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private SceneLog() {
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    private SceneLog() {
+    }
 }

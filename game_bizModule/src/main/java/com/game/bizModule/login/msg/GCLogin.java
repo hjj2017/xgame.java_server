@@ -12,28 +12,28 @@ import com.game.part.msg.type.MsgBool;
  * 
  */
 public class GCLogin extends AbstractGCMsgObj {
-	/** 是否成功? */
-	public MsgBool _success;
+    /** 是否成功? */
+    public MsgBool _success;
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public GCLogin() {
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    public GCLogin() {
+    }
 
-	/**
-	 * 类参数构造器
-	 *
-	 * @param success
-	 *
-	 */
-	public GCLogin(boolean success) {
-		this._success = new MsgBool(success);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param success
+     *
+     */
+    public GCLogin(boolean success) {
+        this._success = new MsgBool(success);
+    }
 
-	@Override
-	public short getSerialUId() {
-		return AllMsgSerialUId.GC_LOGIN;
-	}
+    @Override
+    public short getSerialUId() {
+        return AllMsgSerialUId.GC_LOGIN;
+    }
 }

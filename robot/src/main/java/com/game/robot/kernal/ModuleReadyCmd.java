@@ -8,13 +8,13 @@ package com.game.robot.kernal;
  * 
  */
 public final class ModuleReadyCmd {
-	/** 单例对象 */
-	public static final ModuleReadyCmd OBJ = new ModuleReadyCmd();
+    /** 单例对象 */
+    public static final ModuleReadyCmd OBJ = new ModuleReadyCmd();
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private ModuleReadyCmd() {
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    private ModuleReadyCmd() {
+    }
 }

@@ -12,47 +12,47 @@ import com.game.part.msg.IoBuffUtil;
  * 
  */
 public final class MsgByte extends PrimitiveTypeField<Byte> {
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	public MsgByte() {
-		this((byte)0);
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    public MsgByte() {
+        this((byte)0);
+    }
 
-	/**
-	 * 类参数构造器
-	 * 
-	 * @param value
-	 * 
-	 */
-	public MsgByte(byte value) {
-		this.setObjVal(value);
-	}
+    /**
+     * 类参数构造器
+     * 
+     * @param value
+     * 
+     */
+    public MsgByte(byte value) {
+        this.setObjVal(value);
+    }
 
-	@Override
-	public void readBuff(ByteBuffer buff) {
-		this.setObjVal(IoBuffUtil.readByte(buff));
-	}
+    @Override
+    public void readBuff(ByteBuffer buff) {
+        this.setObjVal(IoBuffUtil.readByte(buff));
+    }
 
-	@Override
-	public void writeBuff(ByteBuffer buff) {
-		IoBuffUtil.writeByte(this.getByteVal(), buff);
-	}
+    @Override
+    public void writeBuff(ByteBuffer buff) {
+        IoBuffUtil.writeByte(this.getByteVal(), buff);
+    }
 
-	/**
-	 * objVal 不能为空, 但如果真为空值, 则自动创建
-	 * 
-	 * @param objVal
-	 * @return
-	 * 
-	 */
-	static MsgByte ifNullThenCreate(MsgByte objVal) {
-		if (objVal == null) {
-			// 创建对象
-			objVal = new MsgByte();
-		}
+    /**
+     * objVal 不能为空, 但如果真为空值, 则自动创建
+     * 
+     * @param objVal
+     * @return
+     * 
+     */
+    static MsgByte ifNullThenCreate(MsgByte objVal) {
+        if (objVal == null) {
+            // 创建对象
+            objVal = new MsgByte();
+        }
 
-		return objVal;
-	}
+        return objVal;
+    }
 }

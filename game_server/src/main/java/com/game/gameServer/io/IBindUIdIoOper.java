@@ -9,11 +9,11 @@ import com.game.part.io.IIoOper;
  *
  */
 interface IBindUIdIoOper extends IIoOper {
-	/**
-	 * 取得该操作绑定的 UId, 一般是玩家的角色 Id
-	 * 
-	 * @return
-	 * 
-	 */
-	long getBindUId();
+    /**
+     * 取得该操作绑定的 UId, 一般是玩家的角色 Id
+     * 
+     * @return
+     * 
+     */
+    long getBindUId();
 }

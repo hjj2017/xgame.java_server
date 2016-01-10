@@ -13,17 +13,17 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S030_GCEnterHuman extends AbstractGCMsgHandler<GCEnterHuman> {
-	@Override
-	public void handleGCMsg(
-		Robot robotObj, GCEnterHuman msgObj) {
-		// 输入日志信息
-		RobotLog.LOG.info("进入角色完成");
-		// 进入下一模块
-		robotObj.gotoNextModuleAndReady();
-	}
+    @Override
+    public void handleGCMsg(
+        Robot robotObj, GCEnterHuman msgObj) {
+        // 输入日志信息
+        RobotLog.LOG.info("进入角色完成");
+        // 进入下一模块
+        robotObj.gotoNextModuleAndReady();
+    }
 
-	@Override
-	protected Class<GCEnterHuman> getGCMsgClazzDef() {
-		return GCEnterHuman.class;
-	}
+    @Override
+    protected Class<GCEnterHuman> getGCMsgClazzDef() {
+        return GCEnterHuman.class;
+    }
 }

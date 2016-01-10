@@ -19,70 +19,70 @@ import net.sf.json.JSONObject;
  * 
  */
 public class Auth_ByDbUser implements IAuthorize {
-	/** 用户名 */
-	private static final String JK_userName = "userName";
-	/** 密码 */
-	private static final String JK_password = "password";
+    /** 用户名 */
+    private static final String JK_userName = "userName";
+    /** 密码 */
+    private static final String JK_password = "password";
 
-	@Override
-	public boolean auth(Player p, String loginStr) {
-		if (p == null ||
-			loginStr == null ||
-			loginStr.isEmpty()) {
-			return false;
-		}
+    @Override
+    public boolean auth(Player p, String loginStr) {
+        if (p == null ||
+            loginStr == null ||
+            loginStr.isEmpty()) {
+            return false;
+        }
 
-		// 创建 JSON 对象
-		JSONObject jsonObj = JSONObject.fromObject(loginStr);
-		// 获取用户名和密码
-		final String userName = jsonObj.optString(JK_userName, "");
-		final String passwd = jsonObj.optString(JK_password, "");
+        // 创建 JSON 对象
+        JSONObject jsonObj = JSONObject.fromObject(loginStr);
+        // 获取用户名和密码
+        final String userName = jsonObj.optString(JK_userName, "");
+        final String passwd = jsonObj.optString(JK_password, "");
 
-		if (userName == null || 
-			userName.isEmpty() || 
-			passwd == null || 
-			passwd.isEmpty()) {
-			// 如果用户名或者密码为空, 
-			// 则直接退出!
-			return false;
-		}
+        if (userName == null || 
+            userName.isEmpty() || 
+            passwd == null || 
+            passwd.isEmpty()) {
+            // 如果用户名或者密码为空, 
+            // 则直接退出!
+            return false;
+        }
 
-		// 获取用户实体
-		PlayerEntity pe = CommDao.OBJ.getSingleResult(
-			PlayerEntity.class,
-			"entity._userName = '" + StringUtil.addSlash(userName) + "'"
-		);
+        // 获取用户实体
+        PlayerEntity pe = CommDao.OBJ.getSingleResult(
+            PlayerEntity.class,
+            "entity._userName = '" + StringUtil.addSlash(userName) + "'"
+        );
 
-		if (pe == null) {
-			// 如果数据实体为空,
-			// 则直接退出!
-			LoginLog.LOG.error(MessageFormat.format(
-				"用户 {0} 不存在!", userName
-			));
-			return false;
-		}
+        if (pe == null) {
+            // 如果数据实体为空,
+            // 则直接退出!
+            LoginLog.LOG.error(MessageFormat.format(
+                "用户 {0} 不存在!", userName
+            ));
+            return false;
+        }
 
-		if (!passwd.equals(pe._userPass)) {
-			// 如果密码不正确,
-			// 则直接退出!
-			LoginLog.LOG.error(MessageFormat.format(
-				"用户 {0} 密码不正确!", userName
-			));
-			return false;
-		}
+        if (!passwd.equals(pe._userPass)) {
+            // 如果密码不正确,
+            // 则直接退出!
+            LoginLog.LOG.error(MessageFormat.format(
+                "用户 {0} 密码不正确!", userName
+            ));
+            return false;
+        }
 
-		// 更新最后登录 IP 和时间
-		pe._lastLoginIpAddr = p._loginIpAddr;
-		pe._lastLoginTime = p._loginTime;
+        // 更新最后登录 IP 和时间
+        pe._lastLoginIpAddr = p._loginIpAddr;
+        pe._lastLoginTime = p._loginTime;
 
-		// 更新用户实体
-		CommDao.OBJ.save(pe);
+        // 更新用户实体
+        CommDao.OBJ.save(pe);
 
-		// 更新玩家对象
-		p._userName = pe._userName;
-		p._pf = NullUtil.optVal(p._pf, "WEB");
-		p._createTime = NullUtil.optVal(pe._createTime, 0L);
+        // 更新玩家对象
+        p._userName = pe._userName;
+        p._pf = NullUtil.optVal(p._pf, "WEB");
+        p._createTime = NullUtil.optVal(pe._createTime, 0L);
 
-		return true;
-	}
+        return true;
+    }
 }

@@ -10,12 +10,12 @@ import java.nio.ByteBuffer;
  * 
  */
 public interface IWriteHelper {
-	/**
-	 * 写出 Buff 数据
-	 * 
-	 * @param msgObj
-	 * @param buff
-	 * 
-	 */
-	void writeBuff(AbstractMsgObj msgObj, ByteBuffer buff);
+    /**
+     * 写出 Buff 数据
+     * 
+     * @param msgObj
+     * @param buff
+     * 
+     */
+    void writeBuff(AbstractMsgObj msgObj, ByteBuffer buff);
 }

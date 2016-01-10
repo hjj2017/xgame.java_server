@@ -8,8 +8,8 @@ package com.game.bizModule.item.model;
  * 
  */
 class Slot {
-	/** 深度 */
-	public static final int DEEPNESS = 10000;
-	/** 道具引用 */
-	public ItemRef _iref = null;
+    /** 深度 */
+    public static final int DEEPNESS = 10000;
+    /** 道具引用 */
+    public ItemRef _iref = null;
 }

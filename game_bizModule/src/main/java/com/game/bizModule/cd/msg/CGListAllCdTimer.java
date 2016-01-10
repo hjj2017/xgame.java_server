@@ -13,14 +13,14 @@ import com.game.gameServer.msg.AbstractCGMsgObj;
  * 
  */
 public class CGListAllCdTimer extends AbstractCGMsgObj {
-	@Override
-	public short getSerialUId() {
-		return AllMsgSerialUId.CG_LIST_ALL_TIMER;
-	}
+    @Override
+    public short getSerialUId() {
+        return AllMsgSerialUId.CG_LIST_ALL_TIMER;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public AbstractCGMsgHandler<CGListAllCdTimer> newHandlerObj() {
-		return new Handler_CGListAllCdTimer();
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public AbstractCGMsgHandler<CGListAllCdTimer> newHandlerObj() {
+        return new Handler_CGListAllCdTimer();
+    }
 }

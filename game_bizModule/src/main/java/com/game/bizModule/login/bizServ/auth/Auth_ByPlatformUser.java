@@ -10,8 +10,8 @@ import com.game.gameServer.framework.Player;
  * 
  */
 public class Auth_ByPlatformUser implements IAuthorize {
-	@Override
-	public boolean auth(Player p, String loginStr) {
-		return false;
-	}
+    @Override
+    public boolean auth(Player p, String loginStr) {
+        return false;
+    }
 }

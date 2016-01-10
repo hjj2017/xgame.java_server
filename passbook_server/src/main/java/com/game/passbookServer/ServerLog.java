@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  *
  */
 public final class ServerLog {
-	/** 日志对象 */
-	public static final Logger LOG = LoggerFactory.getLogger(ServerLog.class);
+    /** 日志对象 */
+    public static final Logger LOG = LoggerFactory.getLogger(ServerLog.class);
 
-	/**
-	 * 类默认构造器
-	 * 
-	 */
-	private ServerLog() {
-	}
+    /**
+     * 类默认构造器
+     * 
+     */
+    private ServerLog() {
+    }
 }

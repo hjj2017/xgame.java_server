@@ -6,7 +6,7 @@
 # 起始账户 Id
 "startPId" : "2048",
 # 结束账户 Id
-"endPId" : "8192",
+"endPId" : "2048",
 # 账户密码
 "userPassword" : "1",
 # 游戏服名称

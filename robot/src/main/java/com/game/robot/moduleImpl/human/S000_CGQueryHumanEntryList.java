@@ -13,17 +13,17 @@ import com.game.robot.kernal.Robot;
  * 
  */
 public class S000_CGQueryHumanEntryList extends AbstractModuleReady {
-	@Override
-	public void ready(Robot robotObj) {
-		if (robotObj == null) {
-			// 如果参数对象为空, 
-			// 则直接退出!
-			return;
-		}
+    @Override
+    public void ready(Robot robotObj) {
+        if (robotObj == null) {
+            // 如果参数对象为空, 
+            // 则直接退出!
+            return;
+        }
 
-		// 创建并发送 CG 消息
-		CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
-		cgMSG._serverName = new MsgStr(robotObj._gameServerName);
-		robotObj.sendMsg(cgMSG);
-	}
+        // 创建并发送 CG 消息
+        CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
+        cgMSG._serverName = new MsgStr(robotObj._gameServerName);
+        robotObj.sendMsg(cgMSG);
+    }
 }

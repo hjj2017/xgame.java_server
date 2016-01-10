@@ -15,45 +15,45 @@ import com.game.part.msg.type.MsgStr;
  *
  */
 public class CGLogin extends AbstractCGMsgObj {
-	/** 平台 UId 字符串 */
-	public MsgStr _platformUIdStr;
-	/** 登陆字符串 */
-	public MsgStr _loginStr;
+    /** 平台 UId 字符串 */
+    public MsgStr _platformUIdStr;
+    /** 登陆字符串 */
+    public MsgStr _loginStr;
 
-	/**
-	 * 类默认构造器
-	 *
-	 */
-	public CGLogin() {
-	}
+    /**
+     * 类默认构造器
+     *
+     */
+    public CGLogin() {
+    }
 
-	/**
-	 * 类参数构造器
-	 *
-	 * @param platformUIdStr
-	 * @param loginStr
-	 *
-	 */
-	public CGLogin(
-		String platformUIdStr,
-		String loginStr) {
-		this._platformUIdStr = new MsgStr(platformUIdStr);
-		this._loginStr = new MsgStr(loginStr);
-	}
+    /**
+     * 类参数构造器
+     *
+     * @param platformUIdStr
+     * @param loginStr
+     *
+     */
+    public CGLogin(
+        String platformUIdStr,
+        String loginStr) {
+        this._platformUIdStr = new MsgStr(platformUIdStr);
+        this._loginStr = new MsgStr(loginStr);
+    }
 
-	@Override
-	public short getSerialUId() {
-		return AllMsgSerialUId.CG_LOGIN;
-	}
+    @Override
+    public short getSerialUId() {
+        return AllMsgSerialUId.CG_LOGIN;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public AbstractCGMsgHandler<CGLogin> newHandlerObj() {
-		return new Handler_CGLogin();
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public AbstractCGMsgHandler<CGLogin> newHandlerObj() {
+        return new Handler_CGLogin();
+    }
 
-	@Override
-	public MsgTypeEnum getMsgType() {
-		return MsgTypeEnum.login;
-	}
+    @Override
+    public MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.login;
+    }
 }

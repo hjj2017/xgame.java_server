@@ -10,10 +10,10 @@ import java.util.List;
  * 
  */
 public class Bag {
-	/** 槽子列表 */
-	public List<Slot> _slotList = new ArrayList<>();
+    /** 槽子列表 */
+    public List<Slot> _slotList = new ArrayList<>();
 
-	public void addItem(ItemRef newItem) {
-		
-	}
+    public void addItem(ItemRef newItem) {
+        
+    }
 }
