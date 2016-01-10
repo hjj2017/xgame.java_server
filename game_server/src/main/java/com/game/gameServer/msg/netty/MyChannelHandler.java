@@ -91,15 +91,14 @@ public class MyChannelHandler extends ChannelInboundHandlerAdapter {
         // 记录错误日志
         MsgLog.LOG.error(err.getMessage(), err);
         // 令玩家断开连接
-        ctx.disconnect();
         ctx.close();
     }
 
     /**
      * 发送消息对象
      *
-     * @param ctx
-     * @param cgMsgObj
+     * @param ctx Netty 上下文
+     * @param cgMsgObj CG 消息对象
      *
      */
     private void postMsg(
