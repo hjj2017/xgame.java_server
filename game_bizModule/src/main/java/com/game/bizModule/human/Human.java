@@ -206,18 +206,18 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 		}
 
 		// 获取会话 UId 集合
-		Set<Long> ctxUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
+		Set<Long> sessionUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
 
-		if (ctxUIdSet == null ||
-			ctxUIdSet.isEmpty()) {
+		if (sessionUIdSet == null ||
+			sessionUIdSet.isEmpty()) {
 			// 如果会话 UId 集合为空,
 			// 则直接退出!
 			return null;
 		}
 
-		return ctxUIdSet.stream().map(ctxUId -> {
+		return sessionUIdSet.stream().map(sessionUId -> {
 			// 根据会话 UId 获取玩家对象
-			Player p = IoSessionManager.OBJ.getPlayerBySessionUId(ctxUId);
+			Player p = IoSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
 
 			if (p == null) {
 				// 如果玩家对象为空,
@@ -245,18 +245,18 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 	 */
 	public static List<Human> getAllOnlineHuman() {
 		// 获取会话 UId 集合
-		Set<Long> ctxUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
+		Set<Long> sessionUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
 
-		if (ctxUIdSet == null ||
-			ctxUIdSet.isEmpty()) {
+		if (sessionUIdSet == null ||
+			sessionUIdSet.isEmpty()) {
 			// 如果会话 UId 集合为空,
 			// 则直接退出!
 			return null;
 		}
 
-		return ctxUIdSet.stream().map(ctxUId -> {
+		return sessionUIdSet.stream().map(sessionUId -> {
 			// 根据会话 UId 获取玩家对象
-			Player p = IoSessionManager.OBJ.getPlayerBySessionUId(ctxUId);
+			Player p = IoSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
 
 			if (p == null) {
 				// 如果玩家对象为空,

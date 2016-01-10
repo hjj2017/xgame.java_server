@@ -90,20 +90,20 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
         }
 
         // 获取会话 UId 集合
-        Set<Long> ctxUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
+        Set<Long> sessionUIdSet = IoSessionManager.OBJ.getSessionUIdSet();
 
-        if (ctxUIdSet == null ||
-            ctxUIdSet.size() <= 0) {
+        if (sessionUIdSet == null ||
+            sessionUIdSet.size() <= 0) {
             // 如果会话 UId 列表为空,
             // 则直接退出!
             return;
         }
 
-        ctxUIdSet.forEach(ctxUId -> {
-            if (ctxUId != null &&
-                ctxUId > 0L) {
+        sessionUIdSet.forEach(sessionUId -> {
+            if (sessionUId != null &&
+                sessionUId > 0L) {
                 // 发送消息
-                this.sendMsgToClient(msgObj, ctxUId);
+                this.sendMsgToClient(msgObj, sessionUId);
             }
         });
     }
@@ -135,22 +135,22 @@ abstract class AbstractExecutableMsgHandler<TMsgObj extends AbstractExecutableMs
      * 给所有在线玩家广播消息
      *
      * @param msgObj
-     * @param toCtxUIdArr
+     * @param toSessionUIdArr
      *
      */
-    protected void broadcast(AbstractGCMsgObj msgObj, long[] toCtxUIdArr) {
+    protected void broadcast(AbstractGCMsgObj msgObj, long[] toSessionUIdArr) {
         if (msgObj == null ||
-            toCtxUIdArr == null ||
-            toCtxUIdArr.length <= 0) {
+            toSessionUIdArr == null ||
+            toSessionUIdArr.length <= 0) {
             // 如果参数对象为空,
             // 则直接退出!
             return;
         }
 
-        for (long ctxUId : toCtxUIdArr) {
-            if (ctxUId > 0L) {
+        for (long sessionUId : toSessionUIdArr) {
+            if (sessionUId > 0L) {
                 // 发送消息
-                this.sendMsgToClient(msgObj, ctxUId);
+                this.sendMsgToClient(msgObj, sessionUId);
             }
         }
     }

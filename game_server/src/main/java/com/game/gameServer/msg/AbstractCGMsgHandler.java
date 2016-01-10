@@ -83,7 +83,7 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 			// 如果有老玩家,
 			// 直接令是新老玩家断线!
 			MsgLog.LOG.error(MessageFormat.format(
-				"ctxUId = {0}, 已有老玩家 {1}",
+				"sessionUId = {0}, 已有老玩家 {1}",
 				String.valueOf(newP._sessionUId), oldP._platformUIdStr
 			));
 			this.disconnect(newP);
@@ -127,7 +127,6 @@ public abstract class AbstractCGMsgHandler<TMsgObj extends AbstractCGMsgObj> ext
 
 		// 解除玩家到会话的绑定关系
 		IoSessionManager.OBJ.unbindPlayerFromSession(theP._sessionUId);
-
 		return true;
 	}
 

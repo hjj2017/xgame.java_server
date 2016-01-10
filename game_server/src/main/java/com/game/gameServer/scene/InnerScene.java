@@ -197,9 +197,9 @@ class InnerScene {
 		}
 
 		// 获取会话 UId
-		final long ctxUId = cgMsgObj.getSelfHandler()._sessionUId;
+		final long sessionUId = cgMsgObj.getSelfHandler()._sessionUId;
 		// 获取玩家对象
-		Player p = IoSessionManager.OBJ.getPlayerBySessionUId(ctxUId);
+		Player p = IoSessionManager.OBJ.getPlayerBySessionUId(sessionUId);
 
 		if (p == null) {
 			// 如果玩家对象为空,

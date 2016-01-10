@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.netty.channel.Channel;
 
 import com.game.gameServer.framework.Player;
+import com.game.part.msg.MsgError;
 
 /**
  * IO 会话
@@ -19,8 +20,8 @@ public final class IoSession {
     private static final AtomicInteger COUNTER = new AtomicInteger(0);
     /** 会话 UId */
     private final long _UId;
-    /** Netty 信道 */
-    private Channel _ch;
+    /** Netty 信道软引用 */
+    private WeakReference<Channel> _chRef;
     /** 玩家对象 */
     private Player _p = null;
 
@@ -35,7 +36,7 @@ public final class IoSession {
         assert ch != null : "null ch";
         // 设置 UId 和信道
         this._UId = COUNTER.incrementAndGet();
-        this._ch = ch;
+        this._chRef = new WeakReference<>(ch);
     }
 
     /**
@@ -55,7 +56,7 @@ public final class IoSession {
      *
      */
     public Channel getChannel() {
-        return this._ch;
+        return this._chRef == null ? null : this._chRef.get();
     }
 
     /**
@@ -67,6 +68,7 @@ public final class IoSession {
     public Player getPlayer() {
         return this._p;
     }
+    
     /**
      * 写出消息对象
      *
@@ -74,8 +76,16 @@ public final class IoSession {
      *
      */
     public void writeAndFlush(Object obj) {
-        if (obj != null) {
-            this._ch.writeAndFlush(obj);
+        if (obj == null ||
+            this._chRef == null) {
+            return;
+        }
+
+        // 获取 Netty 信道
+        Channel ch = this._chRef.get();
+
+        if (ch != null) {
+            ch.writeAndFlush(obj);
         }
     }
 
@@ -86,32 +96,17 @@ public final class IoSession {
      * @return 玩家对象
      *
      */
-    public Player bindPlayer(Player p) {
-        if (p != null) {
+    public Player attachPlayer(Player p) {
+        if (p == null) {
             this._p = p;
+        } else/* if (p != null) */{
+            if (this._p == null) {
+                this._p = p;
+            } else if (this._p != p) {
+                throw new MsgError("已有绑定玩家");
+            }
         }
 
         return p;
-    }
-
-    /**
-     * 解除玩家绑定
-     *
-     * @return 玩家对象
-     *
-     */
-    public Player unbindPlayer() {
-        Player tmpP = this._p;
-        this._p = null;
-        return tmpP;
-    }
-
-    /**
-     * 释放会话
-     *
-     */
-    public void release() {
-        this.unbindPlayer();
-        this._ch = null;
     }
 }

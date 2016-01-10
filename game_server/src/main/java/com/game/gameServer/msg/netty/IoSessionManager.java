@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.AttributeKey;
 
 import com.game.gameServer.framework.Player;
 import com.game.part.msg.MsgLog;
@@ -21,8 +20,6 @@ import com.game.part.msg.MsgLog;
 public final class IoSessionManager {
     /** 单例对象 */
     public static final IoSessionManager OBJ = new IoSessionManager();
-    /** Netty 上下文与会话 UId */
-    private static final AttributeKey<Long> CTX_SESSION_UID = AttributeKey.newInstance("CTX_SESSION_UID");
     /** 会话字典 */
     private final ConcurrentHashMap<Long, IoSession> _sessionMap = new ConcurrentHashMap<>();
     /** 平台 UId =>  会话 UId 字典 */
@@ -36,68 +33,38 @@ public final class IoSessionManager {
     }
 
     /**
-     * 新建并添加会话
+     * 添加会话
      *
-     * @param ctx Netty 上下文对象
+     *
+     * @param newSession 新建对象
+     * @return 新建会话
+     * @see MyChannelHandler#channelRegistered(ChannelHandlerContext)
      *
      */
-    public void createSessionAndAdd(ChannelHandlerContext ctx) {
-        if (ctx == null) {
+    IoSession addSession(IoSession newSession) {
+        if (newSession == null) {
             // 如果参数对象为空,
             // 则直接退出!
-            return;
+            return null;
         }
-
-        // 创建会话对象
-        IoSession sessionObj = new IoSession(ctx.channel());
-        // 获取会话 UId
-        final long sessionUId = sessionObj.getUId();
-        // 获取原有会话 UId
-        ctx.attr(CTX_SESSION_UID).set(sessionUId);
 
         // 添加会话到字典
         this._sessionMap.put(
-            sessionUId, sessionObj
+            newSession.getUId(), newSession
         );
+
+        return newSession;
     }
 
     /**
-     * 关闭并删除会话
+     * 删除会话
      *
-     * @param ctx Netty 上下文对象
-     *
-     */
-    public void closeSessionAndRemove(ChannelHandlerContext ctx) {
-        final long sessionUId = this.getSessionUId(ctx);
-        IoSession sessionObj = this.getSessionByUId(sessionUId);
-
-        if (sessionObj != null) {
-            sessionObj.getChannel().close();
-            sessionObj.release();
-            this._sessionMap.remove(sessionUId);
-        }
-    }
-
-    /**
-     * 获取会话 UId
-     *
-     * @param ctx Netty 上下文对象, 相当于会话 ( Session )
-     * @return 返回会话 UId
+     * @param sessionUId 会话 UId
+     * @return 被删除的会话
      *
      */
-    public long getSessionUId(ChannelHandlerContext ctx) {
-        if (ctx != null) {
-            // 获取 CTX_SESSION_UID
-            Long val = ctx.attr(CTX_SESSION_UID).get();
-
-            if (val == null) {
-                return 0;
-            } else {
-                return val;
-            }
-        } else {
-            return 0;
-        }
+    public IoSession removeSession(long sessionUId) {
+        return this._sessionMap.remove(sessionUId);
     }
 
     /**
@@ -158,7 +125,7 @@ public final class IoSessionManager {
         }
 
         // 将玩家对象存入会话对象
-        sessionObj.bindPlayer(p);
+        sessionObj.attachPlayer(p);
         // 管家玩家 ID 和 会话 ID
         this._platformUIdStrToSessionUIdMap.put(p._platformUIdStr, sessionUId);
     }
@@ -185,8 +152,9 @@ public final class IoSessionManager {
             return;
         }
 
-        // 获取玩家对象
-        Player p = sessionObj.unbindPlayer();
+        // 获取玩家并解绑
+        Player p = sessionObj.getPlayer();
+        sessionObj.attachPlayer(null);
 
         if (p != null) {
             // 如果玩家对象不为空,
@@ -211,15 +179,15 @@ public final class IoSessionManager {
         }
 
         // 获取会话 UId
-        Long ctxUId = this._platformUIdStrToSessionUIdMap.get(platformUIdStr);
+        Long sessionUId = this._platformUIdStrToSessionUIdMap.get(platformUIdStr);
 
-        if (ctxUId == null ||
-            ctxUId <= 0) {
+        if (sessionUId == null ||
+            sessionUId <= 0) {
             return null;
         }
 
         // 获取 IO 会话对象
-        IoSession sessionObj = this._sessionMap.get(ctxUId);
+        IoSession sessionObj = this._sessionMap.get(sessionUId);
 
         if (sessionObj == null) {
             //

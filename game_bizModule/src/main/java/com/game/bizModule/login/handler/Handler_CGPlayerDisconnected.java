@@ -4,6 +4,7 @@ import com.game.bizModule.login.bizServ.LoginServ;
 import com.game.bizModule.login.msg.CGPlayerDisconnected;
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgHandler;
+import com.game.gameServer.msg.netty.IoSessionManager;
 
 /**
  * 断开连接消息
@@ -36,7 +37,8 @@ public class Handler_CGPlayerDisconnected extends AbstractCGMsgHandler<CGPlayerD
 		// 玩家断线
 		LoginServ.OBJ.playerDisconnected(p);
 		// 删除玩家对象
-		this.uninstallPlayer(p);
+		super.uninstallPlayer(p);
+		IoSessionManager.OBJ.removeSession(p._sessionUId);
 		// 清除所有属性
 		p.clearAllProp();
 	}

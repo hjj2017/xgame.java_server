@@ -34,7 +34,7 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
 			// 注意: 如果玩家重复发送 CGLogin 这条消息,
 			// 那么安装玩家将会失败!
 			LoginLog.LOG.error(MessageFormat.format(
-				"安装玩家失败, platformUIdStr = {0}, ctxUId = {1}",
+				"安装玩家失败, platformUIdStr = {0}, sessionUId = {1}",
 				p._platformUIdStr,
 				String.valueOf(p._sessionUId)
 			));
