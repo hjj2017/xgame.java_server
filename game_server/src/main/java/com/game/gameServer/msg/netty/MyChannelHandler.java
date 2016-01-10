@@ -2,6 +2,7 @@ package com.game.gameServer.msg.netty;
 
 import java.text.MessageFormat;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -15,6 +16,7 @@ import com.game.part.msg.MsgServ;
  * 自定义消息处理器
  *
  */
+@ChannelHandler.Sharable
 public class MyChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {

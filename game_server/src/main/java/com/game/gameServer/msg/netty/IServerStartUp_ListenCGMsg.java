@@ -22,13 +22,6 @@ import com.game.part.msg.MsgLog;
  *
  */
 public interface IServerStartUp_ListenCGMsg {
-    /** 消息处理器数组 */
-    static final ChannelHandler[] HANDLER_ARR = {
-        new MsgDecoder(),
-        new MsgEncoder(),
-        new MyChannelHandler(),
-    };
-
     /**
      * 开始监听 CG 消息
      *
@@ -55,7 +48,11 @@ public interface IServerStartUp_ListenCGMsg {
         b.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             public void initChannel(SocketChannel ch) {
-                ch.pipeline().addLast(HANDLER_ARR);
+                ch.pipeline().addLast(
+                    new MsgDecoder(),
+                    new MsgEncoder(),
+                    new MyChannelHandler()
+                );
             }
         });
 
@@ -70,7 +67,7 @@ public interface IServerStartUp_ListenCGMsg {
         } catch (Exception ex) {
             // 记录并抛出异常
             MsgLog.LOG.error(ex.getMessage(), ex);
-            throw new RuntimeException(ex);
+            System.exit(-1);
         } finally {
             // 关闭线程组
             bossGroup.shutdownGracefully();

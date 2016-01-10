@@ -83,15 +83,22 @@ public final class RobotMain {
 			));
 			// 启动机器人
 			newRobot.start();
+		}
 
-			try {
-				// 先稍微休息以下, 
-				// 然后再启动下一个机器人...
-				Thread.sleep(confObj._robotStartUpInterval);
-			} catch (Exception ex) {
-				// 记录错误日志
-				RobotLog.LOG.error(ex.getMessage(), ex);
+		try {
+			while (true) {
+				if (Robot.ROBOT_COUNTER.get() <= 0) {
+					// 终止 Netty 工作线程
+					Robot.NETTY_WORK_GROUP.shutdownGracefully();
+                    break;
+				} else {
+					// 歇 200 毫秒
+					Thread.sleep(200L);
+				}
 			}
+		} catch (Exception ex) {
+			// 记录异常信息
+			RobotLog.LOG.error(ex.getMessage(), ex);
 		}
 	}
 

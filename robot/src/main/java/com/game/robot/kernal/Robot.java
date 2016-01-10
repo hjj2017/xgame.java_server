@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -28,8 +28,10 @@ import com.game.robot.RobotLog;
  * 
  */
 public final class Robot {
-    // 创建事件循环
-    private static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup();
+    /** 创建事件循环 */
+    static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup();
+    /** 机器人计数器 */
+    static final AtomicInteger ROBOT_COUNTER = new AtomicInteger(0);
 
 	/** 游戏服 IP 地址 */
 	public String _gameServerIpAddr = "0.0.0.0";
@@ -117,6 +119,8 @@ public final class Robot {
             return;
         }
 
+        ROBOT_COUNTER.incrementAndGet();
+
         // 不管怎么说,
         // 先尝试给第一个模块发送第一条指令! 即,
         // 让第一个模块发送 CG 消息...
@@ -130,6 +134,9 @@ public final class Robot {
 	 * 
 	 */
 	private void digestAllMsg() {
+        // 是否有错?
+        boolean hasErr = false;
+
 		try {
 			while (true) {
 				// 获取消息对象, 
@@ -151,7 +158,7 @@ public final class Robot {
                         "机器人 {0} 当前模块为空, 机器人 {0} 已经完成此次测试使命, 即将断开连接...",
                         this._userName
                     ));
-                    this.disconnect();
+                    hasErr = true;
 					break;
 				}
 
@@ -163,7 +170,13 @@ public final class Robot {
 		} catch (Exception ex) {
 			// 记录错误日志
 			RobotLog.LOG.error(ex.getMessage(), ex);
+            hasErr = true;
 		}
+
+        if (hasErr) {
+            // 如果出错就断开连接
+            this.disconnect();
+        }
 	}
 
 	/**
@@ -200,6 +213,7 @@ public final class Robot {
         } catch (Exception ex) {
             // 记录并抛出异常
             RobotLog.LOG.error(ex.getMessage(), ex);
+            this.disconnect();
         }
     }
 
@@ -211,6 +225,8 @@ public final class Robot {
         if (this._ch != null) {
             this._ch.close();
         }
+
+        ROBOT_COUNTER.decrementAndGet();
 	}
 
 	/**

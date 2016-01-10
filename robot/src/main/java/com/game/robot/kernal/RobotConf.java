@@ -27,8 +27,6 @@ public final class RobotConf {
 	public String _userPassword = "1";
 	/** 游戏服名称 */
 	public String _gameServerName = "S01";
-	/** 启动每个机器人时, 间隔时间 ( 单位毫秒 ) */
-	public int _robotStartUpInterval = 2000;
 	/** 要测试的模块数组 */
 	public List<TestModule> _testModuleList = null;
 
@@ -67,8 +65,6 @@ public final class RobotConf {
 		confObj._endPId = jsonObj.optInt("endPId", 1001);
 		// 用户密码
 		confObj._userPassword = jsonObj.optString("userPassword", "1");
-		// 启动每个机器人的间隔时间
-		confObj._robotStartUpInterval = jsonObj.optInt("robotStartUpInterval", 2000);
 		// 服务器名称
 		confObj._gameServerName = jsonObj.optString("gameServerName", "S01");
 

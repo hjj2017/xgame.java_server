@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
@@ -20,10 +21,12 @@ public class MsgEncoder extends MessageToByteEncoder {
     /** 消息默认容量 */
     private static final int MSG_DEFAULT_CAPCITY = 256;
 
+    public MsgEncoder() {
+    }
+
     @Override
     protected void encode(
         ChannelHandlerContext ctx, Object o, ByteBuf nettyBuf) throws Exception {
-
         if (!(o instanceof AbstractMsgObj)) {
             // 如果不是消息对象,
             // 则直接退出!
