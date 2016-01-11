@@ -31,7 +31,7 @@ CREATE TABLE `t_building` (
   `building_7_level` int(11) DEFAULT NULL,
   `building_8_level` int(11) DEFAULT NULL,
   PRIMARY KEY (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `t_cd_timer_0` */
 
@@ -47,7 +47,7 @@ CREATE TABLE `t_cd_timer_0` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_1` */
 
@@ -63,7 +63,7 @@ CREATE TABLE `t_cd_timer_1` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_2` */
 
@@ -79,7 +79,7 @@ CREATE TABLE `t_cd_timer_2` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_3` */
 
@@ -95,7 +95,7 @@ CREATE TABLE `t_cd_timer_3` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_4` */
 
@@ -111,7 +111,7 @@ CREATE TABLE `t_cd_timer_4` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_5` */
 
@@ -127,7 +127,7 @@ CREATE TABLE `t_cd_timer_5` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_6` */
 
@@ -143,7 +143,7 @@ CREATE TABLE `t_cd_timer_6` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_7` */
 
@@ -159,7 +159,7 @@ CREATE TABLE `t_cd_timer_7` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_8` */
 
@@ -175,7 +175,7 @@ CREATE TABLE `t_cd_timer_8` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_cd_timer_9` */
 
@@ -191,7 +191,7 @@ CREATE TABLE `t_cd_timer_9` (
   PRIMARY KEY (`uid_str`),
   UNIQUE KEY `human_uuid_2` (`human_uid`,`cd_type_int`),
   KEY `human_uuid` (`human_uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_human` */
 
@@ -205,11 +205,12 @@ CREATE TABLE `t_human` (
   `server_name` varchar(16) DEFAULT NULL,
   `human_level` int(11) DEFAULT NULL,
   `gold` int(11) DEFAULT NULL,
+  `newer_reward_checkout` tinyint DEFAULT NULL,
   PRIMARY KEY (`human_uid`),
   UNIQUE KEY `full_name` (`full_name`),
   KEY `human_name` (`human_name`),
   KEY `platform_uid_str` (`platform_uid_str`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `t_player` */
 
@@ -226,7 +227,7 @@ CREATE TABLE `t_player` (
   `last_login_ip_addr` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`platform_uid_str`),
   KEY `user_name` (`user_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -31,6 +31,8 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
     public int _humanLevel = 1;
     /** 金币 */
     public int _gold = 0;
+    /** 新手奖励是否已领取? */
+    public boolean _newerRewardCheckout = false;
 
     /** 玩家引用 */
     private WeakReference<Player> _pRef = null;
@@ -150,6 +152,9 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
         he._fullName = this.getFullName();
         he._serverName = this._serverName;
         he._humanName = this._humanName;
+        he._humanLevel = this._humanLevel;
+        he._gold = this._gold;
+        he._newerRewardCheckOut = this._newerRewardCheckout ? 1 : 0;
 
         return he;
     }
@@ -171,6 +176,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
         this._humanName = entity._humanName;
         this._humanLevel = NullUtil.optVal(entity._humanLevel, this._humanLevel);
         this._gold = NullUtil.optVal(entity._gold, this._gold);
+        this._newerRewardCheckout = NullUtil.optVal(entity._newerRewardCheckOut, 0) == 1;
     }
 
     /**

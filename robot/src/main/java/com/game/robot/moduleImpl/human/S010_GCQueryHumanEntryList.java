@@ -39,7 +39,6 @@ public class S010_GCQueryHumanEntryList extends AbstractGCMsgHandler<GCQueryHuma
             cgMSG._serverName = new MsgStr(robotObj._gameServerName);
             // 发送 CG 消息
             robotObj.sendMsg(cgMSG);
-            return;
         } else {
             // 进入角色
             HumanEntryMO entryMo = msgObj._humanEntryList.get(0);

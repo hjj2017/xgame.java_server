@@ -36,4 +36,7 @@ public class HumanEntity {
     /** 金币数量 */
     @Column(name = "gold")
     public Integer _gold = 0;
+    /** 新手奖励已结算? */
+    @Column(name = "newer_reward_checkout")
+    public Integer _newerRewardCheckOut = 0;
 }

@@ -38,6 +38,11 @@ public class IoOper_LoadHuman extends AbstractPlayerOrSceneIoOper {
             return false;
         }
 
+        HumanLog.LOG.info(MessageFormat.format(
+            "加载角色数据 - 开始, hUId = {0}",
+            String.valueOf(this._humanUId)
+        ));
+
         // 获取角色实体
         final HumanEntity he = CommDao.OBJ.find(HumanEntity.class, this._humanUId);
 
@@ -56,6 +61,11 @@ public class IoOper_LoadHuman extends AbstractPlayerOrSceneIoOper {
         Human h = Human.create(he);
         // 触发加载数据事件
         HumanEvent.OBJ.fireLoadDbEvent(this._p, h);
+
+        HumanLog.LOG.info(MessageFormat.format(
+            "加载角色数据 - 结束, hUId = {0}",
+            String.valueOf(this._humanUId)
+        ));
 
         // 创建加载完成消息
         GGLoadHumanFinish ggMSG = new GGLoadHumanFinish();

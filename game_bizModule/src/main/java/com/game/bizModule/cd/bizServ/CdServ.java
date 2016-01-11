@@ -32,7 +32,7 @@ public final class CdServ extends AbstractBizServ implements IHumanEventListen, 
 
     /**
      * 类默认构造器
-     * 
+     *
      */
     private CdServ() {
         super.needToInit(this);
