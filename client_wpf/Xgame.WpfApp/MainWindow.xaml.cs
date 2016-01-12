@@ -8,6 +8,7 @@ using Xgame.GameBizModule.Login.Msg;
 using Xgame.GamePart.Msg;
 using Xgame.GamePart.Msg.Type;
 using Xgame.GameClient.Msg;
+using Xgame.WpfApp.Home;
 
 namespace Xgame.WpfApp
 {
@@ -25,6 +26,15 @@ namespace Xgame.WpfApp
             this.InitializeComponent();
             // 注册消息类
             this.RegAllMsgType();
+
+            this.Closed += delegate(object sender, EventArgs e)
+            {
+                if (ClientServer.OBJ.Connected)
+                {
+                    // 关闭服务连接
+                    ClientServer.OBJ.Shutdown();
+                }
+            };
         }
 
         /// <summary>
@@ -78,8 +88,7 @@ namespace Xgame.WpfApp
             cgMSG._platformUId = new MsgStr(userName);
             cgMSG._loginStr = new MsgStr(jsonData.ToJson());
             // 发送 CG 消息
-            ClientServer.OBJ.AddGCMsgHandler<GCLogin>(this.Handle_GCLogin, false);
-            ClientServer.OBJ.AddGCMsgHandler<GCLogin>(this.Handle_GCLogin, false);
+            ClientServer.OBJ.AddGCMsgHandler<GCLogin>(this.Handle_GCLogin);
             ClientServer.OBJ.SendCGMsg(cgMSG);
         }
 
@@ -91,8 +100,17 @@ namespace Xgame.WpfApp
 
             if (loginOk)
             {
-                    
+                // 跳转到主城页面
+                this.Dispatcher.BeginInvoke(new Action(this.GoToHome));
             }
+        }
+
+        /// <summary>
+        /// 跳转到主城页面
+        /// </summary>
+        private void GoToHome()
+        {
+            this.Content = new Page_Home();
         }
     }
 }

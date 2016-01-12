@@ -180,7 +180,7 @@ namespace Xgame.GameClient.Msg
                 // 获取消息类型
                 Type msgT = gcMSG.GetType();
                 // 获取内置字典
-                IDictionary<Delegate, WrappedGCMsgH> innerDict = this._handlerDict[msgT];
+                IDictionary<Delegate, WrappedGCMsgH> innerDict = this._handlerDict.ContainsKey(msgT) ? this._handlerDict[msgT] : null;
 
                 if (innerDict == null)
                 {
@@ -189,13 +189,13 @@ namespace Xgame.GameClient.Msg
                     continue;
                 }
 
-                // 关键字字符串列表
-                List<Delegate> keyStrList = null;
+                // 关键字列表
+                List<Delegate> keyFuncList = null;
 
-                foreach (Delegate keyStr in innerDict.Keys)
+                foreach (Delegate keyFunc in innerDict.Keys)
                 {
                     // 获取消息处理器
-                    WrappedGCMsgH wrappedH = innerDict[keyStr];
+                    WrappedGCMsgH wrappedH = innerDict[keyFunc];
 
                     if (wrappedH == null
                      || wrappedH._hRef == null)
@@ -215,19 +215,19 @@ namespace Xgame.GameClient.Msg
 
                     if (!wrappedH._reusable)
                     {
-                        if (keyStrList == null)
+                        if (keyFuncList == null)
                         {
-                            keyStrList = new List<Delegate>();
+                            keyFuncList = new List<Delegate>();
                         }
 
-                        keyStrList.Add(keyStr);
+                        keyFuncList.Add(keyFunc);
                     }
                 }
 
-                foreach (Delegate keyStr in keyStrList)
+                foreach (Delegate keyFunc in keyFuncList)
                 {
                     // 从字典中移除关键字
-                    innerDict.Remove(keyStr);
+                    innerDict.Remove(keyFunc);
                 }
 
                 if (innerDict.Count <= 0)

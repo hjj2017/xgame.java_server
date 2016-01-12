@@ -12,6 +12,17 @@ namespace Xgame.GameClient.Msg
         /// 添加消息处理器
         /// </summary>
         /// <typeparam name="M"></typeparam>
+        /// <param name="handlerFunc"></param>
+        public void AddGCMsgHandler<M>(GCMsgHandler<M> handlerFunc)
+        where M : BaseGCMsg
+        {
+            this.AddGCMsgHandler<M>(handlerFunc, false);
+        }
+
+        /// <summary>
+        /// 添加消息处理器
+        /// </summary>
+        /// <typeparam name="M"></typeparam>
         /// <param name="reusable"></param>
         public void AddGCMsgHandler<M>(GCMsgHandler<M> handlerFunc, bool reusable)
         where M : BaseGCMsg
