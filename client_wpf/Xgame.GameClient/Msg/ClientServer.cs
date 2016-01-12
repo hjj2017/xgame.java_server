@@ -180,7 +180,7 @@ namespace Xgame.GameClient.Msg
                 // 获取消息类型
                 Type msgT = gcMSG.GetType();
                 // 获取内置字典
-                IDictionary<string, WrappedGCMsgH> innerDict = this._handlerDict[msgT];
+                IDictionary<Delegate, WrappedGCMsgH> innerDict = this._handlerDict[msgT];
 
                 if (innerDict == null)
                 {
@@ -190,9 +190,9 @@ namespace Xgame.GameClient.Msg
                 }
 
                 // 关键字字符串列表
-                List<string> keyStrList = null;
+                List<Delegate> keyStrList = null;
 
-                foreach (string keyStr in innerDict.Keys)
+                foreach (Delegate keyStr in innerDict.Keys)
                 {
                     // 获取消息处理器
                     WrappedGCMsgH wrappedH = innerDict[keyStr];
@@ -211,20 +211,20 @@ namespace Xgame.GameClient.Msg
                     );
 
                     // 处理 GC 消息
-                    wrappedH._hRef.Handle(gcMSG);
+                    wrappedH._hRef.DynamicInvoke(gcMSG);
 
                     if (!wrappedH._reusable)
                     {
                         if (keyStrList == null)
                         {
-                            keyStrList = new List<string>();
+                            keyStrList = new List<Delegate>();
                         }
 
                         keyStrList.Add(keyStr);
                     }
                 }
 
-                foreach (string keyStr in keyStrList)
+                foreach (Delegate keyStr in keyStrList)
                 {
                     // 从字典中移除关键字
                     innerDict.Remove(keyStr);

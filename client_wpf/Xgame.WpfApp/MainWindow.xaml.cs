@@ -78,19 +78,20 @@ namespace Xgame.WpfApp
             cgMSG._platformUId = new MsgStr(userName);
             cgMSG._loginStr = new MsgStr(jsonData.ToJson());
             // 发送 CG 消息
-            ClientServer.OBJ.AddGCMsgHandler<GCLogin, Handler_GCLogin>("gcLogin", false);
+            ClientServer.OBJ.AddGCMsgHandler<GCLogin>(this.Handle_GCLogin, false);
+            ClientServer.OBJ.AddGCMsgHandler<GCLogin>(this.Handle_GCLogin, false);
             ClientServer.OBJ.SendCGMsg(cgMSG);
         }
 
-        /// <summary>
-        /// GC 登陆消息处理器
-        /// </summary>
-        private class Handler_GCLogin : BaseGCMsgHandler<GCLogin>
+        // @Override
+        private void Handle_GCLogin(GCLogin gcMSG)
         {
-            // @Override
-            public override void HandleImpl(GCLogin gcMSG)
+            // 获取登陆成功标志
+            bool loginOk = gcMSG._success.GetBoolVal();
+
+            if (loginOk)
             {
-                gcMSG._success.GetBoolVal();
+                    
             }
         }
     }
