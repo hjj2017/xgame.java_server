@@ -42,6 +42,8 @@
     <Compile Include="Msg\MsgTypeValidator.cs" />
     <Compile Include="Msg\Type\BaseMsgObj.cs" />
     <Compile Include="Msg\Type\BaseMsgField.cs" />
+    <Compile Include="Msg\Type\IReadHelper.cs" />
+    <Compile Include="Msg\Type\IWriteHelper.cs" />
     <Compile Include="Msg\Type\MsgArrayList.cs" />
     <Compile Include="Msg\Type\MsgDate.cs" />
     <Compile Include="Msg\Type\MsgDateTime.cs" />
@@ -56,6 +58,8 @@
     <Compile Include="Msg\Type\PrimitiveTypeField.cs" />
     <Compile Include="Msg\Type\MsgInt.cs" />
     <Compile Include="Msg\Type\MsgStr.cs" />
+    <Compile Include="Msg\Type\ReadHelperMaker.cs" />
+    <Compile Include="Msg\Type\WriteHelperMaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Assert.cs" />
   </ItemGroup>
