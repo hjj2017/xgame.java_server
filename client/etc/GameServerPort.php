@@ -1,2 +1,0 @@
-<?php
-$GLOBALS["GAME_SERVER_PORT"] = 8001;
