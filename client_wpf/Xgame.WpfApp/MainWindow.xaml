@@ -13,8 +13,8 @@
     </Window.Resources>
     <Grid Background="Black">
         <Image x:Name="_imgBG" Width="1000" Height="600" VerticalAlignment="Top" Source="Res/Img/Login/BG_Login.jpg" Margin="8,2,8,0"/>
-        <TextBox x:Name="_txtUserName" HorizontalAlignment="Left" Height="24" Margin="461,329,0,0" VerticalAlignment="Top" Width="182" Style="{StaticResource ResourceKey=MyTextBox}" />
-        <PasswordBox x:Name="_txtUserPass" HorizontalAlignment="Left" Height="24" Margin="461,388,0,0" VerticalAlignment="Top" Width="182" Style="{StaticResource ResourceKey=MyPasswordBox}" />
+        <TextBox x:Name="_txtUserName" HorizontalAlignment="Left" Height="24" Margin="461,329,0,0" VerticalAlignment="Top" Width="182" Style="{StaticResource ResourceKey=MyTextBox}" Text="2048" />
+        <PasswordBox x:Name="_txtUserPass" HorizontalAlignment="Left" Height="24" Margin="461,388,0,0" VerticalAlignment="Top" Width="182" Style="{StaticResource ResourceKey=MyPasswordBox}" Password="1" />
         <Button x:Name="_btnRegister" HorizontalAlignment="Left" Margin="392,488,0,0" VerticalAlignment="Top" Width="106" Height="42" Style="{StaticResource ResourceKey=MyButton}">
             <Button.Template>
                 <ControlTemplate>

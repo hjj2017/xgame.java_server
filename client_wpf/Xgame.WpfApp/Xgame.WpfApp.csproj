@@ -75,6 +75,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CreateHuman\Page_CreateHuman.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Home\Page_Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -86,6 +90,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CreateHuman\Page_CreateHuman.xaml.cs">
+      <DependentUpon>Page_CreateHuman.xaml</DependentUpon>
     </Compile>
     <Compile Include="Home\Page_Home.xaml.cs">
       <DependentUpon>Page_Home.xaml</DependentUpon>
@@ -166,8 +173,25 @@
   <ItemGroup>
     <Resource Include="Res\Img\Home\BG_Home.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="CreateHuman\" />
+    <Resource Include="Res\Img\CreateHuman\BG_CreateHuman.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\Img\CreateHuman\BG_Name.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\Img\CreateHuman\BG_Desc_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\Img\CreateHuman\Hero_10.png" />
+    <Resource Include="Res\Img\CreateHuman\Hero_11.png" />
+    <Resource Include="Res\Img\CreateHuman\Hero_20.png" />
+    <Resource Include="Res\Img\CreateHuman\Hero_21.png" />
+    <Resource Include="Res\Img\CreateHuman\Hero_30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\Img\CreateHuman\Btn_Ok.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

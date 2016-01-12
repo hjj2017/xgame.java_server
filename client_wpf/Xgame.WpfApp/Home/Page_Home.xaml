@@ -9,7 +9,7 @@
       Background="Black"
       Title="Page_Home">
     <Grid Margin="8,1,8,0">
-        <Image x:Name="_imgBG" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="1000" Source="/Xgame.WpfApp;component/Res/Img/Home/BG_Home.jpg" Grid.RowSpan="2" />
+        <Image x:Name="_imgBG" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="1000" Source="/Xgame.WpfApp;component/Res/Img/Home/BG_Home.jpg" />
         <Image x:Name="_imgBuilding0" HorizontalAlignment="Left" Height="240" Margin="420,144,0,0" VerticalAlignment="Top" Width="280" Source="/Xgame.WpfApp;component/Res/Img/Home/Building_0.png"/>
     </Grid>
 </Page>

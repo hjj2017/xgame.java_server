@@ -1,0 +1,24 @@
+﻿<Page x:Class="Xgame.WpfApp.CreateHuman.Page_CreateHuman"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Xgame.WpfApp.CreateHuman"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Background="Black"
+      Title="Page_CreateHuman">
+    <Grid Margin="8,1,8,0">
+        <Image x:Name="_imgBG" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="1000" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_CreateHuman.png"/>
+        <Image x:Name="_imgDesc" HorizontalAlignment="Right" Height="600" VerticalAlignment="Top" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_Desc_1.png"/>
+        <Image x:Name="_imgHero" HorizontalAlignment="Left" Height="440" VerticalAlignment="Top" Width="180" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/Hero_10.png" Margin="350,100,0,0"/>
+        <Image x:Name="_imgBGName" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="210" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_Name.png" Margin="320,460,0,0"/>
+        <Button x:Name="_btnOk" Content="Button" HorizontalAlignment="Left" Margin="534,457,0,0" VerticalAlignment="Top" Width="75">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../Res/Img/CreateHuman/Btn_Ok.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Page>
