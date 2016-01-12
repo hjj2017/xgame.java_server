@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B7A055CC-29D3-4DA9-8F74-8E1C684E8E75}</ProjectGuid>
+    <ProjectGuid>{9A6BB325-1D14-4FDD-A4E6-9A1A44D79CBB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Xgame.GameClient</RootNamespace>
-    <AssemblyName>Xgame.GameClient</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Xgame.GameBizModule</RootNamespace>
+    <AssemblyName>Xgame.GameBizModule</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,21 +31,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net35-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Msg\BaseCGMsg.cs" />
-    <Compile Include="Msg\BaseGCMsg.cs" />
-    <Compile Include="Msg\ClientServer.cs" />
-    <Compile Include="Msg\IGCMsgHandler.cs" />
-    <Compile Include="Msg\MsgLog.cs" />
+    <Compile Include="Chat\Msg\CGWorldChat.cs" />
+    <Compile Include="Chat\Msg\GCCommChat.cs" />
+    <Compile Include="Global\AllMsgSerialUId.cs" />
+    <Compile Include="Human\Msg\CGEnterHuman.cs" />
+    <Compile Include="Human\Msg\CGQueryHumanEntryList.cs" />
+    <Compile Include="Human\Msg\GCEnterHuman.cs" />
+    <Compile Include="Human\Msg\GCQueryHumanEntryList.cs" />
+    <Compile Include="Human\Msg\HumanEntryMO.cs" />
+    <Compile Include="Login\LoginLog.cs" />
+    <Compile Include="Login\Msg\CGLogin.cs" />
+    <Compile Include="Login\Msg\GCLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xgame.GameClient\Xgame.GameClient.csproj">
+      <Project>{b7a055cc-29d3-4da9-8f74-8e1c684e8e75}</Project>
+      <Name>Xgame.GameClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xgame.GamePart\Xgame.GamePart.csproj">
       <Project>{05c89d95-8de4-4f84-8ffe-e72c11315c66}</Project>
       <Name>Xgame.GamePart</Name>

@@ -22,7 +22,7 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <Button x:Name="button" HorizontalAlignment="Left" Margin="538,488,0,0" VerticalAlignment="Top" Width="106" Height="42" Style="{StaticResource ResourceKey=MyButton}">
+        <Button x:Name="_btnLogin" HorizontalAlignment="Left" Margin="538,488,0,0" VerticalAlignment="Top" Width="106" Height="42" Style="{StaticResource ResourceKey=MyButton}" Click="_btnLogin_Click">
             <Button.Template>
                 <ControlTemplate>
                     <Image Source="Res/Img/Login/Btn_Login.png" />

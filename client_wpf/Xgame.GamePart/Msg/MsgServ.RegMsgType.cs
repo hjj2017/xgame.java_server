@@ -38,6 +38,10 @@ namespace Xgame.GamePart.Msg
 
                 // 验证消息类
                 MsgTypeValidator.Validate(newMsgType);
+
+                // 事先构建好帮助器
+                ReadHelperMaker.Make(newMsgType);
+                WriteHelperMaker.Make(newMsgType);
                 return;
             }
 
@@ -57,6 +61,8 @@ namespace Xgame.GamePart.Msg
                     oldMsgType.Name
                 ));
             }
+
+
         }
     }
 }

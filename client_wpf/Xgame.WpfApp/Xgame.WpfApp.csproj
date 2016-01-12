@@ -50,7 +50,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LitJson, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LitJson.0.7.0\lib\LitJson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -105,6 +110,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -132,6 +138,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Res\Img\Login\BG_Login.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xgame.GameBizModule\Xgame.GameBizModule.csproj">
+      <Project>{9a6bb325-1d14-4fdd-a4e6-9a1a44d79cbb}</Project>
+      <Name>Xgame.GameBizModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xgame.GameClient\Xgame.GameClient.csproj">
+      <Project>{b7a055cc-29d3-4da9-8f74-8e1c684e8e75}</Project>
+      <Name>Xgame.GameClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xgame.GamePart\Xgame.GamePart.csproj">
+      <Project>{05c89d95-8de4-4f84-8ffe-e72c11315c66}</Project>
+      <Name>Xgame.GamePart</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
