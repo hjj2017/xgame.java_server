@@ -4,10 +4,10 @@ using System.Windows;
 
 using LitJson;
 
-using Xgame.GameClient.Msg;
-using Xgame.GameClient.Login.Msg;
+using Xgame.GameBizModule.Login.Msg;
 using Xgame.GamePart.Msg;
 using Xgame.GamePart.Msg.Type;
+using Xgame.GameClient.Msg;
 
 namespace Xgame.WpfApp
 {
@@ -33,14 +33,14 @@ namespace Xgame.WpfApp
         private void RegAllMsgType()
         {
             // 获取该程序集下的所有类定义
-            System.Type[] typeArr = this.GetType().Assembly.GetTypes();
+            System.Type[] typeArr = typeof(GCLogin).Assembly.GetTypes();
 
             foreach (System.Type type in typeArr)
             {
-                if (type.IsSubclassOf(typeof(BaseCGMsg)))
+                if (type.IsSubclassOf(typeof(BaseGCMsg)))
                 {
                     // 创建消息对象
-                    BaseCGMsg cgMSG = (BaseCGMsg)Activator.CreateInstance(type);
+                    BaseGCMsg cgMSG = (BaseGCMsg)Activator.CreateInstance(type);
                     // 如果是 CG 消息类, 
                     // 则注册消息...
                     MsgServ.OBJ.RegMsgType(
@@ -78,17 +78,17 @@ namespace Xgame.WpfApp
             cgMSG._platformUId = new MsgStr(userName);
             cgMSG._loginStr = new MsgStr(jsonData.ToJson());
             // 发送 CG 消息
-            ClientServer.OBJ.AddHandler<GCLogin, Handler_GCLogin>("gcLogin", new Handler_GCLogin());
+            ClientServer.OBJ.AddGCMsgHandler<GCLogin, Handler_GCLogin>("gcLogin", false);
             ClientServer.OBJ.SendCGMsg(cgMSG);
         }
 
         /// <summary>
         /// GC 登陆消息处理器
         /// </summary>
-        private class Handler_GCLogin : GCMsgHandleAdapter<GCLogin>
+        private class Handler_GCLogin : BaseGCMsgHandler<GCLogin>
         {
             // @Override
-            public override void Handle(GCLogin gcMSG)
+            public override void HandleImpl(GCLogin gcMSG)
             {
                 gcMSG._success.GetBoolVal();
             }

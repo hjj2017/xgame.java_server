@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg;
 
 namespace Xgame.GameClient.Msg
@@ -12,7 +11,7 @@ namespace Xgame.GameClient.Msg
     /// <summary>
     /// 客户端服务器
     /// </summary>
-    public sealed class ClientServer
+    public sealed partial class ClientServer
     {
         /// <summary>
         /// 单例对象
@@ -23,8 +22,6 @@ namespace Xgame.GameClient.Msg
         private Socket _clientSocket = null;
         /** GC 消息队列 */
         private Queue<BaseGCMsg> _gcMsgQ = new Queue<BaseGCMsg>();
-        /** 消息处理器字典 */
-        private IDictionary<System.Type, IDictionary<string, object>> _handlerDict = new Dictionary<System.Type, IDictionary<string, object>>();
 
         /// <summary>
         /// 类默认构造器
@@ -88,8 +85,8 @@ namespace Xgame.GameClient.Msg
             this._clientSocket.Connect(new IPEndPoint(ipAddrArr[0], this.GameServerPort));
 
             // 启动线程开始接收消息
-            Thread t = new Thread(new ThreadStart(this.StartRecevie));
-            t.Start();
+            Thread t0 = new Thread(new ThreadStart(this.StartRecevie));
+            t0.Start();
         }
 
         /// <summary>
@@ -150,8 +147,10 @@ namespace Xgame.GameClient.Msg
                     // 令 GC 消息读取二进制数据
                     gcMSG.ReadFrom(br);
 
-                    // 令消息入队
+                    // 令 GC 消息入队
                     this._gcMsgQ.Enqueue(gcMSG);
+                    // 处理 GC 消息
+                    this.ProcessGCMsg();
                 }
                 catch (Exception ex)
                 {
@@ -181,7 +180,7 @@ namespace Xgame.GameClient.Msg
                 // 获取消息类型
                 Type msgT = gcMSG.GetType();
                 // 获取内置字典
-                IDictionary<string, object> innerDict = this._handlerDict[msgT];
+                IDictionary<string, WrappedGCMsgH> innerDict = this._handlerDict[msgT];
 
                 if (innerDict == null)
                 {
@@ -196,9 +195,10 @@ namespace Xgame.GameClient.Msg
                 foreach (string keyStr in innerDict.Keys)
                 {
                     // 获取消息处理器
-                    IGCMsgHandler<BaseGCMsg> handlerObj = innerDict[keyStr] as IGCMsgHandler<BaseGCMsg>;
+                    WrappedGCMsgH wrappedH = innerDict[keyStr];
 
-                    if (handlerObj != null)
+                    if (wrappedH == null
+                     || wrappedH._hRef == null)
                     {
                         // 如果消息处理器为空, 
                         // 则直接跳过!
@@ -211,9 +211,9 @@ namespace Xgame.GameClient.Msg
                     );
 
                     // 处理 GC 消息
-                    handlerObj.Handle(gcMSG);
+                    wrappedH._hRef.Handle(gcMSG);
 
-                    if (handlerObj.OnlyOnce)
+                    if (!wrappedH._reusable)
                     {
                         if (keyStrList == null)
                         {
@@ -287,40 +287,6 @@ namespace Xgame.GameClient.Msg
                 // 断开与游戏服的连接
                 this._clientSocket.Close();
             }
-        }
-
-        /// <summary>
-        /// 添加消息处理器
-        /// </summary>
-        /// <typeparam name="M"></typeparam>
-        /// <typeparam name="H"></typeparam>
-        /// <param name="handlerName"></param>
-        /// <param name="handlerObj"></param>
-        public void AddHandler<M, H>(string handlerName, H handlerObj) where M : class where H : IGCMsgHandler<M>
-        {
-            if (string.IsNullOrEmpty(handlerName)
-             || handlerObj == null)
-            {
-                // 如果参数对象为空, 
-                // 则直接退出!
-                return;
-            }
-
-            // 获取类型关键字
-            System.Type K = typeof(M);
-            // 获取内置字典
-            IDictionary<string, object> innerDict = this._handlerDict[K];
-
-            if (innerDict == null)
-            {
-                // 如果内置字典为空, 
-                // 则新建字典!
-                innerDict = new Dictionary<string, object>();
-                this._handlerDict[K] = innerDict;
-            }
-
-            // 设置处理器
-            innerDict[handlerName] = handlerObj;
         }
     }
 }

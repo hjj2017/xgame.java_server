@@ -2,7 +2,7 @@
 
 using Xgame.GamePart.Msg.Type;
 
-namespace Xgame.GameClient.Human.Msg
+namespace Xgame.GameBizModule.Human.Msg
 {
     /// <summary>
     /// 角色入口

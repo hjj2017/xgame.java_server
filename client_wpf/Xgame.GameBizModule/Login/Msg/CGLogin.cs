@@ -1,10 +1,10 @@
 ﻿using System;
 
-using Xgame.GameClient.Global;
+using Xgame.GameBizModule.Global;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
 
-namespace Xgame.GameClient.Login.Msg
+namespace Xgame.GameBizModule.Login.Msg
 {
     /// <summary>
     /// 登陆 CG 消息

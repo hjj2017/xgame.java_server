@@ -1,10 +1,10 @@
 ﻿using System;
 
-using Xgame.GameClient.Global;
+using Xgame.GameBizModule.Global;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
 
-namespace Xgame.GameClient.Human.Msg
+namespace Xgame.GameBizModule.Human.Msg
 {
     /// <summary>
     /// 查询角色入口列表

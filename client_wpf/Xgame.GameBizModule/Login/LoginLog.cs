@@ -2,7 +2,7 @@
 
 using log4net;
 
-namespace Xgame.GameClient.Login
+namespace Xgame.GameBizModule.Login
 {
     /// <summary>
     /// 登陆日志

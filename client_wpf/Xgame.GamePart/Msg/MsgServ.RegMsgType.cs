@@ -61,8 +61,6 @@ namespace Xgame.GamePart.Msg
                     oldMsgType.Name
                 ));
             }
-
-
         }
     }
 }

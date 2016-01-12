@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="Msg\BaseCGMsg.cs" />
     <Compile Include="Msg\BaseGCMsg.cs" />
+    <Compile Include="Msg\BaseGCMsgHandler.cs" />
+    <Compile Include="Msg\ClientServer.AddGCMsgHandler.cs" />
     <Compile Include="Msg\ClientServer.cs" />
     <Compile Include="Msg\IGCMsgHandler.cs" />
     <Compile Include="Msg\MsgLog.cs" />

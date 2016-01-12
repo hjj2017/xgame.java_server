@@ -1,10 +1,10 @@
 ﻿using System;
 
-using Xgame.GameClient.Global;
+using Xgame.GameBizModule.Global;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
 
-namespace Xgame.GameClient.Chat.Msg
+namespace Xgame.GameBizModule.Chat.Msg
 {
     /// <summary>
     /// 世界聊天 CG 消息

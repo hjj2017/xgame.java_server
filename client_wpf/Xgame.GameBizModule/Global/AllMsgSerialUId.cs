@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xgame.GameClient.Global
+namespace Xgame.GameBizModule.Global
 {
     /// <summary>
     /// 所有的消息序列化 Id

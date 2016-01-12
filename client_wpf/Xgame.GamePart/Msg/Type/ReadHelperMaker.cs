@@ -140,6 +140,23 @@ namespace Xgame.GamePart.Msg.Type
             cp.ReferencedAssemblies.Add("System.dll");
             cp.ReferencedAssemblies.Add(typeof(IReadHelper).Assembly.Location);
             cp.ReferencedAssemblies.Add(byMsgType.Assembly.Location);
+
+            for (int i = 0; i < 64; i++)
+            {
+                if (byMsgType.BaseType == null
+                 || byMsgType.BaseType == typeof(BaseMsgObj))
+                {
+                    // 如果父类为空, 
+                    // 或者父类已经是 BaseMsgObj 类型, 
+                    // 则跳出循环!
+                    break;
+                }
+
+                // 获取父类定义并添加到引用集
+                System.Type baseType = byMsgType.BaseType;
+                cp.ReferencedAssemblies.Add(baseType.Assembly.Location);
+            }
+
             // 只在内存中编译
             cp.GenerateInMemory = true;
 
