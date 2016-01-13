@@ -247,6 +247,10 @@ public final class WriteHelperMaker {
 
                 // 结束代码段
                 codeCtx._codeText.append("}\n");
+
+                // 注意 : 如果是个内置消息,
+                // 那么还需要给内置消息生成 WriteHelper
+                make(f.getType());
             } else {
                 // 如果即不是 MsgInt, MsgStr ..., MsgArrayList, 
                 // 也不是 AbstractMsgObj, 
