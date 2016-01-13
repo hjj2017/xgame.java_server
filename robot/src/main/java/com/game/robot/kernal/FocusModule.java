@@ -1,9 +1,12 @@
 package com.game.robot.kernal;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import com.game.robot.RobotLog;
 
 /**
  * 被聚焦的功能模块
@@ -90,11 +93,24 @@ public class FocusModule {
         }
 
         if (msgObj.equals(ModuleReadyCmd.OBJ)) {
-            // 如果是模块准备指令, 
+            // 如果是模块准备指令,
+            RobotLog.LOG.info(MessageFormat.format(
+                "机器人 {0} 准备测试 {1} 模块",
+                robotObj._userName,
+                this._moduleReady.getClass().getSimpleName()
+            ));
+
             // 则令当前关注的模块做好准备!
             this._moduleReady.ready(robotObj);
             return;
         }
+
+        // 记录消息处理日志
+        RobotLog.LOG.info(MessageFormat.format(
+            "机器人 {0} 处理 {1} 消息",
+            robotObj._userName,
+            msgObj.getClass().getSimpleName()
+        ));
 
         // 获取迭代器
         Iterator<AbstractGCMsgHandler<?>> it = this._gcHandlerMap.values().iterator();

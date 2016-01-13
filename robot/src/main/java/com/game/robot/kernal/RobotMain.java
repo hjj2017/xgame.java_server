@@ -95,22 +95,6 @@ public final class RobotMain {
             // 启动机器人
             newRobot.start();
         }
-
-        try {
-            while (true) {
-                if (Robot.ROBOT_COUNTER.get() <= 0) {
-                    // 终止 Netty 工作线程
-                    Robot.NETTY_WORK_GROUP.shutdownGracefully();
-                    break;
-                } else {
-                    // 歇 200 毫秒
-                    Thread.sleep(200L);
-                }
-            }
-        } catch (Exception ex) {
-            // 记录异常信息
-            RobotLog.LOG.error(ex.getMessage(), ex);
-        }
     }
 
     /**

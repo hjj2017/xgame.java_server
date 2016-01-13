@@ -4,9 +4,9 @@
 # 游戏服端口号
 "gameServerPort" : 4400,
 # 起始账户 Id
-"startPId" : "2049",
+"startPId" : "2048",
 # 结束账户 Id
-"endPId" : "2049",
+"endPId" : "2248",
 # 账户密码
 "userPassword" : "1",
 # 游戏服名称
@@ -25,6 +25,6 @@
 	{ "currModule" : "human" },
 	{ "currModule" : "chat" },
     { "currModule" : "building" },
-    { "currModule" : "disconnect", "nextModule" : "connect" },
+    { "currModule" : "disconnect" },
 ]
 }

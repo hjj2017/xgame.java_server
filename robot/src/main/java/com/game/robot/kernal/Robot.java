@@ -29,9 +29,34 @@ import com.game.robot.RobotLog;
  */
 public final class Robot {
     /** 创建事件循环 */
-    static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup();
-    /** 机器人计数器 */
-    static final AtomicInteger ROBOT_COUNTER = new AtomicInteger(0);
+    private static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup();
+    /** 引导程序 */
+    private static final Bootstrap _b;
+
+    /**
+     * 类默认构造器
+     *
+     */
+    static {
+        // 创建客户端引导程序
+        Bootstrap b = new Bootstrap();
+
+        b.group(NETTY_WORK_GROUP);
+        b.option(ChannelOption.TCP_NODELAY, true);
+        b.option(ChannelOption.SO_KEEPALIVE, true);
+        b.channel(NioSocketChannel.class);
+        b.handler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) throws Exception {
+                ch.pipeline().addLast(
+                    new MsgDecoder(),
+                    new MsgEncoder()
+                );
+            }
+        });
+
+        _b = b;
+    }
 
     /** 游戏服 IP 地址 */
     public String _gameServerIpAddr = "0.0.0.0";
@@ -119,8 +144,6 @@ public final class Robot {
             return;
         }
 
-        ROBOT_COUNTER.incrementAndGet();
-
         // 不管怎么说,
         // 先尝试给第一个模块发送第一条指令! 即,
         // 让第一个模块发送 CG 消息...
@@ -134,8 +157,6 @@ public final class Robot {
      *
      */
     void over() {
-        // 计时器 -1
-        ROBOT_COUNTER.decrementAndGet();
         // 断开连接
         this.disconnect();
         // 清除数据
@@ -198,30 +219,17 @@ public final class Robot {
      * 
      */
     public void connectToGameServer() {
-        // 创建客户端引导程序
-        Bootstrap b = new Bootstrap();
 
-        b.group(NETTY_WORK_GROUP);
-        b.option(ChannelOption.TCP_NODELAY, true);
-        b.option(ChannelOption.SO_KEEPALIVE, true);
-        b.channel(NioSocketChannel.class);
-        b.handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
-                ch.pipeline().addLast(
-                    new MsgDecoder(),
-                    new MsgEncoder(),
-                    new MyChannelHandler(Robot.this)
-                );
-            }
-        });
 
         try {
             // 连接服务器后获取信道
-            Channel ch = b.connect(new InetSocketAddress(
+            Channel ch = _b.connect(new InetSocketAddress(
                 this._gameServerIpAddr,
                 this._gameServerPort
             )).sync().channel();
+
+            // 添加一个处理器
+            ch.pipeline().addLast(new MyChannelHandler(Robot.this));
             // 设置信道
             this._ch = ch;
         } catch (Exception ex) {
@@ -238,13 +246,8 @@ public final class Robot {
     public void disconnect() {
         if (this._ch != null &&
             this._ch.isOpen()) {
-            try {
-                // 关闭信道
-                this._ch.close().sync();
-            } catch (Exception ex) {
-                // 记录错误日志
-                RobotLog.LOG.error(ex.getMessage(), ex);
-            }
+            // 关闭信道
+            this._ch.close();
         }
     }
 

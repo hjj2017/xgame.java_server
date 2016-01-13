@@ -1,5 +1,9 @@
 package com.game.robot.moduleImpl.human;
 
+import java.text.MessageFormat;
+
+import sun.plugin2.message.Message;
+
 import com.game.bizModule.human.msg.CGQueryHumanEntryList;
 import com.game.bizModule.human.msg.GCCreateHuman;
 import com.game.part.msg.type.MsgStr;
@@ -20,7 +24,12 @@ public class S020_GCCreateHuman extends AbstractGCMsgHandler<GCCreateHuman> {
         Robot robotObj, GCCreateHuman msgObj) {
         if (msgObj._success.getBoolVal()) {
             // 记录日志信息
-            RobotLog.LOG.info("建角成功");
+            RobotLog.LOG.info(MessageFormat.format(
+                "{0}.{1} 建角成功",
+                robotObj._gameServerName,
+                robotObj._userName
+            ));
+
             // 重新查询角色入口列表
             // 创建并发送 CG 消息
             CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
@@ -28,7 +37,11 @@ public class S020_GCCreateHuman extends AbstractGCMsgHandler<GCCreateHuman> {
             robotObj.sendMsg(cgMSG);
         } else {
             // 记录日志信息
-            RobotLog.LOG.info("建角失败");
+            RobotLog.LOG.info(MessageFormat.format(
+                "{0}.{1} 建角失败",
+                robotObj._gameServerName,
+                robotObj._userName
+            ));
         }
     }
 
