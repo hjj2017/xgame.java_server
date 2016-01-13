@@ -4,15 +4,15 @@
 # 游戏服端口号
 "gameServerPort" : 4400,
 # 起始账户 Id
-"startPId" : "2048",
+"startPId" : "2049",
 # 结束账户 Id
-"endPId" : "2048",
+"endPId" : "4048",
 # 账户密码
 "userPassword" : "1",
 # 游戏服名称
 "gameServerName" : "LM1",
 # 启动每个机器人时, 间隔时间 ( 单位毫秒 )
-"robotStartUpInterval" : 2000;
+"robotStartUpInterval" : 50;
 # 要测试的模块数组
 "testModuleArr" : [
 	# currModule 当前要测试的模块, 这个和 java 的包名称对应!

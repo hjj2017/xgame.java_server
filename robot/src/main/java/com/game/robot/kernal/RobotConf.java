@@ -29,6 +29,8 @@ public final class RobotConf {
     public String _gameServerName = "S01";
     /** 要测试的模块数组 */
     public List<TestModule> _testModuleList = null;
+    /** 机器人启动间隔时间 */
+    public long _robotStartUpInterval = -1L;
 
     /**
      * 类默认构造器
@@ -67,6 +69,8 @@ public final class RobotConf {
         confObj._userPassword = jsonObj.optString("userPassword", "1");
         // 服务器名称
         confObj._gameServerName = jsonObj.optString("gameServerName", "S01");
+        // 机器人启动间隔时间
+        confObj._robotStartUpInterval = jsonObj.optLong("robotStartUpInterval", 2000);
 
         // 获取要测试的功能模块数组
         JSONArray jsonArr = jsonObj.getJSONArray("testModuleArr");

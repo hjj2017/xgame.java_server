@@ -81,6 +81,15 @@ public final class RobotMain {
                 "启动机器人 {0}", 
                 newRobot._userName
             ));
+
+            try {
+                // 先休息一会儿
+                Thread.sleep(confObj._robotStartUpInterval);
+            } catch (Exception ex) {
+                // 记录错误日志
+                RobotLog.LOG.error(ex.getMessage(), ex);
+            }
+
             // 启动机器人
             newRobot.start();
         }
