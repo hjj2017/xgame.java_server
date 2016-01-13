@@ -271,6 +271,9 @@ final class ReadHelperMaker {
                 codeCtx._importClazzSet.add(XlsxArrayList.class);
                 codeCtx._importClazzSet.add(aType);
 
+                // 注意 :
+                // 还需要给模版参数生成 ReadHelper
+                make(f.getType());
             } else if (ClazzUtil.isConcreteDrivedClass(f.getType(), AbstractXlsxTmpl.class)) {
                 //
                 // 如果是嵌套的消息体, 生成如下代码 :
@@ -292,6 +295,10 @@ final class ReadHelperMaker {
 
                 // 结束代码段
                 codeCtx._codeText.append("}\n");
+
+                // 注意 : 如果是嵌套模版,
+                // 那么还需要给嵌套模版生成 ReadHelper
+                make(f.getType());
             } else {
                 // 如果即不是 XlsxInt, XlsxStr ..., XlsxArrayList,
                 // 也不是 AbstractXlsxTmpl,

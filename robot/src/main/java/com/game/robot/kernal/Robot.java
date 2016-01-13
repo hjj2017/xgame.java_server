@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -29,9 +28,9 @@ import com.game.robot.RobotLog;
  */
 public final class Robot {
     /** 创建事件循环 */
-    private static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup();
+    private static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup(1);
     /** 引导程序 */
-    private static final Bootstrap _b;
+    private static final Bootstrap _B;
 
     /**
      * 类默认构造器
@@ -55,7 +54,7 @@ public final class Robot {
             }
         });
 
-        _b = b;
+        _B = b;
     }
 
     /** 游戏服 IP 地址 */
@@ -219,14 +218,12 @@ public final class Robot {
      * 
      */
     public void connectToGameServer() {
-
-
         try {
             // 连接服务器后获取信道
-            Channel ch = _b.connect(new InetSocketAddress(
+            Channel ch = _B.connect(new InetSocketAddress(
                 this._gameServerIpAddr,
                 this._gameServerPort
-            )).sync().channel();
+            )).await().channel();
 
             // 添加一个处理器
             ch.pipeline().addLast(new MyChannelHandler(Robot.this));
@@ -244,10 +241,15 @@ public final class Robot {
      * 
      */
     public void disconnect() {
-        if (this._ch != null &&
-            this._ch.isOpen()) {
-            // 关闭信道
-            this._ch.close();
+        if (this._ch != null) {
+            try {
+                this._ch.disconnect().await();
+            } catch (Exception ex) {
+                // 记录并抛出异常
+                RobotLog.LOG.error(
+                    ex.getMessage(), ex
+                );
+            }
         }
     }
 
@@ -260,7 +262,14 @@ public final class Robot {
     public void sendMsg(Object msgObj) {
         if (msgObj != null &&
             this._ch != null) {
-            this._ch.writeAndFlush(msgObj);
+            try {
+                this._ch.writeAndFlush(msgObj).await();
+            } catch (Exception ex) {
+                // 记录并抛出异常
+                RobotLog.LOG.error(
+                    ex.getMessage(), ex
+                );
+            }
         }
     }
 

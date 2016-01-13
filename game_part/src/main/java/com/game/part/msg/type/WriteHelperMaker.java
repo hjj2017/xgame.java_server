@@ -2,11 +2,13 @@ package com.game.part.msg.type;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -19,6 +21,7 @@ import com.game.part.msg.MsgLog;
 import com.game.part.msg.MsgServ;
 import com.game.part.util.Assert;
 import com.game.part.util.ClazzUtil;
+import com.game.part.util.FieldUtil;
 
 /**
  * 读取帮助器构建者
@@ -30,6 +33,8 @@ import com.game.part.util.ClazzUtil;
 public final class WriteHelperMaker {
     /** 帮助者字典 */
     private static final Map<Class<?>, IWriteHelper> _helperMap = new ConcurrentHashMap<>();
+    /** 计数器 */
+    private static AtomicInteger _counter = new AtomicInteger(0);
 
     /**
      * 类默认构造器
@@ -81,10 +86,18 @@ public final class WriteHelperMaker {
     private static Class<IWriteHelper> buildHelperClazz(Class<?> byClazz) {
         // 断言参数不为空
         Assert.notNull(byClazz, "byClazz");
+
+        //
         // 设置解析器名称
-        final String helperClazzName = byClazz.getPackage().getName()
-            + ".WriteHelper_" 
-            + byClazz.getSimpleName();
+        // 注意 : 在这里使用了 1 个计数器,
+        // 目的是为了避免 byClazz 为匿名类!
+        // 匿名类的 simpleName 为空
+        final String helperClazzName = MessageFormat.format(
+            "{0}.WriteHelper_{1}_{2}",
+            byClazz.getPackage().getName(),
+            byClazz.getSimpleName(),
+            String.valueOf(_counter.incrementAndGet())
+        );
 
         try {
             // 获取类池
@@ -220,8 +233,17 @@ public final class WriteHelperMaker {
                     .append(f.getName())
                     .append(", buff);\n");
 
+                // 获取实际类型
+                Class<?> aType = (Class<?>)FieldUtil.getGenericTypeA(f);
+
                 // 添加到 import
                 codeCtx._importClazzSet.add(MsgArrayList.class);
+                codeCtx._importClazzSet.add(aType);
+
+                // 注意 :
+                // 还需要给模版参数生成 ReadHelper
+                make(aType);
+
                 // 直接退出, 不要再继续向下生成 : 
                 // msgObj._funcIdList.writeBuff(buff);
                 // 这样的代码了...
