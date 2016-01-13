@@ -26,8 +26,8 @@ import com.game.robot.kernal.RobotConf.TestModule;
 public final class RobotMain {
     /** JSON 配置文件 */
     public String _jsonConfFileName = "etc/robot.json";
-    /** 功能模块类定义字典 */
-    private final Map<String, Set<Class<?>>> _moduleClazzDefMap = new ConcurrentHashMap<>();
+    /** 模块结构字典 */
+    private final Map<String, ModuleStruct> _mStructMap = new ConcurrentHashMap<>();
     /** 机器人字典 */
     private final Map<String, Robot> _robotMap = new ConcurrentHashMap<>();
     
@@ -54,8 +54,8 @@ public final class RobotMain {
         }
 
         // 事先扫描 gameServer 项目, 
-        // 注册所有的 GC 消息!
-        RobotGCMsgRecognizer.OBJ.scanAllModule();
+        // 注册所有的 CG / GC 消息!
+        RobotMsgClazzRecognizer.OBJ.scanAll();
         // 扫描 moduleImpl 下得所有模块
         this.scanAllModuleImpl(confObj);
 
@@ -72,9 +72,9 @@ public final class RobotMain {
             // 创建聚焦模块链表
             newRobot.putCurrFocusModule(this.createModuleChain(confObj));
             // 游戏服务器配置
+            newRobot._gameServerName = confObj._gameServerName;
             newRobot._gameServerIpAddr = confObj._gameServerIpAddr;
             newRobot._gameServerPort = confObj._gameServerPort;
-            newRobot._gameServerName = confObj._gameServerName;
 
             // 记录日志信息
             RobotLog.LOG.info(MessageFormat.format(
@@ -87,7 +87,9 @@ public final class RobotMain {
                 Thread.sleep(confObj._robotStartUpInterval);
             } catch (Exception ex) {
                 // 记录错误日志
-                RobotLog.LOG.error(ex.getMessage(), ex);
+                RobotLog.LOG.error(
+                    ex.getMessage(), ex
+                );
             }
 
             // 启动机器人
@@ -114,11 +116,14 @@ public final class RobotMain {
     /**
      * 创建配置对象
      * 
-     * @param jsonConfFileName 
-     * @return 
+     * @param jsonConfFileName 配置文件名称, etc/robot.json
+     * @return 机器人配置
      * 
      */
     private static RobotConf createConfObj(String jsonConfFileName) {
+        // 断言参数不为空
+        assert (jsonConfFileName != null && jsonConfFileName.isEmpty()) : "null jsonConfFileName";
+
         try {
             // 读取配置文件获取文本字符串
             String textStr = FileUtils.readFileToString(
@@ -139,15 +144,12 @@ public final class RobotMain {
     /**
      * 扫描所有的模块实现
      * 
-     * @param confObj
+     * @param confObj 机器人配置
      * 
      */
     private void scanAllModuleImpl(RobotConf confObj) {
-        if (confObj == null) {
-            // 如果参数对象为空, 
-            // 则直接退出!
-            return;
-        }
+        // 断言参数不为空
+        assert confObj == null : "null confObj";
 
         for (TestModule moduleConf : confObj._testModuleList) {
             if (moduleConf == null) {
@@ -161,27 +163,25 @@ public final class RobotMain {
                 + moduleConf._currModule;
 
             // 获取 "准备类定义" 
-            Set<Class<?>> readyClazzDefSet = PackageUtil.listSubClazz(
+            Set<Class<?>> rClazzSet = PackageUtil.listSubClazz(
                 packageName, 
                 AbstractModuleReady.class
             );
-    
-            // 添加到输出字典
-            this._moduleClazzDefMap.put(
-                packageName + ".R", 
-                readyClazzDefSet
-            );
 
             // 获取 "消息处理器类定义" 
-            Set<Class<?>> handlerClazzDefSet = PackageUtil.listSubClazz(
+            Set<Class<?>> hClazzSet = PackageUtil.listSubClazz(
                 packageName, 
                 AbstractGCMsgHandler.class
             );
 
+            ModuleStruct mStruct = new ModuleStruct();
+            mStruct._readyClazz = rClazzSet.iterator().next();
+            mStruct._handlerClazzSet = hClazzSet;
+
             // 添加到输出字典
-            this._moduleClazzDefMap.put(
-                packageName + ".H", 
-                handlerClazzDefSet
+            this._mStructMap.put(
+                packageName,
+                mStruct
             );
         }
     }
@@ -274,22 +274,28 @@ public final class RobotMain {
         final String packageName = "com.game.robot.moduleImpl."
             + moduleConf._currModule;
 
-        // 获取 "准备类定义" 
-        Set<Class<?>> clazzDefSet = this._moduleClazzDefMap.get(
-            packageName + ".R"
+        // 获取 "模块结构"
+        ModuleStruct mStruct = this._mStructMap.get(
+            packageName
         );
 
-        if (clazzDefSet == null || 
-            clazzDefSet.isEmpty()) {
+        if (mStruct == null) {
+            // 如果模块结构为空,
+            // 则直接退出!
+            RobotLog.LOG.error(MessageFormat.format(
+                "{0} 模块没有继承自 {1} 的类",
+                packageName,
+                AbstractModuleReady.class.getSimpleName()
+            ));
             return null;
         }
 
         // 获取类定义
-        Class<?> clazzDef = clazzDefSet.iterator().next();
+        Class<?> rClazz = mStruct._readyClazz;
 
         try {
             // 创建 Ready 类对象
-            Object obj = clazzDef.newInstance();
+            Object obj = rClazz.newInstance();
             // 强转并返回!
             return (AbstractModuleReady)obj;
         } catch (Exception ex) {
@@ -317,21 +323,22 @@ public final class RobotMain {
         final String packageName = "com.game.robot.moduleImpl."
             + moduleConf._currModule;
 
-        // 获取 "准备类定义" 
-        Set<Class<?>> clazzDefSet = this._moduleClazzDefMap.get(
-            packageName + ".H"
+        // 获取 "模块结构"
+        ModuleStruct mStruct = this._mStructMap.get(
+            packageName
         );
 
-        if (clazzDefSet == null || 
-            clazzDefSet.isEmpty()) {
+        if (mStruct == null) {
+            // 如果模块结构为空,
+            // 则直接退出!
             return null;
         }
 
         // 处理器集合
-        Set<AbstractGCMsgHandler<?>> handlerObjSet = new HashSet<>();
+        Set<AbstractGCMsgHandler<?>> hObjSet = new HashSet<>();
 
-        for (Class<?> clazzDef : clazzDefSet) {
-            if (clazzDef == null) {
+        for (Class<?> hClazz : mStruct._handlerClazzSet) {
+            if (hClazz == null) {
                 // 如果类定义为空, 
                 // 则直接跳过!
                 continue;
@@ -339,15 +346,15 @@ public final class RobotMain {
 
             try {
                 // 创建 GCHandler 类对象
-                Object obj = clazzDef.newInstance();
+                Object obj = hClazz.newInstance();
                 // 强制转型并添加到集合
-                handlerObjSet.add((AbstractGCMsgHandler<?>)obj);
+                hObjSet.add((AbstractGCMsgHandler<?>) obj);
             } catch (Exception ex) {
                 // 记录错误日志
                 RobotLog.LOG.error(ex.getMessage(), ex);
             }
         }
 
-        return handlerObjSet;
+        return hObjSet;
     }
 }

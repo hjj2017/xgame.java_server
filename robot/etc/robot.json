@@ -6,7 +6,7 @@
 # 起始账户 Id
 "startPId" : "2049",
 # 结束账户 Id
-"endPId" : "4048",
+"endPId" : "2049",
 # 账户密码
 "userPassword" : "1",
 # 游戏服名称
@@ -24,6 +24,7 @@
     { "currModule" : "login" },
 	{ "currModule" : "human" },
 	{ "currModule" : "chat" },
-    { "currModule" : "building", "nextModule" : "disconnect" },
+    { "currModule" : "building" },
+    { "currModule" : "disconnect", "nextModule" : "connect" },
 ]
 }

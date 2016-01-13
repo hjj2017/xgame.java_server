@@ -22,9 +22,6 @@ public class S000_Disconnect extends AbstractModuleReady {
             return;
         }
 
-        // 思考一小会儿
-        this.thinking(2000);
-
         // 断开连接
         robotObj.disconnect();
         // 记录日志信息
@@ -33,8 +30,6 @@ public class S000_Disconnect extends AbstractModuleReady {
             robotObj._userName
         ));
 
-        // 思考一下会儿
-        this.thinking(10000, 15000);
         // 跳转到下一模块
         robotObj.gotoNextModuleAndReady();
     }

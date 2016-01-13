@@ -36,7 +36,7 @@ public class Handler_CGLogin extends AbstractCGMsgHandler<CGLogin> {
             LoginLog.LOG.error(MessageFormat.format(
                 "安装玩家失败, platformUIdStr = {0}, sessionUId = {1}",
                 p._platformUIdStr,
-                String.valueOf(p._sessionUId)
+                String.valueOf(this._sessionUId)
             ));
             return;
         }

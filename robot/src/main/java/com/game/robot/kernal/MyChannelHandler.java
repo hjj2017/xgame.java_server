@@ -2,9 +2,7 @@ package com.game.robot.kernal;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import net.sf.json.JSONObject;
 
-import com.game.bizModule.login.msg.CGLogin;
 import com.game.part.msg.MsgLog;
 import com.game.part.util.Assert;
 

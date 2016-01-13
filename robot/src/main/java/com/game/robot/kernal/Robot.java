@@ -130,12 +130,26 @@ public final class Robot {
     }
 
     /**
+     * 结束机器人
+     *
+     */
+    void over() {
+        // 计时器 -1
+        ROBOT_COUNTER.decrementAndGet();
+        // 断开连接
+        this.disconnect();
+        // 清除数据
+        this._msgQ.clear();
+        this._dataMap.clear();
+    }
+
+    /**
      * 消化所有消息
      * 
      */
     private void digestAllMsg() {
-        // 是否有错?
-        boolean hasErr = false;
+        // 结束标志
+        boolean overFlag = false;
 
         try {
             while (true) {
@@ -158,7 +172,7 @@ public final class Robot {
                         "机器人 {0} 当前模块为空, 机器人 {0} 已经完成此次测试使命, 即将断开连接...",
                         this._userName
                     ));
-                    hasErr = true;
+                    overFlag = true;
                     break;
                 }
 
@@ -170,12 +184,12 @@ public final class Robot {
         } catch (Exception ex) {
             // 记录错误日志
             RobotLog.LOG.error(ex.getMessage(), ex);
-            hasErr = true;
+            overFlag = true;
         }
 
-        if (hasErr) {
-            // 如果出错就断开连接
-            this.disconnect();
+        if (overFlag) {
+            // 结束机器人
+            this.over();
         }
     }
 
@@ -222,11 +236,16 @@ public final class Robot {
      * 
      */
     public void disconnect() {
-        if (this._ch != null) {
-            this._ch.close();
+        if (this._ch != null &&
+            this._ch.isOpen()) {
+            try {
+                // 关闭信道
+                this._ch.close().sync();
+            } catch (Exception ex) {
+                // 记录错误日志
+                RobotLog.LOG.error(ex.getMessage(), ex);
+            }
         }
-
-        ROBOT_COUNTER.decrementAndGet();
     }
 
     /**

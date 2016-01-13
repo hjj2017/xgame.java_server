@@ -13,24 +13,24 @@ import com.game.robot.RobotLog;
 
 /**
  * 消息识别, 
- * 其实只是将 gameServer 项目中的 GCMessage 子类扫描出来!
+ * 其实只是将 gameServer 项目中的 CG / GC 消息子类扫描出来!
  * 在收到消息时直接创建对应的对象, 
  * 这样可以避免因为服务器添加新的消息类型后有消息无法识别...
  * 
  * @author yuan.lv
  * 
  */
-public class RobotGCMsgRecognizer {
+public class RobotMsgClazzRecognizer {
     /** 单例对象 */
-    public static final RobotGCMsgRecognizer OBJ = new RobotGCMsgRecognizer();
+    public static final RobotMsgClazzRecognizer OBJ = new RobotMsgClazzRecognizer();
 
     /**
      * 扫描所有模块
      * 
      */
-    void scanAllModule() {
+    void scanAll() {
         // 记录日志信息
-        RobotLog.LOG.info("开始扫描游戏服, 注册 GC 消息");
+        RobotLog.LOG.info("开始扫描游戏服, 注册 CG / GC 消息");
         // 获取 GCMsg 的所有子类
         Set<Class<?>> clazzSet = PackageUtil.listSubClazz(
             "com.game.bizModule",
@@ -73,6 +73,6 @@ public class RobotGCMsgRecognizer {
         }
 
         // 记录日志信息
-        RobotLog.LOG.info("注册 GC 消息完成");
+        RobotLog.LOG.info("注册 CG / GC 消息完成");
     }
 }

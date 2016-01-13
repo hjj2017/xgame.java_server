@@ -6,7 +6,7 @@ import com.game.robot.kernal.AbstractModuleReady;
 import com.game.robot.kernal.Robot;
 
 /**
- * 玩家登陆
+ * 建筑升级
  * 
  * @author hjj2019
  * @since 2015/5/15
