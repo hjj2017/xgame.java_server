@@ -11,8 +11,20 @@
     <Grid Margin="8,1,8,0">
         <Image x:Name="_imgBG" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="1000" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_CreateHuman.png"/>
         <Image x:Name="_imgDesc" HorizontalAlignment="Right" Height="600" VerticalAlignment="Top" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_Desc_1.png"/>
-        <Button x:Name="_btnPrev" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="250,280,0,0" VerticalAlignment="Top" Width="75" Click="_btnPrev_Click" />
-        <Button x:Name="_btnNext" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="550,280,0,0" VerticalAlignment="Top" Width="75" Click="_btnNext_Click" />
+        <Button x:Name="_btnPrev" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="250,250,0,0" VerticalAlignment="Top" Width="64" Height="64" Click="_btnPrev_Click">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../Res/Img/CreateHuman/Btn_Prev.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button x:Name="_btnNext" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="550,250,0,0" VerticalAlignment="Top" Width="64" Click="_btnNext_Click">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../Res/Img/CreateHuman/Btn_Next.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
         <Image x:Name="_imgHero" HorizontalAlignment="Left" Height="440" VerticalAlignment="Top" Width="180" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/Hero_10.png" Margin="350,100,0,0"/>
         <Image x:Name="_imgBGName" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="210" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_Name.png" Margin="320,460,0,0"/>
         <Button x:Name="_btnOk" Content="Button" HorizontalAlignment="Left" Margin="534,457,0,0" VerticalAlignment="Top" Width="75" Click="_btnOk_Click">

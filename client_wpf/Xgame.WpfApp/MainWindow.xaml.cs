@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Windows;
+using System.Windows.Input;
 
 using LitJson;
 
@@ -157,6 +158,20 @@ namespace Xgame.WpfApp
         private void GoToHome()
         {
             this.Content = new Page_Home();
+        }
+
+        /// <summary>
+        /// 密码框输入事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _txtUserPass_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // 模拟登陆按钮点击事件
+                this._btnLogin_Click(null, null);
+            }
         }
     }
 }

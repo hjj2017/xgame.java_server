@@ -10,7 +10,6 @@ using Xgame.GameBizModule.Human.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
 
-
 namespace Xgame.WpfApp.Human
 {
     /// <summary>
