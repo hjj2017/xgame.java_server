@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
  */
 interface IDao_GetMaxId {
     /** 获取最大 Id */
-    String JPQL_getMaxId = "select entity.{1} from {0} entity";
+    String JPQL_getMaxId = "select max(entity.{1}) from {0} entity";
 
     /**
      * 删除数据实体
