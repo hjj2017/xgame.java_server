@@ -46,9 +46,13 @@
   <ItemGroup>
     <Compile Include="Chat\Msg\CGWorldChat.cs" />
     <Compile Include="Chat\Msg\GCCommChat.cs" />
+    <Compile Include="CreateHuman\BizServ\CreateHumanServ.cs" />
+    <Compile Include="CreateHuman\Tmpl\CreateHumanTmpl.cs" />
     <Compile Include="Global\AllMsgSerialUId.cs" />
+    <Compile Include="Human\Msg\CGCreateHuman.cs" />
     <Compile Include="Human\Msg\CGEnterHuman.cs" />
     <Compile Include="Human\Msg\CGQueryHumanEntryList.cs" />
+    <Compile Include="Human\Msg\GCCreateHuman.cs" />
     <Compile Include="Human\Msg\GCEnterHuman.cs" />
     <Compile Include="Human\Msg\GCQueryHumanEntryList.cs" />
     <Compile Include="Human\Msg\HumanEntryMO.cs" />

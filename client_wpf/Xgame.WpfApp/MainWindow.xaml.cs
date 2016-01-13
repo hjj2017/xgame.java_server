@@ -9,7 +9,7 @@ using Xgame.GameBizModule.Login.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg;
 using Xgame.GamePart.Msg.Type;
-using Xgame.WpfApp.CreateHuman;
+using Xgame.WpfApp.Human;
 using Xgame.WpfApp.Home;
 
 namespace Xgame.WpfApp
