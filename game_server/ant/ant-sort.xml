@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<project basedir="." default="main" name="gameServer">
-    <!--// import //-->
-    <import file="../../code_libs/make/ant-globalsConfig.xml" />
+<project basedir="." default="main" name="game_server">
+    <!--// val & var //-->
     <property name="copyToDir" value="/C:/hdsgz/copy" />
 
     <!--// 分拣文件 //-->

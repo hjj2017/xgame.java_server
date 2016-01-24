@@ -1,12 +1,35 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<project basedir="." default="main" name="game_server">
-    <typedef resource="org/apache/maven/artifact/ant/antlib.xml">
-        <classpath>
-            <pathelement location="../../all_config/lib/maven-ant-tasks-2.1.3.jar" />
-        </classpath>
-    </typedef>
+<?xml version="1.0" encoding="UTF-8" ?>
+<project basedir="." default="main" name="all_config">
+
+    <condition property="isWindows">
+        <os family="windows" />
+    </condition>
+    <condition property="isUnix">
+        <os family="unix" />
+    </condition>
 
     <target name="main">
-        <mvn args="-f ../pom.xml -e compile" />
+        <antcall target="mvn@windows" />
+        <antcall target="mvn@unix" />
     </target>
+
+    <target name="mvn@windows" if="isWindows">
+        <exec executable="cmd" failonerror="true">
+            <arg line="/c" />
+            <arg line="mvn.cmd" />
+            <arg line="-e" />
+            <arg line="-f ../pom.xml" />
+            <arg line="package" />
+        </exec>
+    </target>
+
+    <target name="mvn@unix" if="isUnix">
+        <exec executable="sh" failonerror="true">
+            <arg line="mvn" />
+            <arg line="-e" />
+            <arg line="-f ../pom.xml" />
+            <arg line="package" />
+        </exec>
+    </target>
+
 </project>
