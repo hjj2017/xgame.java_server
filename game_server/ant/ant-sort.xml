@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="main" name="gameServer">
+    <!--// import //-->
+    <import file="../../code_libs/make/ant-globalsConfig.xml" />
+    <property name="copyToDir" value="/C:/hdsgz/copy" />
+
+    <!--// 分拣文件 //-->
+    <target name="main">
+        <echo><![CDATA[:: 分拣游戏服务器 ( GameServer )]]></echo>
+        <antcall target="remkDirs" />
+        <antcall target="copyJars" />
+        <antcall target="copyConf" />
+        <antcall target="copyShell" />
+    </target>
+
+    <!--// 重建目录 //-->
+    <target name="remkDirs">
+        <echo><![CDATA[:: 清理并重建目录结构]]></echo>
+        <delete dir="${copyToDir}/game_server" />
+        <mkdir dir="${copyToDir}/game_server" />
+        <mkdir dir="${copyToDir}/game_server/libs" />
+        <mkdir dir="${copyToDir}/game_server/config" />
+        <mkdir dir="${copyToDir}/game_server/logs" />
+    </target>
+
+    <!--// 复制依赖包 //-->
+    <target name="copyJars">
+        <echo><![CDATA[:: 复制依赖包]]></echo>
+        <copy todir="${copyToDir}/game_server/libs">
+            <fileset dir="./ant/jar" includes="*.jar" />
+            <fileset dir="./ant/libs" includes="*.jar" />
+            <fileset dir="../refs" includes="*.jar" />
+        </copy>
+    </target>
+
+    <!--// 复制配置文件 //-->
+    <target name="copyConf">
+        <echo><![CDATA[:: 复制配置文件]]></echo>
+        <copy todir="${copyToDir}/game_server/config">
+            <fileset dir="../config/">
+                <include name="*.*" />
+                <exclude name=".*" />
+                <exclude name="game_server.cfg.js" />
+                <exclude name="hibernate.properties" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!--// 复制运行文件 //-->
+    <target name="copyShell">
+        <echo><![CDATA[:: 复制运行文件]]></echo>
+        <copy todir="${copyToDir}/game_server/">
+            <fileset dir="../">
+                <include name="*.sh.template" />
+            </fileset>
+        </copy>
+    </target>
+
+</project>

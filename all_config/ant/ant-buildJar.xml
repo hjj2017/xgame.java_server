@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="main" name="game_server">
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml">
+        <classpath>
+            <pathelement location="../../all_config/lib/maven-ant-tasks-2.1.3.jar" />
+        </classpath>
+    </typedef>
+
+    <target name="main">
+        <mvn args="-f ../pom.xml -e compile" />
+    </target>
+</project>
