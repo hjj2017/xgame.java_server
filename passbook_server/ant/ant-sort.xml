@@ -14,18 +14,17 @@
     <!--// 重建目录 //-->
     <target name="remkDirs">
         <echo><![CDATA[:: 清理并重建目录结构]]></echo>
-        <delete dir="${sortToDir}/game_server" />
-        <mkdir dir="${sortToDir}/game_server" />
-        <mkdir dir="${sortToDir}/game_server/lib" />
-        <mkdir dir="${sortToDir}/game_server/log" />
+        <delete dir="${sortToDir}/passbook_server" />
+        <mkdir dir="${sortToDir}/passbook_server" />
+        <mkdir dir="${sortToDir}/passbook_server/lib" />
+        <mkdir dir="${sortToDir}/passbook_server/log" />
     </target>
 
     <!--// 复制依赖包 //-->
     <target name="copyJars">
         <echo><![CDATA[:: 复制依赖包]]></echo>
-        <copy todir="${sortToDir}/game_server/lib">
+        <copy todir="${sortToDir}/passbook_server/lib">
             <fileset dir="../../game_part/target/" includes="*.jar" />
-            <fileset dir="../../game_bizModule/target/" includes="*.jar" />
             <fileset dir="../target" includes="*.jar" />
         </copy>
     </target>

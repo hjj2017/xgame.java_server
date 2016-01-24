@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project basedir="." default="main" name="all_config">
+    <!--// 分拣文件 //-->
+    <target name="main">
+        <echo><![CDATA[:: 执行分拣过程]]></echo>
+        <ant target="main" antfile="../../game_server/ant/ant-sort.xml" inheritall="false" />
+        <ant target="main" antfile="../../passbook_server/ant/ant-sort.xml" inheritall="false" />
+    </target>
+
+</project>

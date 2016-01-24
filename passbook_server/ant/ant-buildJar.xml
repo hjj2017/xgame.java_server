@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project basedir="." default="main" name="game_server">
+
+    <target name="main">
+        <ant antfile="../../all_config/ant/ant-buildJar.xml" target="main" inheritall="false" />
+    </target>
+
+</project>
