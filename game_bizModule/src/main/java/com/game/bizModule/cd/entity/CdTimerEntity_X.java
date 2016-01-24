@@ -15,19 +15,24 @@ import javax.persistence.*;
 public class CdTimerEntity_X {
     /** 获取 UId 字符串 */
     @Id @Column(name = "uid_str")
-    public String _uidStr = null;
+    public String _UIdStr = null;
+
     /** 玩家角色 UId */
     @Column(name = "human_uid", updatable = false)
     public Long _humanUId = null;
+
     /** Cd 类型 int 值 */
     @Column(name = "cd_type_int", updatable = false)
     public Integer _cdTypeInt = null;
+
     /** 开始时间 */
     @Column(name = "start_time")
     public Long _startTime = null;
+
     /** 结束时间 */
     @Column(name = "end_time")
     public Long _endTime = null;
+
     /** 是否已开启? */
     @Column(name = "opened")
     public Short _opened = null;
@@ -67,7 +72,7 @@ public class CdTimerEntity_X {
         splitEntity._endTime = this._endTime;
         splitEntity._humanUId = this._humanUId;
         splitEntity._startTime = this._startTime;
-        splitEntity._uidStr = this._humanUId + "-" + this._cdTypeInt;
+        splitEntity._UIdStr = this._humanUId + "-" + this._cdTypeInt;
 
         return splitEntity;
     }

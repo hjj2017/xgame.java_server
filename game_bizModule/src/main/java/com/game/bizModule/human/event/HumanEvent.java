@@ -3,6 +3,7 @@ package com.game.bizModule.human.event;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.human.HumanLog;
 import com.game.bizModule.human.HumanStateTable;
+import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
 
 import java.text.MessageFormat;
@@ -133,25 +134,18 @@ public final class HumanEvent {
      * 触发建角事件
      *
      * @param byPlayer
-     * @param humanUId
-     * @param serverName
-     * @param humanName
+     * @param he
      *
      */
-    public void fireCreateHumanEvent(Player byPlayer, long humanUId, String serverName, String humanName) {
+    public void fireCreateHumanEvent(Player byPlayer, HumanEntity he) {
         if (byPlayer == null ||
-            humanUId <= 0 ||
-            humanName == null ||
-            humanName.isEmpty()) {
+            he == null) {
             // 如果参数对象为空,
             // 则直接退出!
             return;
         } else {
             this._ell.forEach(el -> el.onCreateNew(
-                byPlayer,
-                humanUId,
-                serverName,
-                humanName
+                byPlayer, he
             ));
         }
     }

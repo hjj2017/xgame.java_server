@@ -1,6 +1,7 @@
 package com.game.bizModule.human.event;
 
 import com.game.bizModule.human.Human;
+import com.game.bizModule.human.entity.HumanEntity;
 import com.game.gameServer.framework.Player;
 
 /**
@@ -13,13 +14,11 @@ public interface IHumanEventListen {
     /**
      * 创建角色
      *
-     * @param byPlayer
-     * @param humanUId
-     * @param serverName
-     * @param humanName
+     * @param byPlayer 玩家对象
+     * @param he 角色实体
      *
      */
-    default void onCreateNew(Player byPlayer, long humanUId, String serverName, String humanName) {
+    default void onCreateNew(Player byPlayer, final HumanEntity he) {
     }
 
     /**

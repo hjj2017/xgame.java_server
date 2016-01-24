@@ -3,6 +3,7 @@ package com.game.bizModule.player.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 用户实体
@@ -11,7 +12,8 @@ import javax.persistence.Id;
  * @since 2014/9/15
  * 
  */
-@Entity(name = "t_player")
+@Entity
+@Table(name = "t_player")
 public class PlayerEntity {
     /** 平台 UId 字符串 */
     @Id @Column(name = "platform_uid_str", length = 64, updatable = false)

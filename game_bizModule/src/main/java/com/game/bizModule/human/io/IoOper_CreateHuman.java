@@ -73,9 +73,7 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
         // 触发建角事件
         HumanEvent.OBJ.fireCreateHumanEvent(
             this._p,
-            this._humanUId,
-            this._serverName,
-            this._humanName
+            newEntity
         );
 
         // 创建消息对象

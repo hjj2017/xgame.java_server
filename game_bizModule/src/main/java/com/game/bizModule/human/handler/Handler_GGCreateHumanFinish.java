@@ -30,8 +30,10 @@ public class Handler_GGCreateHumanFinish extends AbstractGGMsgHandler<GGCreateHu
 
         // 获取角色状态表
         HumanStateTable hStateTbl = ggMSG._p.getPropValOrCreate(HumanStateTable.class);
-        // 建角过程执行完毕
+        // 建角过程执行完毕,
         hStateTbl._execCreateHuman = false;
+        // 并且是第一次登陆
+        hStateTbl._firstLogin = true;
 
         // 发送 GC 消息
         this.sendMsgToClient(
