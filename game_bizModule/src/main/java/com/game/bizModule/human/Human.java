@@ -152,7 +152,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
         he._fullName = this.getFullName();
         he._serverName = this._serverName;
         he._humanName = this._humanName;
-        he._humanLevel = this._humanLevel;
+        // he._humanLevel = this._humanLevel;
         he._gold = this._gold;
         he._newerRewardCheckOut = this._newerRewardCheckout ? 1 : 0;
 
@@ -174,7 +174,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
 
         this._serverName = entity._serverName;
         this._humanName = entity._humanName;
-        this._humanLevel = NullUtil.optVal(entity._humanLevel, this._humanLevel);
+        // this._humanLevel = NullUtil.optVal(entity._humanLevel, this._humanLevel);
         this._gold = NullUtil.optVal(entity._gold, this._gold);
         this._newerRewardCheckout = NullUtil.optVal(entity._newerRewardCheckOut, 0) == 1;
     }

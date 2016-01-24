@@ -8,7 +8,6 @@ using Xgame.GameBizModule.CreateHuman.BizServ;
 using Xgame.GameBizModule.CreateHuman.Tmpl;
 using Xgame.GameBizModule.Human.Msg;
 using Xgame.GameClient.Msg;
-using Xgame.GamePart.Msg.Type;
 
 namespace Xgame.WpfApp.Human
 {
@@ -127,32 +126,17 @@ namespace Xgame.WpfApp.Human
         /// <param name="gcMSG"></param>
         private void Handle_GCCreateHuman(GCCreateHuman gcMSG)
         {
-            // 再次请求角色入口列表
-            // 创建 CG 消息
-            CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
-            cgMSG._serverName = new MsgStr("LM1");
-            // 发送 CG 消息
-            ClientServer.OBJ.AddGCMsgHandler<GCQueryHumanEntryList>(this.Handle_GCQueryHumanEntryList);
-            ClientServer.OBJ.SendCGMsg(cgMSG);
+            // 如果没有任何角色, 
+            // 则跳转到角色创建界面
+            this.Dispatcher.BeginInvoke(new Action(this.GotoEnterHumanAndLoading));
         }
 
         /// <summary>
-        /// 处理 GCQueryHumanEntryList 消息
+        /// 跳转到进入角色并加载数据
         /// </summary>
-        /// <param name="gcMSG"></param>
-        private void Handle_GCQueryHumanEntryList(GCQueryHumanEntryList gcMSG)
+        private void GotoEnterHumanAndLoading()
         {
-            if (gcMSG._humanEntryList == null
-             || gcMSG._humanEntryList.Count <= 0)
-            {
-                // 如果没有任何角色, 
-                // 则跳转到角色创建界面
-            }
-            else
-            {
-                // 选择一个角色, 
-                // 进入游戏!
-            }
+            this.Content = new Page_EnterHumanAndLoading();
         }
     }
 }

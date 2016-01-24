@@ -8,27 +8,5 @@
         Title="Xgame.WpfApp" 
         Width="1024" Height="640" 
         ResizeMode="NoResize">
-    <Window.Resources>
-        <ResourceDictionary Source="MyStyle.xaml" />
-    </Window.Resources>
-    <Grid Background="Black">
-        <Image x:Name="_imgBG" Width="1000" Height="600" VerticalAlignment="Top" Source="Res/Img/Login/BG_Login.jpg" Margin="8,2,8,0"/>
-        <TextBox x:Name="_txtUserName" HorizontalAlignment="Left" Height="24" Margin="461,329,0,0" VerticalAlignment="Top" Width="182" Style="{StaticResource ResourceKey=MyTextBox}" Text="2048" />
-        <PasswordBox x:Name="_txtUserPass" HorizontalAlignment="Left" Height="24" Margin="461,388,0,0" VerticalAlignment="Top" Width="182" Style="{StaticResource ResourceKey=MyPasswordBox}" Password="1" KeyDown="_txtUserPass_KeyDown" />
-        <Button x:Name="_btnRegister" HorizontalAlignment="Left" Margin="392,488,0,0" VerticalAlignment="Top" Width="106" Height="42" Style="{StaticResource ResourceKey=MyButton}">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="Res/Img/Login/Btn_Register.png" />
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-        <Button x:Name="_btnLogin" HorizontalAlignment="Left" Margin="538,488,0,0" VerticalAlignment="Top" Width="106" Height="42" Style="{StaticResource ResourceKey=MyButton}" Click="_btnLogin_Click">
-            <Button.Template>
-                <ControlTemplate>
-                    <Image Source="Res/Img/Login/Btn_Login.png" />
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-
-    </Grid>
+    <Grid Background="Black"></Grid>
 </Window>
