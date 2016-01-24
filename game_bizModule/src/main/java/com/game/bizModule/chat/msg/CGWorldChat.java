@@ -44,6 +44,6 @@ public class CGWorldChat extends AbstractCGChat {
 
     @Override
     public MsgTypeEnum getMsgTypeInTyping() {
-        return MsgTypeEnum.game;
+        return MsgTypeEnum.chat;
     }
 }

@@ -39,8 +39,8 @@ public final class WorldChatTypist implements ITypist<CGWorldChat> {
     @Override
     public GCCommChat type(Human h, CGWorldChat cgMSG, final List<Long> outHumanUIdList) {
         // 断言参数不为空
-        Assert.notNull(h, "h");
-        Assert.notNull(cgMSG, "cgMSG");
+        assert h != null : "null h";
+        assert cgMSG != null : "null cgMSg";
 
         // 创建 GC 消息
         GCCommChat gcMSG = new GCCommChat();
