@@ -47,7 +47,7 @@ public class HumanStateTable {
     public boolean _execCreateHuman = false;
     /** 正在执行进入角色过程? */
     public boolean _execEnterHuman = false;
-    /** 是不是第一次登陆?, 注意 : 只有新创建的角色该值 = true */
+    /** 是否为第一次登陆?, 注意 : 只有新创建的角色该值 = true */
     public boolean _firstLogin = false;
     /** 角色加载完成 */
     public boolean _humanLoadFromDbOk = false;
