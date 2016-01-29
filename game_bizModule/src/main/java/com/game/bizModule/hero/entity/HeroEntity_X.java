@@ -1,7 +1,5 @@
 package com.game.bizModule.hero.entity;
 
-import com.game.bizModule.cd.entity.*;
-
 import javax.persistence.*;
 
 /**
@@ -20,23 +18,27 @@ public class HeroEntity_X {
     public String _UIdStr;
 
     /** 所属角色 UId */
-    @Column(name = "human_uid")
+    @Column(name = "human_uid", updatable = false)
     public Long _humanUId;
 
     /** 模版 Id */
-    @Column(name = "tmpl_id")
+    @Column(name = "tmpl_id", updatable = false)
     public Integer _tmplId;
+
+    /** 经验值 */
+    @Column(name = "exp")
+    public Integer _exp;
 
     /** 武将等级 */
     @Column(name = "level")
-    public Integer _level;
+    public Integer _heroLevel;
 
     /** 指挥官标志 */
-    @Column(name = "commander_flag")
+    @Column(name = "commander_flag", updatable = false)
     public Integer _commanderFlag;
 
     /** 招募时间 */
-    @Column(name = "hire_time")
+    @Column(name = "hire_time", updatable = false)
     public Long _hireTime;
 
 // 属性加成
@@ -95,7 +97,7 @@ public class HeroEntity_X {
         splitEntity._UIdStr = this._UIdStr;
         splitEntity._humanUId = this._humanUId;
         splitEntity._tmplId = this._tmplId;
-        splitEntity._level = this._level;
+        splitEntity._heroLevel = this._heroLevel;
         splitEntity._commanderFlag = this._commanderFlag;
         splitEntity._hireTime = this._hireTime;
 

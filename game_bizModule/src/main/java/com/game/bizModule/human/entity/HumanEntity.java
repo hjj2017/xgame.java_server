@@ -39,6 +39,14 @@ public class HumanEntity {
     @Column(name = "hero_tmpl_id", updatable = false )
     public Integer _heroTmplId = null;
 
+    /** 经验值 */
+    @Column(name = "exp")
+    public Integer _exp = 0;
+
+    /** 角色等级 */
+    @Column(name = "human_level")
+    public Integer _humanLevel;
+
     /** 金币数量 */
     @Column(name = "gold")
     public Integer _gold = 0;
