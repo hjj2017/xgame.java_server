@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using Xgame.GameBizModule.Human.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
+using Xgame.WpfApp.Home;
 
 namespace Xgame.WpfApp.Human
 {
@@ -41,23 +42,47 @@ namespace Xgame.WpfApp.Human
             if (gcMSG._humanEntryList == null
              || gcMSG._humanEntryList.Count <= 0)
             {
-                // 如果没有任何角色, 
-                // 则跳转到角色创建界面
-                this.Dispatcher.BeginInvoke(new Action(this.GotoCreateHuman));
+                this.Dispatcher.BeginInvoke(new Action(() => {
+                    // 如果没有任何角色, 
+                    // 则跳转到角色创建界面
+                    this.Content = new Page_CreateHuman();
+                }));
+                return;
             }
-            else
+
+            // 获取角色入口
+            HumanEntryMO mo = gcMSG._humanEntryList[0];
+
+            if (mo == null)
             {
-                // 选择一个角色, 
-                // 进入游戏!
+                // TODO : 
+                return;
             }
+
+            // 创建 CG 消息登陆角色
+            CGEnterHuman cgMSG = new CGEnterHuman();
+            cgMSG._humanUId = mo._humanUId;
+            cgMSG._humanUIdStr = mo._humanUIdStr;
+            // 发送 CG 消息
+            ClientServer.OBJ.AddGCMsgHandler<GCEnterHuman>(this.Handle_GCEnterHuman);
+            ClientServer.OBJ.SendCGMsg(cgMSG);
         }
 
         /// <summary>
-        /// 跳转到创建角色界面
+        /// 处理 GCEnterHuman 消息
         /// </summary>
-        private void GotoCreateHuman()
+        /// <param name="gcMSG"></param>
+        private void Handle_GCEnterHuman(GCEnterHuman gcMSG)
         {
-            this.Content = new Page_CreateHuman();
+            if (gcMSG._ready.GetBoolVal())
+            {
+                // 如果已经是就绪状态, 
+                // 则进入主城!
+                this.Dispatcher.BeginInvoke(new Action(() => {
+                    // 跳转到角色入口页面
+                    MainWindow.TheWnd.Content = new Page_Home();
+                }));
+            }
         }
     }
 }

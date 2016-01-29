@@ -83,6 +83,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Human\Page_EnterHumanAndLoading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Login\Page_Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,6 +104,9 @@
     </Compile>
     <Compile Include="Human\Page_CreateHuman.xaml.cs">
       <DependentUpon>Page_CreateHuman.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Human\Page_EnterHumanAndLoading.xaml.cs">
+      <DependentUpon>Page_EnterHumanAndLoading.xaml</DependentUpon>
     </Compile>
     <Compile Include="Login\Page_Login.xaml.cs">
       <DependentUpon>Page_Login.xaml</DependentUpon>

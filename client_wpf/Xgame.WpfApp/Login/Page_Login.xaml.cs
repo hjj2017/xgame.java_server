@@ -6,11 +6,9 @@ using System.Windows.Input;
 
 using LitJson;
 
-using Xgame.GameBizModule.Human.Msg;
 using Xgame.GameBizModule.Login.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
-using Xgame.WpfApp.Home;
 using Xgame.WpfApp.Human;
 
 namespace Xgame.WpfApp.Login
@@ -78,17 +76,10 @@ namespace Xgame.WpfApp.Login
                 return;
             }
 
-            // 如果没有任何角色, 
-            // 则跳转到角色创建界面
-            this.Dispatcher.BeginInvoke(new Action(this.GotoEnterHumanAndLoading));
-        }
-
-        /// <summary>
-        /// 跳转到进入角色并加载数据
-        /// </summary>
-        private void GotoEnterHumanAndLoading()
-        {
-            this.Content = new Page_EnterHumanAndLoading();
+            this.Dispatcher.BeginInvoke(new Action(() => {
+                // 跳转到角色入口页面
+                MainWindow.TheWnd.Content = new Page_EnterHumanAndLoading();
+            }));
         }
 
         /// <summary>

@@ -13,6 +13,9 @@ namespace Xgame.WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        /** 主窗口引用 */
+        private static MainWindow _theWnd;
+
         /// <summary>
         /// 类默认构造器
         /// </summary>
@@ -32,9 +35,22 @@ namespace Xgame.WpfApp
 
             // 注册消息类
             this.RegAllMsgType();
+            // 设置主窗口引用
+            _theWnd = this;
 
             // 跳转到登陆界面
             this.Content = new Page_Login();
+        }
+
+        /// <summary>
+        /// 获取主窗口引用
+        /// </summary>
+        public static MainWindow TheWnd
+        {
+            get
+            {
+                return _theWnd;
+            }
         }
 
         /// <summary>
