@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HeroServ extends AbstractBizServ implements IHumanEventListen {
     /** 单例对象 */
     public static final HeroServ OBJ = new HeroServ();
+    /** 管理器字典 */
     private static final ConcurrentHashMap<Long, HeroManager> _mngrMap = new ConcurrentHashMap<>();
 
     /**
@@ -54,9 +55,8 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
 
         newEntity._UIdStr = "UId";
         newEntity._humanUId = he._humanUId;
-        newEntity._exp = -1;
-        newEntity._heroLevel = -1;
-        newEntity._commanderFlag = 1;
+        newEntity._exp = 0;
+        newEntity._heroLevel = 0;
         newEntity._hireTime = TimeServ.OBJ.now();
         newEntity._tmplId = he._heroTmplId;
 
@@ -101,13 +101,15 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
 
         // 初始化武将
         hel.forEach(he -> {
-            Hero heroObj = new Hero(h._humanUId);
+            Hero heroObj = new Hero(h);
             heroObj.fromEntity(he);
 
+            // 获取管理器
             HeroManager mngrObj = _mngrMap.get(he._humanUId);
 
             if (mngrObj == null) {
                 mngrObj = new HeroManager();
+                _mngrMap.put(h._humanUId, mngrObj);
             }
 
             mngrObj._heroMap.put(heroObj._UIdStr, heroObj);

@@ -1,6 +1,11 @@
 package com.game.bizModule.hero.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 
 /**
  * 武将实体
@@ -25,21 +30,21 @@ public class HeroEntity_X {
     @Column(name = "tmpl_id", updatable = false)
     public Integer _tmplId;
 
+    /** 招募时间 */
+    @Column(name = "hire_time", updatable = false)
+    public Long _hireTime;
+
     /** 经验值 */
     @Column(name = "exp")
     public Integer _exp;
 
     /** 武将等级 */
-    @Column(name = "level")
+    @Column(name = "hero_level")
     public Integer _heroLevel;
 
-    /** 指挥官标志 */
-    @Column(name = "commander_flag", updatable = false)
-    public Integer _commanderFlag;
-
-    /** 招募时间 */
-    @Column(name = "hire_time", updatable = false)
-    public Long _hireTime;
+    /** 武将星级 */
+    @Column(name = "star_level")
+    public Integer _starLevel;
 
 // 属性加成
 /////////////////////////////////////////////////////////////////////////////
@@ -97,9 +102,10 @@ public class HeroEntity_X {
         splitEntity._UIdStr = this._UIdStr;
         splitEntity._humanUId = this._humanUId;
         splitEntity._tmplId = this._tmplId;
-        splitEntity._heroLevel = this._heroLevel;
-        splitEntity._commanderFlag = this._commanderFlag;
         splitEntity._hireTime = this._hireTime;
+        splitEntity._exp = this._exp;
+        splitEntity._heroLevel = this._heroLevel;
+        splitEntity._starLevel = this._starLevel;
 
         splitEntity._pAttkAdd = this._pAttkAdd;
         splitEntity._mAttkAdd = this._mAttkAdd;
