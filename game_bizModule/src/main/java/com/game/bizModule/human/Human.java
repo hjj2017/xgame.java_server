@@ -156,6 +156,7 @@ public final class Human extends AbstractHumanBelonging<HumanEntity> {
         he._fullName = this.getFullName();
         he._serverName = this._serverName;
         he._humanName = this._humanName;
+        he._heroTmplId = this._heroTmplId;
         he._currExp = this._currExp;
         he._humanLevel = this._humanLevel;
         he._gold = this._gold;

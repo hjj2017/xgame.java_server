@@ -3,6 +3,7 @@ package com.game.bizModule.hero.bizServ;
 import com.game.bizModule.hero.model.Hero;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 武将管理器
@@ -13,5 +14,5 @@ import java.util.Map;
  */
 public class HeroManager {
     /** 武将字典 */
-    public Map<String, Hero> _heroMap = null;
+    public final Map<String, Hero> _heroMap = new ConcurrentHashMap<>();
 }

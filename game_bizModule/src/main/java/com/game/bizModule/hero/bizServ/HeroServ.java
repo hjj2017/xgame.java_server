@@ -4,7 +4,6 @@ import com.game.bizModule.guid.bizServ.Guid64Serv;
 import com.game.bizModule.hero.entity.HeroEntity_X;
 import com.game.bizModule.hero.model.Hero;
 import com.game.bizModule.human.Human;
-import com.game.bizModule.human.HumanStateTable;
 import com.game.bizModule.human.entity.HumanEntity;
 import com.game.bizModule.human.event.HumanEvent;
 import com.game.bizModule.human.event.IHumanEventListen;
@@ -14,6 +13,7 @@ import com.game.gameServer.framework.Player;
 import com.game.part.dao.CommDao;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,7 +27,7 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
     /** 单例对象 */
     public static final HeroServ OBJ = new HeroServ();
     /** 管理器字典 */
-    private static final ConcurrentHashMap<Long, HeroManager> _mngrMap = new ConcurrentHashMap<>();
+    private static final Map<Long, HeroManager> _mngrMap = new ConcurrentHashMap<>();
 
     /**
      * 类默认构造器
@@ -54,7 +54,7 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
         // 创建主将
         HeroEntity_X newEntity = new HeroEntity_X();
 
-        newEntity._UIdStr = he._serverName + "-" + Guid64Serv.OBJ.randUIdStr();
+        newEntity._UIdStr = newUIdStr(he);
         newEntity._humanUId = he._humanUId;
         newEntity._tmplId = he._heroTmplId;
         newEntity._hireTime = TimeServ.OBJ.now();
@@ -81,23 +81,15 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
             return;
         }
 
-        // 获取角色状态表
-        HumanStateTable hStatTbl = h.getPropValOrCreate(HumanStateTable.class);
-
-        if (hStatTbl._firstLogin) {
-            // 如果角色是第一次登陆,
-            // 则直接退出!
-            return;
-        }
-
         List<? extends HeroEntity_X> hel = CommDao.OBJ.getResultList(
             HeroEntity_X.getSplitEntityClazz(h._humanUId),
-            "entity.human_uid = " + h._humanUId
+            "entity._humanUId = " + h._humanUId
         );
 
         if (hel == null) {
             // 如果实体列表为空,
             // 则直接退出!
+            // 连主将都没有? 这不可能!!
             return;
         }
 
@@ -116,5 +108,19 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
 
             mngrObj._heroMap.put(heroObj._UIdStr, heroObj);
         });
+    }
+
+    /**
+     * 获取新的 UId
+     *
+     * @param he
+     * @return
+     *
+     */
+    private static String newUIdStr(HumanEntity he) {
+        // 断言参数不为空
+        assert he != null : "null he";
+        // 获取新的 UId 字符串
+        return Guid64Serv.OBJ.newUIdStr(he._serverName, "hero");
     }
 }

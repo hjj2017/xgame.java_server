@@ -5,6 +5,7 @@ import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.msg.type.MsgInt;
 import com.game.part.msg.type.MsgLong;
 import com.game.part.msg.type.MsgStr;
+import com.game.part.util.NullUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +47,7 @@ public class HumanEntryMO extends AbstractMsgObj {
         // 设置相关属性
         mo._humanUId = new MsgLong(hee._humanUId);
         mo._humanUIdStr = new MsgStr(String.valueOf(hee._humanUId));
-        mo._humanLevel = new MsgInt(hee._humanLevel);
+        mo._humanLevel = new MsgInt(NullUtil.optVal(hee._humanLevel, 0));
         mo._humanName = new MsgStr(hee._humanName);
 
         return mo;
