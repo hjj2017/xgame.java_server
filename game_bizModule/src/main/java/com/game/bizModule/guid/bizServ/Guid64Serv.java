@@ -129,4 +129,14 @@ public final class Guid64Serv extends AbstractBizServ {
         // 获取下一 UId
         return gd.next();
     }
+
+    /**
+     * 获取随机 UId 字符串
+     *
+     * @return
+     *
+     */
+    public String randUIdStr() {
+        return "";
+    }
 }

@@ -20,8 +20,8 @@ public class Hero extends AbstractHumanBelonging<HeroEntity_X> {
     public int _tmplId;
     /** 招募时间 */
     public long _hireTime;
-    /** 经验值 */
-    public int _exp;
+    /** 当前经验值 */
+    public int _currExp;
     /** 武将等级 */
     public int _heroLevel;
     /** 武将星级 */
@@ -60,9 +60,9 @@ public class Hero extends AbstractHumanBelonging<HeroEntity_X> {
      */
     public int getExp() {
         if (this.isTotalCommander()) {
-            return this._owner._exp;
+            return this._owner._currExp;
         } else {
-            return this._exp;
+            return this._currExp;
         }
     }
 
@@ -85,7 +85,7 @@ public class Hero extends AbstractHumanBelonging<HeroEntity_X> {
         // 创建实体对象
         HeroEntity_X entity = new HeroEntity_X();
 
-        entity._exp = this.getExp();
+        entity._currExp = this.getExp();
         entity._heroLevel = this.getHeroLevel();
         entity._hpAdd = this._hpAdd;
         entity._humanUId = this._humanUId;
@@ -111,7 +111,7 @@ public class Hero extends AbstractHumanBelonging<HeroEntity_X> {
             return;
         }
 
-        this._exp = entity._exp;
+        this._currExp = entity._currExp;
         this._heroLevel = entity._heroLevel;
         this._hpAdd = entity._hpAdd;
         this._mAttkAdd = entity._mAttkAdd;

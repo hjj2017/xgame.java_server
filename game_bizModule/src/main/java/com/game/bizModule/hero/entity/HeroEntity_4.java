@@ -11,6 +11,6 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "t_hero_2")
+@Table(name = "t_hero_4")
 public class HeroEntity_4 extends HeroEntity_X {
 }

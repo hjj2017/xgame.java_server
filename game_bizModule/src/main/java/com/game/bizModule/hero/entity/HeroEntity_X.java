@@ -34,9 +34,9 @@ public class HeroEntity_X {
     @Column(name = "hire_time", updatable = false)
     public Long _hireTime;
 
-    /** 经验值 */
-    @Column(name = "exp")
-    public Integer _exp;
+    /** 当前经验值 */
+    @Column(name = "curr_exp")
+    public Integer _currExp;
 
     /** 武将等级 */
     @Column(name = "hero_level")
@@ -103,7 +103,7 @@ public class HeroEntity_X {
         splitEntity._humanUId = this._humanUId;
         splitEntity._tmplId = this._tmplId;
         splitEntity._hireTime = this._hireTime;
-        splitEntity._exp = this._exp;
+        splitEntity._currExp = this._currExp;
         splitEntity._heroLevel = this._heroLevel;
         splitEntity._starLevel = this._starLevel;
 

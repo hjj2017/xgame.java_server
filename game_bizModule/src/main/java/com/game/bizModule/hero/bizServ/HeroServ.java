@@ -1,5 +1,6 @@
 package com.game.bizModule.hero.bizServ;
 
+import com.game.bizModule.guid.bizServ.Guid64Serv;
 import com.game.bizModule.hero.entity.HeroEntity_X;
 import com.game.bizModule.hero.model.Hero;
 import com.game.bizModule.human.Human;
@@ -53,12 +54,13 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
         // 创建主将
         HeroEntity_X newEntity = new HeroEntity_X();
 
-        newEntity._UIdStr = "UId";
+        newEntity._UIdStr = he._serverName + "-" + Guid64Serv.OBJ.randUIdStr();
         newEntity._humanUId = he._humanUId;
-        newEntity._exp = 0;
-        newEntity._heroLevel = 0;
-        newEntity._hireTime = TimeServ.OBJ.now();
         newEntity._tmplId = he._heroTmplId;
+        newEntity._hireTime = TimeServ.OBJ.now();
+        newEntity._currExp = 0;
+        newEntity._heroLevel = 0;
+        newEntity._starLevel = 0;
 
         newEntity._mAttkAdd = 0;
         newEntity._pAttkAdd = 0;

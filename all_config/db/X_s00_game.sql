@@ -229,6 +229,236 @@ CREATE TABLE `t_player` (
   KEY `user_name` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/* hero 0 */
+DROP TABLE IF EXISTS `t_hero_0`;
+
+CREATE TABLE `t_hero_0` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 1 */
+DROP TABLE IF EXISTS `t_hero_1`;
+
+CREATE TABLE `t_hero_1` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 2 */
+DROP TABLE IF EXISTS `t_hero_2`;
+
+CREATE TABLE `t_hero_2` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 3 */
+DROP TABLE IF EXISTS `t_hero_3`;
+
+CREATE TABLE `t_hero_3` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 4 */
+DROP TABLE IF EXISTS `t_hero_4`;
+
+CREATE TABLE `t_hero_4` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 5 */
+DROP TABLE IF EXISTS `t_hero_5`;
+
+CREATE TABLE `t_hero_5` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 2 */
+DROP TABLE IF EXISTS `t_hero_6`;
+
+CREATE TABLE `t_hero_6` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 7 */
+DROP TABLE IF EXISTS `t_hero_7`;
+
+CREATE TABLE `t_hero_7` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 8 */
+DROP TABLE IF EXISTS `t_hero_8`;
+
+CREATE TABLE `t_hero_8` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+/* hero 9 */
+DROP TABLE IF EXISTS `t_hero_9`;
+
+CREATE TABLE `t_hero_9` (
+  `uid_str` VARCHAR(64) NOT NULL,
+  `human_uid` BIGINT(20) DEFAULT NULL,
+  `tmpl_id` INT(11) DEFAULT NULL,
+  `hire_time` BIGINT(20) DEFAULT NULL,
+  `curr_exp` TINYINT(4) DEFAULT NULL,
+  `hero_level` INT(11) DEFAULT NULL,
+  `star_level` INT(11) DEFAULT NULL,
+  `p_attk_add` INT(11) DEFAULT NULL,
+  `m_attk_add` INT(11) DEFAULT NULL,
+  `p_defn_add` INT(11) DEFAULT NULL,
+  `m_defn_add` INT(11) DEFAULT NULL,
+  `hp_add` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`uid_str`),
+  KEY `human_uid` (`human_uid`)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

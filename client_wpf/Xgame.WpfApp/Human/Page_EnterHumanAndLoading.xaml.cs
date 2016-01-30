@@ -45,7 +45,7 @@ namespace Xgame.WpfApp.Human
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     // 如果没有任何角色, 
                     // 则跳转到角色创建界面
-                    this.Content = new Page_CreateHuman();
+                    MainWindow.TheWnd.Content = new Page_CreateHuman();
                 }));
                 return;
             }

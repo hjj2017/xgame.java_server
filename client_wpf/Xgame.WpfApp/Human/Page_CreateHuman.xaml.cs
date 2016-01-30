@@ -8,6 +8,7 @@ using Xgame.GameBizModule.CreateHuman.BizServ;
 using Xgame.GameBizModule.CreateHuman.Tmpl;
 using Xgame.GameBizModule.Human.Msg;
 using Xgame.GameClient.Msg;
+using Xgame.GamePart.Msg.Type;
 
 namespace Xgame.WpfApp.Human
 {
@@ -115,6 +116,9 @@ namespace Xgame.WpfApp.Human
         private void _btnOk_Click(object sender, RoutedEventArgs e)
         {
             CGCreateHuman cgMSG = new CGCreateHuman();
+            cgMSG._usingTmplId = new MsgInt(1001);
+            cgMSG._humanName = new MsgStr("1024");
+            cgMSG._serverName = new MsgStr("LM1");
 
             ClientServer.OBJ.AddGCMsgHandler<GCCreateHuman>(this.Handle_GCCreateHuman);
             ClientServer.OBJ.SendCGMsg(cgMSG);

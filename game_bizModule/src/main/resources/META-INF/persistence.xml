@@ -25,6 +25,18 @@
         <!--// 建筑系统 //-->
         <class>com.game.bizModule.building.entity.BuildingEntity</class>
 
+        <!--// 武将系统 //-->
+        <class>com.game.bizModule.hero.entity.HeroEntity_0</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_2</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_3</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_1</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_4</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_5</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_6</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_7</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_8</class>
+        <class>com.game.bizModule.hero.entity.HeroEntity_9</class>
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 

@@ -39,9 +39,9 @@ public class HumanEntity {
     @Column(name = "hero_tmpl_id", updatable = false )
     public Integer _heroTmplId = null;
 
-    /** 经验值 */
-    @Column(name = "exp")
-    public Integer _exp = 0;
+    /** 当前经验值 */
+    @Column(name = "curr_exp")
+    public Integer _currExp = 0;
 
     /** 角色等级 */
     @Column(name = "human_level")
