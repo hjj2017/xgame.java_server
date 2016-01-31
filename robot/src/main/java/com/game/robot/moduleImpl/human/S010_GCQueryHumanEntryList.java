@@ -35,7 +35,7 @@ public class S010_GCQueryHumanEntryList extends AbstractGCMsgHandler<GCQueryHuma
             // 创建角色!
             CGCreateHuman cgMSG = new CGCreateHuman();
             cgMSG._humanName = new MsgStr(robotObj._userName);
-            cgMSG._heroTmplId = new MsgInt(1);
+            cgMSG._heroTmplId = new MsgInt(1001);
             cgMSG._serverName = new MsgStr(robotObj._gameServerName);
             // 发送 CG 消息
             robotObj.sendMsg(cgMSG);
