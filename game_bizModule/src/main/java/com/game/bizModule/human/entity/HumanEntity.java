@@ -16,27 +16,27 @@ import javax.persistence.Table;
 @Table(name = "t_human")
 public class HumanEntity {
     /** 角色 UId */
-    @Id @Column(name = "human_uid")
+    @Id @Column(name = "human_uid", updatable = false)
     public Long _humanUId = null;
 
     /** 平台 UId 字符串 */
-    @Column(name = "platform_uid_str", length = 64, updatable = false)
+    @Column(name = "platform_uid_str", length = 64, nullable = false, updatable = false)
     public String _platformUIdStr = null;
 
     /** 角色全名 */
-    @Column(name = "full_name", length = 48, updatable = false)
+    @Column(name = "full_name", length = 48, nullable = false, updatable = false)
     public String _fullName = null;
 
     /** 玩家角色名称 */
-    @Column(name = "human_name", length = 32, updatable = false)
+    @Column(name = "human_name", length = 32, nullable = false, updatable = false)
     public String _humanName = null;
 
     /** 服务器名称 */
-    @Column(name = "server_name", length = 16, updatable = false)
+    @Column(name = "server_name", length = 16, nullable = false, updatable = false)
     public String _serverName = null;
 
     /** 主将模版 Id */
-    @Column(name = "hero_tmpl_id", updatable = false )
+    @Column(name = "hero_tmpl_id", nullable = false, updatable = false)
     public Integer _heroTmplId = null;
 
     /** 当前经验值 */

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "t_human")
 public class HumanEntryEntity {
     /** 玩家角色 UId */
-    @Id @Column(name = "human_uid")
+    @Id @Column(name = "human_uid", updatable = false)
     public Long _humanUId = 0L;
     /** 平台 UId 字符串 */
     @Column(name = "platform_uid_str", length = 64, updatable = false)
