@@ -6,6 +6,7 @@ using System.Windows.Input;
 
 using LitJson;
 
+using Xgame.GameBizModule;
 using Xgame.GameBizModule.Login.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
@@ -44,6 +45,9 @@ namespace Xgame.WpfApp.Login
 
             string userName = this._txtUserName.Text;
             string userPass = this._txtUserPass.Password;
+
+            Player.OBJ._userName = userName;
+            Player.OBJ._selectedServerName = "LM1";
 
             JsonData jsonData = new JsonData();
             jsonData["protocol"] = "dbUser";

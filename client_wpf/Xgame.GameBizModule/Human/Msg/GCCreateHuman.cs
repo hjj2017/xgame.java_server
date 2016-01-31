@@ -21,7 +21,7 @@ namespace Xgame.GameBizModule.Human.Msg
         {
             get
             {
-                return AllMsgSerialUId.CG_CREATE_HUMAN;
+                return AllMsgSerialUId.GC_CREATE_HUMAN;
             }
         }
     }

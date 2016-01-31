@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
+using Xgame.GameBizModule;
 using Xgame.GameBizModule.CreateHuman.BizServ;
 using Xgame.GameBizModule.CreateHuman.Tmpl;
 using Xgame.GameBizModule.Human.Msg;
@@ -35,6 +36,9 @@ namespace Xgame.WpfApp.Human
             this._tmplList = new List<CreateHumanTmpl>(CreateHumanServ.OBJ.GetCreateHumanTmplList());
             // 创建图片数组
             this._bitmapArr = new BitmapImage[this._tmplList.Count];
+
+            // 设置默认的角色名
+            this._txtName.Text = Player.OBJ._userName;
         }
 
         /// <summary>
@@ -115,10 +119,12 @@ namespace Xgame.WpfApp.Human
         /// <param name="e"></param>
         private void _btnOk_Click(object sender, RoutedEventArgs e)
         {
+            string humanName = this._txtName.Text;
+
             CGCreateHuman cgMSG = new CGCreateHuman();
-            cgMSG._usingTmplId = new MsgInt(1001);
-            cgMSG._humanName = new MsgStr("1024");
-            cgMSG._serverName = new MsgStr("LM1");
+            cgMSG._heroTmplId = new MsgInt(1001);
+            cgMSG._humanName = new MsgStr(humanName);
+            cgMSG._serverName = new MsgStr(Player.OBJ._selectedServerName);
 
             ClientServer.OBJ.AddGCMsgHandler<GCCreateHuman>(this.Handle_GCCreateHuman);
             ClientServer.OBJ.SendCGMsg(cgMSG);
@@ -130,17 +136,9 @@ namespace Xgame.WpfApp.Human
         /// <param name="gcMSG"></param>
         private void Handle_GCCreateHuman(GCCreateHuman gcMSG)
         {
-            // 如果没有任何角色, 
-            // 则跳转到角色创建界面
-            this.Dispatcher.BeginInvoke(new Action(this.GotoEnterHumanAndLoading));
-        }
-
-        /// <summary>
-        /// 跳转到进入角色并加载数据
-        /// </summary>
-        private void GotoEnterHumanAndLoading()
-        {
-            this.Content = new Page_EnterHumanAndLoading();
+            // 创建角色成功之后, 
+            // 尝试进入角色
+            this.Dispatcher.BeginInvoke(new Action(() => { MainWindow.TheWnd.Content = new Page_EnterHumanAndLoading(); }));
         }
     }
 }

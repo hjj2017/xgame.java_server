@@ -26,11 +26,11 @@ interface IServ_CreateHuman {
      * @param p
      * @param serverName
      * @param humanName
-     * @param usingTmplId
+     * @param heroTmplId
      * @param hasDuplicateName 是否有重复的角色名?
      *
      */
-    default void asyncCreateHuman(Player p, String serverName, String humanName, int usingTmplId, OutBool hasDuplicateName) {
+    default void asyncCreateHuman(Player p, String serverName, String humanName, int heroTmplId, OutBool hasDuplicateName) {
         if (p == null ||
             serverName == null ||
             serverName.isEmpty() ||
@@ -138,6 +138,7 @@ interface IServ_CreateHuman {
         op._humanUId = newUId;
         op._serverName = serverName;
         op._humanName = humanName;
+        op._heroTmplId = heroTmplId;
         // 执行异步操作
         HumanServ.OBJ.execute(op);
     }

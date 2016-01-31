@@ -40,18 +40,18 @@ public class HumanEntity {
     public Integer _heroTmplId = null;
 
     /** 当前经验值 */
-    @Column(name = "curr_exp")
+    @Column(name = "curr_exp", nullable = false)
     public Integer _currExp = 0;
 
     /** 角色等级 */
-    @Column(name = "human_level")
-    public Integer _humanLevel;
+    @Column(name = "human_level", nullable = false)
+    public Integer _humanLevel = 0;
 
     /** 金币数量 */
-    @Column(name = "gold")
+    @Column(name = "gold", nullable = false)
     public Integer _gold = 0;
 
     /** 新手奖励已结算? */
-    @Column(name = "newer_reward_checkout")
+    @Column(name = "newer_reward_checkout", nullable = false)
     public Integer _newerRewardCheckOut = 0;
 }

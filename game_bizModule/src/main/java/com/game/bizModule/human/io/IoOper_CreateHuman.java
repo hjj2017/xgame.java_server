@@ -28,6 +28,8 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
     public String _serverName;
     /** 角色名称 */
     public String _humanName;
+    /** 武将模板 Id */
+    public int _heroTmplId;
 
     @Override
     public long getBindUId() {
@@ -67,6 +69,7 @@ public class IoOper_CreateHuman extends AbstractLoginIoOper {
         newEntity._fullName = fullName;
         newEntity._serverName = this._serverName;
         newEntity._humanName = this._humanName;
+        newEntity._heroTmplId = this._heroTmplId;
 
         // 保存数据
         CommDao.OBJ.save(newEntity);

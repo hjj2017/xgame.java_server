@@ -8,6 +8,9 @@
       d:DesignHeight="600" d:DesignWidth="1000"
       Background="Black"
       Title="Page_CreateHuman">
+    <Page.Resources>
+        <ResourceDictionary Source="../MyStyle.xaml" />
+    </Page.Resources>
     <Grid Margin="8,1,8,0">
         <Image x:Name="_imgBG" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="1000" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_CreateHuman.png"/>
         <Image x:Name="_imgDesc" HorizontalAlignment="Right" Height="600" VerticalAlignment="Top" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_Desc_1.png"/>
@@ -27,6 +30,7 @@
         </Button>
         <Image x:Name="_imgHero" HorizontalAlignment="Left" Height="440" VerticalAlignment="Top" Width="180" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/Hero_10.png" Margin="350,100,0,0"/>
         <Image x:Name="_imgBGName" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="210" Source="/Xgame.WpfApp;component/Res/Img/CreateHuman/BG_Name.png" Margin="320,460,0,0"/>
+        <TextBox x:Name="_txtName" HorizontalAlignment="Left" Height="36" Margin="328,460,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Style="{StaticResource ResourceKey=MyTextBox}"/>
         <Button x:Name="_btnOk" Content="Button" HorizontalAlignment="Left" Margin="534,457,0,0" VerticalAlignment="Top" Width="75" Click="_btnOk_Click">
             <Button.Template>
                 <ControlTemplate>

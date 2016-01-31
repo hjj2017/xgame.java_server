@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
+using Xgame.GameBizModule;
 using Xgame.GameBizModule.Human.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg.Type;
@@ -27,7 +28,7 @@ namespace Xgame.WpfApp.Human
             // 
             // 创建 CG 消息
             CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
-            cgMSG._serverName = new MsgStr("LM1");
+            cgMSG._serverName = new MsgStr(Player.OBJ._selectedServerName);
             // 发送 CG 消息
             ClientServer.OBJ.AddGCMsgHandler<GCQueryHumanEntryList>(this.Handle_GCQueryHumanEntryList);
             ClientServer.OBJ.SendCGMsg(cgMSG);

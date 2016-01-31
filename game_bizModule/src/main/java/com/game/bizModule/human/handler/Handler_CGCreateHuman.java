@@ -26,7 +26,7 @@ public class Handler_CGCreateHuman extends AbstractCGMsgHandler<CGCreateHuman> {
             this.getPlayer(),
             msgObj._serverName.getStrVal(),
             msgObj._humanName.getStrVal(),
-            msgObj._usingTmplId.getIntVal(),
+            msgObj._heroTmplId.getIntVal(),
             hasDuplicateName
         );
 

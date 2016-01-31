@@ -49,6 +49,7 @@
     <Compile Include="CreateHuman\BizServ\CreateHumanServ.cs" />
     <Compile Include="CreateHuman\Tmpl\CreateHumanTmpl.cs" />
     <Compile Include="Global\AllMsgSerialUId.cs" />
+    <Compile Include="Human\Model\Human.cs" />
     <Compile Include="Human\Msg\CGCreateHuman.cs" />
     <Compile Include="Human\Msg\CGEnterHuman.cs" />
     <Compile Include="Human\Msg\CGQueryHumanEntryList.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Login\LoginLog.cs" />
     <Compile Include="Login\Msg\CGLogin.cs" />
     <Compile Include="Login\Msg\GCLogin.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

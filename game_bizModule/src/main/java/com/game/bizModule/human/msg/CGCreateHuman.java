@@ -20,8 +20,8 @@ public class CGCreateHuman extends AbstractCGMsgObj {
     public MsgStr _serverName;
     /** 角色名称 */
     public MsgStr _humanName;
-    /** 所使用的模版 Id */
-    public MsgInt _usingTmplId;
+    /** 武将模版 Id */
+    public MsgInt _heroTmplId;
 
     @Override
     public short getSerialUId() {
