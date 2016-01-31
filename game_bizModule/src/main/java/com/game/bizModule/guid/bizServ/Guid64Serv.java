@@ -1,15 +1,13 @@
 package com.game.bizModule.guid.bizServ;
 
-import com.game.bizModule.time.TimeServ;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.framework.GameServerConf;
 import com.game.part.util.Assert;
-
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Guid 服务
@@ -46,8 +44,6 @@ public final class Guid64Serv extends AbstractBizServ {
 
     /** 数据字典 */
     private final Map<Guid64TypeEnum, Guid64Data> _guidDataMap = new ConcurrentHashMap<>();
-    /** 计数器 */
-    private final AtomicInteger _counter = new AtomicInteger(0);
 
     /**
      * 类默认构造器
@@ -138,41 +134,21 @@ public final class Guid64Serv extends AbstractBizServ {
     /**
      * 获取新的 UId 字符串
      *
-     * @param serverNamePrefix
+     * @param serverNamePrefix 服务器名称前缀
      * @return
      *
      */
     public String newUIdStr(String serverNamePrefix) {
-        return newUIdStr(serverNamePrefix, null);
-    }
-
-    /**
-     * 获取随机 UId 字符串, 格式 = 服务器名称前缀/模块名称/年月日-时分秒/计数器
-     *
-     * @param serverNamePrefix 服务器名称前缀
-     * @param moduleName 模块名称
-     * @return
-     *
-     */
-    public String newUIdStr(String serverNamePrefix, String moduleName) {
+        // 创建 SB
         StringBuilder sb = new StringBuilder();
+        // 添加 UUId
+        sb.append(UUID.randomUUID());
 
-        if (serverNamePrefix != null &&
-            serverNamePrefix.isEmpty() == false) {
+        if (serverNamePrefix != null
+            && !serverNamePrefix.isEmpty()) {
             // 添加服务器名称前缀
-            sb.append(serverNamePrefix).append("/");
+            sb.append("@").append(serverNamePrefix);
         }
-
-        if (moduleName != null &&
-            moduleName.isEmpty() == false) {
-            // 添加模块名称
-            sb.append(moduleName).append("/");
-        }
-
-        // 添加时间字符串, 格式 = 20160101100059
-        sb.append((new SimpleDateFormat("yyyyMMdd-HHmmss")).format(TimeServ.OBJ.now())).append("/");
-        // 添加计数器数值
-        sb.append(_counter.incrementAndGet());
 
         return sb.toString();
     }

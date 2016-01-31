@@ -121,6 +121,6 @@ public class HeroServ extends AbstractBizServ implements IHumanEventListen {
         // 断言参数不为空
         assert he != null : "null he";
         // 获取新的 UId 字符串
-        return Guid64Serv.OBJ.newUIdStr(he._serverName, "hero");
+        return Guid64Serv.OBJ.newUIdStr(he._serverName);
     }
 }
