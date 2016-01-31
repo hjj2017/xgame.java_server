@@ -121,7 +121,7 @@ namespace Xgame.GamePart.Msg.Type
 #if DEBUG
             string srcFilePath = null;
             // C# 源代码文件
-            srcFilePath = @"D:\{0}.cs";
+            srcFilePath = @"D:\Temp_Test\{0}.cs";
             srcFilePath = string.Format(srcFilePath, helperTypeDef.Name);
 
             // 源文件输出流
