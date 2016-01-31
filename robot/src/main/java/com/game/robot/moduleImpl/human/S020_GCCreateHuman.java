@@ -2,8 +2,6 @@ package com.game.robot.moduleImpl.human;
 
 import java.text.MessageFormat;
 
-import sun.plugin2.message.Message;
-
 import com.game.bizModule.human.msg.CGQueryHumanEntryList;
 import com.game.bizModule.human.msg.GCCreateHuman;
 import com.game.part.msg.type.MsgStr;

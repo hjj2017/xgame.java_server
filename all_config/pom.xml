@@ -33,6 +33,7 @@
         <module>../game_bizModule</module>
         <module>../log_server</module>
         <module>../passbook_server</module>
+        <module>../robot</module>
     </modules>
 
     <build>
