@@ -46,10 +46,10 @@ namespace Xgame.GamePart.Tmpl.Type
         /// <summary>
         /// 读取 Xlsx 行数据
         /// </summary>
-        /// <param name="stream"></param>
-        public void ReadXlsxRow(XlsxRowReadStream stream)
+        /// <param name="fromStream"></param>
+        public void ReadFrom(XlsxRowReadStream fromStream)
         {
-            if (stream == null)
+            if (fromStream == null)
             {
                 // 如果参数对象为空, 
                 // 则直接退出!
@@ -57,13 +57,13 @@ namespace Xgame.GamePart.Tmpl.Type
             }
 
             // 设置 Xlsx 文件名、页签名和索引位置
-            this.XlsxFileName = stream.XlsxFileName;
-            this.SheetName = stream.SheetName;
-            this.RowIndex = stream.RowIndex;
-            this.ColIndex = stream.CurrCellIndex;
+            this.XlsxFileName = fromStream.XlsxFileName;
+            this.SheetName = fromStream.SheetName;
+            this.RowIndex = fromStream.RowIndex;
+            this.ColIndex = fromStream.CurrCellIndex;
 
             // 读取数据
-            this.ReadImpl(stream);
+            this.ReadImpl(fromStream);
         }
 
         /// <summary>
@@ -71,5 +71,28 @@ namespace Xgame.GamePart.Tmpl.Type
         /// </summary>
         /// <param name="stream"></param>
         protected abstract void ReadImpl(XlsxRowReadStream stream);
+
+        /// <summary>
+        /// 从二进制流中读取消息对象, 并返回
+        /// </summary>
+        /// <typeparam name="TXlsxCol"></typeparam>
+        /// <param name="toXlsxColObj"></param>
+        /// <param name="fromStream"></param>
+        /// <returns></returns>
+        public static TXlsxCol ReadXlsxColFrom<TXlsxCol>(TXlsxCol toXlsxColObj, XlsxRowReadStream fromStream) 
+        where TXlsxCol : BaseXlsxCol, new()
+        {
+            if (toXlsxColObj == null)
+            {
+                // 如果消息对象为空, 
+                // 则直接新建!
+                toXlsxColObj = new TXlsxCol();
+            }
+
+            // 从二进制流中读取数据
+            toXlsxColObj.ReadFrom(fromStream);
+            // 返回消息对象
+            return toXlsxColObj;
+        }
     }
 }

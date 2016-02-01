@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
 using Xgame.GamePart.Tmpl.Type;
 using Xgame.GamePart.Util;
 
 namespace Xgame.GamePart.Tmpl
 {
-    partial class XlsxTmplServ_LoadTmplData
+    partial class XlsxTmplServ
     {
+        /** 模板数据列表字典 */
+        private IDictionary<System.Type, IList> _tmplObjListMap = new Dictionary<System.Type, IList>();
+
         /// <summary>
         /// 加载模板数据
         /// </summary>
@@ -22,21 +25,23 @@ namespace Xgame.GamePart.Tmpl
                 return;
             }
 
-            DataSet ds = XlsxUtil.GetDS(@"D:\Temp_Test\building.xlsx");
+            // 获取文件名
+            string xlsxAbsFileName = @"D:\Temp_Test\building.xlsx";
+            // 获取数据集
+            DataSet ds = XlsxUtil.GetDS(xlsxAbsFileName);
 
-
+            MakeObjList(byType, ds, 0, xlsxAbsFileName);
         }
 
         /// <summary>
         /// 构建对象列表
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="byType"></param>
         /// <param name="fromDS"></param>
         /// <param name="startFromRowIndex"></param>
         /// <param name="xlsxFileName"></param>
         /// <returns></returns>
-        private static IList<T> MakeObjList<T>(System.Type byType, DataSet fromDS, int startFromRowIndex, string xlsxFileName) where T : BaseXlsxCol
+        private static IList MakeObjList(System.Type byType, DataSet fromDS, int startFromRowIndex, string xlsxFileName)
         {
             if (byType == null 
              || fromDS == null 
@@ -52,7 +57,7 @@ namespace Xgame.GamePart.Tmpl
             // 获取数据行个数
             int rowCount = tableObj.Rows.Count;
             // 创建列表对象
-            IList<T> objList = new List<T>(rowCount);
+            IList objList = new ArrayList(rowCount);
 
             for (int i = startFromRowIndex; i <= rowCount; i++)
             {
@@ -66,11 +71,12 @@ namespace Xgame.GamePart.Tmpl
                 }
 
                 // 创建模板对象
-                T newObj = Activator.CreateInstance(byType) as T;
-                // 读取行数据
-                newObj.ReadXlsxRow(new XlsxRowReadStream(rowObj, xlsxFileName));
+                BaseXlsxCol newColObj = Activator.CreateInstance(byType) as BaseXlsxCol;
+                // 创建读入流, 并读取数据
+                XlsxRowReadStream fromStream = new XlsxRowReadStream(rowObj, xlsxFileName);
+                newColObj.ReadFrom(fromStream);
                 // 添加对象到列表
-                objList.Add(newObj);
+                objList.Add(newColObj);
             }
 
             return objList;

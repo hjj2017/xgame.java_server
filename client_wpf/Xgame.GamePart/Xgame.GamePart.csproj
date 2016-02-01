@@ -66,9 +66,10 @@
     <Compile Include="Tmpl\Type\BaseXlsxTmpl.cs" />
     <Compile Include="Tmpl\Type\IReadHelper.cs" />
     <Compile Include="Tmpl\Type\PrimitiveTypeCol.cs" />
-    <Compile Include="Tmpl\Type\ReadHelpMaker.cs" />
+    <Compile Include="Tmpl\Type\ReadHelperMaker.cs" />
     <Compile Include="Tmpl\Type\XlsxInt.cs" />
     <Compile Include="Tmpl\Type\XlsxStr.cs" />
+    <Compile Include="Tmpl\XlsxError.cs" />
     <Compile Include="Tmpl\XlsxRowReadStream.cs" />
     <Compile Include="Tmpl\XlsxTmplServ.cs" />
     <Compile Include="Tmpl\XlsxTmplServ_LoadTmplData.cs" />

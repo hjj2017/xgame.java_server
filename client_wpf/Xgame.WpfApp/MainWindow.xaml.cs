@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Windows;
 
+using Xgame.GameBizModule.Hero.Tmpl;
 using Xgame.GameBizModule.Login.Msg;
 using Xgame.GameClient.Msg;
 using Xgame.GamePart.Msg;
+using Xgame.GamePart.Tmpl;
+using Xgame.GamePart.Tmpl.Type;
 using Xgame.WpfApp.Login;
 
 namespace Xgame.WpfApp
@@ -33,8 +36,10 @@ namespace Xgame.WpfApp
                 }
             };
 
-            // 注册消息类
+            // 注册消息类和模板类
             this.RegAllMsgType();
+            this.RegAllXlsxTmplType();
+
             // 设置主窗口引用
             _theWnd = this;
 
@@ -72,6 +77,25 @@ namespace Xgame.WpfApp
                     MsgServ.OBJ.RegMsgType(
                         cgMSG.MsgSerialUId, cgMSG.GetType()
                     );
+                }
+            }
+        }
+
+        /// <summary>
+        /// 注册所有 Xlsx 模板类
+        /// </summary>
+        private void RegAllXlsxTmplType()
+        {
+            // 获取该程序集下的所有类定义
+            System.Type[] typeArr = typeof(HeroTmpl).Assembly.GetTypes();
+
+            foreach (System.Type type in typeArr)
+            {
+                if (type.IsSubclassOf(typeof(BaseXlsxTmpl)))
+                {
+                    // 如果是 Xlsx 模板类, 
+                    // 则注册模板...
+                    XlsxTmplServ.OBJ.LoadTmplData(type);
                 }
             }
         }
