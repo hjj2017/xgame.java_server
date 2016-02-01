@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Msg\MsgError.cs" />
@@ -61,7 +62,18 @@
     <Compile Include="Msg\Type\ReadHelperMaker.cs" />
     <Compile Include="Msg\Type\WriteHelperMaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tmpl\Type\BaseXlsxCol.cs" />
+    <Compile Include="Tmpl\Type\BaseXlsxTmpl.cs" />
+    <Compile Include="Tmpl\Type\IReadHelper.cs" />
+    <Compile Include="Tmpl\Type\PrimitiveTypeCol.cs" />
+    <Compile Include="Tmpl\Type\ReadHelpMaker.cs" />
+    <Compile Include="Tmpl\Type\XlsxInt.cs" />
+    <Compile Include="Tmpl\Type\XlsxStr.cs" />
+    <Compile Include="Tmpl\XlsxRowReadStream.cs" />
+    <Compile Include="Tmpl\XlsxTmplServ.cs" />
+    <Compile Include="Tmpl\XlsxTmplServ_LoadTmplData.cs" />
     <Compile Include="Util\Assert.cs" />
+    <Compile Include="Util\XlsxUtil.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
