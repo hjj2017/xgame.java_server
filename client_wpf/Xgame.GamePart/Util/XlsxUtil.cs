@@ -32,9 +32,13 @@ namespace Xgame.GamePart.Util
             try
             {
                 // 连接字符串
-                string connStr = string.Format(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties='Excel 8.0;HDR=False;IMEX=1'", xlsxAbsFileName);
+                string connStr = string.Format(@"Provider=Microsoft.Ace.OleDb.12.0;Data Source={0};Extended Properties='Excel 12.0;HDR=False;IMEX=1'", xlsxAbsFileName);
                 // SQL 语句
-                string sql = string.Format(@"select * from [Sheet{0}$]", sheetIndex);
+                string sql = string.Format(@"select * from [sheet{0}$]", sheetIndex + 1);
+                //
+                // 注意 : 这里使用的是 Microsoft.Ace.OleDb.12.0 数据连接器, 
+                // 可以到这里下载 : 
+                // http://download.microsoft.com/download/7/0/3/703ffbcb-dc0c-4e19-b0da-1463960fdcdb/AccessDatabaseEngine.exe
 
                 using (OleDbConnection connObj = new OleDbConnection(connStr))
                 {

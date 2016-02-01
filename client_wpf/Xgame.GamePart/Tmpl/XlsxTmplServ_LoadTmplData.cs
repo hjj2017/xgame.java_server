@@ -59,7 +59,7 @@ namespace Xgame.GamePart.Tmpl
             // 创建列表对象
             IList objList = new ArrayList(rowCount);
 
-            for (int i = startFromRowIndex; i <= rowCount; i++)
+            for (int i = startFromRowIndex; i < rowCount; i++)
             {
                 // 获取行数据
                 DataRow rowObj = tableObj.Rows[i];

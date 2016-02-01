@@ -37,7 +37,7 @@ namespace Xgame.WpfApp
             };
 
             // 注册消息类和模板类
-            this.RegAllMsgType();
+            // this.RegAllMsgType();
             this.RegAllXlsxTmplType();
 
             // 设置主窗口引用

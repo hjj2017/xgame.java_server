@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
  *
  * @see com.game.part.tmpl.XlsxTmplServ
  * @see com.game.part.tmpl.XlsxTmplServ#_xlsxFileDir
- * @see com.game.part.tmpl.XlsxTmplServ#_propMap
+ * @see com.game.part.tmpl.XlsxTmplServ#_lang
  * @see #fileName()
  *
  * @author hjj2017
