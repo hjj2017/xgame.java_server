@@ -5,7 +5,7 @@ namespace Xgame.GamePart.Tmpl
     /// <summary>
     /// Xlsx 模板服务
     /// </summary>
-    public sealed class XlsxTmplServ
+    public sealed partial class XlsxTmplServ
     {
         /** 单例对象 */
         public static readonly XlsxTmplServ OBJ = new XlsxTmplServ();
