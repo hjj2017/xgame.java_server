@@ -13,7 +13,7 @@ namespace Xgame.GamePart.Tmpl.Attr
         /// 类参数构造器
         /// </summary>
         /// <param name="groupName"></param>
-        public OneToOneAttribute(string groupName)
+        public OneToManyAttribute(string groupName)
         {
             this.GroupName = groupName;
         }

@@ -62,6 +62,11 @@
     <Compile Include="Msg\Type\ReadHelperMaker.cs" />
     <Compile Include="Msg\Type\WriteHelperMaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tmpl\Attr\ElementNumAttribute.cs" />
+    <Compile Include="Tmpl\Attr\FromXlsxFileAttribute.cs" />
+    <Compile Include="Tmpl\Attr\OneToManyAttribute.cs" />
+    <Compile Include="Tmpl\Attr\OneToOneAttribute.cs" />
+    <Compile Include="Tmpl\Attr\ValidatorAttribute.cs" />
     <Compile Include="Tmpl\Type\BaseXlsxCol.cs" />
     <Compile Include="Tmpl\Type\BaseXlsxTmpl.cs" />
     <Compile Include="Tmpl\Type\IReadHelper.cs" />
