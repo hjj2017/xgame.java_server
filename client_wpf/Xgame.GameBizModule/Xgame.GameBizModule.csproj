@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building\Tmpl\BuildingTmpl.cs" />
     <Compile Include="Chat\Msg\CGWorldChat.cs" />
     <Compile Include="Chat\Msg\GCCommChat.cs" />
     <Compile Include="CreateHuman\BizServ\CreateHumanServ.cs" />

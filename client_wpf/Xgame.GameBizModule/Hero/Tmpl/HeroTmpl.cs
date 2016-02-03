@@ -8,8 +8,7 @@ namespace Xgame.GameBizModule.Hero.Tmpl
     /// <summary>
     /// 武将模版
     /// </summary>
-    [FromXlsxFile("hero.xlsx", SheetIndex = 0)]
-    public class HeroTmpl : BaseXlsxTmpl
+    public class HeroTmpl
     {
         /** Id */
         public XlsxInt _Id;

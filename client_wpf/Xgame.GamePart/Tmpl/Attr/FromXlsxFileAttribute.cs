@@ -13,11 +13,12 @@ namespace Xgame.GamePart.Tmpl.Attr
         /// 类参数构造器
         /// </summary>
         /// <param name="fileName"></param>
-        /// <param name="sheetIndex"></param>
+        /// <param name="sheetName"></param>
         /// <param name="startFromRowIndex"></param>
-        public FromXlsxFileAttribute(string fileName, int sheetIndex = 0, int startFromRowIndex = 1)
+        public FromXlsxFileAttribute(string fileName, string sheetName, int startFromRowIndex = 1)
         {
             this.FileName = fileName;
+            this.SheetName = sheetName;
         }
         #endregion
 
@@ -31,9 +32,9 @@ namespace Xgame.GamePart.Tmpl.Attr
         }
 
         /// <summary>
-        /// 获取或设置页签索引
+        /// 获取或设置页签名称
         /// </summary>
-        public int SheetIndex
+        public string SheetName
         {
             get;
             set;

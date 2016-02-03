@@ -9,6 +9,8 @@ using Xgame.GamePart.Tmpl;
 using Xgame.GamePart.Tmpl.Type;
 using Xgame.WpfApp.Login;
 
+using Conf = System.Configuration.ConfigurationManager;
+
 namespace Xgame.WpfApp
 {
     /// <summary>
@@ -36,8 +38,11 @@ namespace Xgame.WpfApp
                 }
             };
 
+            // 加载配置项
+            this.LoadConfig();
+
             // 注册消息类和模板类
-            // this.RegAllMsgType();
+            this.RegAllMsgType();
             this.RegAllXlsxTmplType();
 
             // 设置主窗口引用
@@ -56,6 +61,16 @@ namespace Xgame.WpfApp
             {
                 return _theWnd;
             }
+        }
+
+        /// <summary>
+        /// 加载配置项
+        /// </summary>
+        private void LoadConfig()
+        {
+            XlsxTmplServ.OBJ.XlsxFileDir = Conf.AppSettings["XlsxTmplServ.XlsxFileDir"];
+            XlsxTmplServ.OBJ.DebugClazzToDir = Conf.AppSettings["XlsxTmplServ.DebugClazzToDir"];
+            XlsxTmplServ.OBJ.Lang = Conf.AppSettings["XlsxTmplServ.Lang"];
         }
 
         /// <summary>

@@ -129,18 +129,23 @@ namespace Xgame.GamePart.Tmpl.Type
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
 
 #if DEBUG
-            string srcFilePath = null;
-            // C# 源代码文件
-            srcFilePath = @"D:\Temp_Test\{0}.cs";
-            srcFilePath = string.Format(srcFilePath, helperTypeDef.Name);
+            if (string.IsNullOrEmpty(XlsxTmplServ.OBJ.DebugClazzToDir) == false)
+            {
+                // C# 源文件绝对目录
+                string srcFilePath = string.Format(
+                    @"{0}\{1}.cs",
+                    XlsxTmplServ.OBJ.DebugClazzToDir, 
+                    byTmplType.Name
+                );
 
-            // 源文件输出流
-            StreamWriter sw = new StreamWriter(srcFilePath, false);
-            // 写出源文件
-            provider.GenerateCodeFromCompileUnit(CC, sw, new CodeGeneratorOptions());
+                // 源文件输出流
+                StreamWriter sw = new StreamWriter(srcFilePath, false);
+                // 写出源文件
+                provider.GenerateCodeFromCompileUnit(CC, sw, new CodeGeneratorOptions());
 
-            sw.Flush();
-            sw.Close();
+                sw.Flush();
+                sw.Close();
+            }
 #endif
 
             // 创建编译参数

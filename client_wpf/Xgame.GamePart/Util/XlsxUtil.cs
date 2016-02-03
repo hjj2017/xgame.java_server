@@ -22,9 +22,9 @@ namespace Xgame.GamePart.Util
         /// 获取工作表单
         /// </summary>
         /// <param name="xlsxAbsFileName"></param>
-        /// <param name="sheetIndex"></param>
+        /// <param name="sheetName"></param>
         /// <returns></returns>
-        public static DataSet GetDS(string xlsxAbsFileName, int sheetIndex = 0)
+        public static DataSet GetDS(string xlsxAbsFileName, string sheetName)
         {
             // 结果数据集
             DataSet resultDS = new DataSet();
@@ -34,7 +34,7 @@ namespace Xgame.GamePart.Util
                 // 连接字符串
                 string connStr = string.Format(@"Provider=Microsoft.Ace.OleDb.12.0;Data Source={0};Extended Properties='Excel 12.0;HDR=False;IMEX=1'", xlsxAbsFileName);
                 // SQL 语句
-                string sql = string.Format(@"select * from [sheet{0}$]", sheetIndex + 1);
+                string sql = string.Format(@"select * from [{0}$]", sheetName);
                 //
                 // 注意 : 这里使用的是 Microsoft.Ace.OleDb.12.0 数据连接器, 
                 // 可以到这里下载 : 

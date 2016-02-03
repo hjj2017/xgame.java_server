@@ -28,7 +28,7 @@ namespace Xgame.GamePart.Util
             Assert.NotNull(byClazz, "byClazz");
 
             // 获取属性标签数组
-            object[] objArr = byClazz.GetCustomAttributes(byClazz, true);
+            object[] objArr = byClazz.GetCustomAttributes(typeof(TAttr), true);
 
             if (objArr == null 
              || objArr.Length <= 0)

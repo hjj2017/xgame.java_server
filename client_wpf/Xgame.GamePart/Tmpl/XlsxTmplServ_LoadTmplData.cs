@@ -43,11 +43,18 @@ namespace Xgame.GamePart.Tmpl
 
             // 获取文件名、页签索引及起始行索引
             string xlsxFileName = attrObj.FileName;
-            int sheetIndex = attrObj.SheetIndex;
+            string sheetName = attrObj.SheetName;
             int startFromRowIndex = attrObj.StartFromRowIndex;
 
+            // 文件绝对路径
+            string xlsAbsFileName = string.Format(
+                @"{0}\{1}", 
+                this.XlsxFileDir, 
+                xlsxFileName
+            );
+
             // 获取数据集
-            DataSet ds = XlsxUtil.GetDS(xlsxFileName, sheetIndex);
+            DataSet ds = XlsxUtil.GetDS(xlsAbsFileName, sheetName);
 
             if (ds == null 
              || ds.Tables.Count <= 0)
@@ -58,7 +65,7 @@ namespace Xgame.GamePart.Tmpl
             }
 
             // 构建模板对象列表
-            IList objList = MakeObjList(byTmplType, ds, sheetIndex, xlsxFileName);
+            IList objList = MakeObjList(byTmplType, ds, startFromRowIndex, xlsxFileName);
 
             if (objList != null 
              && objList.Count > 0)
