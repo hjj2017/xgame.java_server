@@ -71,7 +71,13 @@
     <Compile Include="Tmpl\Type\IReadHelper.cs" />
     <Compile Include="Tmpl\Type\PrimitiveTypeCol.cs" />
     <Compile Include="Tmpl\Type\ReadHelperMaker.cs" />
+    <Compile Include="Tmpl\Type\XlsxArrayList.cs" />
+    <Compile Include="Tmpl\Type\XlsxBool.cs" />
+    <Compile Include="Tmpl\Type\XlsxFloat.cs" />
     <Compile Include="Tmpl\Type\XlsxInt.cs" />
+    <Compile Include="Tmpl\Type\XlsxLong.cs" />
+    <Compile Include="Tmpl\Type\XlsxShort.cs" />
+    <Compile Include="Tmpl\Type\XlsxSkip.cs" />
     <Compile Include="Tmpl\Type\XlsxStr.cs" />
     <Compile Include="Tmpl\XlsxError.cs" />
     <Compile Include="Tmpl\XlsxRowReadStream.cs" />

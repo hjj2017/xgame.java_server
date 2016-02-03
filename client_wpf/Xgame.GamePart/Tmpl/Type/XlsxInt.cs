@@ -5,7 +5,7 @@ namespace Xgame.GamePart.Tmpl.Type
     /// <summary>
     /// Xlsx 整数型
     /// </summary>
-    public sealed class XlsxInt : PrimitiveTypeCol<int>
+    public class XlsxInt : PrimitiveTypeCol<int>
     {
         #region 类构造器
         /// <summary>

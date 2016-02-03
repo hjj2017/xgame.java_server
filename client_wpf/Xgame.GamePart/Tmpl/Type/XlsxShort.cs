@@ -3,15 +3,15 @@
 namespace Xgame.GamePart.Tmpl.Type
 {
     /// <summary>
-    /// Xlsx 字符串型
+    /// Xlsx 短整数型
     /// </summary>
-    public class XlsxStr : PrimitiveTypeCol<string>
+    public class XlsxShort : PrimitiveTypeCol<short>
     {
         #region 类构造器
         /// <summary>
         /// 类默认构造器
         /// </summary>
-        public XlsxStr()
+        public XlsxShort()
         {
         }
 
@@ -19,7 +19,7 @@ namespace Xgame.GamePart.Tmpl.Type
         /// 类参数构造器
         /// </summary>
         /// <param name="val"></param>
-        public XlsxStr(string val)
+        public XlsxShort(short val)
         {
             this.Val = val;
         }
@@ -28,7 +28,7 @@ namespace Xgame.GamePart.Tmpl.Type
         // @Override
         protected override void ReadImpl(XlsxRowReadStream stream)
         {
-            this.Val = stream.ReadStr();
+            this.Val = stream.ReadShort();
         }
     }
 }
