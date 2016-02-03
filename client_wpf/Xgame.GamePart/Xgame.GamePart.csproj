@@ -79,6 +79,7 @@
     <Compile Include="Tmpl\XlsxTmplServ.cs" />
     <Compile Include="Tmpl\XlsxTmplServ_LoadTmplData.cs" />
     <Compile Include="Util\Assert.cs" />
+    <Compile Include="Util\ClazzUtil.cs" />
     <Compile Include="Util\XlsxUtil.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
