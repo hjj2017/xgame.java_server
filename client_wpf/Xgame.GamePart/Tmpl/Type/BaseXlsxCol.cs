@@ -73,7 +73,7 @@ namespace Xgame.GamePart.Tmpl.Type
         protected abstract void ReadImpl(XlsxRowReadStream stream);
 
         /// <summary>
-        /// 从二进制流中读取消息对象, 并返回
+        /// 从 Xlsx 行数据流中读取模版对象, 并返回
         /// </summary>
         /// <typeparam name="TXlsxCol"></typeparam>
         /// <param name="toXlsxColObj"></param>
