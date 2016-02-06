@@ -8,27 +8,25 @@ namespace Xgame.GamePart.Tmpl.Type
     /// Xlsx 数组列表
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class XlsxArrayList<T> : BaseXlsxCol, IList<T> where T : BaseXlsxCol
+    public class XlsxArrayList<T> : BaseXlsxCol, IList<T> where T : BaseXlsxCol, new()
     {
         /** 内置列表 */
         private IList<T> _innerList = null;
 
         #region 类构造器
         /// <summary>
-        /// 类默认构造器
-        /// </summary>
-        public XlsxArrayList()
-        {
-            this._innerList = new List<T>();
-        }
-
-        /// <summary>
         /// 类参数构造器
         /// </summary>
-        /// <param name="capacity"></param>
-        public XlsxArrayList(int capacity)
+        /// <param name="num">数组元素个数, 默认值 = 1</param>
+        public XlsxArrayList(int num = 1)
         {
-            this._innerList = new List<T>(capacity);
+            num = (num < 1) ? 1 : num;
+            this._innerList = new List<T>(num);
+
+            for (int i = 0; i < num; i++)
+            {
+                this._innerList.Add(new T());
+            }
         }
 
         /// <summary>
@@ -37,7 +35,30 @@ namespace Xgame.GamePart.Tmpl.Type
         /// <param name="coll"></param>
         public XlsxArrayList(IEnumerable<T> coll)
         {
-            this._innerList = new List<T>(coll);
+            if (coll == null)
+            {
+                // 如果参数对象为空, 
+                // 则抛出异常!
+                throw new ArgumentNullException("coll");
+            }
+
+            // 创建内置列表
+            this._innerList = new List<T>();
+
+            foreach (T t in coll)
+            {
+                if (t != null)
+                {
+                    this._innerList.Add(t);
+                }
+            }
+
+            if (this._innerList.Count <= 0)
+            {
+                // 如果内置列表为空, 
+                // 则抛出异常!
+                throw new ArgumentException("参数列表中没有任何非空对象");
+            }
         }
         #endregion
 
@@ -151,45 +172,6 @@ namespace Xgame.GamePart.Tmpl.Type
             {
                 obj.ReadFrom(fromStream);
             }
-        }
-
-        /// <summary>
-        /// 从 Xlsx 行数据流中读取模版对象, 并返回
-        /// </summary>
-        /// <typeparam name="TXlsxCol"></typeparam>
-        /// <param name="arrList"></param>
-        /// <param name="fromStream"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public static XlsxArrayList<TXlsxCol> ReadXlsxColFrom<TXlsxCol>(XlsxArrayList<TXlsxCol> arrList, XlsxRowReadStream fromStream, int count)
-        where TXlsxCol : BaseXlsxCol, new()
-        {
-            if (arrList == null)
-            {
-                // 如果消息对象为空, 
-                // 则直接新建!
-                arrList = new XlsxArrayList<TXlsxCol>(count);
-            }
-
-            for (int i = 0; i < count; i++)
-            {
-                if (i >= arrList.Count)
-                {
-                    arrList.Add(new TXlsxCol());
-                    continue;
-                }
-
-                if (arrList[i] == null)
-                {
-                    arrList[i] = new TXlsxCol();
-                    continue;
-                }
-            }
-
-            // 从二进制流中读取数据
-            arrList.ReadFrom(fromStream);
-            // 返回消息对象
-            return arrList;
         }
     }
 }
