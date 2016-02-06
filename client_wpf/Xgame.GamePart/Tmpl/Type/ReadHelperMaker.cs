@@ -185,12 +185,12 @@ namespace Xgame.GamePart.Tmpl.Type
                 if (compileResult.Errors.HasErrors)
                 {
                     // 抛出异常并告知原因
-                    throw new XlsxError("编译失败! " + compileResult.Errors[0].ErrorText);
+                    throw new XlsxTmplError("编译失败! " + compileResult.Errors[0].ErrorText);
                 }
                 else
                 {
                     // 抛出异常!
-                    throw new XlsxError("编译失败! 原因未知...");
+                    throw new XlsxTmplError("编译失败! 原因未知...");
                 }
             }
 

@@ -3,14 +3,14 @@
 namespace Xgame.GamePart.Tmpl
 {
     /// <summary>
-    /// Xlsx 错误
+    /// Xlsx 模板错误
     /// </summary>
-    public class XlsxError : Exception
+    public class XlsxTmplError : Exception
     {
         /// <summary>
         /// 类默认构造器
         /// </summary>
-        public XlsxError() : base()
+        public XlsxTmplError() : base()
         {
         }
 
@@ -18,7 +18,7 @@ namespace Xgame.GamePart.Tmpl
         /// 类参数构造器
         /// </summary>
         /// <param name="msg"></param>
-        public XlsxError(string msg) : base(msg)
+        public XlsxTmplError(string msg) : base(msg)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Xgame.GamePart.Tmpl
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="innerErr"></param>
-        public XlsxError(string msg, Exception innerErr) : base(msg, innerErr)
+        public XlsxTmplError(string msg, Exception innerErr) : base(msg, innerErr)
         {
         }
     }

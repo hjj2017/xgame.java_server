@@ -34,7 +34,7 @@ namespace Xgame.GamePart.Tmpl
             {
                 // 如果属性标签为空, 
                 // 则抛出异常
-                throw new XlsxError(string.Format(
+                throw new XlsxTmplError(string.Format(
                     "类 {0} 没有标注 {1} 属性", 
                     byTmplType.FullName, 
                     typeof(FromXlsxFileAttribute).FullName
