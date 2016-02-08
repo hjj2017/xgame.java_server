@@ -13,7 +13,7 @@ import java.time.temporal.Temporal;
  * @param <T>
  * 
  */
-abstract class BasicTypeCol<T> extends AbstractXlsxCol {
+abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
     /** 是否可以为空值 */
     private boolean _nullable = true;
     /** 列值 */
@@ -23,7 +23,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
      * 类默认构造器
      * 
      */
-    public BasicTypeCol() {
+    public PrimitiveTypeCol() {
         this(true, null);
     }
 
@@ -33,7 +33,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
      * @param nullable 
      * 
      */
-    public BasicTypeCol(boolean nullable) {
+    public PrimitiveTypeCol(boolean nullable) {
         this(nullable, null);
     }
 
@@ -44,7 +44,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
      * @param defaultVal 
      * 
      */
-    public BasicTypeCol(boolean nullable, T defaultVal) {
+    public PrimitiveTypeCol(boolean nullable, T defaultVal) {
         this._nullable = nullable;
         this._objVal = defaultVal;
     }
@@ -55,7 +55,7 @@ abstract class BasicTypeCol<T> extends AbstractXlsxCol {
      * @param objVal 
      * 
      */
-    public BasicTypeCol(T objVal) {
+    public PrimitiveTypeCol(T objVal) {
         this(true, objVal);
     }
 

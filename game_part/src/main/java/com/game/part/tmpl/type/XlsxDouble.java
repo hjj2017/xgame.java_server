@@ -9,7 +9,7 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * @since 2015/3/1
  * 
  */
-public class XlsxDouble extends BasicTypeCol<Double> {
+public class XlsxDouble extends PrimitiveTypeCol<Double> {
     /**
      * 类默认构造器
      *

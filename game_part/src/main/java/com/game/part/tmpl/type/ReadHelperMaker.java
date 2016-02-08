@@ -216,7 +216,7 @@ final class ReadHelperMaker {
                 // 可能是临时的 this 指针,
                 // 直接跳过即可
                 return;
-            } else if (ClazzUtil.isDrivedClazz(f.getType(), BasicTypeCol.class)) {
+            } else if (ClazzUtil.isDrivedClazz(f.getType(), PrimitiveTypeCol.class)) {
                 // 如果是普通字段或者是模板字段,
                 // 生成如下代码 :
                 // tmplObj._funcId = XlsxInt.ifNullThenCreate(tmplObj._funcId);

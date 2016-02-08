@@ -9,7 +9,7 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * @since 2015/2/23
  * 
  */
-public class XlsxFloat extends BasicTypeCol<Float> {
+public class XlsxFloat extends PrimitiveTypeCol<Float> {
     /**
      * 类默认构造器
      *

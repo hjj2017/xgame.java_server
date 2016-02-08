@@ -12,7 +12,7 @@ import com.game.part.tmpl.XlsxTmplError;
  * @since 2015/2/23
  * 
  */
-public class XlsxShort extends BasicTypeCol<Short> {
+public class XlsxShort extends PrimitiveTypeCol<Short> {
     /** 0 值 */
     private static final short ZERO = 0;
 

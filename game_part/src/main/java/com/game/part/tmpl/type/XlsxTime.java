@@ -11,7 +11,7 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * @since 2015/2/23
  * 
  */
-public class XlsxTime extends BasicTypeCol<LocalTime> {
+public class XlsxTime extends PrimitiveTypeCol<LocalTime> {
     /**
      * 类默认构造器
      *

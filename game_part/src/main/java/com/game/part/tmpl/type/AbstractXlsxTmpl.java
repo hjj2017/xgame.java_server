@@ -106,10 +106,10 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol {
         // 定义真实关键字
         Object realKey = objKey;
 
-        if (objKey instanceof BasicTypeCol<?>) {
+        if (objKey instanceof PrimitiveTypeCol<?>) {
             // 如果是基本类型字段,
             // 则获取真实关键字!
-            realKey = ((BasicTypeCol<?>)objKey).getObjVal();
+            realKey = ((PrimitiveTypeCol<?>)objKey).getObjVal();
         }
 
         if (realKey == null) {
@@ -195,10 +195,10 @@ public abstract class AbstractXlsxTmpl extends AbstractXlsxCol {
         // 定义真实关键字
         Object realKey = objKey;
 
-        if (objKey instanceof BasicTypeCol<?>) {
+        if (objKey instanceof PrimitiveTypeCol<?>) {
             // 如果是基本类型字段,
             // 则获取真实关键字!
-            realKey = ((BasicTypeCol<?>)objKey).getObjVal();
+            realKey = ((PrimitiveTypeCol<?>)objKey).getObjVal();
         }
 
         if (realKey == null) {

@@ -66,6 +66,7 @@
     <Compile Include="Tmpl\Attr\FromXlsxFileAttribute.cs" />
     <Compile Include="Tmpl\Attr\OneToManyAttribute.cs" />
     <Compile Include="Tmpl\Attr\OneToOneAttribute.cs" />
+    <Compile Include="Tmpl\IXlsxPacker.cs" />
     <Compile Include="Tmpl\Type\BaseXlsxCol.cs" />
     <Compile Include="Tmpl\Type\BaseXlsxTmpl.cs" />
     <Compile Include="Tmpl\Type\IReadHelper.cs" />
@@ -81,10 +82,12 @@
     <Compile Include="Tmpl\Type\XlsxShort.cs" />
     <Compile Include="Tmpl\Type\XlsxSkip.cs" />
     <Compile Include="Tmpl\Type\XlsxStr.cs" />
-    <Compile Include="Tmpl\XlsxError.cs" />
+    <Compile Include="Tmpl\XlsxTmplError.cs" />
+    <Compile Include="Tmpl\XlsxPackerMaker.cs" />
     <Compile Include="Tmpl\XlsxRowReadStream.cs" />
     <Compile Include="Tmpl\XlsxTmplServ.cs" />
     <Compile Include="Tmpl\XlsxTmplServ_LoadTmplData.cs" />
+    <Compile Include="Tmpl\XlsxTmplServ_PackUp.cs" />
     <Compile Include="Util\Assert.cs" />
     <Compile Include="Util\ClazzUtil.cs" />
     <Compile Include="Util\XlsxUtil.cs" />

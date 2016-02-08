@@ -14,7 +14,7 @@ import com.game.part.tmpl.XlsxTmplError;
  * @since 2015/2/23
  * 
  */
-public class XlsxStr extends BasicTypeCol<String> {
+public class XlsxStr extends PrimitiveTypeCol<String> {
     /** 空字符串 */
     private static final String EMPTY_STR = "";
 

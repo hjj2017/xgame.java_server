@@ -9,7 +9,7 @@ import com.game.part.tmpl.XSSFRowReadStream;
  * @since 2015/2/23
  * 
  */
-public class XlsxBool extends BasicTypeCol<Boolean> {
+public class XlsxBool extends PrimitiveTypeCol<Boolean> {
     /**
      * 类默认构造器
      *
