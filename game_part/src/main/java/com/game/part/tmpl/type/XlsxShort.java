@@ -56,26 +56,10 @@ public class XlsxShort extends PrimitiveTypeCol<Short> {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
-            super.setObjVal(stream.readShort());
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
+            super.setObjVal(fromStream.readShort());
         }
-    }
-
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @return
-     *
-     */
-    public static XlsxShort ifNullThenCreate(XlsxShort objVal) {
-        if (objVal == null) {
-            // 创建对象
-            objVal = new XlsxShort();
-        }
-
-        return objVal;
     }
 
     /**

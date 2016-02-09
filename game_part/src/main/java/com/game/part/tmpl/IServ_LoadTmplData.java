@@ -118,7 +118,7 @@ interface IServ_LoadTmplData {
             // 创建模板对象
             T newObj = byClazz.newInstance();
             // 读取行数据
-            newObj.readXSSFRow(new XSSFRowReadStream(row, xlsxFileName));
+            newObj.readFrom(new XSSFRowReadStream(row, xlsxFileName));
             // 添加对象到列表
             objList.add(newObj);
         }

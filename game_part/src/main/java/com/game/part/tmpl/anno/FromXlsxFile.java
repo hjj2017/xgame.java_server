@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
  * &#64;FromXlsxFile(fileName = "i18n/${lang}/sysLang.xlsx")
  * public class SysLangTmpl extends AbstractXlsxTmpl { ... }
  * </pre></code>
- * 变量是由 XlsxTmplServ#_propMap 指定
+ * 变量是由 XlsxTmplServ#_lang 指定
  *
  * @see com.game.part.tmpl.XlsxTmplServ
  * @see com.game.part.tmpl.XlsxTmplServ#_xlsxFileDir
@@ -34,13 +34,12 @@ import java.lang.annotation.Target;
 public @interface FromXlsxFile {
     /**
      * Excel 文件名称,
-     * <font color="#990000">注意: 文件名中可以使用 $var 或者 ${var} 来定义变量参数!
-     * 该参数需要在 XlsxTmplServ#_propMap 中指定</font>
+     * <font color="#990000">注意: 文件名中可以使用 ${lang} 来定义变量参数!
+     * 该变量参数需要使用 XlsxTmplServ#_lang 指定</font>
      *
      * <code><pre>
-     * // 设置属性字典是, 添加 lang 变量
-     * XlsxTmplServ.OBJ._propMap = new HashMap();
-     * XlsxTmplServ.OBJ._propMap.put("lang", "zh_CN");
+     * // 设置 lang 变量
+     * XlsxTmplServ.OBJ._lang = "zh_CN";
      *
      * // 在使用当前注解时, 可以这样定义:
      * &#64;FromXlsxFile(fileName = "i18n/${lang}/Xxx.xlsx", sheetIndex = 0)
@@ -51,7 +50,7 @@ public @interface FromXlsxFile {
      * 读取 i18n/zh_CN/Xxx.xlsx 文件
      *
      * @see com.game.part.tmpl.XlsxTmplServ
-     * @see com.game.part.tmpl.XlsxTmplServ#_propMap
+     * @see com.game.part.tmpl.XlsxTmplServ#_lang
      *
      */
     String fileName();

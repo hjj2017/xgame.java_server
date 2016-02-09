@@ -50,25 +50,9 @@ public class XlsxDouble extends PrimitiveTypeCol<Double> {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
-            super.setObjVal(stream.readDouble());
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
+            super.setObjVal(fromStream.readDouble());
         }
-    }
-
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @return
-     *
-     */
-    public static XlsxDouble ifNullThenCreate(XlsxDouble objVal) {
-        if (objVal == null) {
-            // 创建对象
-            objVal = new XlsxDouble();
-        }
-
-        return objVal;
     }
 }

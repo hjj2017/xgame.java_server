@@ -15,8 +15,8 @@ import javassist.CtConstructor;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 
+import com.game.part.util.Boxer;
 import com.game.part.tmpl.type.AbstractXlsxTmpl;
-
 
 /**
  * 打包器构建者
@@ -196,54 +196,30 @@ final class XlsxPackerMaker {
             return;
         }
 
+        // import ...
+        codeCtx._importClazzSet.add(AbstractXlsxTmpl.class);
+        codeCtx._importClazzSet.add(Boxer.class);
+
         pl.forEach(p -> {
-            if (p._oneToOne) {
-                // 如果是一对一
-                codeCtx._codeText.append("AbstractXlsxTmpl.packOneToOne(");
-            } else {
-                // 如果是一对多
-                codeCtx._codeText.append("AbstractXlsxTmpl.packOneToMany(");
+            // 函数名, 一对一或者一对多
+            String funcName = p._oneToOne ? "packOneToOne" : "packOneToMany";
 
-            }
-
+            // 获取主键和字典
+            String keyObj = (p._keyDef instanceof Method) ? p._keyDef.getName() + "()" : p._keyDef.getName();
+            String mapObj = (p._mapDef instanceof Method) ? p._mapDef.getName() + "()" : p._mapDef.getName();
             //
             // 注意: 主键和字典都有两种情况,
             // 一个是字段类型;
             // 一个是函数类型;
             //
-            if (p._keyDef instanceof Method) {
-                // 主键是函数类型的
-                codeCtx._codeText
-                    .append("O.")
-                    .append(p._keyDef.getName())
-                    .append("()");
-            } else {
-                // 主键是字段类型的
-                codeCtx._codeText
-                    .append("O.")
-                    .append(p._keyDef.getName());
-            }
 
-            codeCtx._codeText.append(", O, ");
-
-            if (p._mapDef instanceof Method) {
-                // 字典是函数类型的
-                codeCtx._codeText
-                    .append("O.")
-                    .append(p._mapDef.getName())
-                    .append("()");
-            } else {
-                // 字典是字段类型的
-                codeCtx._codeText
-                    .append("O.")
-                    .append(p._mapDef.getName());
-            }
-
-            codeCtx._codeText.append(");\n");
+            // 生成如下代码 :
+            // AbstractXlsxTmpl.packOneToOne(Boxer.box(O._Id), O, O._IdMap);
+            codeCtx._codeText.append(MessageFormat.format(
+                "AbstractXlsxTmpl.{0}(Boxer.box(O.{1}), O, O.{2});\n",
+                funcName, keyObj, mapObj
+            ));
         });
-
-        // 添加 import
-        codeCtx._importClazzSet.add(AbstractXlsxTmpl.class);
     }
 
     /**

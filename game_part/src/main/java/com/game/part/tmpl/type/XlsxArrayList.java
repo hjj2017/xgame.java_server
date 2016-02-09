@@ -2,7 +2,6 @@ package com.game.part.tmpl.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -20,12 +19,29 @@ import com.game.part.tmpl.XlsxTmplError;
 public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol implements List<T> {
     /** 数值列表 */
     private final List<T> _objValList = new ArrayList<>();
+    /** 最大个数 */
+    private final int _maxNum;
+    /** Xlsx 列的类定义 */
+    private final Class<T> _clazzOfCol;
 
     /**
-     * 类默认构造器
+     * 类参数构造器
+     *
+     * @param maxNum 最大数量
+     * @param clazzOfCol Xlsx 列的类定义
+     * @throws IllegalArgumentException if num <= 0 || clazzOfCol == null
      *
      */
-    public XlsxArrayList() {
+    public XlsxArrayList(int maxNum, Class<T> clazzOfCol) {
+        if (maxNum <= 0 ||
+            clazzOfCol == null) {
+            // 如果参数对象为空,
+            // 则抛出异常!
+            throw new IllegalArgumentException("num <= 0 || clazzOfCol == null");
+        }
+
+        this._maxNum = maxNum;
+        this._clazzOfCol = clazzOfCol;
     }
 
     /**
@@ -34,11 +50,35 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
      * @param tArr
      *
      */
-    @SuppressWarnings("unchecked")
     public XlsxArrayList(T ... tArr) {
-        if (tArr != null &&
-            tArr.length > 0) {
-            Collections.addAll(this._objValList, tArr);
+        this(tArr == null ? 0 : tArr.length, tArr);
+    }
+
+    /**
+     * 类参数构造器
+     *
+     * @param maxNum 最大数量
+     * @param tArr Xlsx 列对象数组
+     * @throws IllegalArgumentException if maxNum <= 0 || null or empty tArr
+     *
+     */
+    public XlsxArrayList(int maxNum, T ... tArr) {
+        if (maxNum <= 0 ||
+            tArr == null ||
+            tArr.length <= 0 ||
+            tArr[0] == null) {
+            // 如果参数对象为空,
+            // 则抛出异常!
+            throw new IllegalArgumentException("maxNum <= 0 || null or empty tArr");
+        }
+
+        this._maxNum = maxNum;
+        this._clazzOfCol = (Class<T>)tArr[0].getClass();
+
+        for (int i = 0; i < tArr.length; i++) {
+            if (tArr[i] != null) {
+                this._objValList.add(tArr[i]);
+            }
         }
     }
 
@@ -46,8 +86,6 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
     public void validate() {
         if (this._objValList == null ||
             this._objValList.isEmpty()) {
-            // 如果数值列表为空,
-            // 则直接退出!
             return;
         }
 
@@ -58,56 +96,39 @@ public class XlsxArrayList<T extends AbstractXlsxCol> extends AbstractXlsxCol im
         });
     }
 
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @param elementType
-     * @param elementNum
-     * @return
-     *
-     */
-    public static<T extends AbstractXlsxCol> XlsxArrayList<T> ifNullThenCreate(
-        XlsxArrayList<T> objVal,
-        Class<T> elementType,
-        int elementNum) {
-        // 断言参数不为空
-        assert elementType != null : "elementType";
-        assert elementNum > 0 : "elementNum <= 0";
-
-        if (objVal == null) {
-            objVal = new XlsxArrayList<T>();
+    @Override
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream == null) {
+            // 如果参数对象为空,
+            // 则直接退出!
+            return;
         }
-
-        // 获取元素数量
-        final int COUNT = elementNum - objVal.size();
 
         try {
-            for (int i = 0; i < COUNT; i++) {
-                // 新建对象并添加到列表
-                objVal.add(elementType.newInstance());
+            for (int i = 0; i < this._maxNum; i++) {
+                if (fromStream.isEol()) {
+                    // 如果已经读取到行尾,
+                    // 则直接退出!
+                    return;
+                }
+
+                T xlsxCol;
+
+                if (i >= this.size()) {
+                    // 创建新的对象
+                    xlsxCol = this._clazzOfCol.newInstance();
+                } else {
+                    // 获取旧的对象
+                    xlsxCol = this.get(i);
+                }
+
+                // 读取 Xlsx 行数据并添加到列表
+                xlsxCol.readFrom(fromStream);
+                this.add(xlsxCol);
             }
         } catch (Exception ex) {
-            // 抛出异常!
-            throw new XlsxTmplError(ex.getMessage(), ex);
-        }
-
-        return objVal;
-    }
-
-    @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream == null ||
-            this._objValList == null ||
-            this._objValList.isEmpty()) {
-            return;
-        } else {
-            this._objValList.forEach(o -> {
-                // 断言参数不为空
-                assert o != null : "o";
-                // 读取行数据
-                o.readXSSFRow(stream);
-            });
+            // 包装并抛出异常!
+            throw new XlsxTmplError(ex);
         }
     }
 

@@ -40,25 +40,9 @@ public class XlsxBool extends PrimitiveTypeCol<Boolean> {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
-            super.setObjVal(stream.readBool());
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
+            super.setObjVal(fromStream.readBool());
         }
-    }
-
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @return
-     *
-     */
-    public static XlsxBool ifNullThenCreate(XlsxBool objVal) {
-        if (objVal == null) {
-            // 创建对象
-            objVal = new XlsxBool();
-        }
-
-        return objVal;
     }
 }

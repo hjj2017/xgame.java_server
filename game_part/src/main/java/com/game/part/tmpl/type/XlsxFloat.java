@@ -50,25 +50,9 @@ public class XlsxFloat extends PrimitiveTypeCol<Float> {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
-            super.setObjVal(stream.readFloat());
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
+            super.setObjVal(fromStream.readFloat());
         }
-    }
-
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @return
-     *
-     */
-    public static XlsxFloat ifNullThenCreate(XlsxFloat objVal) {
-        if (objVal == null) {
-            // 创建对象
-            objVal = new XlsxFloat();
-        }
-
-        return objVal;
     }
 }

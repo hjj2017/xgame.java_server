@@ -308,4 +308,14 @@ public final class XSSFRowReadStream {
             return XSSFUtil.getDateTimeCellVal(cell);
         }
     }
+
+    /**
+     * 是否已经到行尾? End Of Line
+     *
+     * @return
+     *
+     */
+    public boolean isEol() {
+        return this._row.getCell(this._currCellIndex) == null;
+    }
 }

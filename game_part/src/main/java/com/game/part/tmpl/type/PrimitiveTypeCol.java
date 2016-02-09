@@ -21,7 +21,7 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 类默认构造器
-     * 
+     *
      */
     public PrimitiveTypeCol() {
         this(true, null);
@@ -29,9 +29,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 类参数构造器
-     * 
-     * @param nullable 
-     * 
+     *
+     * @param nullable
+     *
      */
     public PrimitiveTypeCol(boolean nullable) {
         this(nullable, null);
@@ -39,10 +39,10 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 类参数构造器
-     * 
+     *
      * @param nullable
-     * @param defaultVal 
-     * 
+     * @param defaultVal
+     *
      */
     public PrimitiveTypeCol(boolean nullable, T defaultVal) {
         this._nullable = nullable;
@@ -51,9 +51,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 类参数构造器
-     * 
-     * @param objVal 
-     * 
+     *
+     * @param objVal
+     *
      */
     public PrimitiveTypeCol(T objVal) {
         this(true, objVal);
@@ -61,9 +61,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取对象值
-     * 
+     *
      * @return
-     * 
+     *
      */
     public T getObjVal() {
         return this._objVal;
@@ -71,17 +71,17 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 设置对象值
-     * 
-     * @param value 
-     * 
+     *
+     * @param value
+     *
      */
     void setObjVal(T value) {
         if (value != null) {
-            // 如果参数不是空值, 
+            // 如果参数不是空值,
             // 直接赋值就好了
             this._objVal = value;
         } else {
-            // 但如果参数是空值, 
+            // 但如果参数是空值,
             // 那么看看是否允许为空值?
             // 如果允许, 则赋值
             if (this._nullable) {
@@ -92,9 +92,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取 int 数值
-     * 
-     * @return 
-     * 
+     *
+     * @return
+     *
      */
     public int getIntVal() {
         if (this._objVal == null) {
@@ -112,9 +112,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取 long 数值
-     * 
+     *
      * @return
-     * 
+     *
      */
     public long getLongVal() {
         if (this._objVal == null) {
@@ -132,9 +132,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取 short 数值
-     * 
+     *
      * @return
-     * 
+     *
      */
     public short getShortVal() {
         if (this._objVal == null) {
@@ -152,9 +152,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取 float 数值
-     * 
-     * @return 
-     * 
+     *
+     * @return
+     *
      */
     public float getFloatVal() {
         if (this._objVal == null) {
@@ -172,9 +172,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取 double 数值
-     * 
-     * @return 
-     * 
+     *
+     * @return
+     *
      */
     public double getDoubleVal() {
         if (this._objVal == null) {
@@ -192,9 +192,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取字符串值
-     * 
+     *
      * @return
-     * 
+     *
      */
     public String getStrVal() {
         if (this._objVal == null) {
@@ -206,9 +206,9 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     /**
      * 获取 bool 值
-     * 
-     * @return 
-     * 
+     *
+     * @return
+     *
      */
     public boolean getBoolVal() {
         if (this._objVal == null) {
@@ -226,13 +226,13 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
     }
 
     /**
-     * 获取 date 值, 
-     * 注意 : 如果原始类型是字符串类型, 
-     * 字符串值必须是格式 = "2015-01-01", 
+     * 获取 date 值,
+     * 注意 : 如果原始类型是字符串类型,
+     * 字符串值必须是格式 = "2015-01-01",
      * 才能转换为日期时间型!
-     * 
+     *
      * @return
-     * 
+     *
      */
     public LocalDate getDateVal() {
         if (this._objVal == null) {
@@ -249,13 +249,13 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
     }
 
     /**
-     * 获取 time 值, 
-     * 注意 : 如果原始类型是字符串类型, 
-     * 字符串值必须是格式 = "10:00:00", 
+     * 获取 time 值,
+     * 注意 : 如果原始类型是字符串类型,
+     * 字符串值必须是格式 = "10:00:00",
      * 才能转换为日期时间型!
-     * 
+     *
      * @return
-     * 
+     *
      */
     public LocalTime getTimeVal() {
         if (this._objVal == null) {
@@ -272,13 +272,13 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
     }
 
     /**
-     * 获取 time 值, 
-     * 注意 : 如果原始类型是字符串类型, 
-     * 字符串值必须是格式 = "2015-01-01 10:00:00", 
+     * 获取 time 值,
+     * 注意 : 如果原始类型是字符串类型,
+     * 字符串值必须是格式 = "2015-01-01 10:00:00",
      * 才能转换为日期时间型!
-     * 
+     *
      * @return
-     * 
+     *
      */
     public LocalDateTime getDateTimeVal() {
         if (this._objVal == null) {
@@ -296,10 +296,10 @@ abstract class PrimitiveTypeCol<T> extends AbstractXlsxCol {
 
     @Override
     public void validate() {
-        if (this._nullable == false && 
+        if (this._nullable == false &&
             this._objVal == null) {
-            // 如果不能为空值, 
-            // 但对象值它就是空值, 
+            // 如果不能为空值,
+            // 但对象值它就是空值,
             // 则抛出异常!
             throw new XlsxTmplError(this, "对象值为空");
         }

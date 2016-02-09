@@ -58,26 +58,10 @@ public class XlsxStr extends PrimitiveTypeCol<String> {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
-            super.setObjVal(stream.readStr());
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
+            super.setObjVal(fromStream.readStr());
         }
-    }
-
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @return
-     *
-     */
-    public static XlsxStr ifNullThenCreate(XlsxStr objVal) {
-        if (objVal == null) {
-            // 创建对象
-            objVal = new XlsxStr();
-        }
-
-        return objVal;
     }
 
     /**

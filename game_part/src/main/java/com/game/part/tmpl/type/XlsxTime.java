@@ -52,25 +52,9 @@ public class XlsxTime extends PrimitiveTypeCol<LocalTime> {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
-            super.setObjVal(stream.readTime());
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
+            super.setObjVal(fromStream.readTime());
         }
-    }
-
-    /**
-     * objVal 不能为空, 但如果真为空值, 则自动创建
-     *
-     * @param objVal
-     * @return
-     *
-     */
-    public static XlsxTime ifNullThenCreate(XlsxTime objVal) {
-        if (objVal == null) {
-            // 创建对象
-            objVal = new XlsxTime();
-        }
-
-        return objVal;
     }
 }

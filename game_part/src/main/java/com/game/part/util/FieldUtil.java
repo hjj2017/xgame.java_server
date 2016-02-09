@@ -1,6 +1,7 @@
 package com.game.part.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -50,5 +51,20 @@ public final class FieldUtil {
         }
 
         return tType.getActualTypeArguments()[0];
+    }
+
+    /**
+     * 是否为临时的 this 指针?
+     *
+     * @param f
+     * @return
+     *
+     */
+    public static boolean isTempThisPointer(Field f) {
+        if (f == null) {
+            return false;
+        } else {
+            return f.isSynthetic() && Modifier.isFinal(f.getModifiers()) && f.getName().startsWith("this$");
+        }
     }
 }

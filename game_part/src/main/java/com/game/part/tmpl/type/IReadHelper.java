@@ -13,9 +13,9 @@ public interface IReadHelper {
     /**
      * 读取行数据
      *
-     * @param tmplObj
-     * @param stream
+     * @param toXlsxObj
+     * @param fromStream
      *
      */
-    public void readImpl(AbstractXlsxTmpl tmplObj, XSSFRowReadStream stream);
+    public void readImpl(AbstractXlsxTmpl toXlsxObj, XSSFRowReadStream fromStream);
 }

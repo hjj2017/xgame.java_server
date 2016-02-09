@@ -198,7 +198,7 @@ final class ClazzDefValidator {
 
         if (XlsxArrayList.class.isAssignableFrom(fType) == false) {
             // 如果字段不是 XlsxArrayList 类型,
-            // 则直接退出!
+            // 则抛出异常!
             throw new XlsxTmplError(MessageFormat.format(
                 "类 {0} 字段 {1} 不是 XlsxArrayList 类型",
                 fType.getName(),
@@ -211,6 +211,32 @@ final class ClazzDefValidator {
         // 如果字段是 XlsxArrayList 类型,
         // 获取泛型类型中的真实类型
         Type aType = FieldUtil.getGenericTypeA(f);
+
+        try {
+            // 临时创建一个模板对象并尝试获取字段对象
+            Object tmplObj = fromClazz.newInstance();
+            Object fieldObj = f.get(tmplObj);
+
+            if (fieldObj == null) {
+                // 如果字段为空,
+                // 则直接抛出异常!
+                throw new XlsxTmplError(MessageFormat.format(
+                    "类 {0} 字段 {1} 为空值 (null), 请使用类似 : public XlsxArrayList<{2}> {1} = new XlsxArrayList<>(10, {2}.class); 这样的定义",
+                    fromClazz.getName(),
+                    f.getName(),
+                    aType.getTypeName()
+                ));
+            }
+        } catch (XlsxTmplError err) {
+            throw err;
+        } catch (Exception ex) {
+            // 包装并抛出异常!
+            throw new XlsxTmplError(MessageFormat.format(
+                "类 {0} 字段 {1} 错误",
+                fromClazz.getName(),
+                f.getName()
+            ), ex);
+        }
 
         if (aType == null) {
             // 如果没有定义真实类型,

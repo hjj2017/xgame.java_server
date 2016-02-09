@@ -21,11 +21,11 @@ public final class XlsxSkip extends AbstractXlsxCol {
     }
 
     @Override
-    protected void readImpl(XSSFRowReadStream stream) {
-        if (stream != null) {
+    protected void readImpl(XSSFRowReadStream fromStream) {
+        if (fromStream != null) {
             // 如果参数对象不为空,
             // 则读取一个 Excel 单元格!
-            stream.readCell();
+            fromStream.readCell();
         }
     }
 }
