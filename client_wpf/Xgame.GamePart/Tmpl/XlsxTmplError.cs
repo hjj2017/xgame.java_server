@@ -7,6 +7,7 @@ namespace Xgame.GamePart.Tmpl
     /// </summary>
     public class XlsxTmplError : Exception
     {
+        #region 类构造器
         /// <summary>
         /// 类默认构造器
         /// </summary>
@@ -30,5 +31,14 @@ namespace Xgame.GamePart.Tmpl
         public XlsxTmplError(string msg, Exception innerErr) : base(msg, innerErr)
         {
         }
+
+        /// <summary>
+        /// 类参数构造器
+        /// </summary>
+        /// <param name="innerErr"></param>
+        public XlsxTmplError(Exception innerErr) : base(innerErr == null ? "" : innerErr.Message, innerErr)
+        {
+        }
+        #endregion
     }
 }
