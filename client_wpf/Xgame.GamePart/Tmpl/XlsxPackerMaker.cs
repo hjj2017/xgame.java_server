@@ -250,7 +250,7 @@ namespace Xgame.GamePart.Tmpl
                 //
 
                 // 生成如下代码 :
-                // AbstractXlsxTmpl.packOneToOne(Boxer.box(O._Id), O, O._IdMap);
+                // BaseXlsxTmpl.PackOneToOne(O._Id, O, O._IdMap);
                 func.Statements.Add(new CodeMethodInvokeExpression(
                     new CodeTypeReferenceExpression(typeof(BaseXlsxCol)), 
                     funcName,
