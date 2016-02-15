@@ -67,6 +67,8 @@
     <Compile Include="Tmpl\Attr\OneToManyAttribute.cs" />
     <Compile Include="Tmpl\Attr\OneToOneAttribute.cs" />
     <Compile Include="Tmpl\IXlsxPacker.cs" />
+    <Compile Include="Tmpl\OneToXDefPair.cs" />
+    <Compile Include="Tmpl\OneToXDefPair_X.cs" />
     <Compile Include="Tmpl\Type\BaseXlsxCol.cs" />
     <Compile Include="Tmpl\Type\BaseXlsxTmpl.cs" />
     <Compile Include="Tmpl\Type\IReadHelper.cs" />
