@@ -34,6 +34,7 @@
         <module>../log_server</module>
         <module>../passbook_server</module>
         <module>../robot</module>
+        <module>../client_jfx</module>
     </modules>
 
     <build>
