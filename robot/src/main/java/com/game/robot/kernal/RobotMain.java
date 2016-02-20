@@ -332,7 +332,7 @@ public final class RobotMain {
                 // 创建 GCHandler 类对象
                 Object obj = hClazz.newInstance();
                 // 强制转型并添加到集合
-                hObjSet.add((AbstractGCMsgHandler<?>) obj);
+                hObjSet.add((AbstractGCMsgHandler<?>)obj);
             } catch (Exception ex) {
                 // 记录错误日志
                 RobotLog.LOG.error(ex.getMessage(), ex);

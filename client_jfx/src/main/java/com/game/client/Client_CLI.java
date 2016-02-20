@@ -1,21 +1,24 @@
 package com.game.client;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import com.game.client.startUp.ui.Scene_StartUp;
+
 /**
+ * 在命令行启动客户端
+ *
+ * @author hjj2017
+ * @since 2016/2/20
  *
  */
 public class Client_CLI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        StackPane p = new StackPane();
-        Scene s = new Scene(p, 480, 320);
-        primaryStage.setTitle("hello");
-        primaryStage.setScene(s);
+        // 设置标题并显示启动场景
+        primaryStage.setTitle("Xgame::client_jfx");
+        primaryStage.setScene(Scene_StartUp.OBJ);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
