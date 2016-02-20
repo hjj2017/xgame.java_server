@@ -12,8 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  */
 public abstract class BizResultObj {
+    /** 无警告 */
+    public static final int NO_WARN = -1;
+    /** 无错误 */
+    public static final int NO_ERROR = -1;
+
     /** 错误代码 */
-    public int _errorCode = -1;
+    public int _errorCode = NO_ERROR;
     /** 警告集合 */
     public final Set<Integer> _warnSet = new HashSet<>();
 
@@ -97,7 +102,7 @@ public abstract class BizResultObj {
      */
     public int getFirstWarn() {
         if (!this.hasWarn()) {
-            return -1;
+            return NO_WARN;
         } else {
             return this._warnSet.iterator().next();
         }
@@ -109,7 +114,7 @@ public abstract class BizResultObj {
      */
     public void clear() {
         // 清除属性
-        this._errorCode = -1;
+        this._errorCode = NO_ERROR;
         this._warnSet.clear();
         // 清除内容
         this.clearContent();

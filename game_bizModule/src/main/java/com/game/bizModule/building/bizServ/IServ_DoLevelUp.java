@@ -8,6 +8,7 @@ import com.game.bizModule.cd.bizServ.Result_FindAndDoAddTime;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.multiLang.MultiLangDef;
+import com.game.part.util.BizResultObj;
 import com.game.part.util.BizResultPool;
 
 import java.text.MessageFormat;
@@ -58,48 +59,13 @@ interface IServ_DoLevelUp {
             return result;
         }
 
-        if (bt == BuildingTypeEnum.home) {
-            // 如果升级的是主城,
-            // 那么看看主城等级是否会超过角色等级?
-            if (mngrObj._homeLevel >= h._humanLevel) {
-                // 如果主城等级 >= 角色等级,
-                // 则直接退出!
-                BuildingLog.LOG.error(MessageFormat.format(
-                    "主城等级不能大于角色等级, 角色 = {0}",
-                    String.valueOf(h._humanUId)
-                ));
-                result._errorCode = MultiLangDef.LANG_BUILDING_homeLevelCannotGTHumanLevel;
-                return result;
-            }
-        } else {
-            // 获取目标建筑等级
-            final int targetBuildingLevel = mngrObj.getLevel(bt);
+        // 建筑是否可以升级?
+        result._errorCode = cannotLevelUp(h, bt, mngrObj);
 
-            if (targetBuildingLevel <= 0) {
-                // 如果建筑未开启,
-                // 则直接退出!
-                BuildingLog.LOG.error(MessageFormat.format(
-                    "建筑尚未开启, 角色 = {0}, 建筑 = {1}",
-                    String.valueOf(h._humanUId),
-                    bt.getStrVal()
-                ));
-                return result;
-            }
-
-            // 获取主城等级
-            int homeLevel = mngrObj._homeLevel;
-
-            if (targetBuildingLevel >= homeLevel) {
-                // 如果目标建筑等级 >= 主城等级,
-                // 则直接退出!
-                BuildingLog.LOG.error(MessageFormat.format(
-                    "建筑等级不能超过主城等级, 角色 = {0}, 建筑 = {1}",
-                    String.valueOf(h._humanUId),
-                    bt.getStrVal()
-                ));
-                result._errorCode = MultiLangDef.LANG_BUILDING_buildingLevelCannotGTHomeLevel;
-                return result;
-            }
+        if (result.isFail()) {
+            // 如果建筑不能升级,
+            // 则直接退出!
+            return result;
         }
 
         // 获取建筑升级配置
@@ -144,5 +110,70 @@ interface IServ_DoLevelUp {
         mngrObj.saveOrUpdate();
 
         return result;
+    }
+
+    /**
+     * 建筑类型不能升级? 如果不能升级则返回不能升级的理由
+     *
+     * @param h
+     * @param bt
+     * @param mngrObj
+     * @return 不能升级的理由
+     *
+     * @see BizResultObj#NO_ERROR
+     *
+     */
+    static int cannotLevelUp(final Human h, final BuildingTypeEnum bt, final BuildingManager mngrObj) {
+        if (h == null ||
+            bt == null ||
+            mngrObj == null) {
+            // 参数不能为空
+            return MultiLangDef.LANG_COMM_paramError;
+        }
+
+        if (bt == BuildingTypeEnum.home) {
+            // 如果升级的是主城,
+            // 那么看看主城等级是否会超过角色等级?
+            if (mngrObj._homeLevel >= h._humanLevel) {
+                // 如果主城等级 >= 角色等级,
+                // 则直接退出!
+                BuildingLog.LOG.error(MessageFormat.format(
+                    "主城等级不能大于角色等级, 角色 = {0}",
+                    String.valueOf(h._humanUId)
+                ));
+                return MultiLangDef.LANG_BUILDING_homeLevelCannotGTHumanLevel;
+            }
+        } else {
+            // 如果升级的不是主城,
+            // 那么先获取目标建筑等级
+            final int targetBuildingLevel = mngrObj.getLevel(bt);
+
+            if (targetBuildingLevel <= 0) {
+                // 如果建筑未开启,
+                // 则直接退出!
+                BuildingLog.LOG.error(MessageFormat.format(
+                    "建筑尚未开启, 角色 = {0}, 建筑 = {1}",
+                    String.valueOf(h._humanUId),
+                    bt.getStrVal()
+                ));
+                return MultiLangDef.LANG_BUILDING_notOpenYet;
+            }
+
+            // 获取主城等级
+            int homeLevel = mngrObj._homeLevel;
+
+            if (targetBuildingLevel >= homeLevel) {
+                // 如果目标建筑等级 >= 主城等级,
+                // 则直接退出!
+                BuildingLog.LOG.error(MessageFormat.format(
+                    "建筑等级不能超过主城等级, 角色 = {0}, 建筑 = {1}",
+                    String.valueOf(h._humanUId),
+                    bt.getStrVal()
+                ));
+                return MultiLangDef.LANG_BUILDING_buildingLevelCannotGTHomeLevel;
+            }
+        }
+
+        return BizResultObj.NO_ERROR;
     }
 }

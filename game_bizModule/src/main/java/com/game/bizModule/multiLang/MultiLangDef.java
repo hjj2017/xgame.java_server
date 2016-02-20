@@ -25,6 +25,8 @@ public final class MultiLangDef {
     public static final int LANG_BUILDING_homeLevelCannotGTHumanLevel = ++INNER_VAL;
     @LangText("建筑等级不能大于主城等级")
     public static final int LANG_BUILDING_buildingLevelCannotGTHomeLevel = ++INNER_VAL;
+    @LangText("建筑尚未开放")
+    public static final int LANG_BUILDING_notOpenYet = ++INNER_VAL;
 
 // Cd 系统
 ///////////////////////////////////////////////////////////////////////
