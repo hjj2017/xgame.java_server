@@ -1,8 +1,6 @@
 package com.game.client.startUp.ui;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Pane;
 
 import com.game.client.util.ResUtil;
