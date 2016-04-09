@@ -4,7 +4,7 @@ import com.game.bizModule.building.BuildingLog;
 import com.game.bizModule.building.model.BuildingTypeEnum;
 import com.game.bizModule.building.tmpl.BuildingLevelUpTmpl;
 import com.game.bizModule.cd.bizServ.CdServ;
-import com.game.bizModule.cd.bizServ.Result_FindAndDoAddTime;
+import com.game.bizModule.cd.bizServ.Result_DoAddTime;
 import com.game.bizModule.cd.model.CdTypeEnum;
 import com.game.bizModule.human.Human;
 import com.game.bizModule.multiLang.MultiLangDef;
@@ -75,6 +75,19 @@ interface IServ_DoLevelUp {
 
         // 获取所需银两
         final int needSilver = levelUpTmpl._needSilver.getIntVal();
+
+        // TODO : 判断银两
+
+        // 查找并增加 Cd 时间
+        CdTypeEnum cdType = CdServ.OBJ.findCdTypeToAddTime(h, BUILDING_CD_TYPE_ARR);
+
+        if (cdType == null) {
+            // 如果没有可用的 Cd 类型,
+            // 则直接退出!
+            result._errorCode = MultiLangDef.LANG_CD_cannotFoundCdTypeToAddTime;
+            return result;
+        }
+
         // TODO : 消耗银两
         // if (MoneyServ.OBJ.tryCost(h, needSilver) == false) {
         //     // 如果消耗银两失败,
@@ -82,28 +95,19 @@ interface IServ_DoLevelUp {
         //     return;
         // }
 
-        // 设置所需银两
-        result._usedSilver = needSilver;
-        // 查找并增加 Cd 时间
-        Result_FindAndDoAddTime result_2 = CdServ.OBJ.findAndDoAddTime(
-            h, BUILDING_CD_TYPE_ARR,
-            levelUpTmpl._needCdTime.getLongVal()
-        );
+        // 增加 Cd 时间
+        Result_DoAddTime result_2 = CdServ.OBJ.doAddTime(h, cdType, levelUpTmpl._needCdTime.getIntVal());
 
         if (result_2.isFail()) {
-            // 如果增加 Cd 失败,
+            // 如果增加 Cd 时间失败,
             // 则直接退出!
-            BuildingLog.LOG.error(MessageFormat.format(
-                "累计建筑升级 Cd 时间失败, 角色 = {0}, 建筑 = {1}",
-                String.valueOf(h._humanUId),
-                bt.getStrVal()
-            ));
             result._errorCode = result_2._errorCode;
             return result;
         }
 
-        // 设置已使用的 Cd 类型
-        result._usedCdType = result_2._usedCdType;
+        // 设置所需银两和 Cd 类型
+        result._usedSilver = needSilver;
+        result._usedCdType = cdType;
 
         // 增加建筑等级并保存
         mngrObj.addLevel(bt, +1);
