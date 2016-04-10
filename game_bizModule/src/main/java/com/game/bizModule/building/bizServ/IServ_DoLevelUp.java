@@ -59,12 +59,13 @@ interface IServ_DoLevelUp {
             return result;
         }
 
-        // 建筑是否可以升级?
-        result._errorCode = cannotLevelUp(h, bt, mngrObj);
+        // 建筑是否不能升级?
+        int errorCode = cannotLevelUp(h, bt, mngrObj);
 
-        if (result.isFail()) {
+        if (errorCode != BizResultObj.NO_ERROR) {
             // 如果建筑不能升级,
             // 则直接退出!
+            result._errorCode = errorCode;
             return result;
         }
 
@@ -78,7 +79,7 @@ interface IServ_DoLevelUp {
 
         // TODO : 判断银两
 
-        // 查找并增加 Cd 时间
+        // 查找可以增加时间的 Cd 类型
         CdTypeEnum cdType = CdServ.OBJ.findCdTypeToAddTime(h, BUILDING_CD_TYPE_ARR);
 
         if (cdType == null) {
