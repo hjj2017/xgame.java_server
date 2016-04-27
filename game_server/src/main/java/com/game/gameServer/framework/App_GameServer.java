@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.persistence.Persistence;
 
 import com.game.gameServer.msg.netty.IServerStartUp_ListenCGMsg;
+import com.game.gameServer.queued.MsgQueue;
 import com.game.gameServer.scene.SceneFacade;
 import com.game.part.dao.CommDao;
 import com.game.part.msg.MsgServ;
@@ -76,6 +77,9 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
         MsgServ.OBJ.putMsgReceiver(SceneFacade.OBJ);
         // 启动心跳
         SceneFacade.OBJ.startUp();
+
+        // 启动消息队列
+        MsgQueue.OBJ.startUp();
 
         //
         // 开始监听 CG 消息,
