@@ -1,4 +1,4 @@
-package com.game.gameServer.queued;
+package com.game.part.queued;
 
 import com.game.part.GameError;
 

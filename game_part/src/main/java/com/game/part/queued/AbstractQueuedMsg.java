@@ -1,4 +1,4 @@
-package com.game.gameServer.queued;
+package com.game.part.queued;
 
 /**
  * 抽象的队列消息

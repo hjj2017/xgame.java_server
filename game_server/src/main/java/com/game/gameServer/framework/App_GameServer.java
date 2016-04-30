@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.persistence.Persistence;
 
 import com.game.gameServer.msg.netty.IServerStartUp_ListenCGMsg;
-import com.game.gameServer.queued.MsgQueue;
+import com.game.part.queued.MsgQueue;
 import com.game.gameServer.scene.SceneFacade;
 import com.game.part.dao.CommDao;
 import com.game.part.msg.MsgServ;

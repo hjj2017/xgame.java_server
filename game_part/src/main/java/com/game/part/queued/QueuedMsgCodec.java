@@ -1,4 +1,4 @@
-package com.game.gameServer.queued;
+package com.game.part.queued;
 
 import com.game.part.util.Assert;
 import com.game.part.util.Out;
@@ -35,7 +35,7 @@ final class QueuedMsgCodec {
         Assert.notNull(toJMSMsg, "toJMSMsg is null");
 
         // 将私有地址设置为来信地址
-        final String privateDestination = QueuedConf.OBJ._privateDestination;
+        final String privateDestination = "";
         fromQueuedMsg.fromDestination = privateDestination;
 
         // 将消息序列化为 JSON 对象

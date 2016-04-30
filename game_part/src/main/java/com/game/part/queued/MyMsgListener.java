@@ -1,4 +1,4 @@
-package com.game.gameServer.queued;
+package com.game.part.queued;
 
 import com.game.part.util.Out;
 
@@ -14,7 +14,7 @@ import javax.jms.MessageListener;
 class MyMsgListener implements MessageListener {
     /** 消息编解码器 */
     private QueuedMsgCodec _msgCodec;
-    
+
     @Override
     public void onMessage(Message fromJMSMsg) {
         try {
