@@ -7,6 +7,9 @@ package com.game.gameServer.queued;
  * @since 2016/04/30
  */
 public abstract class AbstractQueuedMsg {
+    /** 来信地址 */
+    public String fromDestination;
+
     /**
      * 执行消息
      *

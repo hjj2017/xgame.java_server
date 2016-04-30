@@ -3,7 +3,13 @@ package com.game.gameServer.queued;
 import com.game.part.ThreadNamingFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import javax.jms.*;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,15 +21,6 @@ import java.util.concurrent.Executors;
  *
  */
 public final class MsgQueue {
-    /** 来自地址 */
-    static final String FROM_DESTINATION = "fromDestination";
-    /** 消息入口 */
-    static final String MSG_ROOT = "msgRoot";
-    /** 消息类 */
-    static final String MSG_CLAZZ = "msgClazz";
-    /** 消息体 */
-    static final String MSG_BODY = "msgBody";
-
     /** 单例对象 */
     public static final MsgQueue OBJ = new MsgQueue();
 
@@ -35,9 +32,17 @@ public final class MsgQueue {
     private MessageConsumer _msgConsumer_PUB;
     /** 私有的消息消费者 */
     private MessageConsumer _msgConsumer_PRI;
-    /** 线程服务 */
-    private ExecutorService _ES;
+    /** 消息编解码器 */
+    private QueuedMsgCodec _msgCodec;
+    /** 消息发送线程池 */
+    private ExecutorService _senderES;
 
+    /**
+     * 发送公共消息
+     *
+     * @param msgObj
+     *
+     */
     public void sendPublicMsg(AbstractQueuedMsg msgObj) {
         this.sendMsg(msgObj, DestinationPool.DEST_PUBLIC);
     }
@@ -45,20 +50,20 @@ public final class MsgQueue {
     /**
      * 发送消息对象
      *
-     * @param objMsg
-     * @param strDest 地址字符串
+     * @param queuedMsg
+     * @param strToDestination 发送到目标地址
      *
      */
-    public void sendMsg(AbstractQueuedMsg objMsg, String strDest) {
-        this._ES.submit(() -> {
+    public void sendMsg(AbstractQueuedMsg queuedMsg, String strToDestination) {
+        this._senderES.submit(() -> {
             try {
-                Message newMsg = this._sessionObj.createTextMessage(MSG_ROOT);
-                newMsg.setStringProperty(FROM_DESTINATION, QueuedConf.OBJ._privateDestination);
-                newMsg.setStringProperty(MSG_CLAZZ, objMsg.getClass().getName());
-                newMsg.setStringProperty(MSG_BODY, objMsg.toString());
-
-                Destination dest = DestinationPool.OBJ.getDestination(strDest);
-                this._msgProducer.send(dest, newMsg);
+                // 获取发送到目标地址对象
+                Destination toDestination = DestinationPool.OBJ.getDestination(strToDestination);
+                // 创建 JMS 消息对象并序列化
+                Message toJMSMsg = this._sessionObj.createMessage();
+                this._msgCodec.encode(queuedMsg, toJMSMsg);
+                // 发送 JMS 消息
+                this._msgProducer.send(toDestination, toJMSMsg);
             } catch (Exception ex) {
                 throw new QueuedError(ex);
             }
@@ -93,7 +98,9 @@ public final class MsgQueue {
             this._msgConsumer_PRI = this._sessionObj.createConsumer(privateDest);
             this._msgConsumer_PRI.setMessageListener(l);
 
-            this._ES = Executors.newSingleThreadExecutor(new ThreadNamingFactory("MsgQueue"));
+            this._msgCodec = new QueuedMsgCodec();
+
+            this._senderES = Executors.newSingleThreadExecutor(new ThreadNamingFactory("MsgQueue"));
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(-1);
