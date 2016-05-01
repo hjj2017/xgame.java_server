@@ -1,6 +1,8 @@
 package com.game.gameServer.scene;
 
-import com.game.gameServer.msg.*;
+import com.game.gameServer.msg.AbstractExecutableMsgObj;
+import com.game.gameServer.msg.MsgOrigTypeEnum;
+import com.game.gameServer.msg.MsgTypeEnum;
 import com.game.part.lazySaving.LazySavingHelper;
 import com.game.part.msg.IMsgReceiver;
 import com.game.part.msg.type.AbstractMsgObj;
@@ -9,7 +11,11 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 场景门面
@@ -63,16 +69,12 @@ public final class SceneFacade implements IMsgReceiver {
         //
         final Runnable r = () -> {
             // 令每个心跳接口执行一次心跳!
-            this._heartbeatList.forEach(hb -> {
-                if (hb != null) {
-                    hb.doHeartbeat();
-                }
-            });
+            this._heartbeatList.forEach(hb -> this.callHeartbeat(hb));
 
             // 处理消息队列
             while (this._msgQ.size() > 0) {
                 // 令场景处理消息
-                SceneFacade.OBJ.execMsg(this._msgQ.poll());
+                this.execMsg(this._msgQ.poll());
             }
 
             // 执行延迟保存
@@ -131,5 +133,34 @@ public final class SceneFacade implements IMsgReceiver {
 
         // 令场景执行消息
         sceneObj.execMsg(msgObj);
+    }
+
+    /**
+     * 调用心跳过程
+     *
+     * @param hb
+     */
+    private void callHeartbeat(IHeartbeat hb) {
+        if (hb == null) {
+            return;
+        }
+
+        // 获取消息类型
+        MsgTypeEnum msgType = hb.getMsgType();
+        // 获取场景对象
+        InnerScene sceneObj = this._sceneMap.get(msgType._origType);
+
+        if (sceneObj == null) {
+            // 如果场景对象为空,
+            // 则直接退出!
+            SceneLog.LOG.error(MessageFormat.format(
+                "心跳对象为空, 消息类型 = {0}",
+                msgType._origType.getStrVal()
+            ));
+            return;
+        }
+
+        // 令场景调用心跳过程
+        sceneObj.callHeartbeat(hb);
     }
 }

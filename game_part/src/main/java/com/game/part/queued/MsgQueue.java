@@ -37,7 +37,7 @@ public final class MsgQueue {
     /** 私有地址 */
     public String _privateDestination = null;
     /** 消息执行调用者 */
-    public IMsgExecuteCaller _msgExeCaller = null;
+    public IMsgExeCaller _msgExeCaller = null;
 
     /** JMS 会话对象 */
     private Session _sessionObj;

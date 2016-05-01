@@ -43,7 +43,7 @@ interface IServerInit_BizModule {
         );
 
         if (allClazzSet == null || 
-            allClazzSet.size() <= 0) {
+            allClazzSet.isEmpty()) {
             // 如果没有找到任何业务模块, 
             // 则直接退出!
             FrameworkLog.LOG.error("没有找到任何业务模块");

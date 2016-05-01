@@ -1,5 +1,7 @@
 package com.game.gameServer.scene;
 
+import com.game.gameServer.msg.MsgTypeEnum;
+
 /**
  * 心跳接口
  *
@@ -8,6 +10,15 @@ package com.game.gameServer.scene;
  *
  */
 public interface IHeartbeat {
+    /**
+     * 获取消息类型
+     *
+     * @return
+     */
+    default MsgTypeEnum getMsgType() {
+        return MsgTypeEnum.game;
+    }
+
     /**
      * 执行心跳逻辑
      *

@@ -16,14 +16,14 @@ class MsgDecodeListener implements MessageListener {
     /** 消息编解码器 */
     private QueuedMsgCodec _msgCodec;
     /** 消息执行调用者 */
-    private IMsgExecuteCaller _msgExeCaller;
+    private IMsgExeCaller _msgExeCaller;
 
     /**
      * 类参数构造器
      *
      * @param msgCodec
      */
-    MsgDecodeListener(QueuedMsgCodec msgCodec, IMsgExecuteCaller msgExeCaller) {
+    MsgDecodeListener(QueuedMsgCodec msgCodec, IMsgExeCaller msgExeCaller) {
         // 断言参数不为空
         Assert.notNull(msgCodec, "msgCodec is null");
         Assert.notNull(msgCodec, "msgExeCaller is null");
