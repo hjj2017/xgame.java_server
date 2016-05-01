@@ -1,6 +1,7 @@
 package com.game.part.queued;
 
 import com.game.part.ThreadNamingFactory;
+import com.game.part.util.Assert;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.Connection;
@@ -28,6 +29,16 @@ public final class MsgQueue {
     /** 单例对象 */
     public static final MsgQueue OBJ = new MsgQueue();
 
+    /** 线程名称 */
+    private static final String THREAD_NAME = "com.game::MsgQueue";
+
+    /** BokerUrl */
+    public String _bokerUrl = null;
+    /** 私有地址 */
+    public String _privateDestination = null;
+    /** 消息执行调用者 */
+    public IMsgExecuteCaller _msgExeCaller = null;
+
     /** JMS 会话对象 */
     private Session _sessionObj;
     /** 消息生产者 */
@@ -53,7 +64,7 @@ public final class MsgQueue {
      *
      */
     public void sendPublicMsg(AbstractQueuedMsg msgObj) {
-        this.sendMsg(msgObj, TopicPool.PUBLIC_TOPIC);
+        this.sendMsg(msgObj, TopicPool.OBJ.getPublicTopic());
     }
 
     /**
@@ -64,17 +75,31 @@ public final class MsgQueue {
      *
      */
     public void sendMsg(AbstractQueuedMsg queuedMsg, final String strToDestination) {
+        Topic objTopic = TopicPool.OBJ.getTopic(strToDestination);
+        this.sendMsg(queuedMsg, objTopic);
+    }
+
+    /**
+     * 发送消息对象
+     *
+     * @param queuedMsg
+     * @param objTopic
+     */
+    private void sendMsg(AbstractQueuedMsg queuedMsg, Topic objTopic) {
+        // 断言参数不为空
+        Assert.notNull(queuedMsg, "queuedMsg is null");
+        Assert.notNull(objTopic, "objTopic is null");
+
         this._senderES.submit(() -> {
             try {
-                // 获取主题对象
-                Topic objTopic = TopicPool.OBJ.getTopic(strToDestination);
                 // 创建 JMS 消息对象并序列化
                 Message toJMSMsg = this._sessionObj.createMessage();
                 this._msgCodec.encode(queuedMsg, toJMSMsg);
                 // 发送 JMS 消息
                 this._msgProducer.send(objTopic, toJMSMsg);
             } catch (Exception ex) {
-                throw new QueuedError(ex);
+                // 记录错误日志
+                QueuedLog.LOG.error(ex.getMessage(), ex);
             }
         });
     }
@@ -85,21 +110,25 @@ public final class MsgQueue {
      */
     public void startUp() {
         try {
-            final String bokerUrl = "";
-            ConnectionFactory f = new ActiveMQConnectionFactory(bokerUrl);
+            ConnectionFactory f = new ActiveMQConnectionFactory(this._bokerUrl);
             Connection conn = f.createConnection();
             conn.start();
 
+            // 创建 JMS 会话对象
             this._sessionObj = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            // 初始化主题池
             TopicPool.OBJ._sessionObj = this._sessionObj;
+            TopicPool.OBJ._privateDestination = this._privateDestination;
 
             // 创建消息生产者和消费者
             this._msgProducer = this._sessionObj.createProducer(null);
             this._msgConsumerMap.putAll(this.createConsumerMap());
 
+            // 创建解码器
             this._msgCodec = new QueuedMsgCodec();
-
-            this._senderES = Executors.newSingleThreadExecutor(new ThreadNamingFactory("com.game::MsgQueue"));
+            // 创建发送线程池
+            ThreadNamingFactory tnf = new ThreadNamingFactory(THREAD_NAME);
+            this._senderES = Executors.newSingleThreadExecutor(tnf);
         } catch (Exception ex) {
             // 记录错误日志并退出!
             QueuedLog.LOG.error(ex.getMessage(), ex);
@@ -123,7 +152,10 @@ public final class MsgQueue {
         // 结果字典
         Map<String, MessageConsumer> resultMap = new HashMap<>();
         // 创建监听器
-        MyMsgListener listener = new MyMsgListener();
+        MsgDecodeListener listener = new MsgDecodeListener(
+            this._msgCodec,
+            this._msgExeCaller
+        );
 
         for (Topic listenTopic : listenTopicArr) {
             // 根据监听主题创建消息消费者

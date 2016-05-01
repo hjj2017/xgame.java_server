@@ -18,10 +18,10 @@ final class TopicPool {
     static final TopicPool OBJ = new TopicPool();
 
     /** 公共主题 */
-    static final String PUBLIC_TOPIC = "public";
+    private static final String PUBLIC_TOPIC = "public";
 
-    /** 私有主题 */
-    String _privateTopic;
+    /** 私有地址 */
+    String _privateDestination;
     /** JMS 会话对象 */
     Session _sessionObj;
 
@@ -50,7 +50,7 @@ final class TopicPool {
      * @return
      */
     Topic getPrivateTopic() {
-        return this.getTopic(this._privateTopic);
+        return this.getTopic(this._privateDestination);
     }
 
     /**
@@ -77,7 +77,6 @@ final class TopicPool {
             } catch (JMSException ex) {
                 // 记录错误日志并向外抛出异常
                 QueuedLog.LOG.error(ex.getMessage(), ex);
-                throw new QueuedError(ex);
             }
         }
 

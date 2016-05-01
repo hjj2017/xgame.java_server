@@ -16,7 +16,7 @@ import javax.jms.Message;
  */
 final class QueuedMsgCodec {
     /** 来自地址 */
-    static final String FROM_DESTINATION = "fromDestination";
+    static final String FROM_DESTINATION = "_fromDestination";
     /** 消息类 */
     static final String MSG_CLAZZ = "msgClazz";
     /** 消息体 */
@@ -36,7 +36,7 @@ final class QueuedMsgCodec {
 
         // 将私有地址设置为来信地址
         final String privateDestination = "";
-        fromQueuedMsg.fromDestination = privateDestination;
+        fromQueuedMsg._fromDestination = privateDestination;
 
         // 将消息序列化为 JSON 对象
         Gson gson = new Gson();
@@ -74,7 +74,7 @@ final class QueuedMsgCodec {
 
         // 添加到输出参数
         AbstractQueuedMsg queuedMsg = (AbstractQueuedMsg)msgObj;
-        queuedMsg.fromDestination = fromDestination;
+        queuedMsg._fromDestination = fromDestination;
         out_toQueuedMsg.setVal(queuedMsg);
     }
 }

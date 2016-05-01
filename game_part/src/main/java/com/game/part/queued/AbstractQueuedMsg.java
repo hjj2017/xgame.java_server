@@ -8,7 +8,7 @@ package com.game.part.queued;
  */
 public abstract class AbstractQueuedMsg {
     /** 来信地址 */
-    public String fromDestination;
+    public String _fromDestination;
 
     /**
      * 执行消息
