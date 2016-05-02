@@ -1,4 +1,4 @@
-package com.game.gameServer.scene;
+package com.game.gameServer.heartbeat;
 
 import com.game.gameServer.framework.Player;
 import com.game.gameServer.msg.AbstractCGMsgObj;
@@ -10,7 +10,6 @@ import com.game.part.heartbeat.IHeartbeatType;
 import com.game.part.util.Assert;
 
 import java.text.MessageFormat;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 可执行消息运行器
@@ -18,22 +17,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author hjj2019
  * @since 2016/05/01
  */
-class ExecutableMsgRunner implements IHeartbeatPoint {
+class ExecutableMsgHeartbeatPoint implements IHeartbeatPoint {
     /** 可执行消息 */
     private AbstractExecutableMsgObj _execMsgObj;
-    /** 场景名称 */
-    private String _sceneName;
 
     /**
      * 类参数构造器
      *
      * @param execMsgObj
      */
-    public ExecutableMsgRunner(
+    public ExecutableMsgHeartbeatPoint(
         AbstractExecutableMsgObj execMsgObj) {
         // 断言参数不为空
         Assert.notNull(execMsgObj, "execMsgObj is null");
-
         this._execMsgObj = execMsgObj;
     }
 
@@ -48,7 +44,7 @@ class ExecutableMsgRunner implements IHeartbeatPoint {
                 // 如果是 CG 消息,
                 // 且如果不允许执行 CG 消息,
                 // 则直接退出!
-                SceneLog.LOG.error(MessageFormat.format(
+                HeartbeatLog.LOG.error(MessageFormat.format(
                     "不能执行消息 {0}, 玩家不允许执行 {1} 类型的消息! " +
                     "具体请参见 com.game.gameServer.framework.Player 类 _allowMsgTypeMap 属性",
                     this._execMsgObj.getClass().getName(),
@@ -63,7 +59,7 @@ class ExecutableMsgRunner implements IHeartbeatPoint {
 
     @Override
     public IHeartbeatType getHeartbeatType() {
-        return null;
+        return this._execMsgObj.getMsgType()._heartbeatType;
     }
 
     @Override
@@ -74,7 +70,7 @@ class ExecutableMsgRunner implements IHeartbeatPoint {
                     // 如果是 CG 消息,
                     // 且如果不允许执行 CG 消息,
                     // 则直接退出!
-                    SceneLog.LOG.error(MessageFormat.format(
+                    HeartbeatLog.LOG.error(MessageFormat.format(
                         "二次验证时不能执行消息 {0}, 玩家不允许执行 {1} 类型的消息",
                         this._execMsgObj.getClass().getName(),
                         this._execMsgObj.getMsgType()
@@ -96,9 +92,10 @@ class ExecutableMsgRunner implements IHeartbeatPoint {
             this._execMsgObj.exec();
         } catch (Exception ex) {
             // 记录错误日志
-            SceneLog.LOG.error(MessageFormat.format(
+            HeartbeatLog.LOG.error(MessageFormat.format(
                 "场景 {0} 抛出异常 {1}",
-                this._sceneName, ex.getMessage()
+                this.getHeartbeatType().getStrVal(),
+                ex.getMessage()
             ), ex);
         }
     }

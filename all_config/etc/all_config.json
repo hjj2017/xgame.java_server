@@ -6,6 +6,7 @@
 	"gameServer" : {
 		# 基础配置
 		"serverIndex" : 1,
+		"serverName" : "S1",
 		"bindIpAddr" : "0.0.0.0",
 		"port" : 4400,
 		"msgEncrypt" : 0,
@@ -20,9 +21,10 @@
 		# 战报所在目录
 		"battleReportDir" : "../client/BR",
 		# 数据库配置
-		"dbConn" : "jdbc:mysql://127.0.0.1:3306/x_s00_game?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
+		"dbConn" : "jdbc:mysql://127.0.0.1:3306/X_s00_game?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
 		"dbUser" : "root",
-		"dbPass" : "root"
+		"dbPass" : "root123",
+		"bokerUrl" : "tcp://localhost:61616",
 	},
 
 # 
@@ -48,6 +50,6 @@
     	# 数据库配置
         "dbConn" : "jdbc:mysql://127.0.0.1:3306/x_passbook?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
         "dbUser" : "root", 
-        "dbPass" : "root"
+        "dbPass" : "root123",
     }
 }

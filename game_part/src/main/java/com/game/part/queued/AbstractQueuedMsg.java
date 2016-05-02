@@ -9,10 +9,4 @@ package com.game.part.queued;
 public abstract class AbstractQueuedMsg {
     /** 来信地址 */
     public String _fromDestination;
-
-    /**
-     * 执行消息
-     *
-     */
-    public abstract void execute();
 }

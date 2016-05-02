@@ -1,14 +1,10 @@
 package com.game.gameServer.framework;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Set;
-
 import com.game.gameServer.bizServ.AbstractBizServ;
 import com.game.gameServer.msg.AbstractCGMsgObj;
 import com.game.gameServer.msg.AbstractGCMsgObj;
-import com.game.gameServer.scene.IHeartbeat;
-import com.game.gameServer.scene.SceneFacade;
+import com.game.part.heartbeat.HeartbeatTrigger;
+import com.game.part.heartbeat.IHeartbeatPoint;
 import com.game.part.msg.MsgServ;
 import com.game.part.msg.type.AbstractMsgObj;
 import com.game.part.tmpl.XlsxTmplServ;
@@ -17,6 +13,9 @@ import com.game.part.tmpl.type.AbstractXlsxTmpl;
 import com.game.part.util.Assert;
 import com.game.part.util.ClazzUtil;
 import com.game.part.util.PackageUtil;
+
+import java.text.MessageFormat;
+import java.util.Set;
 
 /**
  * 初始化业务模块
@@ -53,7 +52,7 @@ interface IServerInit_BizModule {
         allClazzSet.forEach(currClazz -> {
             if (ClazzUtil.isConcreteDrivedClass(
                 currClazz,
-                IHeartbeat.class)) {
+                IHeartbeatPoint.class)) {
                 // 如果是心跳接口,
                 regHeartbeatObj(_c(currClazz));
                 return;
@@ -100,15 +99,15 @@ interface IServerInit_BizModule {
      * @param byClazzDef
      *
      */
-    static void regHeartbeatObj(Class<? extends IHeartbeat> byClazzDef) {
+    static void regHeartbeatObj(Class<? extends IHeartbeatPoint> byClazzDef) {
         // 断言参数不为空
         Assert.notNull(byClazzDef);
 
         try {
             // 获取心跳对象
-            IHeartbeat hb = byClazzDef.newInstance();
+            IHeartbeatPoint hbPoint = byClazzDef.newInstance();
             // 添加到列表
-            SceneFacade.OBJ._heartbeatList.add(hb);
+            HeartbeatTrigger.OBJ.known(hbPoint);
 
             // 记录消息注册日志
             FrameworkLog.LOG.info(MessageFormat.format(

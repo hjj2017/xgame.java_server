@@ -8,10 +8,10 @@ package com.game.part.queued;
  */
 public interface IMsgExeCaller {
     /**
-     * 调用消息对象的 execute 函数
+     * 调用消息对象的 exec 函数
      *
      * @param queuedMsg
-     * @see AbstractQueuedMsg#execute()
+     * @see AbstractQueuedMsg#exec()
      */
     void callExec(AbstractQueuedMsg queuedMsg);
 }

@@ -1,12 +1,12 @@
 {
 # 游戏服 IP 地址
-"gameServerIpAddr" : "192.168.1.2",
+"gameServerIpAddr" : "127.0.0.1",
 # 游戏服端口号
 "gameServerPort" : 4400,
 # 起始账户 Id
 "startPId" : "2049",
 # 结束账户 Id
-"endPId" : "8192",
+"endPId" : "2049",
 # 账户密码
 "userPassword" : "1",
 # 游戏服名称

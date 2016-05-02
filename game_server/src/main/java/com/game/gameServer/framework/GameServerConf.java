@@ -16,6 +16,8 @@ public final class GameServerConf {
     public int _platformIndex = 1;
     /** 服务器索引 */
     public int _serverIndex  = 1;
+    /** 服务器名称 */
+    public String _serverName = null;
     /** lib 目录, 一般是游戏业务模块的 jar 文件所在目录 */
     public String _libDir = null;
     /** class 目录, 一般是游戏业务模块的 class 文件所在目录 */
@@ -32,6 +34,8 @@ public final class GameServerConf {
     public String _dbPass = "root";
     /** 语言 */
     public String _lang = "zh_CN";
+    /** Boker URL */
+    public String _bokerUrl = "tcp://localhost:61616";
 
     /**
      * 类默认构造器
@@ -54,6 +58,7 @@ public final class GameServerConf {
 
         // 设置服务器索引
         this._serverIndex = jsonObj.optInt("serverIndex", this._serverIndex);
+        this._serverName = jsonObj.optString("serverName", this._serverName);
         // Excel 文件目录
         this._xlsxFileDir = jsonObj.optString("xlsxFileDir", this._xlsxFileDir);
         // 战报目录
@@ -64,8 +69,10 @@ public final class GameServerConf {
         // 数据库连接配置
         this._dbConn = jsonObj.optString("dbConn", this._dbConn);
         this._dbUser = jsonObj.optString("dbUser", this._dbUser);
-        this._dbPass = jsonObj.optString("dbUser", this._dbPass);
+        this._dbPass = jsonObj.optString("dbPass", this._dbPass);
         // 语言
         this._lang = jsonObj.optString("lang", this._lang);
+        // Boker URL
+        this._bokerUrl = jsonObj.optString("bokerUrl", this._bokerUrl);
     }
 }

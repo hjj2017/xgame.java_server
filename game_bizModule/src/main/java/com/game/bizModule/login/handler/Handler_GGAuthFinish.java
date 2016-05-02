@@ -3,7 +3,9 @@ package com.game.bizModule.login.handler;
 import com.game.bizModule.login.LoginStateTable;
 import com.game.bizModule.login.msg.GCLogin;
 import com.game.bizModule.login.msg.GGAuthFinish;
+import com.game.bizModule.login.queued.LoginQueuedMsg;
 import com.game.gameServer.msg.AbstractGGMsgHandler;
+import com.game.part.queued.MsgQueue;
 
 /**
  * 验证完成
@@ -33,5 +35,9 @@ public class Handler_GGAuthFinish extends AbstractGGMsgHandler<GGAuthFinish> {
         this.sendMsgToClient(
             new GCLogin(msgObj._success), msgObj._p
         );
+
+        LoginQueuedMsg qMsg = new LoginQueuedMsg();
+        qMsg._playerName = msgObj._p._userName;
+        MsgQueue.OBJ.sendPublicMsg(qMsg);
     }
 }

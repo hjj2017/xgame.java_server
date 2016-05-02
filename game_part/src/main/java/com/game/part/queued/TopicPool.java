@@ -50,7 +50,12 @@ final class TopicPool {
      * @return
      */
     Topic getPrivateTopic() {
-        return this.getTopic(this._privateDestination);
+        if (this._privateDestination == null ||
+            this._privateDestination.isEmpty()) {
+            return null;
+        } else {
+            return this.getTopic(this._privateDestination);
+        }
     }
 
     /**

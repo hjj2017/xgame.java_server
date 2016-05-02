@@ -1,5 +1,6 @@
 package com.game.gameServer.queued;
 
+import com.game.gameServer.heartbeat.GameHeartbeat;
 import com.game.part.queued.AbstractQueuedMsg;
 import com.game.part.queued.IMsgExeCaller;
 
@@ -18,6 +19,15 @@ public class MsgExeCallerImpl implements IMsgExeCaller {
             return;
         }
 
-        queuedMsg.execute();
+        if (!(queuedMsg instanceof AbstractExecutableQueuedMsg)) {
+            // 如果不是可执行的队列消息,
+            // 则直接退出!
+            return;
+        }
+
+        // 以心跳方式执行队列消息
+        GameHeartbeat.OBJ.known(new QueuedMsgHeartbeatPoint(
+            (AbstractExecutableQueuedMsg)queuedMsg
+        ));
     }
 }

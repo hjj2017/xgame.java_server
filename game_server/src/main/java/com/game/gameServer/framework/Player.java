@@ -53,7 +53,7 @@ public final class Player {
      * 也就是说, 这些状态始终没有逾越 login 类型...
      *
      * @see MsgTypeEnum
-     * @see com.game.gameServer.scene.InnerScene
+     * @see com.game.gameServer.heartbeat.InnerScene
      *
      */
     public final Map<MsgTypeEnum, Boolean> _allowMsgTypeMap = new ConcurrentHashMap<>();

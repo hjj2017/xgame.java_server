@@ -1,14 +1,17 @@
 package com.game.gameServer.framework;
 
+import com.game.gameServer.heartbeat.GameHeartbeat;
+import com.game.gameServer.heartbeat.HeartbeatTypeEnum;
+import com.game.gameServer.msg.netty.IServerStartUp_ListenCGMsg;
+import com.game.gameServer.queued.MsgExeCallerImpl;
+import com.game.part.dao.CommDao;
+import com.game.part.heartbeat.HeartbeatTrigger;
+import com.game.part.msg.MsgServ;
+import com.game.part.queued.MsgQueue;
+
+import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.Persistence;
-
-import com.game.gameServer.msg.netty.IServerStartUp_ListenCGMsg;
-import com.game.part.queued.MsgQueue;
-import com.game.gameServer.scene.SceneFacade;
-import com.game.part.dao.CommDao;
-import com.game.part.msg.MsgServ;
 
 /**
  * 网关服务器内核类
@@ -38,6 +41,13 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 
         // 初始化 EntityManagerFactory
         this.initEMF();
+
+        // 初始化游戏心跳
+        GameHeartbeat.OBJ.init();
+
+        MsgQueue.OBJ._bokerUrl = GameServerConf.OBJ._bokerUrl;
+        MsgQueue.OBJ._privateDestination = GameServerConf.OBJ._serverName;
+        MsgQueue.OBJ._msgExeCaller = new MsgExeCallerImpl();
 
         //
         // 初始化业务模块
@@ -74,9 +84,9 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
         FrameworkLog.LOG.info(":: 准备启动服务器消息监听");
 
         // 设置消息接收器
-        MsgServ.OBJ.putMsgReceiver(SceneFacade.OBJ);
+        MsgServ.OBJ.putMsgReceiver(GameHeartbeat.OBJ);
         // 启动心跳
-        SceneFacade.OBJ.startUp();
+        GameHeartbeat.OBJ.startUp();
 
         // 启动消息队列
         MsgQueue.OBJ.startUp();

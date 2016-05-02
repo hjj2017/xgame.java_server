@@ -120,12 +120,12 @@ public final class MsgQueue {
             TopicPool.OBJ._sessionObj = this._sessionObj;
             TopicPool.OBJ._privateDestination = this._privateDestination;
 
+            // 创建解码器
+            this._msgCodec = new QueuedMsgCodec();
             // 创建消息生产者和消费者
             this._msgProducer = this._sessionObj.createProducer(null);
             this._msgConsumerMap.putAll(this.createConsumerMap());
 
-            // 创建解码器
-            this._msgCodec = new QueuedMsgCodec();
             // 创建发送线程池
             ThreadNamingFactory tnf = new ThreadNamingFactory(THREAD_NAME);
             this._senderES = Executors.newSingleThreadExecutor(tnf);
@@ -158,6 +158,10 @@ public final class MsgQueue {
         );
 
         for (Topic listenTopic : listenTopicArr) {
+            if (listenTopic == null) {
+                continue;
+            }
+
             // 根据监听主题创建消息消费者
             MessageConsumer msgConsumer = this._sessionObj.createConsumer(listenTopic);
             msgConsumer.setMessageListener(listener);

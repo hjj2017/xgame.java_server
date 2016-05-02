@@ -1,14 +1,15 @@
 package com.game.gameServer.msg;
 
+import com.game.gameServer.heartbeat.HeartbeatTypeEnum;
 import com.game.part.util.EnumHelper;
 
 /**
  * 消息类型, 决定了玩家能处理什么类型的消息?
- * 注意 : 有个命名相似的 MsgOrigTypeEnum, 它决定了消息能在哪个场景线程里执行...
+ * 注意 : HeartbeatTypeEnum, 它决定了消息能在哪个心跳线程里执行...
  *
  * @author hjj2017
  * @since 2015/7/11
- * @see MsgOrigTypeEnum
+ * @see HeartbeatTypeEnum
  *
  */
 public enum MsgTypeEnum implements EnumHelper.ICustomEnum {
@@ -17,13 +18,13 @@ public enum MsgTypeEnum implements EnumHelper.ICustomEnum {
     /** 游戏 */
     game("game", 1),
     /** 聊天 */
-    chat(MsgOrigTypeEnum.chat, "chat", 2),
+    chat(HeartbeatTypeEnum.chat, "chat", 2),
     /** 登出 */
     logout("logout", 44),
 ;
 
     /** 消息源类型 */
-    public final MsgOrigTypeEnum _origType;
+    public final HeartbeatTypeEnum _heartbeatType;
     /** 字符串值 */
     private final String _strVal;
     /** 整数值 */
@@ -37,7 +38,7 @@ public enum MsgTypeEnum implements EnumHelper.ICustomEnum {
      *
      */
     MsgTypeEnum(String strVal, int intVal) {
-        this._origType = MsgOrigTypeEnum.game;
+        this._heartbeatType = HeartbeatTypeEnum.game;
         this._strVal = strVal;
         this._intVal = intVal;
     }
@@ -45,13 +46,13 @@ public enum MsgTypeEnum implements EnumHelper.ICustomEnum {
     /**
      * 类参数构造器
      *
-     * @param superType
+     * @param hbTypeEnum
      * @param strVal
      * @param intVal
      *
      */
-    MsgTypeEnum(MsgOrigTypeEnum superType, String strVal, int intVal) {
-        this._origType = superType;
+    MsgTypeEnum(HeartbeatTypeEnum hbTypeEnum, String strVal, int intVal) {
+        this._heartbeatType = hbTypeEnum;
         this._strVal = strVal;
         this._intVal = intVal;
     }
