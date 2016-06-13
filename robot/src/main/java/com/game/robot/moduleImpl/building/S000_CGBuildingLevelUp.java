@@ -22,7 +22,7 @@ public class S000_CGBuildingLevelUp extends AbstractModuleReady {
         }
 
         // 升级主城
-        robotObj.sendMsg(new CGBuildingLevelUp(BuildingTypeEnum.home));
+        robotObj.sendCGMsg(new CGBuildingLevelUp(BuildingTypeEnum.home));
         robotObj.gotoNextModuleAndReady();
     }
 }

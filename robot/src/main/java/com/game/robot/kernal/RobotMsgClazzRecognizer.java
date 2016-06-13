@@ -25,10 +25,10 @@ public class RobotMsgClazzRecognizer {
     public static final RobotMsgClazzRecognizer OBJ = new RobotMsgClazzRecognizer();
 
     /**
-     * 扫描所有模块
+     * 扫描游戏业务模块
      * 
      */
-    void scanAll() {
+    void scanGameBizModuleProj() {
         // 记录日志信息
         RobotLog.LOG.info("开始扫描游戏服, 注册 CG / GC 消息");
         // 获取 GCMsg 的所有子类

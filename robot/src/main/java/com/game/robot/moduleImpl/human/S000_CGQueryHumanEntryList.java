@@ -24,6 +24,6 @@ public class S000_CGQueryHumanEntryList extends AbstractModuleReady {
         // 创建并发送 CG 消息
         CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
         cgMSG._serverName = new MsgStr(robotObj._gameServerName);
-        robotObj.sendMsg(cgMSG);
+        robotObj.sendCGMsg(cgMSG);
     }
 }

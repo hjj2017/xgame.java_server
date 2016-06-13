@@ -21,7 +21,7 @@ public class S000_CGWorldChat extends AbstractModuleReady {
         }
 
         // 世界聊天
-        robotObj.sendMsg(new CGWorldChat("hello World"));
+        robotObj.sendCGMsg(new CGWorldChat("hello World"));
         robotObj.gotoNextModuleAndReady();
     }
 }

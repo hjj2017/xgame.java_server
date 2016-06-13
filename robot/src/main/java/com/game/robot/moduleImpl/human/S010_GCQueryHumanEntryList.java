@@ -38,7 +38,7 @@ public class S010_GCQueryHumanEntryList extends AbstractGCMsgHandler<GCQueryHuma
             cgMSG._heroTmplId = new MsgInt(1001);
             cgMSG._serverName = new MsgStr(robotObj._gameServerName);
             // 发送 CG 消息
-            robotObj.sendMsg(cgMSG);
+            robotObj.sendCGMsg(cgMSG);
         } else {
             // 进入角色
             HumanEntryMO entryMo = msgObj._humanEntryList.get(0);
@@ -55,7 +55,7 @@ public class S010_GCQueryHumanEntryList extends AbstractGCMsgHandler<GCQueryHuma
             cgMSG._humanUId = entryMo._humanUId;
             cgMSG._humanUIdStr = entryMo._humanUIdStr;
             // 发送 CG 消息
-            robotObj.sendMsg(cgMSG);
+            robotObj.sendCGMsg(cgMSG);
         }
     }
 

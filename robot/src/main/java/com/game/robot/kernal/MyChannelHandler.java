@@ -33,7 +33,7 @@ class MyChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object obj) {
         // 处理消息
-        this._robotObj.processMsg(obj);
+        this._robotObj.processGCMsg(obj);
     }
 
     @Override

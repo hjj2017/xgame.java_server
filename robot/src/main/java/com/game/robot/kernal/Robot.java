@@ -1,22 +1,13 @@
 package com.game.robot.kernal;
 
-import java.net.InetSocketAddress;
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 
-import com.game.gameServer.msg.netty.MsgDecoder;
-import com.game.gameServer.msg.netty.MsgEncoder;
 import com.game.robot.RobotLog;
 
 /**
@@ -27,40 +18,6 @@ import com.game.robot.RobotLog;
  * 
  */
 public final class Robot {
-    /** 创建事件循环 */
-    private static final EventLoopGroup NETTY_WORK_GROUP = new NioEventLoopGroup(1);
-    /** 引导程序 */
-    private static final Bootstrap _B;
-
-    /**
-     * 类默认构造器
-     *
-     */
-    static {
-        // 创建客户端引导程序
-        Bootstrap b = new Bootstrap();
-
-        b.group(NETTY_WORK_GROUP);
-        b.option(ChannelOption.TCP_NODELAY, true);
-        b.option(ChannelOption.SO_KEEPALIVE, true);
-        b.channel(NioSocketChannel.class);
-        b.handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
-                ch.pipeline().addLast(
-                    new MsgDecoder(),
-                    new MsgEncoder()
-                );
-            }
-        });
-
-        _B = b;
-    }
-
-    /** 游戏服 IP 地址 */
-    public String _gameServerIpAddr = "0.0.0.0";
-    /** 游戏服端口号 */
-    public int _gameServerPort = 8001;
     /** 游戏服务器名称 */
     public String _gameServerName = "S01";
     /** 用户名称 */
@@ -69,15 +26,21 @@ public final class Robot {
     public String _userPass = "";
     /** 玩家角色 UId */
     public long _humanUId = -1L;
+    /** 玩家角色名称 */
+    public String _humanName = "";
+    /** 最后活动时间 */
+    public long _lastActiveTime = -1L;
 
     /** 运行策略 */
     private FocusModule _currFocusModule = null;
-    /** 消息队列 */
-    final LinkedBlockingQueue<? super Object> _msgQ = new LinkedBlockingQueue<>();
+    /** CG 消息队列 */
+    private final ConcurrentLinkedQueue<? super Object> _cgMsgQ = new ConcurrentLinkedQueue<>();
+    /** GC 消息队列 */
+    private final ConcurrentLinkedQueue<? super Object> _gcMsgQ = new ConcurrentLinkedQueue<>();
+    /** 信道对象 */
+    private Channel _ch = null;
     /** 数据字典 */
     public final Map<Object, Object> _dataMap = new ConcurrentHashMap<>();
-    /** 信道对象 */
-    Channel _ch = null;
 
     /**
      * 类参数构造器
@@ -152,18 +115,6 @@ public final class Robot {
     }
 
     /**
-     * 结束机器人
-     *
-     */
-    void over() {
-        // 断开连接
-        this.disconnect();
-        // 清除数据
-        this._msgQ.clear();
-        this._dataMap.clear();
-    }
-
-    /**
      * 消化所有消息
      * 
      */
@@ -177,7 +128,7 @@ public final class Robot {
                 // 但是最多只等待 20 秒!
                 // 如果超过这个时间, 
                 // 则返回空值...
-                Object msgObj = this._msgQ.poll();
+                Object msgObj = this._gcMsgQ.poll();
     
                 if (msgObj == null) {
                     // 如果消息对象为空,
@@ -209,7 +160,7 @@ public final class Robot {
 
         if (overFlag) {
             // 结束机器人
-            this.over();
+            this.disconnectAndQuit();
         }
     }
 
@@ -218,22 +169,25 @@ public final class Robot {
      * 
      */
     public void connectToGameServer() {
-        try {
-            // 连接服务器后获取信道
-            Channel ch = _B.connect(new InetSocketAddress(
-                this._gameServerIpAddr,
-                this._gameServerPort
-            )).await().channel();
+        // 连接服务器后获取信道
+        Channel ch = ConnectToServer.OBJ.connectAndGetChannel();
 
-            // 添加一个处理器
-            ch.pipeline().addLast(new MyChannelHandler(Robot.this));
-            // 设置信道
-            this._ch = ch;
-        } catch (Exception ex) {
-            // 记录并抛出异常
-            RobotLog.LOG.error(ex.getMessage(), ex);
-            this.disconnect();
+        if (ch == null) {
+            // 如果信道对象为空,
+            // 则直接退出!
+            RobotLog.LOG.error(MessageFormat.format(
+                "玩家 {0} 连接服务器失败",
+                this._userName
+            ));
+
+            this.disconnectAndQuit();
+            return;
         }
+
+        // 添加一个处理器
+        ch.pipeline().addLast(new MyChannelHandler(Robot.this));
+        // 设置信道
+        this._ch = ch;
     }
 
     /**
@@ -251,37 +205,110 @@ public final class Robot {
                 );
             }
         }
+
+        // 清除消息队列
+        this._cgMsgQ.clear();
+        this._gcMsgQ.clear();
+        // 清除数据
+        this._dataMap.clear();
+    }
+
+    /**
+     * 断开连接并退出测试
+     *
+     */
+    public void disconnectAndQuit() {
+        this.disconnect();
+        AllRobotManager.OBJ.removeRobot(this._userName);
     }
 
     /**
      * 给游戏服务器发送消息
-     * 
-     * @param msgObj
-     * 
+     *
+     * @param cgMsgObj
      */
-    public void sendMsg(Object msgObj) {
-        if (msgObj != null &&
-            this._ch != null) {
+    public void sendCGMsg(Object cgMsgObj) {
+        this.sendCGMsg(cgMsgObj, -1000L);
+    }
+
+    /**
+     * 给游戏服务器发送消息
+     *
+     * @param objCGMsg
+     * @param afterMillis
+     *
+     */
+    public void sendCGMsg(Object objCGMsg, long afterMillis) {
+        if (objCGMsg == null) {
+            return;
+        }
+
+        // 获取当前时间
+        long nowTime = System.currentTimeMillis();
+        // CG　消息执行时间点
+        long cgMsgExecTimePoint = nowTime + afterMillis;
+
+        // 记录日志信息
+        RobotLog.LOG.info(objCGMsg.getClass().getSimpleName());
+        // 如果消息对象和会话对象都不为空,
+        this._cgMsgQ.offer(new DelayCGMsg(cgMsgExecTimePoint, objCGMsg));
+
+        // 修改最后活动时间
+        this._lastActiveTime = nowTime;
+    }
+
+    /**
+     * 实际发送 CG 消息
+     *
+     * @param nowTime
+     */
+    void realSendCGMsg(long nowTime) {
+        // 获取迭代器
+        Iterator<?> it = this._cgMsgQ.iterator();
+
+        for (; it.hasNext(); ) {
+            // 获取 CG 消息
+            Object cgMsgObj = it.next();
+
+            if (!(cgMsgObj instanceof DelayCGMsg)) {
+                it.remove();
+                continue;
+            }
+
+            // 转型为 DelayCGMsg
+            DelayCGMsg delayCGMsg = (DelayCGMsg)cgMsgObj;
+            // 获取执行时间点
+            long execTimePoint = delayCGMsg._execTimePoint;
+
+            if (execTimePoint > nowTime) {
+                // 如果还没到时间,
+                // 则直接跳过!
+                continue;
+            }
+
             try {
-                this._ch.writeAndFlush(msgObj).await();
+                // 写出 CG 消息
+                this._ch.writeAndFlush(delayCGMsg._cgMsg).await();
             } catch (Exception ex) {
                 // 记录并抛出异常
                 RobotLog.LOG.error(
                     ex.getMessage(), ex
                 );
             }
+
+            it.remove();
         }
     }
 
     /**
-     * 处理消息
+     * 处理 GC 消息
      *
-     * @param msgObj
+     * @param objGCMsg
      *
      */
-    public void processMsg(Object msgObj) {
-        if (msgObj != null) {
-            this._msgQ.offer(msgObj);
+    public void processGCMsg(Object objGCMsg) {
+        if (objGCMsg != null) {
+            this._gcMsgQ.offer(objGCMsg);
             this.digestAllMsg();
         }
     }

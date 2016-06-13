@@ -30,7 +30,7 @@ public class S000_CGLogin extends AbstractModuleReady {
         jsonObj.put("userName", robotObj._userName);
         jsonObj.put("password", robotObj._userPass);
         // 创建并发送 GC 消息
-        robotObj.sendMsg(new CGLogin(
+        robotObj.sendCGMsg(new CGLogin(
             robotObj._userName,
             jsonObj.toString()
         ));

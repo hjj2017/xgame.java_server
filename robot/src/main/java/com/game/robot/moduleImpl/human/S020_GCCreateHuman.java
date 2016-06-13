@@ -32,7 +32,7 @@ public class S020_GCCreateHuman extends AbstractGCMsgHandler<GCCreateHuman> {
             // 创建并发送 CG 消息
             CGQueryHumanEntryList cgMSG = new CGQueryHumanEntryList();
             cgMSG._serverName = new MsgStr(robotObj._gameServerName);
-            robotObj.sendMsg(cgMSG);
+            robotObj.sendCGMsg(cgMSG);
         } else {
             // 记录日志信息
             RobotLog.LOG.info(MessageFormat.format(
