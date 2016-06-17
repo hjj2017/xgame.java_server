@@ -309,14 +309,14 @@ public final class LazySavingHelper {
             // 获取延迟保存对象
             final ILazySavingObj<?> lso = entry._lso;
 
-            if (!pred.predicate(lso)) {
-                // 如果有断言对象,
-                // 并且当前 LSO 不满足条件,
-                // 则直接退出!
-                continue;
-            }
-
             try {
+                if (!pred.predicate(lso)) {
+                    // 如果有断言对象,
+                    // 并且当前 LSO 不满足条件,
+                    // 则直接退出!
+                    continue;
+                }
+
                 if (entry._operTypeInt == UpdateEntry.OPT_saveOrUpdate) {
                     // 执行保存或更新操作
                     CommUpdater.OBJ.saveOrUpdate(lso);
@@ -324,12 +324,12 @@ public final class LazySavingHelper {
                     // 执行删除操作
                     CommUpdater.OBJ.del(lso);
                 }
-
-                // 从字典中移除对象
-                it.remove();
             } catch (Exception ex) {
                 // 记录异常日志
                 LazySavingLog.LOG.error(ex.getMessage(), ex);
+            } finally {
+                // 从字典中移除对象
+                it.remove();
             }
 
             // 数量减 1
