@@ -36,7 +36,7 @@ public final class PackageUtil {
      * @return
      *
      */
-    public static Set<Class<?>> listSubClazz(
+    static public Set<Class<?>> listSubClazz(
         String packageName,
         Class<?> superClazz) {
         if (superClazz != null) {
@@ -55,7 +55,7 @@ public final class PackageUtil {
      * @return
      *
      */
-    public static Set<Class<?>> listClazz(
+    static public Set<Class<?>> listClazz(
         String packageName, boolean recursive, IClazzFilter filter) {
 
         if (packageName == null ||
@@ -134,7 +134,7 @@ public final class PackageUtil {
      * @return
      *
      */
-    private static Set<Class<?>> listClazzFromDir(
+    static private Set<Class<?>> listClazzFromDir(
         final File dirFile, final String packageName, final boolean recursive, IClazzFilter filter) {
 
         if (!dirFile.exists() ||
@@ -235,7 +235,7 @@ public final class PackageUtil {
      * @return
      *
      */
-    private static Set<Class<?>> listClazzFromJar(
+    static private Set<Class<?>> listClazzFromJar(
         final File jarFilePath, final String packageName, final boolean recursive, IClazzFilter filter) {
 
         if (jarFilePath == null ||
@@ -324,7 +324,7 @@ public final class PackageUtil {
      *
      */
     @FunctionalInterface
-    public static interface IClazzFilter {
+    static public interface IClazzFilter {
         /**
          * 是否接受当前类?
          *

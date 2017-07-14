@@ -23,7 +23,7 @@ public final class Assert {
      *
      * @param obj
      */
-    public static void notNull(Object obj) {
+    static public void notNull(Object obj) {
         notNull(obj, null);
     }
 
@@ -32,7 +32,7 @@ public final class Assert {
      *
      * @param obj
      */
-    public static void notNull(Object obj, String msg) {
+    static public void notNull(Object obj, String msg) {
         if (obj == null) {
             throw new IllegalArgumentException(msg);
         }
@@ -43,7 +43,7 @@ public final class Assert {
      *
      * @param str
      */
-    public static void notNullOrEmpty(String str) {
+    static public void notNullOrEmpty(String str) {
         notNullOrEmpty(str, null);
     }
 
@@ -54,7 +54,7 @@ public final class Assert {
      * @param msg
      *
      */
-    public static void notNullOrEmpty(String str, String msg) {
+    static public void notNullOrEmpty(String str, String msg) {
         if (str == null ||
             str.isEmpty()) {
             throw new IllegalArgumentException(msg);
@@ -67,7 +67,7 @@ public final class Assert {
      * @param arr
      *
      */
-    public static void notNullOrEmpty(Object[] arr) {
+    static public void notNullOrEmpty(Object[] arr) {
         notNullOrEmpty(arr, null);
     }
 
@@ -78,7 +78,7 @@ public final class Assert {
      * @param msg
      *
      */
-    public static void notNullOrEmpty(Object[] arr, String msg) {
+    static public void notNullOrEmpty(Object[] arr, String msg) {
         if (arr == null ||
             arr.length <= 0) {
             throw new IllegalArgumentException(msg);
@@ -91,7 +91,7 @@ public final class Assert {
      * @param coll
      *
      */
-    public static void notNullOrEmpty(Collection<?> coll) {
+    static public void notNullOrEmpty(Collection<?> coll) {
         notNullOrEmpty(coll, null);
     }
 
@@ -101,7 +101,7 @@ public final class Assert {
      * @param coll
      *
      */
-    public static void notNullOrEmpty(Collection<?> coll, String msg) {
+    static public void notNullOrEmpty(Collection<?> coll, String msg) {
         if (coll == null ||
             coll.isEmpty()) {
             throw new IllegalArgumentException(msg);
@@ -114,7 +114,7 @@ public final class Assert {
      * @param intArr
      *
      */
-    public static void notNullOrEmpty(int[] intArr) {
+    static public void notNullOrEmpty(int[] intArr) {
         notNullOrEmpty(intArr, null);
     }
 
@@ -124,7 +124,7 @@ public final class Assert {
      * @param intArr
      *
      */
-    public static void notNullOrEmpty(int[] intArr, String msg) {
+    static public void notNullOrEmpty(int[] intArr, String msg) {
         if (intArr == null ||
             intArr.length <= 0) {
             throw new IllegalArgumentException(msg);
@@ -137,7 +137,7 @@ public final class Assert {
      * @param shortArr
      *
      */
-    public static void notNullOrEmpty(short[] shortArr) {
+    static public void notNullOrEmpty(short[] shortArr) {
         notNullOrEmpty(shortArr, null);
     }
 
@@ -147,7 +147,7 @@ public final class Assert {
      * @param shortArr
      *
      */
-    public static void notNullOrEmpty(short[] shortArr, String msg) {
+    static public void notNullOrEmpty(short[] shortArr, String msg) {
         if (shortArr == null ||
             shortArr.length <= 0) {
             throw new IllegalArgumentException(msg);
@@ -160,7 +160,7 @@ public final class Assert {
      * @param expr
      *
      */
-    public static void isTrue(boolean expr) {
+    static public void isTrue(boolean expr) {
         isTrue(expr, null);
     }
 
@@ -170,7 +170,7 @@ public final class Assert {
      * @param expr
      *
      */
-    public static void isTrue(boolean expr, String msg) {
+    static public void isTrue(boolean expr, String msg) {
         if (!expr) {
             throw new IllegalArgumentException(msg);
         }

@@ -25,7 +25,7 @@ public final class EnumHelper {
      * @return
      *
      */
-    public static<T extends Enum<T>> T parse(
+    static public<T extends Enum<T>> T parse(
         int ordinalOrIntVal,
         T[] referEnumArr) {
         // 断言参数不为空
@@ -57,7 +57,7 @@ public final class EnumHelper {
      * @return
      *
      */
-    public static<T extends Enum<T>> T parse(
+    static public<T extends Enum<T>> T parse(
         String nameOrStrVal,
         T[] referEnumArr) {
         // 断言参数不为空
@@ -88,7 +88,7 @@ public final class EnumHelper {
      * @see 2013/1/22
      *
      */
-    public static interface ICustomEnum {
+    static public interface ICustomEnum {
         /**
          * 获取字符串值
          *

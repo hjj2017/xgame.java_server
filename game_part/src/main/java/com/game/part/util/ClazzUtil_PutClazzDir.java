@@ -29,7 +29,7 @@ final class ClazzUtil_PutClazzDir {
      * @param fromDir
      *
      */
-    public static void process(String fromDir) {
+    static public void process(String fromDir) {
         // 获取类库路径
         File clazzPath = new File(fromDir);
 

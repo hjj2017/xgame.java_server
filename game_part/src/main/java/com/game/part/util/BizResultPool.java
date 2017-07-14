@@ -15,7 +15,7 @@ public class BizResultPool {
      * @return
      *
      */
-    public static <T extends BizResultObj> T borrow(Class<T> clazz) {
+    static public <T extends BizResultObj> T borrow(Class<T> clazz) {
         // 断言参数不为空
         Assert.notNull(clazz, "clazz");
         // 获取线程本地对象并清理内容

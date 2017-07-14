@@ -40,7 +40,7 @@ public class Out<T> {
      * @return
      *
      */
-    public static<T> T optVal(Out<T> out, T optVal) {
+    static public<T> T optVal(Out<T> out, T optVal) {
         return (out.getVal() == null) ? optVal : out.getVal();
     }
 
@@ -51,7 +51,7 @@ public class Out<T> {
      * @param val
      *
      */
-    public static<T> void putVal(Out<T> out, T val) {
+    static public<T> void putVal(Out<T> out, T val) {
         if (out != null) {
             out.setVal(val);
         }

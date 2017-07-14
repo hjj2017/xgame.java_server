@@ -24,7 +24,7 @@ public final class NullUtil {
      * @return
      *
      */
-    public static<T> T optVal(T val, T optVal) {
+    static public<T> T optVal(T val, T optVal) {
         if (val == null) {
             return optVal;
         } else {

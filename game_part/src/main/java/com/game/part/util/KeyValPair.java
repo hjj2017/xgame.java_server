@@ -82,7 +82,7 @@ public final class KeyValPair<K, V> {
      *
      */
     @SuppressWarnings("unchecked")
-    public static <K, V> KeyValPair<K, V>[] newKeyValPairArray(int size) {
+    static public <K, V> KeyValPair<K, V>[] newKeyValPairArray(int size) {
         // 创建数组对象
         Object arr = Array.newInstance(
             KeyValPair.class,

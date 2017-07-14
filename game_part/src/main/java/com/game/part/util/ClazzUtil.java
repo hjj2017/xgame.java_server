@@ -33,7 +33,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static boolean isDrivedClazz(
+    static public boolean isDrivedClazz(
         Class<?> clazzA,
         Class<?> clazzB) {
         if (clazzA == null ||
@@ -56,7 +56,7 @@ public final class ClazzUtil {
      * @param superClazz
      * @return
      */
-    public static boolean isConcreteDrivedClass(
+    static public boolean isConcreteDrivedClass(
         Class<?> currClazz,
         Class<?> superClazz) {
         if (!isDrivedClazz(currClazz, superClazz)) {
@@ -85,7 +85,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static List<Field> listField(Class<?> fromClazz) {
+    static public List<Field> listField(Class<?> fromClazz) {
         if (fromClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -128,7 +128,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static List<Field> listField(Class<?> fromClazz, Predicate<Field> pred) {
+    static public List<Field> listField(Class<?> fromClazz, Predicate<Field> pred) {
         if (fromClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -160,7 +160,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static Field getField(Class<?> fromClazz, Predicate<Field> pred) {
+    static public Field getField(Class<?> fromClazz, Predicate<Field> pred) {
         if (fromClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -185,7 +185,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static Field getField(Class<?> fromClazz, String fieldName) {
+    static public Field getField(Class<?> fromClazz, String fieldName) {
         if (fromClazz == null ||
             fieldName == null ||
             fieldName.isEmpty()) {
@@ -206,7 +206,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static List<Method> listMethod(Class<?> fromClazz) {
+    static public List<Method> listMethod(Class<?> fromClazz) {
         if (fromClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -248,7 +248,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static List<Method> listMethod(Class<?> fromClazz, Predicate<Method> pred) {
+    static public List<Method> listMethod(Class<?> fromClazz, Predicate<Method> pred) {
         if (fromClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -279,7 +279,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static <T extends Annotation> List<Method> listGetterMethod(Class<?> fromClazz) {
+    static public <T extends Annotation> List<Method> listGetterMethod(Class<?> fromClazz) {
         return listMethod(fromClazz, (m) -> {
             return (m != null && (
                     m.getName().startsWith("get") ||
@@ -296,7 +296,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static Method getMethod(Class<?> fromClazz, Predicate<Method> pred) {
+    static public Method getMethod(Class<?> fromClazz, Predicate<Method> pred) {
         if (fromClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -321,7 +321,7 @@ public final class ClazzUtil {
      * @return
      *
      */
-    public static Method getMethod(Class<?> fromClazz, String methodName) {
+    static public Method getMethod(Class<?> fromClazz, String methodName) {
         if (fromClazz == null ||
             methodName == null ||
             methodName.isEmpty()) {
@@ -341,7 +341,7 @@ public final class ClazzUtil {
      * @param fromDir
      *
      */
-    public static void scanAllJar(
+    static public void scanAllJar(
         String fromDir) {
         ClazzUtil_ScanAllJar.process(fromDir);
     }
@@ -352,7 +352,7 @@ public final class ClazzUtil {
      * @param fromDir
      *
      */
-    public static void putClazzDir(
+    static public void putClazzDir(
         String fromDir) {
         ClazzUtil_PutClazzDir.process(fromDir);
     }

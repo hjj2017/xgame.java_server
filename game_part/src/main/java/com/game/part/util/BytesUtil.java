@@ -15,7 +15,7 @@ public class BytesUtil {
      * @return
      *
      */
-    public static byte[] int2bytes(int src) {
+    static public byte[] int2bytes(int src) {
         // 创建字节数组
         byte[] result = new byte[4];
 
@@ -38,7 +38,7 @@ public class BytesUtil {
      * @return
      *
      */
-    public static int bytes2int(byte[] src) {
+    static public int bytes2int(byte[] src) {
         int value= 0;
 
         // 由高位到低位

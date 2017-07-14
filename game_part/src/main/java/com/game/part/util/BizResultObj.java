@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class BizResultObj {
     /** 无警告 */
-    public static final int NO_WARN = -1;
+    static public final int NO_WARN = -1;
     /** 无错误 */
-    public static final int NO_ERROR = -1;
+    static public final int NO_ERROR = -1;
 
     /** 错误代码 */
     public int _errorCode = NO_ERROR;

@@ -22,7 +22,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Integer box(int i) {
+    static public Integer box(int i) {
         return new Integer(i);
     }
 
@@ -33,7 +33,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Long box(long l) {
+    static public Long box(long l) {
         return new Long(l);
     }
 
@@ -44,7 +44,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Short box(short $short) {
+    static public Short box(short $short) {
         return new Short($short);
     }
 
@@ -55,7 +55,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Float box(float f) {
+    static public Float box(float f) {
         return new Float(f);
     }
 
@@ -66,7 +66,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Double box(double d) {
+    static public Double box(double d) {
         return new Double(d);
     }
 
@@ -77,7 +77,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Character box(char c) {
+    static public Character box(char c) {
         return new Character(c);
     }
 
@@ -88,7 +88,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Byte box(byte b) {
+    static public Byte box(byte b) {
         return new Byte(b);
     }
 
@@ -99,7 +99,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Boolean box(boolean bool) {
+    static public Boolean box(boolean bool) {
         return new Boolean(bool);
     }
 
@@ -110,7 +110,7 @@ public final class Boxer {
      * @return
      *
      */
-    public static Object box(Object o) {
+    static public Object box(Object o) {
         return o;
     }
 }

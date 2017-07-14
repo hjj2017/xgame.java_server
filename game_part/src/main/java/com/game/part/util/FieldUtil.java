@@ -28,7 +28,7 @@ public final class FieldUtil {
      * @return
      *
      */
-    public static Type getGenericTypeA(Field f) {
+    static public Type getGenericTypeA(Field f) {
         if (f == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -60,7 +60,7 @@ public final class FieldUtil {
      * @return
      *
      */
-    public static boolean isTempThisPointer(Field f) {
+    static public boolean isTempThisPointer(Field f) {
         if (f == null) {
             return false;
         } else {

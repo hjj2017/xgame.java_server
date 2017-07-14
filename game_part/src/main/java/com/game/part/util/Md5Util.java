@@ -15,7 +15,7 @@ public class Md5Util {
      * @param inputString
      * @return
      */
-    public static String createMd5String(String inputString) {
+    static public String createMd5String(String inputString) {
         return encodeByMd5(inputString);
     }
 
@@ -26,7 +26,7 @@ public class Md5Util {
      * @param inputString
      * @return
      */
-    public static boolean authMd5String(String md5, String inputString) {
+    static public boolean authMd5String(String md5, String inputString) {
         if (md5.equals(encodeByMd5(inputString))) {
             return true;
         } else {
@@ -41,7 +41,7 @@ public class Md5Util {
      * @return
      *
      */
-    public static String encodeByMd5(String origStr) {
+    static public String encodeByMd5(String origStr) {
         if (origStr == null) {
             return null;
         } else {
@@ -56,7 +56,7 @@ public class Md5Util {
      * @return
      *
      */
-    public static String encodeByMd5(byte[] byteArr) {
+    static public String encodeByMd5(byte[] byteArr) {
         return DigestUtils.md5Hex(byteArr);
     }
 }

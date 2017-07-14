@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ThreadLocalObjectPool {
     /** 类字典 */
-    private static final Map<Class<?>, ThreadLocal<?>> CLAZZ_MAP = new ConcurrentHashMap<>();
+    static private final Map<Class<?>, ThreadLocal<?>> CLAZZ_MAP = new ConcurrentHashMap<>();
 
     /**
      * 获取类对象, <font color="#990000">注意 : 该类对象必须提供默认构造器</font>
@@ -21,7 +21,7 @@ public class ThreadLocalObjectPool {
      *
      */
     @SuppressWarnings("unchecked")
-    public static <T> T get(Class<T> clazz) {
+    static public <T> T get(Class<T> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -58,7 +58,7 @@ public class ThreadLocalObjectPool {
      * @return
      *
      */
-    private static <T> ThreadLocal<T> newThreadLocal(final Class<T> clazz) {
+    static private <T> ThreadLocal<T> newThreadLocal(final Class<T> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -80,7 +80,7 @@ public class ThreadLocalObjectPool {
      * @return
      *
      */
-    private static <T> T newObj(Class<T> clazz) {
+    static private <T> T newObj(Class<T> clazz) {
         if (clazz == null) {
             return null;
         }
