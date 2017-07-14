@@ -1,5 +1,12 @@
 package com.game.part.dao;
 
+import com.game.part.util.Assert;
+import com.game.part.util.ClazzUtil;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -7,34 +14,35 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Id;
-
-import com.game.part.util.Assert;
-import com.game.part.util.ClazzUtil;
-
 /**
  * 通用 DAO
- * 
+ *
  * @author hjj2019
  * @since 2014/9/16
- * 
  */
 public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, IDao_GetSingleResult, IDao_GetMaxId {
-    /** 单例对象 */
+    /**
+     * 单例对象
+     */
     public static final CommDao OBJ = new CommDao();
 
-    /** 非法线程 Id 集合 */
+    /**
+     * 非法线程 Id 集合
+     */
     private Set<Long> _illegalThreadIdSet = null;
-    /** Id 字段名称字典 */
+
+    /**
+     * Id 字段名称字典
+     */
     private final Map<Class<?>, String> _IdFieldNameMap = new ConcurrentHashMap<>();
-    /** 实体管理器工厂 */
+
+    /**
+     * 实体管理器工厂
+     */
     EntityManagerFactory _emf = null;
 
     /**
      * 类参数构造器
-     *
      */
     private CommDao() {
     }
@@ -42,9 +50,8 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
     /**
      * 设置实体管理器工厂
      *
-     * @param value
-     * @return
-     *
+     * @param value 实体管理器工厂
+     * @return 通用 DAO 对象
      */
     public CommDao putEMF(EntityManagerFactory value) {
         // 断言参数不为空
@@ -62,13 +69,12 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
      * 设置非法的线程 Id,
      * 即调用 CommDao 时当前线程 Id 不能出现在非法线程列表里...
      *
-     * @param threadId
-     * @return
-     *
+     * @param threadIdArray 线程 Id 数组
+     * @return 通用 DAO 对象
      */
-    public CommDao putIllegalThreadId(long ... threadId) {
-        if (threadId == null ||
-            threadId.length <= 0) {
+    public CommDao putIllegalThreadId(long... threadIdArray) {
+        if (threadIdArray == null ||
+            threadIdArray.length <= 0) {
             // 如果参数对象为空,
             // 则直接退出!
             return this;
@@ -78,7 +84,7 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
             this._illegalThreadIdSet = new HashSet<>();
         }
 
-        for (long illegalThreadId : threadId) {
+        for (long illegalThreadId : threadIdArray) {
             this._illegalThreadIdSet.add(illegalThreadId);
         }
 
@@ -86,15 +92,14 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
     }
 
     /**
-     * 查找数据库实体
+     * 查找数据实体
      *
-     * @param <TEntity>
-     * @param entityClazz
-     * @param Id
-     * @return
-     *
+     * @param entityClazz 实体类
+     * @param Id          实体 Id
+     * @param <TEntity>   实体类型
+     * @return 实体对象
      */
-    public<TEntity> TEntity find(Class<TEntity> entityClazz, Object Id) {
+    public <TEntity> TEntity find(Class<TEntity> entityClazz, Object Id) {
         if (entityClazz == null ||
             Id == null) {
             // 如果参数对象为空,
@@ -126,6 +131,7 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
     /**
      * 检查线程 Id
      *
+     * @throws DaoError 如果当前线程是非法线程
      */
     void checkThreadId() {
         // 获取当前线程 Id
@@ -142,9 +148,8 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
     /**
      * 获取标注了 @Id 注解的字段名称
      *
-     * @param fromClazz
-     * @return
-     *
+     * @param fromClazz 指定类型
+     * @return Id 字段名称
      */
     String getIdFieldName(Class<?> fromClazz) {
         if (fromClazz == null) {
@@ -185,5 +190,24 @@ public final class CommDao implements IDao_Save, IDao_Del, IDao_GetResultList, I
         this._IdFieldNameMap.put(fromClazz, IdFieldName);
 
         return IdFieldName;
+    }
+
+    /**
+     * 安全回滚事务
+     *
+     * @param tranx 事务对象
+     */
+    void safeRollback(EntityTransaction tranx) {
+        if (null == tranx) {
+            return;
+        }
+
+        try {
+            // 回滚事务
+            tranx.rollback();
+        } catch (Exception ex) {
+            // 记录错误日志
+            DaoLog.LOG.error(ex.getMessage(), ex);
+        }
     }
 }

@@ -1,31 +1,30 @@
 package com.game.part.dao;
 
-import java.text.MessageFormat;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * 删除数据库实体
- * 
+ *
  * @author hjj2017
  * @since 2014/9/19
- * 
  */
 interface IDao_Del {
-    /** 删除实体 */
+    /**
+     * 删除实体
+     */
     String JPQL_del = "delete from {0} entity where entity.{1} = :Id";
 
     /**
      * 删除数据实体
      *
-     * @param <TEntity>
-     * @param entityObj
-     *
+     * @param entityObj 实体对象
+     * @param <TEntity> 实体类型
      */
-    default<TEntity> void del(TEntity entityObj) {
+    default <TEntity> void del(TEntity entityObj) {
         if (entityObj == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -59,8 +58,8 @@ interface IDao_Del {
         } catch (Exception ex) {
             // 记录错误日志
             DaoLog.LOG.error(ex.getMessage(), ex);
-            // 回滚事务
-            tranx.rollback();
+            // 安全回滚事务
+            CommDao.OBJ.safeRollback(tranx);
         } finally {
             em.close();
         }
@@ -69,12 +68,11 @@ interface IDao_Del {
     /**
      * 删除数据实体
      *
-     * @param <TEntity>
-     * @param entityClazz
-     * @param Id
-     *
+     * @param entityClazz 实体类
+     * @param Id          实体 Id
+     * @param <TEntity>   实体类型
      */
-    default<TEntity> void del(Class<TEntity> entityClazz, Object Id) {
+    default <TEntity> void del(Class<TEntity> entityClazz, Object Id) {
         if (entityClazz == null ||
             Id == null) {
             // 如果参数对象为空,
@@ -118,8 +116,8 @@ interface IDao_Del {
         } catch (Exception ex) {
             // 记录错误日志
             DaoLog.LOG.error(ex.getMessage(), ex);
-            // 回滚事务
-            tranx.rollback();
+            // 安全回滚事务
+            CommDao.OBJ.safeRollback(tranx);
         } finally {
             em.close();
         }
@@ -129,12 +127,11 @@ interface IDao_Del {
      * 删除数据实体列表,
      * <font color='#990000'>注意 : 删除过程是以事务方式进行的! 如果其中出现失败, 则该操作会全部回滚!</font>
      *
-     * @param <TEntity>
-     * @param entityClazz
-     * @param IdList
-     *
+     * @param entityClazz 实体类
+     * @param IdList      Id 列表
+     * @param <TEntity>   实体类型
      */
-    default<TEntity> void delAll(Class<TEntity> entityClazz, List<?> IdList) {
+    default <TEntity> void delAll(Class<TEntity> entityClazz, List<?> IdList) {
         if (entityClazz == null ||
             IdList == null ||
             IdList.isEmpty()) {
@@ -183,8 +180,8 @@ interface IDao_Del {
         } catch (Exception ex) {
             // 记录错误日志
             DaoLog.LOG.error(ex.getMessage(), ex);
-            // 回滚事务
-            tranx.rollback();
+            // 安全回滚事务
+            CommDao.OBJ.safeRollback(tranx);
         } finally {
             em.close();
         }

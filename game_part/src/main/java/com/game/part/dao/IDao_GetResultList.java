@@ -1,39 +1,39 @@
 package com.game.part.dao;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 /**
  * 获取结果列表
- * 
+ *
  * @author hjj2017
  * @since 2014/9/19
- * 
  */
 interface IDao_GetResultList {
-    /** 选取数据列表 */
+    /**
+     * 选取数据列表
+     */
     String JPQL_selectFrom = "select entity from {0} entity where {1}";
 
     /**
      * 获取结果列表
      *
-     * @param entityClazz
-     * @param jpqlWhere JPQL 查询语句中 where 后面的语句, 注意 : where 语句中需要使用 "entity." 前缀! 例如 : entity._userName
-     * @param paramMap
-     * @param start
-     * @param count
-     * @return
-     *
+     * @param entityClazz 实体类
+     * @param jpqlWhere   JPQL 查询语句中 where 后面的语句, 注意 : where 语句中需要使用 "entity." 前缀! 例如 : entity._userName
+     * @param paramMap    参数字典
+     * @param startIndex  起始索引位置
+     * @param count       获得数量
+     * @param <TEntity>   实体类型
+     * @return 实体列表
      */
-    default<TEntity> List<TEntity> getResultList(
+    default <TEntity> List<TEntity> getResultList(
         Class<TEntity> entityClazz,
         String jpqlWhere,
         Map<String, Object> paramMap,
-        int start,
+        int startIndex,
         int count) {
         if (entityClazz == null ||
             count <= 0) {
@@ -65,7 +65,7 @@ interface IDao_GetResultList {
         final String jpql = MessageFormat.format(JPQL_selectFrom, entityClazz.getName(), jpqlWhere);
         // 创建查询
         Query q = em.createQuery(jpql)
-            .setFirstResult(start)
+            .setFirstResult(startIndex)
             .setMaxResults(count);
 
         if (paramMap != null &&
@@ -94,68 +94,69 @@ interface IDao_GetResultList {
     /**
      * 获取结果列表
      *
-     * @param <TEntity>
-     * @param clazz
-     * @param hqlWhere
-     * @param paramMap
-     * @return
-     *
+     * @param entityClazz 实体类
+     * @param hqlWhere    查询条件
+     * @param paramMap    参数字典
+     * @param <TEntity>   实体类型
+     * @return 实体列表
+     * @see #getResultList(Class, String, Map, int, int)
      */
-    default<TEntity> List<TEntity> getResultList(
-        Class<TEntity> clazz,
+    default <TEntity> List<TEntity> getResultList(
+        Class<TEntity> entityClazz,
         String hqlWhere,
         Map<String, Object> paramMap) {
         return this.getResultList(
-            clazz, hqlWhere, paramMap, 0, Integer.MAX_VALUE
+            entityClazz, hqlWhere, paramMap, 0, Integer.MAX_VALUE
         );
     }
 
     /**
      * 获取结果列表
      *
-     * @param <TEntity>
-     * @param clazz
-     * @param hqlWhere
-     * @return
+     * @param entityClazz 实体类
+     * @param hqlWhere    查询条件
+     * @param <TEntity>   实体类型
+     * @return 实体列表
+     * @see #getResultList(Class, String, Map, int, int)
      */
-    default<TEntity> List<TEntity> getResultList(
-        Class<TEntity> clazz,
+    default <TEntity> List<TEntity> getResultList(
+        Class<TEntity> entityClazz,
         String hqlWhere) {
         return this.getResultList(
-            clazz, hqlWhere, null, 0, Integer.MAX_VALUE
+            entityClazz, hqlWhere, null, 0, Integer.MAX_VALUE
         );
     }
 
     /**
      * 获取结果列表
      *
-     * @param <TEntity>
-     * @param clazz
-     * @param start
-     * @param count
-     * @return
+     * @param entityClazz 实体类
+     * @param startIndex  起始索引位置
+     * @param count       获得数量
+     * @param <TEntity>   实体类型
+     * @return 实体列表
+     * @see #getResultList(Class, String, Map, int, int)
      */
-    default<TEntity> List<TEntity> getResultList(
-        Class<TEntity> clazz,
-        int start,
+    default <TEntity> List<TEntity> getResultList(
+        Class<TEntity> entityClazz,
+        int startIndex,
         int count) {
         return this.getResultList(
-            clazz, null, null, start, count
+            entityClazz, null, null, startIndex, count
         );
     }
 
     /**
      * 获取结果列表
      *
-     * @param <TEntity>
-     * @param clazz
-     * @return
-     *
+     * @param entityClazz 实体类
+     * @param <TEntity>   实体类型
+     * @return 实体列表
      */
-    default<TEntity> List<TEntity> getResultList(
-        Class<TEntity> clazz) {
+    default <TEntity> List<TEntity> getResultList(
+        Class<TEntity> entityClazz) {
         return this.getResultList(
-            clazz, null, null, 0, Integer.MAX_VALUE
+            entityClazz, null, null, 0, Integer.MAX_VALUE
         );
     }
 }

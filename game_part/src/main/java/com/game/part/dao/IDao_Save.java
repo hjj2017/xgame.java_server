@@ -1,23 +1,20 @@
 package com.game.part.dao;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.List;
 
 /**
  * 保存数据库实体
- * 
+ *
  * @author hjj2017
  * @since 2014/9/19
- * 
  */
 interface IDao_Save {
     /**
      * 添加数据库实体
      *
-     * @param entityObj
-     *
+     * @param entityObj 实体对象
      */
     default void save(Object entityObj) {
         if (entityObj == null) {
@@ -53,8 +50,8 @@ interface IDao_Save {
         } catch (Exception ex) {
             // 记录错误日志
             DaoLog.LOG.error(ex.getMessage(), ex);
-            // 回滚事务
-            tranx.rollback();
+            // 安全回滚事务
+            CommDao.OBJ.safeRollback(tranx);
         } finally {
             em.close();
         }
@@ -63,10 +60,10 @@ interface IDao_Save {
     /**
      * 添加数据库实体列表
      *
-     * @param entityObjList
-     *
+     * @param entityObjList 实体对象列表
+     * @param <TEntity>     实体类型
      */
-    default<TEntity> void saveAll(List<TEntity> entityObjList) {
+    default <TEntity> void saveAll(List<TEntity> entityObjList) {
         if (entityObjList == null ||
             entityObjList.isEmpty()) {
             // 如果参数对象为空,
@@ -101,8 +98,8 @@ interface IDao_Save {
         } catch (Exception ex) {
             // 记录错误日志
             DaoLog.LOG.error(ex.getMessage(), ex);
-            // 回滚事务
-            tranx.rollback();
+            // 安全回滚事务
+            CommDao.OBJ.safeRollback(tranx);
         } finally {
             em.close();
         }

@@ -1,29 +1,28 @@
 package com.game.part.dao;
 
+import javax.persistence.EntityManager;
 import java.text.MessageFormat;
 import java.util.List;
-
-import javax.persistence.EntityManager;
 
 /**
  * 获取最大 Id
  *
  * @author hjj2017
  * @since 2015/7/18
- *
  */
 interface IDao_GetMaxId {
-    /** 获取最大 Id */
+    /**
+     * 获取最大 Id
+     */
     String JPQL_getMaxId = "select max(entity.{1}) from {0} entity";
 
     /**
      * 删除数据实体
      *
-     * @param <TEntity>
-     * @param entityClazz
-     *
+     * @param entityClazz 实体类
+     * @param <TEntity>   实体类型
      */
-    default<TEntity, TId> TId getMaxId(Class<TEntity> entityClazz) {
+    default <TEntity, TId> TId getMaxId(Class<TEntity> entityClazz) {
         if (entityClazz == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -65,7 +64,7 @@ interface IDao_GetMaxId {
 
             // 转型为真实 Id
             @SuppressWarnings("unchecked")
-            TId realId = (TId)resultList.get(0);
+            TId realId = (TId) resultList.get(0);
             // 返回 Id
             return realId;
         } catch (Exception ex) {
