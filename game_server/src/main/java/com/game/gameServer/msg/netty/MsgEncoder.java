@@ -21,9 +21,6 @@ public class MsgEncoder extends MessageToByteEncoder {
     /** 消息默认容量 */
     private static final int MSG_DEFAULT_CAPCITY = 256;
 
-    public MsgEncoder() {
-    }
-
     @Override
     protected void encode(
         ChannelHandlerContext ctx, Object o, ByteBuf nettyBuf) throws Exception {
