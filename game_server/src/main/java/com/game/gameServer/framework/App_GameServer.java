@@ -1,13 +1,9 @@
 package com.game.gameServer.framework;
 
 import com.game.gameServer.heartbeat.GameHeartbeat;
-import com.game.gameServer.heartbeat.HeartbeatTypeEnum;
 import com.game.gameServer.msg.netty.IServerStartUp_ListenCGMsg;
-import com.game.gameServer.queued.MsgExeCallerImpl;
 import com.game.part.dao.CommDao;
-import com.game.part.heartbeat.HeartbeatTrigger;
 import com.game.part.msg.MsgServ;
-import com.game.part.queued.MsgQueue;
 
 import javax.persistence.Persistence;
 import java.util.HashMap;
@@ -15,25 +11,24 @@ import java.util.Map;
 
 /**
  * 网关服务器内核类
- * 
+ *
  * @author Haijiang
  * @since 2012/6/3
- *
  */
 public class App_GameServer implements IServerInit_BizModule, IServerStartUp_ListenCGMsg {
-    /** 对象实例 */
+    /**
+     * 对象实例
+     */
     public static final App_GameServer OBJ = new App_GameServer();
 
     /**
      * 类默认构造器
-     * 
      */
     private App_GameServer() {
     }
 
     /**
      * 初始化服务器
-     *
      */
     public void init() {
         // 记录初始化开始
@@ -44,10 +39,6 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 
         // 初始化游戏心跳
         GameHeartbeat.OBJ.init();
-
-        MsgQueue.OBJ._bokerUrl = GameServerConf.OBJ._bokerUrl;
-        MsgQueue.OBJ._privateDestination = GameServerConf.OBJ._serverName;
-        MsgQueue.OBJ._msgExeCaller = new MsgExeCallerImpl();
 
         //
         // 初始化业务模块
@@ -60,7 +51,6 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 
     /**
      * 初始化 EntityManagerFactory
-     *
      */
     private void initEMF() {
         // 自定义字典
@@ -77,7 +67,6 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
 
     /**
      * 启动服务器, 开始接收消息
-     * 
      */
     public void startUp() {
         // 记录准备完成日志
@@ -87,9 +76,6 @@ public class App_GameServer implements IServerInit_BizModule, IServerStartUp_Lis
         MsgServ.OBJ.putMsgReceiver(GameHeartbeat.OBJ);
         // 启动心跳
         GameHeartbeat.OBJ.startUp();
-
-        // 启动消息队列
-        MsgQueue.OBJ.startUp();
 
         //
         // 开始监听 CG 消息,
