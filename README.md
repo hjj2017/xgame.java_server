@@ -17,12 +17,12 @@ Xgame-code_server 参考了以往的经验，同时也做出了很多改进！
 
 - 修改 IoOperation 的返回值为 boolean 类型，以避免死循环（纠正了原框架不严谨的地方）；
 - 使用通用 Dao 代码，减少无用的 Dao 派生类；
-- 使用 Javassist 技术动态创建并编译 Excel 模板类；
+- **使用 Javassist 技术动态创建并编译 Excel 模板类**；
 - Excel 模板类支持多层嵌套（理论上没有上限）；
-- 使用 Javassist 技术动态创建并编译消息类；
+- **使用 Javassist 技术动态创建并编译消息类**；
 - 消息类支持多层嵌套（理论上没有上限）；
 - 修改延迟保存罗辑（LazySaving），使用起来更方便、更明确，只实现 ILazySavingObj 接口即可；
-- **使用 Maven 打包和部署；**
+- 使用 Maven 打包和部署；
 
 ----
 
