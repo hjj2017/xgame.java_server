@@ -7,37 +7,54 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 玩家
- * 
- * @author hjj2019
  *
+ * @author hjj2019
  */
 public final class Player {
-    /** 会话 Id, 主要是用于通信层 */
+    /**
+     * 会话 Id, 主要是用于通信层
+     */
     public long _sessionUId = -1L;
-    /** 平台 UId */
+
+    /**
+     * 平台 UId
+     */
     public String _platformUIdStr = null;
-    /** 用户名 */
+
+    /**
+     * 用户名
+     */
     public String _userName = null;
-    /** Pf */
+
+    /**
+     * Pf
+     */
     public String _pf = null;
-    /** 创建时间 */
+
+    /**
+     * 创建时间
+     */
     public long _createTime = 0L;
-    /** 登陆 IP 地址 */
+
+    /**
+     * 登陆 IP 地址
+     */
     public String _loginIpAddr = null;
-    /** 登陆时间 */
+
+    /**
+     * 登陆时间
+     */
     public long _loginTime = 0L;
 
     /**
      * 允许的消息类型,
      * 注意: 这里可能会引出一个比较复杂的状态判断的问题
      * 消息类型, 主要分为 3 个:
-     *
      * <ul>
-     * <li>login, 登录消息</li>
-     * <li>chat, 聊天消息</li>
-     * <li>game, 游戏消息</li>
+     *     <li>login, 登录消息</li>
+     *     <li>chat, 聊天消息</li>
+     *     <li>game, 游戏消息</li>
      * </ul>
-     *
      * 3 个类型的消息将对应不同的场景!
      * 当玩家还处于登录过程中的时候, 是不可能处理 chat 和 game 类型的消息的!
      * 同样的,
@@ -53,17 +70,17 @@ public final class Player {
      * 也就是说, 这些状态始终没有逾越 login 类型...
      *
      * @see MsgTypeEnum
-     * @see com.game.gameServer.heartbeat.InnerScene
-     *
+     * @see com.game.gameServer.heartbeat.GameHeartbeat
      */
     public final Map<MsgTypeEnum, Boolean> _allowMsgTypeMap = new ConcurrentHashMap<>();
 
-    /** 玩家的属性字典 */
+    /**
+     * 玩家的属性字典
+     */
     private final Map<Object, Object> _propMap = new ConcurrentHashMap<>();
 
     /**
      * 类默认构造器
-     * 
      */
     public Player() {
         // 新建玩家可以处理登陆消息
@@ -76,7 +93,6 @@ public final class Player {
      * @param byClazz
      * @param <T>
      * @return
-     *
      */
     public <T> T getPropVal(Class<T> byClazz) {
         if (byClazz == null) {
@@ -85,7 +101,7 @@ public final class Player {
             return null;
         } else {
             @SuppressWarnings("unchecked")
-            T val = (T)this._propMap.get(byClazz);
+            T val = (T) this._propMap.get(byClazz);
             return val;
         }
     }
@@ -96,7 +112,6 @@ public final class Player {
      * @param byClazz
      * @param <T>
      * @return
-     *
      */
     @SuppressWarnings("unchecked")
     public <T> T getPropValOrCreate(Class<T> byClazz) {
@@ -129,7 +144,7 @@ public final class Player {
             }
         }
 
-        return (T)objVal;
+        return (T) objVal;
     }
 
     /**
@@ -138,9 +153,8 @@ public final class Player {
      * @param byClazz
      * @param objVal
      * @param <T>
-     *
      */
-    public<T> void putPropVal(Class<T> byClazz, T objVal) {
+    public <T> void putPropVal(Class<T> byClazz, T objVal) {
         if (objVal == null) {
             // 如果参数对象为空,
             // 则直接退出!
@@ -156,7 +170,6 @@ public final class Player {
 
     /**
      * 清除属性字典中的所有数据, 一般是在玩家断线时调用!
-     *
      */
     public void clearAllProp() {
         this._propMap.clear();
