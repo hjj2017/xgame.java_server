@@ -8,9 +8,9 @@ Xgame-code_server 是一个基于 Java 语言实现的适用于 SLG 游戏类型
 
 项目中包括：
 
-- game_part 零件部分；
-- game_server 游戏服务器，有点类似于 Tomcat Server；
-- game_bizModule 业务模块；
+- **game_part** 零件部分；
+- **game_server** 游戏服务器，有点类似于 Tomcat Server；
+- **game_bizModule** 业务模块；
 
 Xgame-code_server 消息层使用 Netty，IO 采用 EclipseLink + MySQL，场景服务为单线程架构。
 
