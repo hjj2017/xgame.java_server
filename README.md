@@ -32,7 +32,7 @@ Xgame-code_server 消息层使用 Netty，IO 采用 EclipseLink + MySQL，场景
 
 ----
 
-# Xgame 宗旨
+# 项目宗旨
 
 精确、极简、严格、有趣；
 
