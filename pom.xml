@@ -31,10 +31,8 @@
         <module>./game_part</module>
         <module>./game_server</module>
         <module>./game_bizModule</module>
-        <module>./log_server</module>
         <module>./passbook_server</module>
         <module>./robot</module>
-        <module>./client_jfx</module>
     </modules>
 
     <build>
