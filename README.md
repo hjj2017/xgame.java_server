@@ -1,6 +1,7 @@
 关于 Xgame-code_server
 ====
 #### 游戏服务器开发本质上是完成业务逻辑向多线程的映射
+#### QQ 群：327606822
 ----
 
 Xgame-code_server 是一个基于 Java 语言实现的适用于 SLG 游戏类型的服框架。
@@ -25,10 +26,6 @@ Xgame-code_server 消息层使用 Netty，IO 采用 EclipseLink + MySQL，场景
 - 消息类支持多层嵌套（理论上没有上限）；
 - 修改延迟保存罗辑（LazySaving），使用起来更方便、更明确，只实现 ILazySavingObj 接口即可；
 - 使用 Maven 打包和部署；
-
-----
-
-# 关注这个项目，请加入 QQ 群：327606822
 
 ----
 
