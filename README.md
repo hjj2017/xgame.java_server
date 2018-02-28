@@ -30,10 +30,6 @@ Xgame-code_server 参考了以往的经验，同时也做出了很多改进！
 
 QQ 群：327606822
 
-微信公众号：myXgame
-
-![微信公众号](WeiXinGongZhongHao.jpg "myXgame")
-
 ----
 
 # Xgame 宗旨
