@@ -1,6 +1,11 @@
 /bin/
 /out/
+/target/
+
 /.settings/
+/.idea/
+
 /*.iml
 /.classpath
 /.project
+
