@@ -18,8 +18,8 @@ import java.text.MessageFormat;
  * 可以使用以下命令启动:
  * <pre>
  * java -cp *.jar com.game.gameServer.CLI_GameServer \
- *      -c ../all_config/etc/all_config.json \
- *      -l ../all_config/etc/game_server.log4j.properties
+ *      -c ../etc/all_config.json \
+ *      -l ../etc/game_server.log4j.properties
  * </pre>
  * <font color='#990000'>
  * 注意 : 命令行中必须给出配置文件 all_config.json 所在位置!</font><br />
@@ -29,7 +29,7 @@ import java.text.MessageFormat;
  * <ol>
  *     <li>在主菜单中选择 "Run" -> "Edit Configurations ...";</li>
  *     <li>在 "Application" 中选择 "CLI_GameServer" ( 如果没有, 先直接运行一次 CLI_GameServer );</li>
- *     <li>在 "Program arguments" 文本框里增加: "-c ../all_config/etc/all_config.json -l ../all_config/etc/game_server.log4j.properties" ( 注意 : 只要双引号里面的值 );</li>
+ *     <li>在 "Program arguments" 文本框里增加: "-c ../etc/all_config.json -l ../etc/game_server.log4j.properties" ( 注意 : 只要双引号里面的值 );</li>
  *     <li>注意, 需要修改 "Working directory", 在原字符串后面增加 "/game_server";</li>
  *     <li>点击 "Apply" 按钮, 最后点击 "Run" 按钮;</li>
  * </ol>
@@ -42,7 +42,7 @@ public class CLI_GameServer {
     /**
      * 应用程序主函数
      * 
-     * @param argArr
+     * @param argArr 参数数组
      * 
      */
     public static void main(String[] argArr) {

@@ -17,12 +17,12 @@
 		# class 目录
 		"clazzDir" : "../game_bizModule/target/classes",
 		# 策划表所在目录
-		"xlsxFileDir" : "./xlsx",
+		"xlsxFileDir" : "../etc/xlsx",
 		# 战报所在目录
 		"battleReportDir" : "/tmp/BR",
 		# 数据库配置
 		"dbConn" : "jdbc:mysql://127.0.0.1:3306/X_s00_game?useUnicode=true&characterEncoding=utf-8&useServerPrepStmts=true",
 		"dbUser" : "root",
-		"dbPass" : "root123",
+		"dbPass" : "root",
 	},
 }
