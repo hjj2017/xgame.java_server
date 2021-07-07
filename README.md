@@ -1,6 +1,7 @@
 关于 Xgame-code_server
 ====
-#### 游戏服务器开发本质上是完成业务逻辑向多线程的映射
+#### 这个服务器端程序有点老了，推荐小伙伴去看另外一个游戏项目
+#### https://gitee.com/afrx_s_projz/missdie.u3d_client
 ----
 
 Xgame-code_server 是一个基于 Java 语言实现的适用于 SLG 游戏类型的服框架。
