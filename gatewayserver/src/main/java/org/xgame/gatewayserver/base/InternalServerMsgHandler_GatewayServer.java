@@ -1,7 +1,7 @@
 package org.xgame.gatewayserver.base;
 
-import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.InternalServerMsg;
 import org.xgame.bizserver.base.InternalServerMsgCodec;
@@ -14,7 +14,7 @@ import static io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHand
 /**
  * 内部消息处理器
  */
-public class InternalServerMsgHandler_GatewayServer extends ChannelDuplexHandler {
+public class InternalServerMsgHandler_GatewayServer extends ChannelInboundHandlerAdapter {
     /**
      * 日志对象
      */

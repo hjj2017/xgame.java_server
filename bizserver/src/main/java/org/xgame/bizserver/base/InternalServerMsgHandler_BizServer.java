@@ -1,9 +1,9 @@
 package org.xgame.bizserver.base;
 
 import com.google.protobuf.GeneratedMessageV3;
-import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
@@ -14,7 +14,7 @@ import org.xgame.comm.cmdhandler.AbstractCmdHandlerContext;
 /**
  * 内部服务器消息处理器
  */
-public class InternalServerMsgHandler_BizServer extends ChannelDuplexHandler {
+public class InternalServerMsgHandler_BizServer extends ChannelInboundHandlerAdapter {
     /**
      * 日志对象
      */

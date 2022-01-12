@@ -38,11 +38,6 @@ public final class BizServerFinder {
     static private final BizServerFinder INSTANCE = new BizServerFinder();
 
     /**
-     * Nacos 服务器地址
-     */
-    private String _serverAddrOfNacos = null;
-
-    /**
      * 命令行参数
      */
     private CommandLine _cmdLn;
@@ -55,7 +50,7 @@ public final class BizServerFinder {
     /**
      * 客户端字典
      */
-    private final Map<String, NettyClient> _nettyClientMap = new ConcurrentHashMap<>();
+    private final Map<ServerJobTypeEnum, Map<String, NettyClient>> _nettyClientMap = new ConcurrentHashMap<>();
 
     /**
      * 私有化类默认构造器
@@ -139,32 +134,51 @@ public final class BizServerFinder {
             return;
         }
 
+        NamingEvent ne = (NamingEvent) oEvent;
+
         // 获取实例列表
-        List<Instance> instanceList = ((NamingEvent) oEvent).getInstances();
+        List<Instance> instanceList = ne.getInstances();
 
         for (Instance instance : instanceList) {
             if (null == instance) {
                 continue;
             }
 
-            connectToBizServer(instance);
+            connectToBizServer(
+                ServerJobTypeEnum.strToVal(ne.getGroupName()),
+                instance
+            );
         }
     }
 
     /**
      * 连接到业务服务器
      *
+     * @param sjt         服务器工作类型
      * @param regInstance 服务器信息
      */
-    private void connectToBizServer(Instance regInstance) {
-        if (null == regInstance ||
-            _nettyClientMap.containsKey(regInstance.getInstanceId())) {
+    private void connectToBizServer(ServerJobTypeEnum sjt, Instance regInstance) {
+        if (null == sjt ||
+            null == regInstance) {
+            return;
+        }
+
+        Map<String, NettyClient> innerMap = _nettyClientMap.get(sjt);
+
+        if (null == innerMap) {
+            innerMap = new ConcurrentHashMap<>();
+            _nettyClientMap.putIfAbsent(sjt, innerMap);
+            innerMap = _nettyClientMap.get(sjt);
+        }
+
+        if (innerMap.containsKey(regInstance.getInstanceId())) {
             return;
         }
 
         LOGGER.info(
-            "发现服务器, serverId = {}, serverAddr = {}:{}",
+            "发现新服务器, serverId = {}, serverJobType = {}, serverAddr = {}:{}",
             regInstance.getInstanceId(),
+            sjt.getStrVal(),
             regInstance.getIp(),
             regInstance.getPort()
         );
@@ -174,12 +188,12 @@ public final class BizServerFinder {
             .setServerHost(regInstance.getIp())
             .setServerPort(regInstance.getPort())
             .setCustomChannelHandlerFactory(InternalServerMsgHandler_GatewayServer::new)
-            .setCloseCallback(_nettyClientMap.values()::remove);
+            .setCloseCallback(innerMap.values()::remove);
 
         NettyClient newClient = new NettyClient(newConf);
         newClient.connect();
 
-        _nettyClientMap.put(regInstance.getInstanceId(), newClient);
+        innerMap.put(regInstance.getInstanceId(), newClient);
     }
 
     /**
@@ -190,6 +204,7 @@ public final class BizServerFinder {
      */
     public NettyClient selectOneBizServer(ServerJobTypeEnum sjt) {
         if (null == sjt ||
+            !_nettyClientMap.containsKey(sjt) ||
             null == _ns) {
             return null;
         }
@@ -208,7 +223,7 @@ public final class BizServerFinder {
                 return null;
             }
 
-            return _nettyClientMap.get(instance.getInstanceId());
+            return _nettyClientMap.get(sjt).get(instance.getInstanceId());
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
