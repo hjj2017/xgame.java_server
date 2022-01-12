@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.xgame.comm.cmdhandler.AbstractCmdHandlerContext;
 import org.xgame.comm.cmdhandler.CmdHandlerFactory;
 import org.xgame.comm.cmdhandler.ICmdHandler;
+import org.xgame.comm.util.SafeRunner;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -135,40 +136,6 @@ public final class MainThreadProcessor {
     public void process(Runnable task) {
         if (null != task) {
             _es.submit(new SafeRunner(task));
-        }
-    }
-
-    /**
-     * 安全运行
-     */
-    private static class SafeRunner implements Runnable {
-        /**
-         * 内置运行实例
-         */
-        private final Runnable _innerR;
-
-        /**
-         * 类参数构造器
-         *
-         * @param innerR 内置运行实例
-         */
-        SafeRunner(Runnable innerR) {
-            _innerR = innerR;
-        }
-
-        @Override
-        public void run() {
-            if (null == _innerR) {
-                return;
-            }
-
-            try {
-                // 运行
-                _innerR.run();
-            } catch (Exception ex) {
-                // 记录错误日志
-                LOGGER.error(ex.getMessage(), ex);
-            }
         }
     }
 }
