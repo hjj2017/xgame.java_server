@@ -3,7 +3,6 @@ package org.xgame.gatewayserver.base;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xgame.bizserver.base.InternalServerMsg;
 import org.xgame.bizserver.base.InternalServerMsgCodec;
 
@@ -15,11 +14,11 @@ import static io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHand
 /**
  * 内部消息处理器
  */
-public class InternalMsgHandler_GatewayServer extends ChannelDuplexHandler {
+public class InternalServerMsgHandler_GatewayServer extends ChannelDuplexHandler {
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = LoggerFactory.getLogger(InternalMsgHandler_GatewayServer.class);
+    static private final Logger LOGGER = BaseLog.LOGGER;
 
     /**
      * Ping 间隔时间

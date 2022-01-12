@@ -107,7 +107,7 @@ public final class BizServer {
      *
      * @param cmdLn 命令行参数对象
      */
-    private static void startUpNettyServer(CommandLine cmdLn) {
+    private void startUpNettyServer(CommandLine cmdLn) {
         if (null == cmdLn) {
             return;
         }
