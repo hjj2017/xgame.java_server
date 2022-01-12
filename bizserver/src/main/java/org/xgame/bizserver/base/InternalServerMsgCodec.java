@@ -18,7 +18,7 @@ public final class InternalServerMsgCodec extends CombinedChannelDuplexHandler<I
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = BaseLog.LOGGER;
+    private static final Logger LOGGER = BaseLog.LOGGER;
 
     /**
      * 类默认构造器
@@ -124,7 +124,7 @@ public final class InternalServerMsgCodec extends CombinedChannelDuplexHandler<I
      * @param byteBuf 字节缓冲
      * @return 字符串值
      */
-    static private String readStr(ByteBuf byteBuf) {
+    private static String readStr(ByteBuf byteBuf) {
         if (null == byteBuf) {
             return "";
         } else {
@@ -140,7 +140,7 @@ public final class InternalServerMsgCodec extends CombinedChannelDuplexHandler<I
      * @param byteBuf 字节缓冲
      * @param val     字符串值
      */
-    static private void writeStr(ByteBuf byteBuf, String val) {
+    private static void writeStr(ByteBuf byteBuf, String val) {
         if (null == byteBuf) {
             return;
         }

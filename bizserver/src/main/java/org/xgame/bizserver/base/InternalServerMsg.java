@@ -11,7 +11,7 @@ public final class InternalServerMsg {
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = BaseLog.LOGGER;
+    private static final Logger LOGGER = BaseLog.LOGGER;
 
     /**
      * 代理服务器 Id

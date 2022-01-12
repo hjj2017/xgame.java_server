@@ -31,7 +31,7 @@ public final class PackageUtil {
      * @param superClazz  父类的类型
      * @return 子类集合
      */
-    static public Set<Class<?>> listSubClazz(
+    public static Set<Class<?>> listSubClazz(
         String packageName, boolean recursive, Class<?> superClazz) {
         if (null == superClazz) {
             return Collections.emptySet();
@@ -48,7 +48,7 @@ public final class PackageUtil {
      * @param filter      过滤器
      * @return 符合条件的类集合
      */
-    static public Set<Class<?>> listClazz(
+    public static Set<Class<?>> listClazz(
         String packageName, boolean recursive, IClazzFilter filter) {
 
         if (null == packageName ||
@@ -126,7 +126,7 @@ public final class PackageUtil {
      * @param filter      类过滤器
      * @return 符合条件的类集合
      */
-    static private Set<Class<?>> listClazzFromDir(
+    private static Set<Class<?>> listClazzFromDir(
         final File dirFile, final String packageName, final boolean recursive, IClazzFilter filter) {
 
         if (!dirFile.exists() ||
@@ -225,7 +225,7 @@ public final class PackageUtil {
      * @param filter      类过滤器
      * @return 符合条件的类集合
      */
-    static private Set<Class<?>> listClazzFromJar(
+    private static Set<Class<?>> listClazzFromJar(
         final File jarFilePath, final String packageName, final boolean recursive, IClazzFilter filter) {
 
         if (null == jarFilePath ||
@@ -335,7 +335,7 @@ public final class PackageUtil {
      * @param conn   连接符
      * @return 连接后的字符串
      */
-    static private String join(String[] strArr, String conn) {
+    private static String join(String[] strArr, String conn) {
         if (null == strArr ||
             strArr.length <= 0) {
             return "";
@@ -363,7 +363,7 @@ public final class PackageUtil {
      * @param trimStr 需要被清除的字符串
      * @return 清除后的字符串
      */
-    static private String trimLeft(String src, String trimStr) {
+    private static String trimLeft(String src, String trimStr) {
         if (null == src ||
             src.isEmpty()) {
             return "";

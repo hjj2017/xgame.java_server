@@ -18,7 +18,7 @@ public class InternalServerMsgHandler_BizServer extends ChannelDuplexHandler {
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = BaseLog.LOGGER;
+    private static final Logger LOGGER = BaseLog.LOGGER;
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {

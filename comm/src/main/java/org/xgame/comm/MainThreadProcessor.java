@@ -141,7 +141,7 @@ public final class MainThreadProcessor {
     /**
      * 安全运行
      */
-    static private class SafeRunner implements Runnable {
+    private static class SafeRunner implements Runnable {
         /**
          * 内置运行实例
          */

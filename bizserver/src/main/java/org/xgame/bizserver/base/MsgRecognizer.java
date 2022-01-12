@@ -18,27 +18,27 @@ public final class MsgRecognizer {
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = LoggerFactory.getLogger(MsgRecognizer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MsgRecognizer.class);
 
     /**
      * 消息代号和消息对象字典
      */
-    static private final Map<Integer, GeneratedMessageV3> _msgCodeAndMsgObjMap = new ConcurrentHashMap<>();
+    private static final Map<Integer, GeneratedMessageV3> _msgCodeAndMsgObjMap = new ConcurrentHashMap<>();
 
     /**
      * 消息类型和消息编号字典
      */
-    static private final Map<Class<?>, Integer> _msgClazzAndMsgCodeMap = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Integer> _msgClazzAndMsgCodeMap = new ConcurrentHashMap<>();
 
     /**
      * 消息编号和服务器工作类型字典
      */
-    static private final Map<Integer, ServerJobTypeEnum> _msgCodeAndServerJobTypeMap = new ConcurrentHashMap<>();
+    private static final Map<Integer, ServerJobTypeEnum> _msgCodeAndServerJobTypeMap = new ConcurrentHashMap<>();
 
     /**
      * 是否初始化完成
      */
-    static private volatile boolean _initOK = false;
+    private static volatile boolean _initOK = false;
 
     /**
      * 私有化类默认构造器
@@ -49,7 +49,7 @@ public final class MsgRecognizer {
     /**
      * 尝试初始化
      */
-    static private void tryInit() {
+    private static void tryInit() {
         if (_initOK) {
             return;
         }
@@ -75,7 +75,7 @@ public final class MsgRecognizer {
      * @param enumValArray      枚举值数组
      * @param needServerJobType 需要服务器工作类型
      */
-    static private void tryInit(Class<?> protocolClazz, Enum<?>[] enumValArray, ServerJobTypeEnum needServerJobType) {
+    private static void tryInit(Class<?> protocolClazz, Enum<?>[] enumValArray, ServerJobTypeEnum needServerJobType) {
         if (null == protocolClazz ||
             null == enumValArray ||
             enumValArray.length <= 0) {
@@ -151,7 +151,7 @@ public final class MsgRecognizer {
      * @param msgCode 指定的消息编号
      * @return 服务器工作类型
      */
-    static public ServerJobTypeEnum getServerJobTypeByMsgCode(int msgCode) {
+    public static ServerJobTypeEnum getServerJobTypeByMsgCode(int msgCode) {
         tryInit();
 
         return _msgCodeAndServerJobTypeMap.get(msgCode);
@@ -163,7 +163,7 @@ public final class MsgRecognizer {
      * @param msgCode 消息编号
      * @return 消息构建器
      */
-    static public Message.Builder getMsgBuilderByMsgCode(int msgCode) {
+    public static Message.Builder getMsgBuilderByMsgCode(int msgCode) {
         if (msgCode < 0) {
             return null;
         }
@@ -185,7 +185,7 @@ public final class MsgRecognizer {
      * @param msgClazz 消息类
      * @return 消息编号
      */
-    static public int getMsgCodeByMsgClazz(Class<?> msgClazz) {
+    public static int getMsgCodeByMsgClazz(Class<?> msgClazz) {
         if (null == msgClazz) {
             return -1;
         }

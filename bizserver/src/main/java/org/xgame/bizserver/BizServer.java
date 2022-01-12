@@ -22,7 +22,7 @@ public final class BizServer {
     /**
      * 服务器 Id
      */
-    static private String _Id;
+    private static String _Id;
 
     /**
      * 命令行
@@ -40,7 +40,7 @@ public final class BizServer {
      *
      * @return 服务器 Id
      */
-    static public String getId() {
+    public static String getId() {
         return _Id;
     }
 
@@ -49,7 +49,7 @@ public final class BizServer {
      *
      * @param argvArray 命令行参数数组
      */
-    static public void main(String[] argvArray) {
+    public static void main(String[] argvArray) {
         // 设置 log4j 属性文件
         PropertyConfigurator.configure(BizServer.class.getClassLoader().getResourceAsStream("log4j.properties"));
         (new BizServer()).init(argvArray).startUp();
