@@ -33,7 +33,7 @@ public final class MainThreadProcessor {
     /**
      * 单例对象
      */
-    private static final MainThreadProcessor _instance = new MainThreadProcessor();
+    private static final MainThreadProcessor INSTANCE = new MainThreadProcessor();
 
     /**
      * 线程服务
@@ -63,7 +63,7 @@ public final class MainThreadProcessor {
      * @return 单例对象
      */
     public static MainThreadProcessor getInstance() {
-        return _instance;
+        return INSTANCE;
     }
 
     /**

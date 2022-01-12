@@ -7,6 +7,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.base.InternalServerMsgHandler_BizServer;
+import org.xgame.bizserver.cluster.CurrServerReporter;
 import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
@@ -109,6 +110,8 @@ public final class BizServer {
 
         // 启动 Netty 服务器
         startUpNettyServer(_cmdLn);
+        // 汇报当前服务器
+        CurrServerReporter.getInstance().init(_cmdLn).startReport();
     }
 
     /**

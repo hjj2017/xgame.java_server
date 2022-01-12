@@ -102,7 +102,8 @@ public final class Configure {
 
             JSONObject joConf = JSONObject.parseObject(strConf);
 
-            if (joConf.containsKey("mySqlXuite")) {
+            if (null == joConf) {
+                return;
             }
         } catch (Exception ex) {
             // 记录错误日志

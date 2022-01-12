@@ -1,6 +1,5 @@
 package org.xgame.gatewayserver;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -31,7 +30,7 @@ public final class Configure {
     /**
      * 分组名称
      */
-    static private final String GROUP_HJ_S_MEELEZ = "hj_s_meelez";
+    static private final String GROUP_XXOO = "xxoo";
 
     /**
      * 私有化类默认构造器
@@ -42,18 +41,16 @@ public final class Configure {
     /**
      * 初始化
      *
-     * @param cmdLn 命令行对象
+     * @param serverAddrOfNacos Nacos 服务器地址
      */
-    static void init(CommandLine cmdLn) {
-        if (null == cmdLn) {
+    static void init(String serverAddrOfNacos) {
+        if (null == serverAddrOfNacos ||
+            serverAddrOfNacos.isEmpty()) {
             return;
         }
 
         // 获取服务器配置
-        ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
-
-        // 初始化 Redis
-        initRedisXuite(cs);
+        ConfigService cs = createConfigService(serverAddrOfNacos);
     }
 
     /**
@@ -85,33 +82,5 @@ public final class Configure {
         }
 
         return null;
-    }
-
-    /**
-     * 初始化 Redis
-     *
-     * @param cs 配置服务
-     */
-    static private void initRedisXuite(ConfigService cs) {
-        if (null == cs) {
-            return;
-        }
-
-        try {
-            String strConf = cs.getConfig(
-                DATA_ID_ORG_XGAME_CONF_REDISXUITE,
-                GROUP_HJ_S_MEELEZ + "." + WorkModeDef.currWorkMode(),
-                500
-            );
-
-            JSONObject joConf = JSONObject.parseObject(strConf);
-
-            if (joConf.containsKey("redisXuite")) {
-            }
-        } catch (Exception ex) {
-            // 记录错误日志
-            LOGGER.error(ex.getMessage(), ex);
-            System.exit(-1);
-        }
     }
 }

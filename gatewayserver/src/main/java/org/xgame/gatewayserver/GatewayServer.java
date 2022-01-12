@@ -10,6 +10,7 @@ import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
 import org.xgame.gatewayserver.base.BaseLog;
 import org.xgame.gatewayserver.base.ClientMsgHandler;
+import org.xgame.gatewayserver.cluster.BizServerFinder;
 
 /**
  * 网关服务器
@@ -103,11 +104,17 @@ public final class GatewayServer {
             WorkModeDef.currWorkMode()
         );
 
-        // 初始化配置
-        Configure.init(_cmdLn);
+        String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
 
+        // 初始化配置
+        Configure.init(serverAddrOfNacos);
         // 启动 Netty 服务器
         startUpNettyServer(_cmdLn);
+
+        // 开始发现新业务服务器
+        BizServerFinder.getInstance()
+            .putServerAddrOfNacos(serverAddrOfNacos)
+            .startFind();
     }
 
     /**

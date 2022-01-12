@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 业务服务器发现者
  */
-public class BizServerFinder {
+public final class BizServerFinder {
     /**
      * 日志对象
      */
@@ -29,12 +29,7 @@ public class BizServerFinder {
     /**
      * 服务名称
      */
-    static private final String SERVICE_NAME_ORG_ALPHAGAME_BIZSERVER = "org.alphagame.bizserver";
-
-    /**
-     * 分组
-     */
-    static private final String GROUP_HJ_S_MEELEZ = "hj_s_meelez";
+    static private final String SERVICE_NAME_ORG_XGAME_BIZSERVER = "org.xgame.bizserver";
 
     /**
      * 单例对象
@@ -95,13 +90,13 @@ public class BizServerFinder {
      * 开始发现
      */
     public void startFind() {
-        NamingService ns = createNamingService(getServerAddrOfNacos());
+        _ns = createNamingService(getServerAddrOfNacos());
 
         try {
             for (ServerJobTypeEnum serverJobType : ServerJobTypeEnum.values()) {
-                ns.subscribe(
-                    SERVICE_NAME_ORG_ALPHAGAME_BIZSERVER,
-                    GROUP_HJ_S_MEELEZ + "." + serverJobType.name(),
+                _ns.subscribe(
+                    SERVICE_NAME_ORG_XGAME_BIZSERVER,
+                    serverJobType.name(),
                     this::namingService_subscribe
                 );
             }
@@ -184,24 +179,23 @@ public class BizServerFinder {
     /**
      * 根据职务类型选择一个游戏服务器
      *
-     * @param jobType 职务类型
+     * @param sjt 职务类型
      * @return Netty 客户端
      */
-    public NettyClient selectOneBizServer(String jobType) {
-        if (null == jobType ||
-            jobType.isEmpty() ||
+    public NettyClient selectOneBizServer(ServerJobTypeEnum sjt) {
+        if (null == sjt ||
             null == _ns) {
             return null;
         }
 
         try {
             List<Instance> instanceList = _ns.selectInstances(
-                SERVICE_NAME_ORG_ALPHAGAME_BIZSERVER,
-                jobType, true
+                SERVICE_NAME_ORG_XGAME_BIZSERVER,
+                sjt.getStrVal(), true
             );
 
             Instance instance = instanceList.stream()
-                .max(Comparator.comparing(Instance::getWeight))
+                .min(Comparator.comparing(Instance::getWeight))
                 .orElse(null);
 
             if (null == instance) {

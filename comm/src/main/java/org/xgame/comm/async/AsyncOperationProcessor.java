@@ -33,7 +33,7 @@ public final class AsyncOperationProcessor {
     /**
      * 单例对象
      */
-    private static final AsyncOperationProcessor _instance = new AsyncOperationProcessor();
+    private static final AsyncOperationProcessor INSTANCE = new AsyncOperationProcessor();
 
     /**
      * 线程服务数组
@@ -82,7 +82,7 @@ public final class AsyncOperationProcessor {
      * @return 单例对象
      */
     public static AsyncOperationProcessor getInstance() {
-        return _instance;
+        return INSTANCE;
     }
 
     /**
