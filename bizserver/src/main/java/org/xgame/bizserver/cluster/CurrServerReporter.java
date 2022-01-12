@@ -6,10 +6,11 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.xgame.bizserver.def.ServerJobTypeEnum;
+import org.xgame.comm.async.AsyncOperationProcessor;
+import org.xgame.comm.util.MyTimer;
 
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -78,21 +79,25 @@ public final class CurrServerReporter {
             String strServerJobTypeSet = _cmdLn.getOptionValue("server_job_type_set");
             Set<ServerJobTypeEnum> serverJobTypeSet = ServerJobTypeEnum.strToValSet(strServerJobTypeSet);
 
-            Executors.newSingleThreadScheduledExecutor().scheduleWithFixedDelay(() -> {
+            // 执行定时任务
+            MyTimer.getInstance().scheduleWithFixedDelay(() -> {
                 for (ServerJobTypeEnum sjt : serverJobTypeSet) {
-                    try {
-                        newInstance.setWeight(0);
-                        ns.registerInstance(
-                            SERVICE_NAME_ORG_XGAME_BIZSERVER,
-                            sjt.getStrVal(),
-                            newInstance
-                        );
-                    } catch (Exception ex) {
-                        // 记录错误日志
-                        LOGGER.error(ex.getMessage(), ex);
-                    }
+                    // 注册服务器实例时, 使用异步操作方式
+                    AsyncOperationProcessor.getInstance().process(() -> {
+                        try {
+                            newInstance.setWeight(0);
+                            ns.registerInstance(
+                                SERVICE_NAME_ORG_XGAME_BIZSERVER,
+                                sjt.getStrVal(),
+                                newInstance
+                            );
+                        } catch (Exception ex) {
+                            // 记录错误日志
+                            LOGGER.error(ex.getMessage(), ex);
+                        }
+                    });
                 }
-            }, 0, 5, TimeUnit.SECONDS);
+            }, 0, 10, TimeUnit.SECONDS);
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);

@@ -5,16 +5,12 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
-import org.xgame.bizserver.base.MyCmdHandlerContext;
 import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
-import org.xgame.comm.util.MyTimer;
 import org.xgame.gatewayserver.base.BaseLog;
 import org.xgame.gatewayserver.base.ClientMsgHandler;
 import org.xgame.gatewayserver.cluster.BizServerFinder;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 网关服务器
@@ -58,17 +54,7 @@ public final class GatewayServer {
     static public void main(String[] argvArray) {
         // 设置 log4j 属性文件
         PropertyConfigurator.configure(GatewayServer.class.getClassLoader().getResourceAsStream("log4j.properties"));
-        //(new GatewayServer()).init(argvArray).startUp();
-
-        MyTimer.getInstance().scheduleWithFixedDelay(
-            () ->
-                System.out.println(Thread.currentThread().getName()),
-            0, 5, TimeUnit.SECONDS
-        );
-        MyTimer.getInstance().scheduleWithFixedDelay(
-            () ->
-                System.out.println(Thread.currentThread().getName()),
-            0, 5, TimeUnit.SECONDS);
+        (new GatewayServer()).init(argvArray).startUp();
     }
 
     /**
