@@ -5,7 +5,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.base.InternalServerMsgHandler_BizServer;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
@@ -17,7 +17,7 @@ public final class BizServer {
     /**
      * 日志对象
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(BizServer.class);
+    private static final Logger LOGGER = BaseLog.LOGGER;
 
     /**
      * 服务器 Id
@@ -64,11 +64,11 @@ public final class BizServer {
     private BizServer init(String[] argvArray) {
         // 创建参数选项
         Options op = new Options();
-        // --server_id --server_job_type_set --server_host --server_port --nacos_server_addr 选项
+        // --server_id --server_job_type_set --bind_host --bind_port --nacos_server_addr 选项
         op.addRequiredOption(null, "server_id", true, "服务器 Id");
         op.addRequiredOption(null, "server_job_type_set", true, "服务器工作类型集合");
-        op.addRequiredOption(null, "server_host", true, "服务器主机地址");
-        op.addRequiredOption(null, "server_port", true, "服务器端口号");
+        op.addRequiredOption(null, "bind_host", true, "服务器主机地址");
+        op.addRequiredOption(null, "bind_port", true, "服务器端口号");
         op.addRequiredOption(null, "nacos_server_addr", true, "Nacos 服务器地址");
 
         try {
