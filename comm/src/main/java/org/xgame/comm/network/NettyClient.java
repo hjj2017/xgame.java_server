@@ -107,6 +107,10 @@ public final class NettyClient {
                 return;
             }
 
+            LOGGER.info(
+                "连接到主机, {}", _usingConf
+            );
+
             _ch = f.channel();
             _ch.closeFuture().addListener(this::onLoseConnect);
         } catch (Exception ex) {
@@ -145,7 +149,7 @@ public final class NettyClient {
      */
     private void onLoseConnect(Future<?> f) {
         LOGGER.warn(
-            "XXX 注意: 服务器连接关闭! {} XXX",
+            "XXX 注意: 主机连接关闭! {} XXX",
             _usingConf
         );
 

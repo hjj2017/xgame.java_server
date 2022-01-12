@@ -68,10 +68,7 @@ public final class CurrServerReporter {
     public void startReport() {
         try {
             String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
-
-            Properties prop = new Properties();
-            prop.put("serverAddr", serverAddrOfNacos);
-            NamingService ns = NamingFactory.createNamingService(prop);
+            NamingService ns = createNamingService(serverAddrOfNacos);
 
             final Instance newInstance = new Instance();
             newInstance.setInstanceId(_cmdLn.getOptionValue("server_id"));
@@ -100,5 +97,30 @@ public final class CurrServerReporter {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
         }
+    }
+
+    /**
+     * 创建发现服务
+     *
+     * @param serverAddrOfNacos Nacos 服务器地址
+     * @return 发现服务
+     */
+    static private NamingService createNamingService(String serverAddrOfNacos) {
+        if (null == serverAddrOfNacos ||
+            serverAddrOfNacos.isEmpty()) {
+            return null;
+        }
+
+        Properties prop = new Properties();
+        prop.put("serverAddr", serverAddrOfNacos);
+
+        try {
+            return NamingFactory.createNamingService(prop);
+        } catch (Exception ex) {
+            // 记录错误日志
+            LOGGER.error(ex.getMessage(), ex);
+        }
+
+        return null;
     }
 }

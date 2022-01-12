@@ -1,11 +1,9 @@
 package org.xgame.gatewayserver;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
-import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.gatewayserver.base.BaseLog;
 
 import java.util.Properties;
@@ -41,16 +39,15 @@ public final class Configure {
     /**
      * 初始化
      *
-     * @param serverAddrOfNacos Nacos 服务器地址
+     * @param cmdLn 命令行对象
      */
-    static void init(String serverAddrOfNacos) {
-        if (null == serverAddrOfNacos ||
-            serverAddrOfNacos.isEmpty()) {
+    static void init(CommandLine cmdLn) {
+        if (null == cmdLn) {
             return;
         }
 
         // 获取服务器配置
-        ConfigService cs = createConfigService(serverAddrOfNacos);
+        ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
     }
 
     /**

@@ -104,17 +104,12 @@ public final class GatewayServer {
             WorkModeDef.currWorkMode()
         );
 
-        String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
-
         // 初始化配置
-        Configure.init(serverAddrOfNacos);
+        Configure.init(_cmdLn);
         // 启动 Netty 服务器
         startUpNettyServer(_cmdLn);
-
         // 开始发现新业务服务器
-        BizServerFinder.getInstance()
-            .putServerAddrOfNacos(serverAddrOfNacos)
-            .startFind();
+        BizServerFinder.getInstance().init(_cmdLn).startFind();
     }
 
     /**

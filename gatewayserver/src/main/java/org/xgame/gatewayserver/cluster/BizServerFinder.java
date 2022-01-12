@@ -5,6 +5,7 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.Event;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.xgame.bizserver.def.ServerJobTypeEnum;
 import org.xgame.comm.network.NettyClient;
@@ -42,6 +43,11 @@ public final class BizServerFinder {
     private String _serverAddrOfNacos = null;
 
     /**
+     * 命令行参数
+     */
+    private CommandLine _cmdLn;
+
+    /**
      * 发现服务
      */
     private NamingService _ns = null;
@@ -67,22 +73,13 @@ public final class BizServerFinder {
     }
 
     /**
-     * 获取 Nacos 服务器地址
+     * 初始化
      *
-     * @return Nacos 服务器地址
-     */
-    public String getServerAddrOfNacos() {
-        return _serverAddrOfNacos;
-    }
-
-    /**
-     * 设置 Nacos 服务器地址
-     *
-     * @param val Nacos 服务器地址
+     * @param cmdLn 命令行参数
      * @return this 指针
      */
-    public BizServerFinder putServerAddrOfNacos(String val) {
-        _serverAddrOfNacos = val;
+    public BizServerFinder init(CommandLine cmdLn) {
+        _cmdLn = cmdLn;
         return this;
     }
 
@@ -90,7 +87,8 @@ public final class BizServerFinder {
      * 开始发现
      */
     public void startFind() {
-        _ns = createNamingService(getServerAddrOfNacos());
+        String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
+        _ns = createNamingService(serverAddrOfNacos);
 
         try {
             for (ServerJobTypeEnum serverJobType : ServerJobTypeEnum.values()) {
@@ -156,24 +154,32 @@ public final class BizServerFinder {
     /**
      * 连接到业务服务器
      *
-     * @param i 服务器信息
+     * @param regInstance 服务器信息
      */
-    private void connectToBizServer(Instance i) {
-        if (null == i) {
+    private void connectToBizServer(Instance regInstance) {
+        if (null == regInstance ||
+            _nettyClientMap.containsKey(regInstance.getInstanceId())) {
             return;
         }
 
+        LOGGER.info(
+            "发现服务器, serverId = {}, serverAddr = {}:{}",
+            regInstance.getInstanceId(),
+            regInstance.getIp(),
+            regInstance.getPort()
+        );
+
         NettyClientConf newConf = new NettyClientConf()
-            .setServerId(i.getInstanceId())
-            .setServerHost(i.getIp())
-            .setServerPort(i.getPort())
+            .setServerId(regInstance.getInstanceId())
+            .setServerHost(regInstance.getIp())
+            .setServerPort(regInstance.getPort())
             .setCustomChannelHandlerFactory(InternalServerMsgHandler_GatewayServer::new)
             .setCloseCallback(_nettyClientMap.values()::remove);
 
         NettyClient newClient = new NettyClient(newConf);
         newClient.connect();
 
-        _nettyClientMap.put(i.getInstanceId(), newClient);
+        _nettyClientMap.put(regInstance.getInstanceId(), newClient);
     }
 
     /**

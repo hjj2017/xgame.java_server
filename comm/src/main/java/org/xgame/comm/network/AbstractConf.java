@@ -125,7 +125,7 @@ abstract class AbstractConf<T extends AbstractConf<T>> {
     @Override
     public String toString() {
         return MessageFormat.format(
-            "serverId = {0}, addrezz = {1}:{2}",
+            "serverId = {0}, serverAddr = {1}:{2}",
             getServerId(), getServerHost(), String.valueOf(getServerPort())
         );
     }

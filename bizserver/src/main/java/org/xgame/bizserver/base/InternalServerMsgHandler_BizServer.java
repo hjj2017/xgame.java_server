@@ -92,5 +92,7 @@ public class InternalServerMsgHandler_BizServer extends ChannelDuplexHandler {
         if (null == ctx) {
             return;
         }
+
+        LOGGER.warn("连接已断开");
     }
 }
