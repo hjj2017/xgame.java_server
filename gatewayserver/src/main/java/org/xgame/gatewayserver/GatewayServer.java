@@ -9,7 +9,7 @@ import org.xgame.bizserver.BizServer;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
 import org.xgame.gatewayserver.base.BaseLog;
-import org.xgame.gatewayserver.base.InternalServerMsgHandler_GatewayServer;
+import org.xgame.gatewayserver.base.ClientMsgHandler;
 
 /**
  * 网关服务器
@@ -116,7 +116,7 @@ public final class GatewayServer {
             .setServerId(cmdLn.getOptionValue("server_id"))
             .setServerHost(cmdLn.getOptionValue("bind_host"))
             .setServerPort(Integer.parseInt(cmdLn.getOptionValue("bind_port")))
-            .setCustomChannelHandlerFactory(InternalServerMsgHandler_GatewayServer::new);
+            .setCustomChannelHandlerFactory(ClientMsgHandler::new);
 
         // 启动 Netty 服务器
         NettyServer newServer = new NettyServer(newConf);

@@ -5,7 +5,7 @@ import com.google.protobuf.Internal;
 import com.google.protobuf.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xgame.bizserver.base.def.ServerJobTypeEnum;
+import org.xgame.bizserver.def.ServerJobTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;

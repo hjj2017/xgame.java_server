@@ -1,4 +1,4 @@
-package org.xgame.bizserver.base.def;
+package org.xgame.bizserver.def;
 
 /**
  * 工作模式定义

@@ -48,7 +48,9 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
             return;
         }
 
-        ChannelHandler[] hArray = {};
+        ChannelHandler[] hArray = {
+            new ClientMsgCodec(),
+        };
 
         // 获取信道管线
         ChannelPipeline pl = ctx.pipeline();
@@ -93,7 +95,9 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object objEvent) {
-        if (null == ctx || null == ctx.channel() || !(objEvent instanceof HandshakeComplete)) {
+        if (null == ctx ||
+            null == ctx.channel() ||
+            !(objEvent instanceof HandshakeComplete)) {
             return;
         }
 
