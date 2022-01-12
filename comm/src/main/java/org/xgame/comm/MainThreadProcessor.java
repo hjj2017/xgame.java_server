@@ -51,7 +51,9 @@ public final class MainThreadProcessor {
                 Thread t = new Thread(r);
                 t.setName("xgame_MainThreadProcessor");
                 return t;
-            }
+            },
+
+            (r, exec) -> LOGGER.error("主线程处理器拒绝处理")
         );
     }
 
