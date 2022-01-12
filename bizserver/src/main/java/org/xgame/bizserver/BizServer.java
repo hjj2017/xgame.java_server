@@ -76,10 +76,10 @@ public final class BizServer {
             // 创建默认解析器
             DefaultParser dp = new DefaultParser();
             // 解析命令行参数
-            this._cmdLn = dp.parse(op, argvArray);
+            _cmdLn = dp.parse(op, argvArray);
 
             // 设置服务器 Id
-            BizServer._Id = this._cmdLn.getOptionValue("server_id", null);
+            BizServer._Id = _cmdLn.getOptionValue("server_id", null);
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
@@ -92,7 +92,7 @@ public final class BizServer {
      * 启动服务器
      */
     private void startUp() {
-        if (null == this._cmdLn) {
+        if (null == _cmdLn) {
             LOGGER.error("命令行参数错误");
             return;
         }
@@ -104,8 +104,11 @@ public final class BizServer {
             WorkModeDef.currWorkMode()
         );
 
+        // 初始化配置
+        Configure.init(_cmdLn);
+
         // 启动 Netty 服务器
-        startUpNettyServer(this._cmdLn);
+        startUpNettyServer(_cmdLn);
     }
 
     /**

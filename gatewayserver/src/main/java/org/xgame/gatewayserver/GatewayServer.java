@@ -5,7 +5,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
-import org.xgame.bizserver.BizServer;
 import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
@@ -76,10 +75,10 @@ public final class GatewayServer {
             // 创建默认解析器
             DefaultParser dp = new DefaultParser();
             // 解析命令行参数
-            this._cmdLn = dp.parse(op, argvArray);
+            _cmdLn = dp.parse(op, argvArray);
 
             // 设置服务器 Id
-            GatewayServer._Id = this._cmdLn.getOptionValue("server_id", null);
+            GatewayServer._Id = _cmdLn.getOptionValue("server_id", null);
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
@@ -92,7 +91,7 @@ public final class GatewayServer {
      * 启动服务器
      */
     private void startUp() {
-        if (null == this._cmdLn) {
+        if (null == _cmdLn) {
             LOGGER.error("命令行参数错误");
             return;
         }
@@ -104,8 +103,11 @@ public final class GatewayServer {
             WorkModeDef.currWorkMode()
         );
 
+        // 初始化配置
+        Configure.init(_cmdLn);
+
         // 启动 Netty 服务器
-        startUpNettyServer(this._cmdLn);
+        startUpNettyServer(_cmdLn);
     }
 
     /**
