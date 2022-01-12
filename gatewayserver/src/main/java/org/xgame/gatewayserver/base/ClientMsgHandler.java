@@ -1,6 +1,5 @@
-package org.xgame.proxyserver.base;
+package org.xgame.gatewayserver.base;
 
-import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandler;
@@ -10,7 +9,6 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.Map;
@@ -51,23 +49,14 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
             return;
         }
 
-        ChannelHandler[] hArray = {
-            new ClientMsgDecoder(),
-            new ClientMsgEncoder(),
-            new PingCmdHandler(),
-            new ReconnCmdHandler(),
-            new CheckInTicketCmdHandler(),
-            new UserIdValidator(),
-            new ClientMsgRouter(), // XXX 注意: 在这里完成内部服务器消息的转发过程
-        };
+        ChannelHandler[] hArray = {};
 
         // 获取信道管线
         ChannelPipeline pl = ctx.pipeline();
 
         for (ChannelHandler h : hArray) {
             // 获取处理器类
-            Class<? extends ChannelHandler>
-                hClazz = h.getClass();
+            Class<? extends ChannelHandler> hClazz = h.getClass();
 
             if (null == pl.get(hClazz)) {
                 pl.addBefore(ctx.name(), hClazz.getSimpleName(), h);
@@ -77,28 +66,18 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        if (null == ctx ||
-            null == ctx.channel()) {
+        if (null == ctx || null == ctx.channel()) {
             return;
         }
 
         LOGGER.info("有新的客户端接入");
-
-        // 附着会话 Id
-        IdSetterGetter.attachSessionId(ctx);
-        // 添加客户端信道
-        ClientChannelGroup.add(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        if (null == ctx ||
-            null == ctx.channel()) {
+        if (null == ctx || null == ctx.channel()) {
             return;
         }
-
-        // 移除客户端信道
-        ClientChannelGroup.remove(ctx);
 
         if (_connAlreadyTransfer) {
             LOGGER.info("客户端连接已转移...");
@@ -106,40 +85,6 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
         }
 
         LOGGER.info("有客户端下线");
-
-        // 获取用户 Id
-        int userId = IdSetterGetter.getUserId(ctx);
-
-        if (userId <= 0) {
-            return;
-        }
-
-        // 获取会话 Id
-        int sessionId = IdSetterGetter.getSessionId(ctx);
-
-        try (Jedis redisPubSub = RedisXuite.getRedisPubSub()) {
-            // 构建下线的用户
-            JSONObject joUser = new JSONObject();
-            joUser.put("proxyServerId", ProxyServer.getId());
-            joUser.put("remoteSessionId", sessionId);
-            joUser.put("userId", userId);
-
-            LOGGER.info(
-                "发布用户离线通知, proxyServerId = {}, remoteSessionId = {}, userId = {}",
-                ProxyServer.getId(),
-                sessionId,
-                userId
-            );
-
-            // 记录日志信息
-            redisPubSub.publish(
-                PubSubChannelDef.OFFLINE_USER_NOTICE,
-                joUser.toJSONString()
-            );
-        } catch (Exception ex) {
-            // 记录错误日志
-            LOGGER.error(ex.getMessage(), ex);
-        }
     }
 
     @Override
@@ -148,30 +93,24 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void userEventTriggered(
-        ChannelHandlerContext ctx, Object objEvent) {
-        if (null == ctx ||
-            null == ctx.channel() ||
-            !(objEvent instanceof HandshakeComplete)) {
+    public void userEventTriggered(ChannelHandlerContext ctx, Object objEvent) {
+        if (null == ctx || null == ctx.channel() || !(objEvent instanceof HandshakeComplete)) {
             return;
         }
 
         final HandshakeComplete handshakeComplete = (HandshakeComplete) objEvent;
         final HttpHeaders h = handshakeComplete.requestHeaders();
 
-        final List<Map.Entry<String, String>>
-            entryList = h.entries();
+        final List<Map.Entry<String, String>> entryList = h.entries();
 
         final Channel ch = ctx.channel();
 
         for (Map.Entry<String, String> entry : entryList) {
-            if (null == entry ||
-                null == entry.getKey()) {
+            if (null == entry || null == entry.getKey()) {
                 continue;
             }
 
-            ch.attr(AttributeKey.valueOf(HTTP_HEADER_PREFIX + entry.getKey()))
-                .set(entry.getValue());
+            ch.attr(AttributeKey.valueOf(HTTP_HEADER_PREFIX + entry.getKey())).set(entry.getValue());
         }
     }
 
@@ -182,8 +121,7 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
      * @return X-Real-IP 值
      */
     static public String getXRealIp(ChannelHandlerContext ctx) {
-        if (null == ctx ||
-            null == ctx.channel()) {
+        if (null == ctx || null == ctx.channel()) {
             return null;
         }
 

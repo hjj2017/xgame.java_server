@@ -20,7 +20,7 @@
         //-->
         <ver.netty-all>4.1.50.Final</ver.netty-all>
         <ver.slf4j-log4j12>1.7.30</ver.slf4j-log4j12>
-        <ver.commons-cli>1.4</ver.commons-cli>
+        <ver.commons-cli>1.5.0</ver.commons-cli>
         <ver.jedis>3.3.0</ver.jedis>
         <ver.fastjson>1.2.68</ver.fastjson>
         <ver.protobuf-java>3.12.1</ver.protobuf-java>
@@ -39,6 +39,6 @@
     <modules>
         <module>./comm</module>
         <module>./bizserver</module>
-        <module>./proxyserver</module>
+        <module>./gatewayserver</module>
     </modules>
 </project>
