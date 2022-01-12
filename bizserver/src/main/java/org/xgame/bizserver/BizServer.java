@@ -7,6 +7,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.base.InternalServerMsgHandler_BizServer;
+import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
 
@@ -96,7 +97,12 @@ public final class BizServer {
             return;
         }
 
-        LOGGER.info("serverId = {}", BizServer.getId());
+        LOGGER.info(
+            "启动业务服务器 serverId = {}, 服务器版本号 = {}, 当前工作模式 = {}",
+            _Id,
+            Ver.CURR,
+            WorkModeDef.currWorkMode()
+        );
 
         // 启动 Netty 服务器
         startUpNettyServer(this._cmdLn);
