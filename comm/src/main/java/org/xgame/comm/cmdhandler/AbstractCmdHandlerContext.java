@@ -5,7 +5,7 @@ import io.netty.channel.ChannelFuture;
 /**
  * 自定义指令处理器上下文
  */
-abstract public class AbstractCmdHandlerContext {
+public abstract class AbstractCmdHandlerContext {
     /**
      * 代理服务器 Id
      */

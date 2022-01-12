@@ -106,8 +106,7 @@ public final class MainThreadProcessor {
             // 获取命令类
             final Class<?> cmdClazz = cmdObj.getClass();
             // 创建命令处理器
-            final ICmdHandler<? extends AbstractCmdHandlerContext, ? extends GeneratedMessageV3>
-                cmdHandler = CmdHandlerFactory.create(cmdClazz);
+            final ICmdHandler<?, ?> cmdHandler = CmdHandlerFactory.create(cmdClazz);
 
             if (null == cmdHandler) {
                 LOGGER.error(

@@ -63,35 +63,9 @@ public final class CmdHandlerFactory {
             scanJavaPackage, true, ICmdHandler.class
         );
 
-        for (Class<?> cmdHandlerClazz : cmdHandlerClazzSet) {
-            if (null == cmdHandlerClazz ||
-                0 != (cmdHandlerClazz.getModifiers() & Modifier.ABSTRACT)) {
-                // 如果是抽象类,
-                continue;
-            }
-
-            // 获取方法数组
-            Method[] methodArray = cmdHandlerClazz.getDeclaredMethods();
-            // 命令类
-            Class<?> cmdClazz = null;
-
-            for (Method currMethod : methodArray) {
-                if (!currMethod.getName().equals("handle")) {
-                    continue;
-                }
-
-                // 获取函数参数数组
-                Class<?>[] paramTypeArray = currMethod.getParameterTypes();
-
-                if (paramTypeArray.length < 4 ||
-                    paramTypeArray[3] == GeneratedMessageV3.class || // 如果是 GeneratedMessageV3 消息本身, 则直接跳过!
-                    !GeneratedMessageV3.class.isAssignableFrom(paramTypeArray[3])) {
-                    continue;
-                }
-
-                cmdClazz = paramTypeArray[3];
-                break;
-            }
+        for (Class<?> currHandlerClazz : cmdHandlerClazzSet) {
+            // 获取指令类型
+            Class<?> cmdClazz = getCmdClazzFromHandlerClazz(currHandlerClazz);
 
             if (null == cmdClazz) {
                 continue;
@@ -99,12 +73,13 @@ public final class CmdHandlerFactory {
 
             try {
                 // 创建指令处理器
-                ICmdHandler<?, ?> cmdHandlerImpl = (ICmdHandler<?, ?>) cmdHandlerClazz.getDeclaredConstructor().newInstance();
+                ICmdHandler<? extends AbstractCmdHandlerContext, ? extends GeneratedMessageV3>
+                    cmdHandlerImpl = (ICmdHandler<? extends AbstractCmdHandlerContext, ? extends GeneratedMessageV3>) currHandlerClazz.getDeclaredConstructor().newInstance();
 
                 LOGGER.info(
                     "关联 {} <==> {}",
                     cmdClazz.getName(),
-                    cmdHandlerClazz.getName()
+                    currHandlerClazz.getName()
                 );
 
                 _handlerMap.put(
@@ -115,5 +90,50 @@ public final class CmdHandlerFactory {
                 LOGGER.error(ex.getMessage(), ex);
             }
         }
+    }
+
+    /**
+     * 从处理器类型中获取指令类型
+     *
+     * @param handlerClazz 指令处理器类型
+     * @return 指令类型
+     */
+    private static Class<?> getCmdClazzFromHandlerClazz(Class<?> handlerClazz) {
+        if (null == handlerClazz ||
+            0 != (handlerClazz.getModifiers() & Modifier.ABSTRACT)) {
+            // 如果是抽象类,
+            return null;
+        }
+
+        // 获取注解对象
+        HandleCmd annoX = handlerClazz.getAnnotation(HandleCmd.class);
+
+        if (null != annoX) {
+            // 如果注解中已经声明了可以处理的指令,
+            // 则直接返回...
+            return annoX.value();
+        }
+
+        // 获取方法数组
+        Method[] methodArray = handlerClazz.getDeclaredMethods();
+
+        for (Method currMethod : methodArray) {
+            if (!currMethod.getName().equals("handle")) {
+                continue;
+            }
+
+            // 获取函数参数数组
+            Class<?>[] paramTypeArray = currMethod.getParameterTypes();
+
+            if (paramTypeArray.length < 2 ||
+                paramTypeArray[1] == GeneratedMessageV3.class || // 如果是 GeneratedMessageV3 消息本身, 则直接跳过!
+                !GeneratedMessageV3.class.isAssignableFrom(paramTypeArray[1])) {
+                continue;
+            }
+
+            return paramTypeArray[1];
+        }
+
+        return null;
     }
 }
