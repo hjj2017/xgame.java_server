@@ -3,7 +3,9 @@ package org.xgame.comm.async;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
 import org.xgame.comm.MainThreadProcessor;
+import org.xgame.comm.util.SafeRunner;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -31,6 +33,11 @@ public final class AsyncOperationProcessor {
     private static final int Q_SIZE = 4096;
 
     /**
+     * 随机对象
+     */
+    private static final Random RAND = new Random();
+
+    /**
      * 单例对象
      */
     private static final AsyncOperationProcessor INSTANCE = new AsyncOperationProcessor();
@@ -39,11 +46,6 @@ public final class AsyncOperationProcessor {
      * 线程服务数组
      */
     private final ExecutorService[] _esArray;
-
-    /**
-     * 随机对象
-     */
-    private volatile Random _rand;
 
     /**
      * 主线程执行器,
@@ -102,20 +104,16 @@ public final class AsyncOperationProcessor {
         bindId = Math.abs(bindId);
         int esIndex = (int) bindId % _esArray.length;
 
-        _esArray[esIndex].submit(() -> {
-            try {
+        _esArray[esIndex].submit(new SafeRunner(
+            () -> {
                 // 执行异步操作
                 op.doAsync();
 
                 if (null != con) {
-                    // 回到主消息线程继续执行完成逻辑
-                    exec.execute(con::doContinue);
+                    Objects.requireNonNullElse(exec, _mainThreadExecutor).execute(con::doContinue);
                 }
-            } catch (Exception ex) {
-                // 记录错误日志
-                LOGGER.error(ex.getMessage(), ex);
             }
-        });
+        ));
     }
 
     /**
@@ -139,15 +137,7 @@ public final class AsyncOperationProcessor {
             return;
         }
 
-        if (null == _rand) {
-            synchronized (this) {
-                if (null == _rand) {
-                    _rand = new Random();
-                }
-            }
-        }
-
-        int bindId = _rand.nextInt(_esArray.length);
+        int bindId = RAND.nextInt(_esArray.length);
 
         process(
             bindId, op, con, _mainThreadExecutor
