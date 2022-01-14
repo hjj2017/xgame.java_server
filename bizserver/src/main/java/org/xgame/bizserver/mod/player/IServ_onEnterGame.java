@@ -2,6 +2,7 @@ package org.xgame.bizserver.mod.player;
 
 import org.xgame.bizserver.mod.item.ItemService;
 import org.xgame.bizserver.mod.player.model.PlayerModel;
+import org.xgame.comm.async.AsyncOperationProcessor;
 
 interface IServ_onEnterGame {
     /**
@@ -13,7 +14,16 @@ interface IServ_onEnterGame {
         if (null == p) {
             return;
         }
-        
-        ItemService.getInstance().onEnterGame(p);
+
+        AsyncOperationProcessor.getInstance().process(
+            p.getUUId(),
+            () -> {
+                ItemService.getInstance().onEnterGame(p);
+            },
+
+            () -> {
+                // 回到主线程继续往下走
+            }
+        );
     }
 }

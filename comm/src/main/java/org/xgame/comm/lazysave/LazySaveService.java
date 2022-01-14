@@ -145,6 +145,13 @@ public final class LazySaveService {
     }
 
     /**
+     * 放弃所有
+     */
+    public void forgetALL() {
+        _lazyEntryMap.clear();
+    }
+
+    /**
      * 启动心跳
      */
     public void startHeartbeat() {

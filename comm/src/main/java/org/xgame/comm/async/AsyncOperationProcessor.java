@@ -120,6 +120,21 @@ public final class AsyncOperationProcessor {
      * 处理异步操作
      *
      * @param bindId 绑定 ( 线程 ) Id
+     * @param op     异步操作对象
+     * @param con    同步继续执行
+     */
+    public void process(long bindId, IAsyncOperation op, IContinueWith con) {
+        if (null == op) {
+            return;
+        }
+
+        process(bindId, op, con, _mainThreadExecutor);
+    }
+
+    /**
+     * 处理异步操作
+     *
+     * @param bindId 绑定 ( 线程 ) Id
      * @param op     异步操作
      */
     public void process(long bindId, IAsyncOperation op) {

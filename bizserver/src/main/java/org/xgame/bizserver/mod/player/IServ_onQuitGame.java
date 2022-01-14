@@ -17,15 +17,15 @@ interface IServ_onQuitGame {
             return;
         }
 
-        // 忘记延迟保存
-        LazySaveService.getInstance().forget(p.getLazyEntry());
-
-        final PlayerDAO dao = new PlayerDAO();
         AsyncOperationProcessor.getInstance().process(
             p.getUUId(),
-            () -> dao.saveOrUpdate(p)
-        );
+            () -> {
+                // 忘记延迟保存
+                LazySaveService.getInstance().forget(p.getLazyEntry());
 
-        ItemService.getInstance().onQuitGame(p);
+                (new PlayerDAO()).saveOrUpdate(p);
+                ItemService.getInstance().onQuitGame(p);
+            }
+        );
     }
 }

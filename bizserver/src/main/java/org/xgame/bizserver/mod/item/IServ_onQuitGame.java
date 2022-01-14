@@ -4,10 +4,11 @@ import org.xgame.bizserver.mod.item.io.ItemDAO;
 import org.xgame.bizserver.mod.item.model.ItemModel;
 import org.xgame.bizserver.mod.item.model.ItemModelManager;
 import org.xgame.bizserver.mod.player.model.PlayerModel;
-import org.xgame.comm.async.AsyncOperationProcessor;
 import org.xgame.comm.lazysave.LazySaveService;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 interface IServ_onQuitGame {
     /**
@@ -28,8 +29,7 @@ interface IServ_onQuitGame {
         }
 
         Collection<ItemModel> itemModelColl = manager.getItemModelALL();
-
-        ItemDAO dao = new ItemDAO();
+        List<ItemModel> saveList = new LinkedList<>();
 
         for (ItemModel currItem : itemModelColl) {
             if (null == currItem ||
@@ -39,12 +39,13 @@ interface IServ_onQuitGame {
 
             // 取消延迟保存
             LazySaveService.getInstance().forget(currItem.getLazyEntry());
+            saveList.add(currItem);
+        }
 
-            // 改为立即保存数据...
-            AsyncOperationProcessor.getInstance().process(
-                currItem.getUUId(),
-                () -> dao.saveOrUpdate(currItem)
-            );
+        ItemDAO dao = new ItemDAO();
+
+        for (ItemModel currItem : saveList) {
+            dao.saveOrUpdate(currItem);
         }
     }
 }
