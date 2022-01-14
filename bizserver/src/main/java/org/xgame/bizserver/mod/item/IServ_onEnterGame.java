@@ -1,5 +1,6 @@
 package org.xgame.bizserver.mod.item;
 
+import org.xgame.bizserver.mod.item.model.ItemModelManager;
 import org.xgame.bizserver.mod.player.model.PlayerModel;
 
 interface IServ_onEnterGame {
@@ -12,5 +13,7 @@ interface IServ_onEnterGame {
         if (null == p) {
             return;
         }
+
+        p.addComponent(new ItemModelManager());
     }
 }

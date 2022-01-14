@@ -1,17 +1,14 @@
-package org.xgame.bizserver.mod.player.io;
+package org.xgame.bizserver.mod.item.io;
 
-import org.xgame.bizserver.mod.player.model.PlayerModel;
+import org.xgame.bizserver.mod.item.model.ItemModel;
 import org.xgame.comm.async.AsyncOperationProcessor;
 import org.xgame.comm.lazysave.ILazyEntry;
 
-/**
- * 玩家延迟入口
- */
-public class PlayerLazyEntry implements ILazyEntry {
+public class ItemLazyEntry implements ILazyEntry {
     /**
-     * 玩家模型
+     * 当前道具模型
      */
-    private final PlayerModel _p;
+    private final ItemModel _model;
 
     /**
      * 延迟入口 UId
@@ -21,11 +18,11 @@ public class PlayerLazyEntry implements ILazyEntry {
     /**
      * 类参数构造器
      *
-     * @param p 玩家模型
+     * @param model 当前道具模型
      */
-    public PlayerLazyEntry(PlayerModel p) {
-        _p = p;
-        _lazyEntryUUId = String.valueOf(p.getUUId());
+    public ItemLazyEntry(ItemModel model) {
+        _model = model;
+        _lazyEntryUUId = String.valueOf(model.getUUId());
     }
 
     @Override
@@ -36,8 +33,9 @@ public class PlayerLazyEntry implements ILazyEntry {
     @Override
     public void saveOrUpdate() {
         AsyncOperationProcessor.getInstance().process(
-            _p.getUUId(),
+            _model.getUUId(),
             () -> {
+                _model.unmarkChanged();
             }
         );
     }
@@ -45,8 +43,9 @@ public class PlayerLazyEntry implements ILazyEntry {
     @Override
     public void delete() {
         AsyncOperationProcessor.getInstance().process(
-            _p.getUUId(),
+            _model.getUUId(),
             () -> {
+                _model.unmarkChanged();
             }
         );
     }
