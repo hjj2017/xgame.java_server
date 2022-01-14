@@ -5,7 +5,8 @@ package org.xgame.bizserver.mod.item;
  */
 public final class ItemService implements
     IServ_onEnterGame,
-    IServ_onQuitGame {
+    IServ_onQuitGame,
+    IServ_onServerShutdown {
     /**
      * 单例对象
      */

@@ -3,6 +3,9 @@ package org.xgame.bizserver.mod.item.model;
 import org.xgame.bizserver.mod.item.io.ItemLazyEntry;
 import org.xgame.comm.lazysave.ILazyEntry;
 
+/**
+ * 道具模型
+ */
 public class ItemModel {
     /**
      * 延迟入口

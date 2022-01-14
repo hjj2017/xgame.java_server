@@ -5,5 +5,6 @@ package org.xgame.bizserver.mod.player;
  */
 public final class PlayerService implements
     IServ_onEnterGame,
-    IServ_onQuitGame {
+    IServ_onQuitGame,
+    IServ_onServerShutdown {
 }
