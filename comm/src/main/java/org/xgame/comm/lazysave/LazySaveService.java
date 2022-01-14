@@ -122,6 +122,29 @@ public final class LazySaveService {
     }
 
     /**
+     * 放弃
+     *
+     * @param le 延迟入口
+     */
+    public void forget(ILazyEntry le) {
+        if (null != le) {
+            forget(le.getUId());
+        }
+    }
+
+    /**
+     * 放弃
+     *
+     * @param lazyEntryUId 延迟入口 UId
+     */
+    public void forget(String lazyEntryUId) {
+        if (null != lazyEntryUId &&
+            lazyEntryUId.isEmpty()) {
+            _lazyEntryMap.remove(lazyEntryUId);
+        }
+    }
+
+    /**
      * 启动心跳
      */
     public void startHeartbeat() {
