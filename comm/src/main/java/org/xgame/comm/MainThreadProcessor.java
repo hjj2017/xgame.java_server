@@ -138,4 +138,24 @@ public final class MainThreadProcessor {
             _es.submit(new SafeRunner(task));
         }
     }
+
+    /**
+     * 停机
+     */
+    public void shutdown() {
+        if (null == _es ||
+            _es.isShutdown()) {
+            return;
+        }
+
+        _es.shutdown();
+
+        try {
+            if (!_es.awaitTermination(120, TimeUnit.SECONDS)) {
+                LOGGER.error("线程池未停机");
+            }
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+    }
 }

@@ -1,6 +1,10 @@
 package org.xgame.comm.util;
 
+import org.slf4j.Logger;
+import org.xgame.comm.CommLog;
+
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -11,6 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 自定义计时器
  */
 public final class MyTimer {
+    /**
+     * 日志对象
+     */
+    private static final Logger LOGGER = CommLog.LOGGER;
+
     /**
      * 单例对象
      */
@@ -132,5 +141,37 @@ public final class MyTimer {
         return _esArray[index].scheduleWithFixedDelay(
             new SafeRunner(task), initialDelay, delay, tu
         );
+    }
+
+    /**
+     * 停机
+     */
+    public void shutdown() {
+        if (null == _esArray ||
+            _esArray.length <= 0) {
+            return;
+        }
+
+        // 先通知所有的线程池停机
+        for (ExecutorService es : _esArray) {
+            if (null != es) {
+                es.shutdown();
+            }
+        }
+
+        // 然后等待停机完成
+        for (ExecutorService es : _esArray) {
+            if (null == es) {
+                continue;
+            }
+
+            try {
+                if (!es.awaitTermination(120, TimeUnit.SECONDS)) {
+                    LOGGER.error("线程池未停机");
+                }
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+            }
+        }
     }
 }

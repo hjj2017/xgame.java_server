@@ -9,9 +9,13 @@ import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.base.InternalServerMsgHandler_BizServer;
 import org.xgame.bizserver.cluster.CurrServerReporter;
 import org.xgame.bizserver.def.WorkModeDef;
+import org.xgame.bizserver.mod.player.PlayerService;
+import org.xgame.comm.MainThreadProcessor;
+import org.xgame.comm.async.AsyncOperationProcessor;
 import org.xgame.comm.lazysave.LazySaveService;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
+import org.xgame.comm.util.MyTimer;
 
 /**
  * 登录服务器
@@ -116,6 +120,11 @@ public final class BizServer {
         startUpNettyServer(_cmdLn);
         // 汇报当前服务器
         CurrServerReporter.getInstance().init(_cmdLn).startReport();
+
+        // 添加停机逻辑
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(this::shutdown)
+        );
     }
 
     /**
@@ -137,5 +146,23 @@ public final class BizServer {
         // 启动 Netty 服务器
         NettyServer newServer = new NettyServer(newConf);
         newServer.startUp();
+    }
+
+    /**
+     * 停机
+     */
+    private void shutdown() {
+        LOGGER.warn(">>> 服务器准备停机 <<<");
+
+        // 停止线程池
+        MainThreadProcessor.getInstance().shutdown();
+        MyTimer.getInstance().shutdown();
+        AsyncOperationProcessor.getInstance().shutdown();
+
+        // 放弃所有的延迟保存
+        LazySaveService.getInstance().forgetALL();
+
+        // 告知每个业务模块执行停服逻辑
+        PlayerService.getInstance().onServerShutdown();
     }
 }

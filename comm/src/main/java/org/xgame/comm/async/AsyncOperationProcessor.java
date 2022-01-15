@@ -167,4 +167,40 @@ public final class AsyncOperationProcessor {
     public void process(IAsyncOperation op) {
         process(op, null);
     }
+
+    /**
+     * 停机
+     */
+    public void shutdown() {
+        if (null == _esArray ||
+            _esArray.length <= 0) {
+            return;
+        }
+
+        // 先通知所有的线程池停机
+        for (ExecutorService es : _esArray) {
+            if (null == es ||
+                es.isShutdown()) {
+                continue;
+            }
+
+            es.shutdown();
+        }
+
+        // 然后等待停机完成
+        for (ExecutorService es : _esArray) {
+            if (null == es ||
+                es.isShutdown()) {
+                continue;
+            }
+
+            try {
+                if (!es.awaitTermination(120, TimeUnit.SECONDS)) {
+                    LOGGER.error("线程池未停机");
+                }
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+            }
+        }
+    }
 }
