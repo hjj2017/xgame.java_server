@@ -19,6 +19,11 @@ public class PlayerLazyEntry implements ILazyEntry {
     private final String _lazyEntryUUId;
 
     /**
+     * DAO
+     */
+    private final PlayerDAO _dao;
+
+    /**
      * 类参数构造器
      *
      * @param p 玩家模型
@@ -26,6 +31,7 @@ public class PlayerLazyEntry implements ILazyEntry {
     public PlayerLazyEntry(PlayerModel p) {
         _p = p;
         _lazyEntryUUId = String.valueOf(p.getUUId());
+        _dao = new PlayerDAO();
     }
 
     @Override
@@ -37,8 +43,7 @@ public class PlayerLazyEntry implements ILazyEntry {
     public void saveOrUpdate() {
         AsyncOperationProcessor.getInstance().process(
             _p.getUUId(),
-            () -> {
-            }
+            () -> _dao.saveOrUpdate(_p)
         );
     }
 
@@ -46,8 +51,7 @@ public class PlayerLazyEntry implements ILazyEntry {
     public void delete() {
         AsyncOperationProcessor.getInstance().process(
             _p.getUUId(),
-            () -> {
-            }
+            () -> _dao.delete(_p)
         );
     }
 }

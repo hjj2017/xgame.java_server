@@ -25,6 +25,8 @@ interface IServ_onQuitGame {
 
                 (new PlayerDAO()).saveOrUpdate(p);
                 ItemService.getInstance().onQuitGame(p);
+
+                p.free();
             }
         );
     }

@@ -5,4 +5,8 @@ import org.xgame.bizserver.mod.player.model.PlayerModel;
 public final class PlayerDAO {
     public void saveOrUpdate(PlayerModel p) {
     }
+
+    public void delete(PlayerModel p) {
+
+    }
 }

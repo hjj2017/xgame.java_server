@@ -21,4 +21,17 @@ public class ItemModelManager {
     public Collection<ItemModel> getItemModelALL() {
         return _itemModelMap.values();
     }
+
+    /**
+     * 释放所有资源
+     */
+    public void free() {
+        for (ItemModel currItem : _itemModelMap.values()) {
+            if (null != currItem) {
+                currItem.free();
+            }
+        }
+
+        _itemModelMap.clear();
+    }
 }

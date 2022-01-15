@@ -47,5 +47,8 @@ interface IServ_onQuitGame {
         for (ItemModel currItem : saveList) {
             dao.saveOrUpdate(currItem);
         }
+
+        p.removeComponent(manager.getClass());
+        manager.free();
     }
 }

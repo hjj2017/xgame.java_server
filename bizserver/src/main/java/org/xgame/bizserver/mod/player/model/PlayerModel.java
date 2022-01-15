@@ -93,6 +93,20 @@ public class PlayerModel {
     }
 
     /**
+     * 移除组件
+     *
+     * @param compClazz 组件类
+     * @return this 指针
+     */
+    public PlayerModel removeComponent(Class<?> compClazz) {
+        if (null != compClazz) {
+            _componentMap.remove(compClazz);
+        }
+
+        return this;
+    }
+
+    /**
      * 设置等级
      *
      * @param val 等级
@@ -110,5 +124,12 @@ public class PlayerModel {
      */
     public ILazyEntry getLazyEntry() {
         return _le;
+    }
+
+    /**
+     * 释放所有资源
+     */
+    public void free() {
+        _componentMap.clear();
     }
 }

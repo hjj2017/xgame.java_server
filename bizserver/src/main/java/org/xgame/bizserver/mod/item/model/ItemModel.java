@@ -79,4 +79,10 @@ public class ItemModel {
     public ILazyEntry getLazyEntry() {
         return _le;
     }
+
+    /**
+     * 释放所有资源
+     */
+    public void free() {
+    }
 }
