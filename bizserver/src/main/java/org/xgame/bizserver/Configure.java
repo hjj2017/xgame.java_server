@@ -7,6 +7,7 @@ import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.def.WorkModeDef;
+import org.xgame.comm.db.DBAgent;
 
 /**
  * 配置
@@ -20,17 +21,12 @@ public final class Configure {
     /**
      * DataId = MySql 配置
      */
-    static private final String DATA_ID_ORG_ALPHAGAME_CONF_MYSQLXUITE = "org.alphagame.conf.mysqlxuite";
-
-    /**
-     * DataId = Redis 配置
-     */
-    static private final String DATA_ID_ORG_ALPHAGAME_CONF_REDISXUITE = "org.alphagame.conf.redisxuite";
+    static private final String DATA_ID_ORG_XGAME_CONF = "org.xgame.conf";
 
     /**
      * 分组名称
      */
-    static private final String GROUP_HJ_S_MEELEZ = "hj_s_meelez";
+    static private final String GROUP_XXOO = "xxoo";
 
     /**
      * 私有化类默认构造器
@@ -51,8 +47,20 @@ public final class Configure {
         // 获取服务器配置
         ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
 
-        // 初始化 MySql 和 Redis
-        initRedisXuite(cs);
+        try {
+            String strConfig = cs.getConfig(
+                DATA_ID_ORG_XGAME_CONF,
+                GROUP_XXOO + "." + WorkModeDef.currWorkMode(),
+                2000
+            );
+
+            JSONObject joConfig = JSONObject.parseObject(strConfig);
+
+            initDBAgent(joConfig);
+        } catch (Exception ex) {
+            // 记录错误日志
+            LOGGER.error(ex.getMessage(), ex);
+        }
     }
 
     /**
@@ -83,27 +91,15 @@ public final class Configure {
     }
 
     /**
-     * 初始化 Redis
+     * 初始化数据库代理
      *
-     * @param cs 配置服务
+     * @param joConfig JSON 配置
      */
-    static private void initRedisXuite(ConfigService cs) {
-        if (null == cs) {
+    static private void initDBAgent(JSONObject joConfig) {
+        if (null == joConfig) {
             return;
         }
 
-        try {
-            String strConf = cs.getConfig(
-                DATA_ID_ORG_ALPHAGAME_CONF_REDISXUITE,
-                GROUP_HJ_S_MEELEZ + "." + WorkModeDef.currWorkMode(),
-                500
-            );
-
-            JSONObject joConf = JSONObject.parseObject(strConf);
-        } catch (Exception ex) {
-            // 记录错误日志
-            LOGGER.error(ex.getMessage(), ex);
-            System.exit(-1);
-        }
+        DBAgent.getInstance().init(joConfig);
     }
 }

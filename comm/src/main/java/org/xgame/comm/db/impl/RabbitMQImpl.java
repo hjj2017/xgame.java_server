@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
@@ -32,11 +31,6 @@ public class RabbitMQImpl implements IQuerySystem {
     private final AtomicBoolean _shutdownFlag = new AtomicBoolean(false);
 
     /**
-     * 消息队列连接
-     */
-    private Connection _rabbitClientConn;
-
-    /**
      * 消息队列频道
      */
     private Channel _rabbitClientCh;
@@ -57,7 +51,7 @@ public class RabbitMQImpl implements IQuerySystem {
             return;
         }
 
-        joConfig = joConfig.getJSONObject("rabbitmqConf");
+        joConfig = joConfig.getJSONObject("rabbitMQConf");
         String host = joConfig.getString("host");
         int port = joConfig.getIntValue("port");
 
@@ -66,8 +60,7 @@ public class RabbitMQImpl implements IQuerySystem {
         f.setPort(port);
 
         try {
-            _rabbitClientConn = f.newConnection();
-            _rabbitClientCh = _rabbitClientConn.createChannel();
+            _rabbitClientCh = f.newConnection().createChannel();
 
             // 初始化 RPC 请求队列数组
             JSONArray joRpcRequestQueueArray = joConfig.getJSONArray("rpcRequestQueueArray");
@@ -172,18 +165,5 @@ public class RabbitMQImpl implements IQuerySystem {
         joMsg.put("joParam", joParam);
 
         return joMsg.toJSONString().getBytes(StandardCharsets.UTF_8);
-    }
-
-    @Override
-    public void shutdown() {
-        if (!_shutdownFlag.compareAndSet(false, true)) {
-            return;
-        }
-
-        try {
-            _rabbitClientConn.close();
-        } catch (Exception ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
     }
 }

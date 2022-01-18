@@ -1,0 +1,13 @@
+{
+    "dbAgent": {
+        "useImplClazz": "org.xgame.comm.db.impl.RabbitMQImpl",
+        "rabbitMQConf": {
+            "host": "192.168.56.101",
+            "port": 1001,
+            "rpcRequestQueueArray": [
+                "rpc_request_queue_0",
+                "rpc_request_queue_1"
+            ]
+        }
+    }
+}

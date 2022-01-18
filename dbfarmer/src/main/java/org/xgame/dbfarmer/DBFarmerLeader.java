@@ -1,6 +1,7 @@
 package org.xgame.dbfarmer;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.xgame.dbfarmer.player.PlayerDBFarmer;
 
 import java.util.HashMap;
@@ -34,6 +35,15 @@ public final class DBFarmerLeader {
      */
     public static DBFarmerLeader getInstance() {
         return INSTANCE;
+    }
+
+    /**
+     * 初始化
+     *
+     * @param joConfig JSON 配置
+     */
+    public void init(JSONObject joConfig) {
+
     }
 
     /**

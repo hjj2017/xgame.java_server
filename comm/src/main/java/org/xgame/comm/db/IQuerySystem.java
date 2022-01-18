@@ -26,9 +26,4 @@ public interface IQuerySystem {
      * @param callback      回调函数
      */
     void execQueryAsync(Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback);
-
-    /**
-     * 关机
-     */
-    void shutdown();
 }

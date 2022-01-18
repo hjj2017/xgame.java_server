@@ -88,11 +88,4 @@ public final class DBAgent {
 
         _querySystem.execQueryAsync(dbFarmerClazz, bindId, queryId, joParam, callback);
     }
-
-    /**
-     * 停机
-     */
-    public void shutdown() {
-        _querySystem.shutdown();
-    }
 }
