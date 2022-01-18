@@ -1,17 +1,11 @@
 package org.xgame.comm.db;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
-import org.xgame.comm.async.AsyncOperationProcessor;
+import org.xgame.comm.db.impl.RabbitMQImpl;
 
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -28,6 +22,9 @@ public final class DBAgent {
      */
     private static final DBAgent INSTANCE = new DBAgent();
 
+    /**
+     * 数据库查询系统
+     */
     private IQuerySystem _querySystem;
 
     /**
@@ -45,22 +42,56 @@ public final class DBAgent {
         return INSTANCE;
     }
 
-    public DBAgent init(JSONObject joConfig) {
-        _querySystem.init(joConfig);
-        return this;
+    /**
+     * 初始化
+     *
+     * @param joConfig JSON 配置
+     * @throws IllegalArgumentException if null == joConfig
+     */
+    public void init(JSONObject joConfig) {
+        if (null == joConfig) {
+            throw new IllegalArgumentException("joConfig is null");
+        }
+
+        String useImplClazz = joConfig.getString("useImplClazz");
+
+        try {
+            if (null != useImplClazz) {
+                _querySystem = (IQuerySystem) Class.forName(useImplClazz).getDeclaredConstructor().newInstance();
+            } else {
+                _querySystem = new RabbitMQImpl();
+            }
+
+            _querySystem.init(joConfig);
+        } catch (Exception ex) {
+            // 记录错误日志
+            LOGGER.error(ex.getMessage(), ex);
+        }
     }
 
     /**
      * ( 异步方式 ) 执行查询
      *
-     * @param bindId   绑定 Id
-     * @param queryStr 查询字符串
-     * @param callback 回调函数
+     * @param dbFarmerClazz 数据库农民类
+     * @param bindId        绑定 Id
+     * @param queryId       查询 Id
+     * @param joParam       JSON 类型参数
+     * @param callback      回调函数
      */
-    public void execQueryAsync(Class<?> entityClazz, long bindId, String queryStr, Function<Boolean, Void> callback) {
-        _querySystem.execQueryAsync(entityClazz, bindId, queryStr, null , callback);
+    public void execQueryAsync(
+        Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback) {
+        if (null == dbFarmerClazz ||
+            null == queryId ||
+            null == _querySystem) {
+            return;
+        }
+
+        _querySystem.execQueryAsync(dbFarmerClazz, bindId, queryId, joParam, callback);
     }
 
+    /**
+     * 停机
+     */
     public void shutdown() {
         _querySystem.shutdown();
     }

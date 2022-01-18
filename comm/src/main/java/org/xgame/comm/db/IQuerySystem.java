@@ -1,8 +1,8 @@
 package org.xgame.comm.db;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -19,13 +19,13 @@ public interface IQuerySystem {
     /**
      * ( 异步方式 ) 执行查询
      *
-     * @param entityClazz 实体类
-     * @param bindId      绑定 Id
-     * @param queryStr    查询字符串
-     * @param paramMap    参数字典
-     * @param callback    回调函数
+     * @param dbFarmerClazz 数据库农民类
+     * @param bindId        绑定 Id
+     * @param queryId       查询 Id
+     * @param joParam       JSON 参数
+     * @param callback      回调函数
      */
-    void execQueryAsync(Class<?> entityClazz, long bindId, String queryStr, Map<String, Object> paramMap, Function<Boolean, Void> callback);
+    void execQueryAsync(Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback);
 
     /**
      * 关机

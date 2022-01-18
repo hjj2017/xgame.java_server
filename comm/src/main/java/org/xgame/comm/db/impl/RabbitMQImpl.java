@@ -1,5 +1,6 @@
 package org.xgame.comm.db.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.AMQP;
@@ -12,7 +13,6 @@ import org.xgame.comm.async.AsyncOperationProcessor;
 import org.xgame.comm.db.IQuerySystem;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -25,22 +25,27 @@ public class RabbitMQImpl implements IQuerySystem {
      * 日志对象
      */
     private static final Logger LOGGER = CommLog.LOGGER;
+
     /**
      * 停机标志
      */
     private final AtomicBoolean _shutdownFlag = new AtomicBoolean(false);
+
     /**
      * 消息队列连接
      */
     private Connection _rabbitClientConn;
+
     /**
      * 消息队列频道
      */
     private Channel _rabbitClientCh;
+
     /**
      * RPC 请求队列数组
      */
     private String[] _rpcRequestQueueArray;
+
     /**
      * RPC 响应队列
      */
@@ -81,10 +86,10 @@ public class RabbitMQImpl implements IQuerySystem {
     }
 
     @Override
-    public void execQueryAsync(Class<?> entityClazz, long bindId, String queryStr, Map<String, Object> paramMap, Function<Boolean, Void> callback) {
-        if (null == entityClazz ||
-            null == queryStr ||
-            queryStr.isEmpty()) {
+    public void execQueryAsync(Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback) {
+        if (null == dbFarmerClazz ||
+            null == queryId ||
+            queryId.isEmpty()) {
             return;
         }
 
@@ -100,7 +105,7 @@ public class RabbitMQImpl implements IQuerySystem {
             _rabbitClientCh.basicPublish(
                 "", getRpcRequestQueue(bindId),
                 createAMQPBasicPropz(corrId),
-                getMsg(entityClazz, queryStr, paramMap)
+                getMsg(dbFarmerClazz, queryId, joParam)
             );
 
             _rabbitClientCh.basicConsume(_rpcResponseQueue, true, (consumerTag, delivery) -> {
@@ -154,17 +159,17 @@ public class RabbitMQImpl implements IQuerySystem {
             .build();
     }
 
-    private byte[] getMsg(Class<?> entityClazz, String queryStr, Map<String, Object> paramMap) {
-        if (null == entityClazz ||
-            null == queryStr ||
-            null == paramMap) {
+    private byte[] getMsg(Class<?> dbFarmerClazz, String queryId, JSON joParam) {
+        if (null == dbFarmerClazz ||
+            null == queryId ||
+            null == joParam) {
             return new byte[0];
         }
 
         JSONObject joMsg = new JSONObject();
-        joMsg.put("entityClazz", entityClazz.getName());
-        joMsg.put("queryStr", queryStr);
-        joMsg.put("paramMap", paramMap);
+        joMsg.put("dbFarmerClazz", dbFarmerClazz.getName());
+        joMsg.put("queryId", queryId);
+        joMsg.put("joParam", joParam);
 
         return joMsg.toJSONString().getBytes(StandardCharsets.UTF_8);
     }

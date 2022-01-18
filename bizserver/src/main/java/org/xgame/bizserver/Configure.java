@@ -52,7 +52,6 @@ public final class Configure {
         ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
 
         // 初始化 MySql 和 Redis
-        initMySqlXuite(cs);
         initRedisXuite(cs);
     }
 
@@ -81,35 +80,6 @@ public final class Configure {
         }
 
         return null;
-    }
-
-    /**
-     * 初始化 MySql
-     *
-     * @param cs 配置服务
-     */
-    static private void initMySqlXuite(ConfigService cs) {
-        if (null == cs) {
-            return;
-        }
-
-        try {
-            String strConf = cs.getConfig(
-                DATA_ID_ORG_ALPHAGAME_CONF_MYSQLXUITE,
-                GROUP_HJ_S_MEELEZ + "." + WorkModeDef.currWorkMode(),
-                500
-            );
-
-            JSONObject joConf = JSONObject.parseObject(strConf);
-
-            if (null == joConf) {
-                return;
-            }
-        } catch (Exception ex) {
-            // 记录错误日志
-            LOGGER.error(ex.getMessage(), ex);
-            System.exit(-1);
-        }
     }
 
     /**

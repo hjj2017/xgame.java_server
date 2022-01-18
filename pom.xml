@@ -23,8 +23,9 @@
     </properties>
 
     <modules>
-        <module>./comm</module>
         <module>./bizserver</module>
+        <module>./comm</module>
+        <module>./dbfarmer</module>
         <module>./gatewayserver</module>
     </modules>
 </project>
