@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 住线程处理器
+ * 主线程处理器
  */
 public final class MainThreadProcessor {
     /**
