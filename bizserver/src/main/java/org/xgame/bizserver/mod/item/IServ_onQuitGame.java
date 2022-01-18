@@ -45,7 +45,7 @@ interface IServ_onQuitGame {
         ItemDAO dao = new ItemDAO();
 
         for (ItemModel currItem : saveList) {
-            dao.saveOrUpdate(currItem);
+            currItem.getLazyEntry().saveOrUpdate();
         }
 
         p.removeComponent(manager.getClass());

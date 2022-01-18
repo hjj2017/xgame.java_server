@@ -22,6 +22,8 @@ public class ItemModel {
      */
     private volatile boolean _changed = false;
 
+    private long _ver;
+
     /**
      * 获取 UUId
      *
@@ -58,6 +60,7 @@ public class ItemModel {
      */
     public ItemModel markChanged() {
         _changed = true;
+        _ver = System.currentTimeMillis();
         return this;
     }
 
