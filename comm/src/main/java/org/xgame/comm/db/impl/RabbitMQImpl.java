@@ -48,13 +48,13 @@ public class RabbitMQImpl implements IQuerySystem {
 
     @Override
     public void init(JSONObject joConfig) {
-        if (null == joConfig) {
+        if (null == joConfig ||
+            !joConfig.containsKey("rabbitMQConf")) {
             return;
         }
 
-        joConfig = joConfig.getJSONObject("dbAgent");
-        joConfig = joConfig.getJSONObject("rabbitMQConf");
-        String uri = joConfig.getString("uri");
+        final JSONObject joRabbitMQConf = joConfig.getJSONObject("rabbitMQConf");
+        String uri = joRabbitMQConf.getString("uri");
 
         try {
             ConnectionFactory f = new ConnectionFactory();
@@ -64,7 +64,7 @@ public class RabbitMQImpl implements IQuerySystem {
             _rabbitClientCh = conn.createChannel();
 
             // 初始化 RPC 请求队列数组
-            JSONArray joRpcRequestQueueArray = joConfig.getJSONArray("rpcRequestQueueArray");
+            JSONArray joRpcRequestQueueArray = joRabbitMQConf.getJSONArray("rpcRequestQueueArray");
             _rpcRequestQueueArray = new String[joRpcRequestQueueArray.size()];
 
             for (int i = 0; i < _rpcRequestQueueArray.length; i++) {
@@ -72,15 +72,24 @@ public class RabbitMQImpl implements IQuerySystem {
             }
 
             // 初始化 RPC 回复队列
-            _rpcResponseQueue = "rpcResponseQueue";
-            _rabbitClientCh.queueDeclare(_rpcResponseQueue, true, true, false, null);
+            _rpcResponseQueue = joConfig.getString("rpcResponseQueue");
+            _rabbitClientCh.queueDeclare(
+                _rpcResponseQueue, true, true, false, null
+            );
+
+            LOGGER.info(
+                "连接到 RabbitMQ, serverAddr ={}:{}",
+                f.getHost(),
+                f.getPort()
+            );
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
     }
 
     @Override
-    public void execQueryAsync(Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback) {
+    public void execQueryAsync(
+        Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback) {
         if (null == dbFarmerClazz ||
             null == queryId ||
             queryId.isEmpty()) {
@@ -99,7 +108,7 @@ public class RabbitMQImpl implements IQuerySystem {
             _rabbitClientCh.basicPublish(
                 "", getRpcRequestQueue(bindId),
                 createAMQPBasicPropz(corrId),
-                getMsg(dbFarmerClazz, queryId, joParam)
+                encodeMsg(dbFarmerClazz, queryId, joParam)
             );
 
             _rabbitClientCh.basicConsume(_rpcResponseQueue, true, (consumerTag, delivery) -> {
@@ -127,6 +136,12 @@ public class RabbitMQImpl implements IQuerySystem {
         }
     }
 
+    /**
+     * 获取 RPC 请求队列
+     *
+     * @param bindId 绑定 Id
+     * @return RPC 请求队列
+     */
     private String getRpcRequestQueue(long bindId) {
         if (null == _rpcRequestQueueArray ||
             _rpcRequestQueueArray.length <= 0) {
@@ -153,7 +168,15 @@ public class RabbitMQImpl implements IQuerySystem {
             .build();
     }
 
-    private byte[] getMsg(Class<?> dbFarmerClazz, String queryId, JSON joParam) {
+    /**
+     * 编码消息
+     *
+     * @param dbFarmerClazz 数据库农民类
+     * @param queryId       查询 Id
+     * @param joParam       JSON 参数
+     * @return 编码后的消息字节数组
+     */
+    private byte[] encodeMsg(Class<?> dbFarmerClazz, String queryId, JSON joParam) {
         if (null == dbFarmerClazz ||
             null == queryId ||
             null == joParam) {

@@ -100,6 +100,10 @@ public final class Configure {
             return;
         }
 
+        String rpcResponseQueue = "rpc_response_queue_" + BizServer.getId();
+        joConfig = joConfig.getJSONObject("dbAgent");
+        joConfig.put("rpcResponseQueue", rpcResponseQueue);
+
         DBAgent.getInstance().init(joConfig);
     }
 }

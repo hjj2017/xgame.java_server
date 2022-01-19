@@ -6,6 +6,7 @@ import org.xgame.comm.util.MyTimer;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +19,14 @@ public final class LazySaveService {
      */
     private static final Logger LOGGER = CommLog.LOGGER;
 
+    /**
+     * 提交心跳绑定 Id
+     */
     private static final int SUBMIT_HEARTBEAT_BIND_ID = 0;
+
+    /**
+     * 执行心跳绑定 Id
+     */
     private static final int DO_HEARTBEAT_BIND_ID = 1;
 
     /**
@@ -92,16 +100,25 @@ public final class LazySaveService {
         wrapper.putLastChangeTime(System.currentTimeMillis());
     }
 
+    /**
+     * 保存和更新, 立即执行
+     *
+     * @param le 延迟入口
+     */
     public void saveOrUpdateImmediate(ILazyEntry le) {
         if (null == le) {
             return;
         }
 
-        MyTimer.getInstance().schedule(DO_HEARTBEAT_BIND_ID, () -> {
+        Callable<Void> caller = () -> {
             _lazyEntryMap.remove(le.getUId());
             le.saveOrUpdate();
             return null;
-        }, 0, TimeUnit.MILLISECONDS);
+        };
+
+        MyTimer.getInstance().schedule(
+            DO_HEARTBEAT_BIND_ID, caller, 0, TimeUnit.MILLISECONDS
+        );
     }
 
     /**
@@ -135,16 +152,25 @@ public final class LazySaveService {
         wrapper.putLastChangeTime(System.currentTimeMillis()).putDel(true);
     }
 
+    /**
+     * 删除, 立即执行
+     *
+     * @param le 延迟入口
+     */
     public void deleteImmediate(ILazyEntry le) {
         if (null == le) {
             return;
         }
 
-        MyTimer.getInstance().schedule(DO_HEARTBEAT_BIND_ID, () -> {
+        Callable<Void> caller = () -> {
             _lazyEntryMap.remove(le.getUId());
             le.delete();
             return null;
-        }, 0, TimeUnit.MILLISECONDS);
+        };
+
+        MyTimer.getInstance().schedule(
+            DO_HEARTBEAT_BIND_ID, caller, 0, TimeUnit.MILLISECONDS
+        );
     }
 
     /**
@@ -160,9 +186,7 @@ public final class LazySaveService {
     public void startHeartbeat() {
         // 在固定定时器里提交任务
         MyTimer.getInstance().scheduleWithFixedDelay(
-            SUBMIT_HEARTBEAT_BIND_ID,
-            this::submitHeartbeat,
-            PERIOD, PERIOD, TimeUnit.SECONDS
+            SUBMIT_HEARTBEAT_BIND_ID, this::submitHeartbeat, PERIOD, PERIOD, TimeUnit.SECONDS
         );
     }
 
@@ -172,8 +196,7 @@ public final class LazySaveService {
     private void submitHeartbeat() {
         // 在固定定时器里执行任务
         MyTimer.getInstance().schedule(
-            DO_HEARTBEAT_BIND_ID,
-            this::doHeartbeat, 0, TimeUnit.MILLISECONDS
+            DO_HEARTBEAT_BIND_ID, this::doHeartbeat, 0, TimeUnit.MILLISECONDS
         );
     }
 
