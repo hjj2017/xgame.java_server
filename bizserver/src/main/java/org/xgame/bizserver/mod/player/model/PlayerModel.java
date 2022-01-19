@@ -1,6 +1,6 @@
 package org.xgame.bizserver.mod.player.model;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.xgame.bizserver.mod.player.io.PlayerLazyEntry;
 import org.xgame.comm.lazysave.ILazyEntry;
 
@@ -132,7 +132,7 @@ public class PlayerModel {
      *
      * @return JSON 对象
      */
-    public JSON toJSON() {
+    public JSONObject toJSON() {
         return null;
     }
 

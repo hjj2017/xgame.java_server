@@ -89,7 +89,7 @@ public class RabbitMQImpl implements IQuerySystem {
 
     @Override
     public void execQueryAsync(
-        Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback) {
+        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<Boolean, Void> callback) {
         if (null == dbFarmerClazz ||
             null == queryId ||
             queryId.isEmpty()) {

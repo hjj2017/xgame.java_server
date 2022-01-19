@@ -25,5 +25,5 @@ public interface IQuerySystem {
      * @param joParam       JSON 参数
      * @param callback      回调函数
      */
-    void execQueryAsync(Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback);
+    void execQueryAsync(Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<Boolean, Void> callback);
 }

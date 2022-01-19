@@ -1,6 +1,5 @@
 package org.xgame.comm.db;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
@@ -79,7 +78,7 @@ public final class DBAgent {
      * @param callback      回调函数
      */
     public void execQueryAsync(
-        Class<?> dbFarmerClazz, long bindId, String queryId, JSON joParam, Function<Boolean, Void> callback) {
+        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<Boolean, Void> callback) {
         if (null == dbFarmerClazz ||
             null == queryId ||
             null == _querySystem) {

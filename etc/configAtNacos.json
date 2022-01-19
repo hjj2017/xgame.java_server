@@ -8,5 +8,9 @@
                 "rpc_request_queue_1"
             ]
         }
+    },
+
+    "mongoDB": {
+        "connStr": "mongodb://192.168.56.101:27017/xxoo?retryWrites=true&w=majority&maxPoolSize=32"
     }
 }

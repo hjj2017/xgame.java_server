@@ -43,7 +43,9 @@ public final class DBFarmerLeader {
      * @param joConfig JSON 配置
      */
     public void init(JSONObject joConfig) {
-
+        if (null != joConfig) {
+            MongoClientSingleton.getInstance().init(joConfig);
+        }
     }
 
     /**
@@ -53,7 +55,7 @@ public final class DBFarmerLeader {
      * @param queryId
      * @param joParam
      */
-    public void execQuery(Class<?> dbFarmerClazz, String queryId, JSON joParam) {
+    public void execQuery(Class<?> dbFarmerClazz, String queryId, JSONObject joParam) {
         if (null == dbFarmerClazz ||
             !_dbFarmerMap.containsKey(dbFarmerClazz) ||
             null == queryId) {
