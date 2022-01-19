@@ -182,7 +182,8 @@ public final class LazySaveService {
             LazyEntryWrapper wrapper = it.next();
 
             if (null == wrapper ||
-                null == wrapper.getLazyEntry()) {
+                null == wrapper.getLazyEntry() ||
+                wrapper.isForget()) {
                 // 如果入口对象为空,
                 // 则直接跳过!
                 it.remove();

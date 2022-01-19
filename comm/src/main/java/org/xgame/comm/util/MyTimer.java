@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -141,6 +142,28 @@ public final class MyTimer {
         return _esArray[index].scheduleWithFixedDelay(
             new SafeRunner(task), initialDelay, delay, tu
         );
+    }
+
+    /**
+     * 重复执行直到返回失败
+     *
+     * @param task  任务
+     * @param delay 间隔时间
+     * @param tu    时间单位
+     */
+    public void repeatUntilGetFalse(final Callable<Boolean> task, int repeatCount, int delay, TimeUnit tu) {
+        if (null == task ||
+            repeatCount <= 0) {
+            return;
+        }
+
+        schedule(() -> {
+            if (task.call()) {
+                repeatUntilGetFalse(task, repeatCount - 1, delay, tu);
+            }
+
+            return null;
+        }, delay, tu);
     }
 
     /**

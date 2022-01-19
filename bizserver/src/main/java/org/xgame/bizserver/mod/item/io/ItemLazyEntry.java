@@ -16,6 +16,11 @@ public class ItemLazyEntry implements ILazyEntry {
     private final String _lazyEntryUUId;
 
     /**
+     * 道具 DAO
+     */
+    private final ItemDAO _itemDAO;
+
+    /**
      * 类参数构造器
      *
      * @param model 当前道具模型
@@ -23,6 +28,7 @@ public class ItemLazyEntry implements ILazyEntry {
     public ItemLazyEntry(ItemModel model) {
         _model = model;
         _lazyEntryUUId = String.valueOf(model.getUUId());
+        _itemDAO = new ItemDAO();
     }
 
     @Override
@@ -35,6 +41,7 @@ public class ItemLazyEntry implements ILazyEntry {
         AsyncOperationProcessor.getInstance().process(
             _model.getUUId(),
             () -> {
+                _itemDAO.saveOrUpdate(_model);
                 _model.unmarkChanged();
             }
         );

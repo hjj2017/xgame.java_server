@@ -1,10 +1,8 @@
 package org.xgame.bizserver.mod.player;
 
 import org.xgame.bizserver.mod.item.ItemService;
-import org.xgame.bizserver.mod.player.io.PlayerDAO;
 import org.xgame.bizserver.mod.player.model.PlayerModel;
-import org.xgame.comm.async.AsyncOperationProcessor;
-import org.xgame.comm.lazysave.LazySaveService;
+import org.xgame.comm.util.AsyncNextStep;
 
 interface IServ_onQuitGame {
     /**
@@ -12,22 +10,19 @@ interface IServ_onQuitGame {
      *
      * @param p 玩家模型
      */
-    default void onQuitGame(PlayerModel p) {
+    default void onQuitGame(PlayerModel p, AsyncNextStep nextStep) {
         if (null == p) {
             return;
         }
 
-        AsyncOperationProcessor.getInstance().process(
-            p.getUUId(),
-            () -> {
-                // 忘记延迟保存
-                LazySaveService.getInstance().forget(p.getLazyEntry());
+        if (null == nextStep) {
+            nextStep = new AsyncNextStep(p.getUUId());
+        }
 
-                (new PlayerDAO()).saveOrUpdate(p);
-                ItemService.getInstance().onQuitGame(p);
+        final AsyncNextStep theNextStep = nextStep;
 
-                p.free();
-            }
-        );
+        theNextStep.addNext(p.getLazyEntry()::saveOrUpdate)
+            .addNext(() -> ItemService.getInstance().onQuitGame(p, theNextStep))
+            .onOver(p::free, null);
     }
 }
