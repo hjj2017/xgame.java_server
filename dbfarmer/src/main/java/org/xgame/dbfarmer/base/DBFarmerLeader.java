@@ -1,8 +1,7 @@
-package org.xgame.dbfarmer;
+package org.xgame.dbfarmer.base;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.xgame.dbfarmer.player.PlayerDBFarmer;
+import org.xgame.dbfarmer.mod.player.PlayerDBFarmer;
 
 import java.util.HashMap;
 import java.util.Map;

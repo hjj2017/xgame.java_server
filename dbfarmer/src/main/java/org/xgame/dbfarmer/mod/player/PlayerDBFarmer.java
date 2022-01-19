@@ -1,10 +1,10 @@
-package org.xgame.dbfarmer.player;
+package org.xgame.dbfarmer.mod.player;
 
 import com.alibaba.fastjson.JSONObject;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.xgame.dbfarmer.IDBFarmer;
-import org.xgame.dbfarmer.MongoClientSingleton;
+import org.xgame.dbfarmer.base.IDBFarmer;
+import org.xgame.dbfarmer.base.MongoClientSingleton;
 import org.xgame.dbfarmer.def.MyDef;
 
 import static com.mongodb.client.model.Filters.eq;

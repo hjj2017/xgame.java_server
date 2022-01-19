@@ -1,4 +1,4 @@
-package org.xgame.dbfarmer;
+package org.xgame.dbfarmer.base;
 
 import com.alibaba.fastjson.JSONObject;
 

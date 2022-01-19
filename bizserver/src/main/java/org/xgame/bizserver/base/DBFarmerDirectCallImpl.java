@@ -1,9 +1,8 @@
 package org.xgame.bizserver.base;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.xgame.comm.db.IQuerySystem;
-import org.xgame.dbfarmer.DBFarmerLeader;
+import org.xgame.dbfarmer.base.DBFarmerLeader;
 
 import java.util.function.Function;
 
