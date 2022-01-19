@@ -9,8 +9,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 /**
  * 自定义计时器
@@ -151,15 +151,57 @@ public final class MyTimer {
      * @param delay 间隔时间
      * @param tu    时间单位
      */
-    public void repeatUntilGetFalse(final Callable<Boolean> task, int repeatCount, int delay, TimeUnit tu) {
-        if (null == task ||
-            repeatCount <= 0) {
+    public void repeatUntilGetFalse(
+        final Callable<Boolean> task, int delay, TimeUnit tu) {
+        repeatUntilGetFalse(
+            task, Integer.MAX_VALUE, delay, tu, null
+        );
+    }
+
+    /**
+     * 重复执行直到返回失败
+     *
+     * @param task        任务
+     * @param repeatCount 重复次数
+     * @param delay       间隔时间
+     * @param tu          时间单位
+     */
+    public void repeatUntilGetFalse(
+        final Callable<Boolean> task, int repeatCount, int delay, TimeUnit tu) {
+        repeatUntilGetFalse(
+            task, repeatCount, delay, tu, null
+        );
+    }
+
+    /**
+     * 重复执行直到返回失败
+     *
+     * @param task        任务
+     * @param repeatCount 重复次数
+     * @param delay       间隔时间
+     * @param tu          时间单位
+     * @param callback    回调函数, 当任务返回 false 或者重复次数 <= 0 时被调用
+     */
+    public void repeatUntilGetFalse(
+        final Callable<Boolean> task, int repeatCount, int delay, TimeUnit tu, Function<Boolean, Void> callback) {
+        if (null == task) {
+            return;
+        }
+
+        if (repeatCount <= 0) {
+            if (null != callback) {
+                callback.apply(false);
+            }
             return;
         }
 
         schedule(() -> {
             if (task.call()) {
-                repeatUntilGetFalse(task, repeatCount - 1, delay, tu);
+                repeatUntilGetFalse(task, repeatCount - 1, delay, tu, callback);
+            } else {
+                if (null != callback) {
+                    callback.apply(true);
+                }
             }
 
             return null;

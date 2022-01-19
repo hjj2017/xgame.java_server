@@ -59,9 +59,12 @@ interface IServ_onQuitGame {
                 }
             }
 
-            cleanUpAndGotoNext(p, manager, nextStep);
             return false;
-        }, 10, 10, TimeUnit.MILLISECONDS);
+        }, 10, 10, TimeUnit.MILLISECONDS, (unused) -> {
+            // 执行清理并进入下一步...
+            cleanUpAndGotoNext(p, manager, nextStep);
+            return null;
+        });
     }
 
     /**
@@ -71,7 +74,8 @@ interface IServ_onQuitGame {
      * @param manager  道具管理器
      * @param nextStep 下一步
      */
-    private void cleanUpAndGotoNext(PlayerModel p, ItemModelManager manager, final AsyncNextStep nextStep) {
+    private void cleanUpAndGotoNext(
+        PlayerModel p, ItemModelManager manager, final AsyncNextStep nextStep) {
         if (null == p ||
             null == manager) {
             return;

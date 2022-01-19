@@ -24,5 +24,7 @@ interface IServ_onQuitGame {
         theNextStep.addNext(p.getLazyEntry()::saveOrUpdate)
             .addNext(() -> ItemService.getInstance().onQuitGame(p, theNextStep))
             .onOver(p::free, null);
+
+        theNextStep.doNext();
     }
 }
