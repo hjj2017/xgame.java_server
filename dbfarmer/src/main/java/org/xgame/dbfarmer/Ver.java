@@ -2,7 +2,7 @@
 // 自动生成代码,
 // 请参考 genVer.ant.xml
 //
-package org.xgame.gatewayserver;
+package org.xgame.dbfarmer;
 
 // 版本号类
 final class Ver {
