@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
@@ -51,16 +52,16 @@ public class RabbitMQImpl implements IQuerySystem {
             return;
         }
 
+        joConfig = joConfig.getJSONObject("dbAgent");
         joConfig = joConfig.getJSONObject("rabbitMQConf");
-        String host = joConfig.getString("host");
-        int port = joConfig.getIntValue("port");
-
-        ConnectionFactory f = new ConnectionFactory();
-        f.setHost(host);
-        f.setPort(port);
+        String uri = joConfig.getString("uri");
 
         try {
-            _rabbitClientCh = f.newConnection().createChannel();
+            ConnectionFactory f = new ConnectionFactory();
+            f.setUri(uri);
+
+            Connection conn = f.newConnection();
+            _rabbitClientCh = conn.createChannel();
 
             // 初始化 RPC 请求队列数组
             JSONArray joRpcRequestQueueArray = joConfig.getJSONArray("rpcRequestQueueArray");
@@ -71,7 +72,7 @@ public class RabbitMQImpl implements IQuerySystem {
             }
 
             // 初始化 RPC 回复队列
-            _rpcResponseQueue = joConfig.getString("rpcResponseQueue");
+            _rpcResponseQueue = "rpcResponseQueue";
             _rabbitClientCh.queueDeclare(_rpcResponseQueue, true, true, false, null);
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
