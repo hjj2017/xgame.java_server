@@ -41,7 +41,7 @@ interface IServ_onQuitGame {
             }
 
             checkItemList.add(currItem);
-            LazySaveService.getInstance().saveOrUpdate(currItem.getLazyEntry());
+            LazySaveService.getInstance().saveOrUpdateImmediate(currItem.getLazyEntry());
         }
 
         if (checkItemList.isEmpty()) {
@@ -60,7 +60,7 @@ interface IServ_onQuitGame {
             }
 
             return false;
-        }, 10, 10, TimeUnit.MILLISECONDS, (unused) -> {
+        }, 10, 20, TimeUnit.MILLISECONDS, (unused) -> {
             // 执行清理并进入下一步...
             cleanUpAndGotoNext(p, manager, nextStep);
             return null;

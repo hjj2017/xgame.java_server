@@ -1,7 +1,5 @@
 package org.xgame.comm.lazysave;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * 延迟入口包装
  */
@@ -20,11 +18,6 @@ class LazyEntryWrapper {
      * 是否删除
      */
     private boolean _del = false;
-
-    /**
-     * 是否忘记
-     */
-    private final AtomicBoolean _forget = new AtomicBoolean(false);
 
     /**
      * 类参数构造器
@@ -95,14 +88,5 @@ class LazyEntryWrapper {
     public LazyEntryWrapper putDel(boolean val) {
         _del = _del || val;
         return this;
-    }
-
-    /**
-     * 是否忘记
-     *
-     * @return true = 忘记, false = 没有忘记
-     */
-    public boolean isForget() {
-        return _forget.get();
     }
 }

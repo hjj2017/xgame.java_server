@@ -2,7 +2,6 @@ package org.xgame.comm.lazysave;
 
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
-import org.xgame.comm.async.AsyncOperationProcessor;
 import org.xgame.comm.util.MyTimer;
 
 import java.util.Iterator;
@@ -18,6 +17,9 @@ public final class LazySaveService {
      * 日志对象
      */
     private static final Logger LOGGER = CommLog.LOGGER;
+
+    private static final int SUBMIT_HEARTBEAT_BIND_ID = 0;
+    private static final int DO_HEARTBEAT_BIND_ID = 1;
 
     /**
      * 心跳周期
@@ -90,6 +92,18 @@ public final class LazySaveService {
         wrapper.putLastChangeTime(System.currentTimeMillis());
     }
 
+    public void saveOrUpdateImmediate(ILazyEntry le) {
+        if (null == le) {
+            return;
+        }
+
+        MyTimer.getInstance().schedule(DO_HEARTBEAT_BIND_ID, () -> {
+            _lazyEntryMap.remove(le.getUId());
+            le.saveOrUpdate();
+            return null;
+        }, 0, TimeUnit.MILLISECONDS);
+    }
+
     /**
      * 延迟删除
      *
@@ -121,27 +135,16 @@ public final class LazySaveService {
         wrapper.putLastChangeTime(System.currentTimeMillis()).putDel(true);
     }
 
-    /**
-     * 放弃
-     *
-     * @param le 延迟入口
-     */
-    public void forget(ILazyEntry le) {
-        if (null != le) {
-            forget(le.getUId());
+    public void deleteImmediate(ILazyEntry le) {
+        if (null == le) {
+            return;
         }
-    }
 
-    /**
-     * 放弃
-     *
-     * @param lazyEntryUId 延迟入口 UId
-     */
-    public void forget(String lazyEntryUId) {
-        if (null != lazyEntryUId &&
-            lazyEntryUId.isEmpty()) {
-            _lazyEntryMap.remove(lazyEntryUId);
-        }
+        MyTimer.getInstance().schedule(DO_HEARTBEAT_BIND_ID, () -> {
+            _lazyEntryMap.remove(le.getUId());
+            le.delete();
+            return null;
+        }, 0, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -155,17 +158,31 @@ public final class LazySaveService {
      * 启动心跳
      */
     public void startHeartbeat() {
+        // 在固定定时器里提交任务
         MyTimer.getInstance().scheduleWithFixedDelay(
-            0, // 只在一个固定的定时器里执行
-            this::heartbeat,
+            SUBMIT_HEARTBEAT_BIND_ID,
+            this::submitHeartbeat,
             PERIOD, PERIOD, TimeUnit.SECONDS
         );
     }
 
     /**
-     * 执行心跳
+     * 提交心跳处理
      */
-    private void heartbeat() {
+    private void submitHeartbeat() {
+        // 在固定定时器里执行任务
+        MyTimer.getInstance().schedule(
+            DO_HEARTBEAT_BIND_ID,
+            this::doHeartbeat, 0, TimeUnit.MILLISECONDS
+        );
+    }
+
+    /**
+     * 执行心跳
+     *
+     * @return 空值
+     */
+    private Void doHeartbeat() {
         // 获取迭代器
         Iterator<LazyEntryWrapper> it = _lazyEntryMap.values().iterator();
         // 获取当前时间
@@ -181,9 +198,7 @@ public final class LazySaveService {
             // 获取入口
             LazyEntryWrapper wrapper = it.next();
 
-            if (null == wrapper ||
-                null == wrapper.getLazyEntry() ||
-                wrapper.isForget()) {
+            if (null == wrapper) {
                 // 如果入口对象为空,
                 // 则直接跳过!
                 it.remove();
@@ -202,19 +217,19 @@ public final class LazySaveService {
             // 获取延迟入口
             final ILazyEntry le = wrapper.getLazyEntry();
 
-            AsyncOperationProcessor.getInstance().process(() -> {
-                // 先随机扔到一个异步线程里去 "触发" 操作,
-                // 保证心跳的效率!
-                // 真正执行数据库操作时,
-                // 需要再计算具体分派哪个异步线程里...
-                if (wrapper.isDel()) {
-                    // 执行删除
-                    le.delete();
-                } else {
-                    // 执行保存
-                    le.saveOrUpdate();
-                }
-            });
+            if (null == le) {
+                continue;
+            }
+
+            if (wrapper.isDel()) {
+                // 执行删除
+                le.delete();
+            } else {
+                // 执行保存
+                le.saveOrUpdate();
+            }
         }
+
+        return null;
     }
 }
