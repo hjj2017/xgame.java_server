@@ -16,7 +16,7 @@ public class PlayerDBFarmer implements IDBFarmer {
     /**
      * 保存或更新
      */
-    public static final String QUERY_ID_SAVE_OR_UPDATE = PlayerDBFarmer.class.getName() + "://saveOrUpdate";
+    public static final String QUERY_ID_SAVE_OR_UPDATE = PlayerDBFarmer.class.getName() + "#saveOrUpdate";
 
     @Override
     public void execQuery(String queryId, JSONObject joParam) {

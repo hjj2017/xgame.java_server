@@ -86,6 +86,8 @@ public final class BizServer {
 
             // 设置服务器 Id
             BizServer._Id = _cmdLn.getOptionValue("server_id", null);
+            // 初始化配置
+            Configure.init(_cmdLn);
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
@@ -109,9 +111,6 @@ public final class BizServer {
             Ver.CURR,
             WorkModeDef.currWorkMode()
         );
-
-        // 初始化配置
-        Configure.init(_cmdLn);
 
         // 延迟保存服务启动心跳
         LazySaveService.getInstance().startHeartbeat();

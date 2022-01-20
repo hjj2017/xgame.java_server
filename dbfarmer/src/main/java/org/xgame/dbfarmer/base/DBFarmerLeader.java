@@ -50,9 +50,9 @@ public final class DBFarmerLeader {
     /**
      * 执行查询
      *
-     * @param dbFarmerClazz
-     * @param queryId
-     * @param joParam
+     * @param dbFarmerClazz 数据库农民类
+     * @param queryId       查询 Id
+     * @param joParam       JSON 参数
      */
     public void execQuery(Class<?> dbFarmerClazz, String queryId, JSONObject joParam) {
         if (null == dbFarmerClazz ||

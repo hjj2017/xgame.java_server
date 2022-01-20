@@ -4,11 +4,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import org.slf4j.Logger;
 
 /**
  * Mongo 客户端单例
  */
 public final class MongoClientSingleton {
+    /**
+     * 日志对象
+     */
+    private static final Logger LOGGER = BaseLog.LOGGER;
+
     /**
      * 单例对象
      */
@@ -49,6 +55,11 @@ public final class MongoClientSingleton {
         String connStr = joMongoDBConf.getString("connStr");
 
         _mongoClient = MongoClients.create(connStr);
+
+        LOGGER.info(
+            "连接到 MongoDB, connStr = {}",
+            connStr
+        );
     }
 
     /**

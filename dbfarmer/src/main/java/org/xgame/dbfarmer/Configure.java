@@ -1,13 +1,13 @@
-package org.xgame.bizserver;
+package org.xgame.dbfarmer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
-import org.xgame.bizserver.base.BaseLog;
-import org.xgame.bizserver.def.WorkModeDef;
-import org.xgame.comm.db.DBAgent;
+import org.slf4j.LoggerFactory;
+import org.xgame.dbfarmer.base.DBFarmerLeader;
+import org.xgame.dbfarmer.def.WorkModeDef;
 
 /**
  * 配置
@@ -16,7 +16,7 @@ public final class Configure {
     /**
      * 日志对象
      */
-    static private final Logger LOGGER = BaseLog.LOGGER;
+    static private final Logger LOGGER = LoggerFactory.getLogger(Configure.class);
 
     /**
      * DataId
@@ -56,7 +56,7 @@ public final class Configure {
 
             JSONObject joConfig = JSONObject.parseObject(strConfig);
 
-            initDBAgent(joConfig);
+            initDBFarmer(joConfig);
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
@@ -91,19 +91,15 @@ public final class Configure {
     }
 
     /**
-     * 初始化数据库代理
+     * 初始化数据库农民
      *
      * @param joConfig JSON 配置
      */
-    static private void initDBAgent(JSONObject joConfig) {
+    static private void initDBFarmer(JSONObject joConfig) {
         if (null == joConfig) {
             return;
         }
 
-        String rpcResponseQueue = "rpc_response_queue_" + BizServer.getId();
-        joConfig = joConfig.getJSONObject("dbAgent");
-        joConfig.put("rpcResponseQueue", rpcResponseQueue);
-
-        DBAgent.getInstance().init(joConfig);
+        DBFarmerLeader.getInstance().init(joConfig);
     }
 }
