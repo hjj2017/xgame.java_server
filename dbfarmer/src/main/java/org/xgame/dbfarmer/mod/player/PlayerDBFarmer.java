@@ -1,6 +1,9 @@
 package org.xgame.dbfarmer.mod.player;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.client.model.InsertOneOptions;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.xgame.dbfarmer.base.IDBFarmer;
@@ -35,12 +38,15 @@ public class PlayerDBFarmer implements IDBFarmer {
             return;
         }
 
-        Bson query = eq("playerUUId", joParam.getString("playerUUId"));
-        Document doc = Document.parse(joParam.toJSONString());
+        Bson cond = eq("playerUUId", joParam.getString("playerUUId"));
+        Document doc = new Document();
+        doc.put("$set", Document.parse(joParam.toJSONString()));
+
+        UpdateOptions opt = new UpdateOptions().upsert(true);
 
         MongoClientSingleton.getInstance()
             .getDatabase(MyDef.DB_XXOO)
             .getCollection(MyDef.COLL_PLAYER)
-            .replaceOne(query, doc);
+            .updateOne(cond, doc, opt);
     }
 }

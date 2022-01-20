@@ -1,12 +1,15 @@
 package org.xgame.dbfarmer;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xgame.dbfarmer.base.DBFarmerLeader;
 import org.xgame.dbfarmer.def.WorkModeDef;
+import org.xgame.dbfarmer.mod.player.PlayerDBFarmer;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -86,6 +89,13 @@ public final class MainApp {
             Ver.CURR,
             WorkModeDef.currWorkMode()
         );
+
+        JSONObject joParam = new JSONObject();
+        joParam.put("playerUUId", "2");
+        joParam.put("playerName", "MaYue");
+        joParam.put("sex", 0);
+        joParam.put("age", 24);
+        DBFarmerLeader.getInstance().execQuery(PlayerDBFarmer.class, PlayerDBFarmer.QUERY_ID_SAVE_OR_UPDATE, joParam);
 
         try {
             CountDownLatch cdL = new CountDownLatch(1);

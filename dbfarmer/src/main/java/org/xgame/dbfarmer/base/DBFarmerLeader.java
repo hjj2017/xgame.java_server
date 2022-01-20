@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 数据库农民领袖
+ * 数据库农民领袖,
+ * 从农民经纪人 ( {@link DBFarmerBroker} ) 那里接到活儿, 然后分派给登记在册的农民去干...
+ * 也可能会被 bizserver 模块中的某个类直接使唤
  */
 public final class DBFarmerLeader {
     /**
@@ -16,7 +18,8 @@ public final class DBFarmerLeader {
     private static final DBFarmerLeader INSTANCE = new DBFarmerLeader();
 
     /**
-     * 数据库农民字典
+     * 数据库农民字典,
+     * 也就是登记在册的农民都有谁?
      */
     private final Map<Class<?>, IDBFarmer> _dbFarmerMap = new HashMap<>();
 
