@@ -9,8 +9,6 @@ import org.xgame.dbfarmer.base.IDBFarmer;
 import org.xgame.dbfarmer.base.MongoClientSingleton;
 import org.xgame.dbfarmer.def.MyDef;
 
-import java.util.function.Function;
-
 import static com.mongodb.client.model.Filters.eq;
 
 /**
@@ -23,10 +21,11 @@ public class PlayerDBFarmer implements IDBFarmer {
     public static final String QUERY_ID_SAVE_OR_UPDATE = PlayerDBFarmer.class.getName() + "#saveOrUpdate";
 
     @Override
-    public void execQuery(
-        String queryId, JSONObject joParam, Function<JSONObject, Void> callback) {
+    public JSONObject execQuery(String queryId, JSONObject joParam) {
         if (QUERY_ID_SAVE_OR_UPDATE.equals(queryId)) {
-            saveOrUpdate(joParam, callback);
+            return saveOrUpdate(joParam);
+        } else {
+            return null;
         }
     }
 
@@ -35,10 +34,9 @@ public class PlayerDBFarmer implements IDBFarmer {
      *
      * @param joParam JSON 参数
      */
-    public void saveOrUpdate(
-        JSONObject joParam, Function<JSONObject, Void> callback) {
+    public JSONObject saveOrUpdate(JSONObject joParam) {
         if (null == joParam) {
-            return;
+            return null;
         }
 
         Bson cond = eq("playerUUId", joParam.getString("playerUUId"));
@@ -52,10 +50,9 @@ public class PlayerDBFarmer implements IDBFarmer {
             .getCollection(MyDef.COLLECTION_PLAYER)
             .updateOne(cond, doc, opt);
 
-        if (null != callback) {
-            JSONObject joResult = new JSONObject();
-            joResult.put("saveOrUpdateCount", mongoResult.getModifiedCount());
-            callback.apply(joResult);
-        }
+        JSONObject joResult = new JSONObject();
+        joResult.put("saveOrUpdateCount", mongoResult.getModifiedCount());
+
+        return joResult;
     }
 }

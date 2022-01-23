@@ -98,7 +98,7 @@ public final class MainApp {
         DBFarmerLeader.getInstance().execQuery(
             PlayerDBFarmer.class,
             PlayerDBFarmer.QUERY_ID_SAVE_OR_UPDATE,
-            joParam, null
+            joParam
         );
 
         try {

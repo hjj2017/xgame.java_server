@@ -29,6 +29,10 @@ public class DBFarmerDirectCallImpl implements IQuerySystem {
             return;
         }
 
-        DBFarmerLeader.getInstance().execQuery(dbFarmerClazz, queryId, joParam, callback);
+        JSONObject joResult = DBFarmerLeader.getInstance().execQuery(dbFarmerClazz, queryId, joParam);
+
+        if (null != callback) {
+            callback.apply(joResult);
+        }
     }
 }

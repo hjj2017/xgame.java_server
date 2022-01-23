@@ -5,7 +5,6 @@ import org.xgame.dbfarmer.mod.player.PlayerDBFarmer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * 数据库农民领袖,
@@ -57,16 +56,16 @@ public final class DBFarmerLeader {
      * @param dbFarmerClazz 数据库农民类
      * @param queryId       查询 Id
      * @param joParam       JSON 参数
+     * @return JSON 对象
      */
-    public void execQuery(
-        Class<?> dbFarmerClazz, String queryId, JSONObject joParam, Function<JSONObject, Void> callback) {
+    public JSONObject execQuery(
+        Class<?> dbFarmerClazz, String queryId, JSONObject joParam) {
         if (null == dbFarmerClazz ||
             !_dbFarmerMap.containsKey(dbFarmerClazz) ||
             null == queryId) {
-            return;
+            return null;
         }
 
-        _dbFarmerMap.get(dbFarmerClazz)
-            .execQuery(queryId, joParam, callback);
+        return _dbFarmerMap.get(dbFarmerClazz).execQuery(queryId, joParam);
     }
 }
