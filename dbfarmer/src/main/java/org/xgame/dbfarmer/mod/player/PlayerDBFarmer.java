@@ -1,14 +1,14 @@
 package org.xgame.dbfarmer.mod.player;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mongodb.client.model.InsertOneOptions;
 import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.xgame.dbfarmer.base.IDBFarmer;
 import org.xgame.dbfarmer.base.MongoClientSingleton;
 import org.xgame.dbfarmer.def.MyDef;
+
+import java.util.function.Function;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -22,9 +22,10 @@ public class PlayerDBFarmer implements IDBFarmer {
     public static final String QUERY_ID_SAVE_OR_UPDATE = PlayerDBFarmer.class.getName() + "#saveOrUpdate";
 
     @Override
-    public void execQuery(String queryId, JSONObject joParam) {
+    public void execQuery(
+        String queryId, JSONObject joParam, Function<JSONObject, Void> callback) {
         if (QUERY_ID_SAVE_OR_UPDATE.equals(queryId)) {
-            saveOrUpdate(joParam);
+            saveOrUpdate(joParam, callback);
         }
     }
 
@@ -33,7 +34,8 @@ public class PlayerDBFarmer implements IDBFarmer {
      *
      * @param joParam JSON 参数
      */
-    public void saveOrUpdate(JSONObject joParam) {
+    public void saveOrUpdate(
+        JSONObject joParam, Function<JSONObject, Void> callback) {
         if (null == joParam) {
             return;
         }
@@ -46,7 +48,7 @@ public class PlayerDBFarmer implements IDBFarmer {
 
         MongoClientSingleton.getInstance()
             .getDatabase(MyDef.DB_XXOO)
-            .getCollection(MyDef.COLL_PLAYER)
+            .getCollection(MyDef.COLLECTION_PLAYER)
             .updateOne(cond, doc, opt);
     }
 }

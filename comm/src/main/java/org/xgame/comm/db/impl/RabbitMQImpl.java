@@ -89,7 +89,7 @@ public class RabbitMQImpl implements IQuerySystem {
 
     @Override
     public void execQueryAsync(
-        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<Boolean, Void> callback) {
+        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<JSONObject, Void> callback) {
         if (null == dbFarmerClazz ||
             null == queryId ||
             queryId.isEmpty()) {
@@ -124,10 +124,13 @@ public class RabbitMQImpl implements IQuerySystem {
 
                 _rabbitClientCh.basicCancel(consumerTag);
 
+                String strResult = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                JSONObject joResult = JSONObject.parseObject(strResult);
+
                 // 查询完成之后, 再次扔回到异步 IO 线程
                 AsyncOperationProcessor.getInstance().process(
                     bindId,
-                    () -> callback.apply(true)
+                    () -> callback.apply(joResult)
                 );
             }, (consumerTag) -> {
             });

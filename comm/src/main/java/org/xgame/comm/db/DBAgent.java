@@ -78,13 +78,15 @@ public final class DBAgent {
      * @param callback      回调函数
      */
     public void execQueryAsync(
-        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<Boolean, Void> callback) {
+        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<JSONObject, Void> callback) {
         if (null == dbFarmerClazz ||
             null == queryId ||
             null == _querySystem) {
             return;
         }
 
-        _querySystem.execQueryAsync(dbFarmerClazz, bindId, queryId, joParam, callback);
+        _querySystem.execQueryAsync(
+            dbFarmerClazz, bindId, queryId, joParam, callback
+        );
     }
 }

@@ -95,7 +95,11 @@ public final class MainApp {
         joParam.put("playerName", "MaYue");
         joParam.put("sex", 0);
         joParam.put("age", 24);
-        DBFarmerLeader.getInstance().execQuery(PlayerDBFarmer.class, PlayerDBFarmer.QUERY_ID_SAVE_OR_UPDATE, joParam);
+        DBFarmerLeader.getInstance().execQuery(
+            PlayerDBFarmer.class,
+            PlayerDBFarmer.QUERY_ID_SAVE_OR_UPDATE,
+            joParam, null
+        );
 
         try {
             CountDownLatch cdL = new CountDownLatch(1);

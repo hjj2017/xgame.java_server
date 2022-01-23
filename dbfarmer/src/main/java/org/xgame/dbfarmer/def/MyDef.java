@@ -12,7 +12,7 @@ public final class MyDef {
     /**
      * player 集合
      */
-    public static final String COLL_PLAYER = "player";
+    public static final String COLLECTION_PLAYER = "player";
 
     /**
      * 私有化类默认构造器

@@ -19,16 +19,16 @@ public class DBFarmerDirectCallImpl implements IQuerySystem {
 
     @Override
     public void execQueryAsync(
-        Class<?> dbFarmerClazz, long bindId, String queryId, JSONObject joParam, Function<Boolean, Void> callback) {
+        Class<?> dbFarmerClazz,
+        long bindId,
+        String queryId,
+        JSONObject joParam,
+        Function<JSONObject, Void> callback) {
         if (null == dbFarmerClazz ||
             null == queryId) {
             return;
         }
 
-        DBFarmerLeader.getInstance().execQuery(dbFarmerClazz, queryId, joParam);
-
-        if (null != callback) {
-            callback.apply(true);
-        }
+        DBFarmerLeader.getInstance().execQuery(dbFarmerClazz, queryId, joParam, callback);
     }
 }
