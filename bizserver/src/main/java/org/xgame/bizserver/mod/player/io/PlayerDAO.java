@@ -1,7 +1,7 @@
 package org.xgame.bizserver.mod.player.io;
 
 import org.xgame.bizserver.mod.player.model.PlayerModel;
-import org.xgame.comm.db.DBAgent;
+import org.xgame.dbfarmer.agent.DBAgent;
 import org.xgame.dbfarmer.mod.player.PlayerDBFarmer;
 
 public final class PlayerDAO {

@@ -7,7 +7,7 @@ import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.def.WorkModeDef;
-import org.xgame.comm.db.DBAgent;
+import org.xgame.dbfarmer.agent.DBAgent;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

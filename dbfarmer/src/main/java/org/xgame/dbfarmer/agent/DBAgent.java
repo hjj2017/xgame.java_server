@@ -1,9 +1,10 @@
-package org.xgame.comm.db;
+package org.xgame.dbfarmer.agent;
 
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
-import org.xgame.comm.db.impl.RabbitMQImpl;
+import org.xgame.dbfarmer.agent.impl.DBFarmerDirectCaller;
+import org.xgame.dbfarmer.agent.impl.RabbitMQProducer;
 
 import java.util.function.Function;
 
@@ -24,7 +25,7 @@ public final class DBAgent {
     /**
      * 数据库查询系统
      */
-    private IQuerySystem _querySystem;
+    private IAsyncQuerySystem _querySystem;
 
     /**
      * 私有化类默认构造器
@@ -53,16 +54,19 @@ public final class DBAgent {
         }
 
         JSONObject joDBAgentConfig = joConfig.getJSONObject("dbAgent");
-        String useImplClazz = joDBAgentConfig.getString("useImplClazz");
+        String mode = joDBAgentConfig.getString("mode");
 
         try {
-            if (null != useImplClazz) {
-                _querySystem = (IQuerySystem) Class.forName(useImplClazz).getDeclaredConstructor().newInstance();
+            if ("rabbitMQ".equalsIgnoreCase(mode)) {
+                _querySystem = new RabbitMQProducer();
             } else {
-                _querySystem = new RabbitMQImpl();
+                _querySystem = new DBFarmerDirectCaller();
             }
 
-            LOGGER.info("初始化数据库实现类 = {}", useImplClazz);
+            LOGGER.info(
+                "初始化数据库实现类 = {}",
+                _querySystem.getClass().getName()
+            );
             _querySystem.init(joConfig);
         } catch (Exception ex) {
             // 记录错误日志

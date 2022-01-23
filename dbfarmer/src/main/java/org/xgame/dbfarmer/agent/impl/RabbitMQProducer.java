@@ -1,4 +1,4 @@
-package org.xgame.comm.db.impl;
+package org.xgame.dbfarmer.agent.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -10,7 +10,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
 import org.xgame.comm.async.AsyncOperationProcessor;
-import org.xgame.comm.db.IQuerySystem;
+import org.xgame.dbfarmer.agent.IAsyncQuerySystem;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import java.util.function.Function;
 /**
  * 消息队列实现
  */
-public class RabbitMQImpl implements IQuerySystem {
+public class RabbitMQProducer implements IAsyncQuerySystem {
     /**
      * 日志对象
      */

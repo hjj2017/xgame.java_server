@@ -1,7 +1,7 @@
-package org.xgame.bizserver.base;
+package org.xgame.dbfarmer.agent.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import org.xgame.comm.db.IQuerySystem;
+import org.xgame.dbfarmer.agent.IAsyncQuerySystem;
 import org.xgame.dbfarmer.base.DBFarmerLeader;
 
 import java.util.function.Function;
@@ -9,7 +9,7 @@ import java.util.function.Function;
 /**
  * 数据库农民直接调用实现
  */
-public class DBFarmerDirectCallImpl implements IQuerySystem {
+public class DBFarmerDirectCaller implements IAsyncQuerySystem {
     @Override
     public void init(JSONObject joConfig) {
         if (null != joConfig) {

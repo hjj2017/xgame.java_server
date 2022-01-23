@@ -1,14 +1,13 @@
-package org.xgame.comm.db;
+package org.xgame.dbfarmer.agent;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.function.Function;
 
 /**
- * 查询系统接口
+ * 异步查询系统接口
  */
-public interface IQuerySystem {
+public interface IAsyncQuerySystem {
     /**
      * 初始化
      *
