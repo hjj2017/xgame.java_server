@@ -2,6 +2,7 @@ package org.xgame.dbfarmer.mod.player;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.xgame.dbfarmer.base.IDBFarmer;
@@ -46,9 +47,15 @@ public class PlayerDBFarmer implements IDBFarmer {
 
         UpdateOptions opt = new UpdateOptions().upsert(true);
 
-        MongoClientSingleton.getInstance()
+        UpdateResult mongoResult = MongoClientSingleton.getInstance()
             .getDatabase(MyDef.DB_XXOO)
             .getCollection(MyDef.COLLECTION_PLAYER)
             .updateOne(cond, doc, opt);
+
+        if (null != callback) {
+            JSONObject joResult = new JSONObject();
+            joResult.put("saveOrUpdateCount", mongoResult.getModifiedCount());
+            callback.apply(joResult);
+        }
     }
 }
