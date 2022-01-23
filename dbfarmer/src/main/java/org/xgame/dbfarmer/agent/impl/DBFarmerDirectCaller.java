@@ -9,7 +9,7 @@ import java.util.function.Function;
 /**
  * 数据库农民直接调用实现
  */
-public class DBFarmerDirectCaller implements IAsyncQuerySystem {
+public final class DBFarmerDirectCaller implements IAsyncQuerySystem {
     @Override
     public void init(JSONObject joConfig) {
         if (null != joConfig) {

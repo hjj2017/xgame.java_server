@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.xgame.comm.CommLog;
 import org.xgame.dbfarmer.agent.impl.DBFarmerDirectCaller;
-import org.xgame.dbfarmer.agent.impl.RabbitMQProducer;
+import org.xgame.dbfarmer.agent.impl.RabbitMQ_P;
 
 import java.util.function.Function;
 
@@ -54,18 +54,17 @@ public final class DBAgent {
         }
 
         JSONObject joDBAgentConfig = joConfig.getJSONObject("dbAgent");
-        String mode = joDBAgentConfig.getString("mode");
 
         try {
-            if ("rabbitMQ".equalsIgnoreCase(mode)) {
-                _querySystem = new RabbitMQProducer();
+            if (joDBAgentConfig.containsKey("rabbitMQConf")) {
+                _querySystem = new RabbitMQ_P();
             } else {
                 _querySystem = new DBFarmerDirectCaller();
             }
 
             LOGGER.info(
                 "初始化数据库实现类 = {}",
-                _querySystem.getClass().getName()
+                _querySystem.getClass().getSimpleName()
             );
             _querySystem.init(joConfig);
         } catch (Exception ex) {

@@ -47,18 +47,18 @@ public final class MongoClientSingleton {
      */
     public void init(JSONObject joConfig) {
         if (null == joConfig ||
-            !joConfig.containsKey("mongoDB")) {
+            !joConfig.containsKey("dbAgent")) {
             return;
         }
 
-        JSONObject joMongoDBConf = joConfig.getJSONObject("mongoDB");
-        String connStr = joMongoDBConf.getString("connStr");
+        JSONObject joDBAgent = joConfig.getJSONObject("dbAgent");
+        String mongoDBConnStr = joDBAgent.getString("mongoDBConnStr");
 
-        _mongoClient = MongoClients.create(connStr);
+        _mongoClient = MongoClients.create(mongoDBConnStr);
 
         LOGGER.info(
             "连接到 MongoDB, connStr = {}",
-            connStr
+            mongoDBConnStr
         );
     }
 

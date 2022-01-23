@@ -1,7 +1,7 @@
 package org.xgame.dbfarmer.base;
 
 import com.alibaba.fastjson.JSONObject;
-import org.xgame.dbfarmer.agent.impl.RabbitMQConsumer;
+import org.xgame.dbfarmer.agent.impl.RabbitMQ_C;
 import org.xgame.dbfarmer.mod.player.PlayerDBFarmer;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * 数据库农民领袖,
- * 从农民经纪人 ( {@link RabbitMQConsumer} ) 那里接到活儿, 然后分派给登记在册的农民去干...
+ * 从农民经纪人 ( {@link RabbitMQ_C} ) 那里接到活儿, 然后分派给登记在册的农民去干...
  * 也可能会被 bizserver 模块中的某个类直接使唤
  */
 public final class DBFarmerLeader {

@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 /**
- * 消息队列实现
+ * 消息队列 - 生产端
  */
-public class RabbitMQProducer implements IAsyncQuerySystem {
+public final class RabbitMQ_P implements IAsyncQuerySystem {
     /**
      * 日志对象
      */
@@ -102,13 +102,30 @@ public class RabbitMQProducer implements IAsyncQuerySystem {
         }
 
         try {
+            final byte[] msgByteArray = encodeMsg(dbFarmerClazz, queryId, joParam);
+
+            //
+            // 发布消息, 但不用关心返回数据
+            ////////////////////////////////
+            //
+            if (null == callback) {
+                _rabbitClientCh.basicPublish(
+                    "",
+                    getRpcRequestQueue(bindId), null, msgByteArray
+                );
+                return;
+            }
+
+            //
+            // 发布消息, 并关心返回值
+            ////////////////////////////////
+            //
             // 创建关联 Id
             final String corrId = UUID.randomUUID().toString();
 
             _rabbitClientCh.basicPublish(
-                "", getRpcRequestQueue(bindId),
-                createAMQPBasicPropz(corrId),
-                encodeMsg(dbFarmerClazz, queryId, joParam)
+                "",
+                getRpcRequestQueue(bindId), createAMQPBasicPropz(corrId), msgByteArray
             );
 
             _rabbitClientCh.basicConsume(_rpcResponseQueue, true, (consumerTag, delivery) -> {

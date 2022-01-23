@@ -1,8 +1,12 @@
 {
     "dbAgent": {
-        "useImplClazz": "org.xgame.bizserver.base.DBFarmerDirectCallImpl"
-    },
-    "mongoDB": {
-        "connStr": "mongodb://127.0.0.1:27017/xxoo?retryWrites=true&w=majority&maxPoolSize=32"
+        "mongoDBConnStr": "mongodb://127.0.0.1:27017/xxoo?retryWrites=true&w=majority&maxPoolSize=32",
+        "--rabbitMQConf": {
+            "uri": "amqp://xxoo:xxoo@127.0.0.1:5672/xxoo",
+            "rpcRequestQueueArray": [
+                "rpc_request_queue_0",
+                "rpc_request_queue_1"
+            ]
+        }
     }
 }
