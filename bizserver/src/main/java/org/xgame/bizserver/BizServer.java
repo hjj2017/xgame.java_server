@@ -71,12 +71,13 @@ public final class BizServer {
     private BizServer init(String[] argvArray) {
         // 创建参数选项
         Options op = new Options();
-        // --server_id --server_job_type_set --bind_host --bind_port --nacos_server_addr 选项
+        // --server_id --server_job_type_set --bind_host --bind_port --nacos_server_addr --config 选项
         op.addRequiredOption(null, "server_id", true, "服务器 Id");
         op.addRequiredOption(null, "server_job_type_set", true, "服务器工作类型集合");
         op.addRequiredOption(null, "bind_host", true, "服务器主机地址");
         op.addRequiredOption(null, "bind_port", true, "服务器端口号");
-        op.addRequiredOption(null, "nacos_server_addr", true, "Nacos 服务器地址");
+        op.addOption(null, "config_file", true, "配置文件");
+        op.addOption(null, "nacos_server_addr", true, "Nacos 服务器地址");
 
         try {
             // 创建默认解析器

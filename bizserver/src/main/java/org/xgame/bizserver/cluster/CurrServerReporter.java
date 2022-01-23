@@ -67,6 +67,11 @@ public final class CurrServerReporter {
      * 开始报告
      */
     public void startReport() {
+        if (!_cmdLn.hasOption("nacos_server_addr")) {
+            LOGGER.warn("未设置 Nacos 服务器地址, 跳过服务器报告任务");
+            return;
+        }
+
         try {
             String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
             NamingService ns = createNamingService(serverAddrOfNacos);

@@ -52,7 +52,8 @@ public final class DBAgent {
             throw new IllegalArgumentException("joConfig is null");
         }
 
-        String useImplClazz = joConfig.getString("useImplClazz");
+        JSONObject joDBAgentConfig = joConfig.getJSONObject("dbAgent");
+        String useImplClazz = joDBAgentConfig.getString("useImplClazz");
 
         try {
             if (null != useImplClazz) {
@@ -61,6 +62,7 @@ public final class DBAgent {
                 _querySystem = new RabbitMQImpl();
             }
 
+            LOGGER.info("初始化数据库实现类 = {}", useImplClazz);
             _querySystem.init(joConfig);
         } catch (Exception ex) {
             // 记录错误日志

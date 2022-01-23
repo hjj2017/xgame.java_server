@@ -9,6 +9,9 @@ import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.comm.db.DBAgent;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 /**
  * 配置
  */
@@ -44,23 +47,40 @@ public final class Configure {
             return;
         }
 
-        // 获取服务器配置
-        ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
+        String strConfig = null;
 
-        try {
-            String strConfig = cs.getConfig(
-                DATA_ID_ORG_XGAME_CONF,
-                GROUP_XXOO + "." + WorkModeDef.currWorkMode(),
-                2000
-            );
+        if (cmdLn.hasOption("nacos_server_addr")) {
+            // 获取服务器配置
+            ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
 
-            JSONObject joConfig = JSONObject.parseObject(strConfig);
-
-            initDBAgent(joConfig);
-        } catch (Exception ex) {
-            // 记录错误日志
-            LOGGER.error(ex.getMessage(), ex);
+            try {
+                strConfig = cs.getConfig(
+                    DATA_ID_ORG_XGAME_CONF,
+                    GROUP_XXOO + "." + WorkModeDef.currWorkMode(),
+                    2000
+                );
+            } catch (Exception ex) {
+                // 记录错误日志
+                LOGGER.error(ex.getMessage(), ex);
+            }
+        } else if (cmdLn.hasOption("config_file")) {
+            try {
+                strConfig = Files.readString(Paths.get(cmdLn.getOptionValue("config_file")));
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+            }
         }
+
+        if (null == strConfig ||
+            strConfig.isEmpty()) {
+            LOGGER.error("配置文本为空, 请检查 Nacos 或配置文件");
+            System.exit(-1);
+            return;
+        }
+
+        JSONObject joConfig = JSONObject.parseObject(strConfig);
+
+        initDBAgent(joConfig);
     }
 
     /**
@@ -101,9 +121,7 @@ public final class Configure {
         }
 
         String rpcResponseQueue = "rpc_response_queue_" + BizServer.getId();
-        joConfig = joConfig.getJSONObject("dbAgent");
         joConfig.put("rpcResponseQueue", rpcResponseQueue);
-
         DBAgent.getInstance().init(joConfig);
     }
 }
