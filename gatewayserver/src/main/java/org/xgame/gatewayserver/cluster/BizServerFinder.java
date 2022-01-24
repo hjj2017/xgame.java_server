@@ -1,5 +1,7 @@
 package org.xgame.gatewayserver.cluster;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.Event;
@@ -8,15 +10,17 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.xgame.bizserver.def.ServerJobTypeEnum;
+import org.xgame.comm.async.AsyncOperationProcessor;
 import org.xgame.comm.network.NettyClient;
 import org.xgame.comm.network.NettyClientConf;
+import org.xgame.comm.util.MyTimer;
 import org.xgame.gatewayserver.base.InternalServerMsgHandler_GatewayServer;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 业务服务器发现者
@@ -82,11 +86,17 @@ public final class BizServerFinder {
      * 开始发现
      */
     public void startFind() {
-        if (!_cmdLn.hasOption("nacos_server_addr")) {
-            LOGGER.warn("未设置 Nacos 服务器地址, 跳过服务器发现任务");
-            return;
+        if (_cmdLn.hasOption("nacos_server_addr")) {
+            startFind_byNacos();
+        } else {
+            startFind_byConfigFile();
         }
+    }
 
+    /**
+     * 开始发现 - 通过 Nacos
+     */
+    private void startFind_byNacos() {
         String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
         _ns = createNamingService(serverAddrOfNacos);
 
@@ -150,8 +160,8 @@ public final class BizServerFinder {
             }
 
             connectToBizServer(
-                ServerJobTypeEnum.strToVal(ne.getGroupName()),
-                instance
+                instance,
+                ServerJobTypeEnum.strToVal(ne.getGroupName())
             );
         }
     }
@@ -159,12 +169,85 @@ public final class BizServerFinder {
     /**
      * 连接到业务服务器
      *
-     * @param sjt         服务器工作类型
      * @param regInstance 服务器信息
+     * @param sjt         服务器工作类型
      */
-    private void connectToBizServer(ServerJobTypeEnum sjt, Instance regInstance) {
+    private void connectToBizServer(Instance regInstance, ServerJobTypeEnum sjt) {
         if (null == sjt ||
             null == regInstance) {
+            return;
+        }
+
+        connectToBizServer(
+            regInstance.getInstanceId(),
+            sjt, // 服务器工作类型
+            regInstance.getIp(),
+            regInstance.getPort()
+        );
+    }
+
+    /**
+     * 开始发现 - 通过配置文件
+     */
+    private void startFind_byConfigFile() {
+        String strConfig = null;
+
+        try {
+            strConfig = Files.readString(Paths.get(_cmdLn.getOptionValue("config_file")));
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+
+        if (null == strConfig ||
+            strConfig.isEmpty()) {
+            LOGGER.error("配置文本为空, 请检查 Nacos 或配置文件");
+            System.exit(-1);
+            return;
+        }
+
+        JSONObject joConfig = JSONObject.parseObject(strConfig);
+        JSONArray jaPossibleBizServerList = joConfig.getJSONArray("possibleBizServerList");
+
+        MyTimer.getInstance().scheduleWithFixedDelay(() -> {
+            for (int i = 0; i < jaPossibleBizServerList.size(); i++) {
+                // 获取业务服务器配置
+                JSONObject joBizServer = jaPossibleBizServerList.getJSONObject(i);
+
+                if (null == joBizServer) {
+                    continue;
+                }
+
+                final Set<ServerJobTypeEnum> sjtSet = ServerJobTypeEnum.strToValSet(
+                    joBizServer.getString("serverJobTypeSet")
+                );
+
+                AsyncOperationProcessor.getInstance().process(i, () ->
+                    sjtSet.forEach((sjt) ->
+                        connectToBizServer(
+                            joBizServer.getString("serverId"),
+                            sjt, // 服务器工作类型
+                            joBizServer.getString("host"),
+                            joBizServer.getIntValue("port")
+                        )
+                    )
+                );
+            }
+        }, 0, 5000, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 连接到业务服务器
+     *
+     * @param sjt      服务器工作类型
+     * @param serverId 服务器 Id
+     * @param host     主机地址
+     * @param port     端口号
+     */
+    private void connectToBizServer(String serverId, ServerJobTypeEnum sjt, String host, int port) {
+        if (null == serverId ||
+            null == sjt ||
+            null == host ||
+            port <= 0) {
             return;
         }
 
@@ -176,29 +259,26 @@ public final class BizServerFinder {
             innerMap = _nettyClientMap.get(sjt);
         }
 
-        if (innerMap.containsKey(regInstance.getInstanceId())) {
+        if (innerMap.containsKey(serverId)) {
             return;
         }
 
         LOGGER.info(
             "发现新服务器, serverId = {}, serverJobType = {}, serverAddr = {}:{}",
-            regInstance.getInstanceId(),
-            sjt.getStrVal(),
-            regInstance.getIp(),
-            regInstance.getPort()
+            serverId, sjt.getStrVal(), host, port
         );
 
         NettyClientConf newConf = new NettyClientConf()
-            .setServerId(regInstance.getInstanceId())
-            .setServerHost(regInstance.getIp())
-            .setServerPort(regInstance.getPort())
+            .setServerId(serverId)
+            .setServerHost(host)
+            .setServerPort(port)
             .setCustomChannelHandlerFactory(InternalServerMsgHandler_GatewayServer::new)
             .setCloseCallback(innerMap.values()::remove);
 
         NettyClient newClient = new NettyClient(newConf);
         newClient.connect();
 
-        innerMap.put(regInstance.getInstanceId(), newClient);
+        innerMap.put(serverId, newClient);
     }
 
     /**
