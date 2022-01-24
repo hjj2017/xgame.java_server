@@ -10,7 +10,7 @@ import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
 import org.xgame.gatewayserver.base.BaseLog;
 import org.xgame.gatewayserver.base.ClientMsgHandler;
-import org.xgame.gatewayserver.cluster.BizServerFinder;
+import org.xgame.gatewayserver.cluster.finder.BizServerFinder;
 
 /**
  * 网关服务器
