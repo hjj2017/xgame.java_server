@@ -82,6 +82,11 @@ public final class BizServerFinder {
      * 开始发现
      */
     public void startFind() {
+        if (!_cmdLn.hasOption("nacos_server_addr")) {
+            LOGGER.warn("未设置 Nacos 服务器地址, 跳过服务器发现任务");
+            return;
+        }
+
         String serverAddrOfNacos = _cmdLn.getOptionValue("nacos_server_addr");
         _ns = createNamingService(serverAddrOfNacos);
 

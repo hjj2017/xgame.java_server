@@ -1,18 +1,19 @@
 package org.xgame.gatewayserver;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
+import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.gatewayserver.base.BaseLog;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
  * 配置
- * 日志打印过于频繁, 可以增加:
- * -Dcom.alibaba.nacos.config.log.level=error
- * -Dcom.alibaba.nacos.naming.log.level=error
  */
 public final class Configure {
     /**
@@ -21,9 +22,9 @@ public final class Configure {
     static private final Logger LOGGER = BaseLog.LOGGER;
 
     /**
-     * DataId = Redis 配置
+     * DataId
      */
-    static private final String DATA_ID_ORG_XGAME_CONF_REDISXUITE = "org.xgame.conf.redisxuite";
+    static private final String DATA_ID_ORG_XGAME_CONF = "org.xgame.conf";
 
     /**
      * 分组名称
@@ -46,8 +47,41 @@ public final class Configure {
             return;
         }
 
-        // 获取服务器配置
-        ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
+        String strConfig = null;
+
+        if (cmdLn.hasOption("nacos_server_addr")) {
+            // 从 Nacos 中获得配置
+            //
+            ConfigService cs = createConfigService(cmdLn.getOptionValue("nacos_server_addr"));
+
+            try {
+                strConfig = cs.getConfig(
+                    DATA_ID_ORG_XGAME_CONF,
+                    GROUP_XXOO + "." + WorkModeDef.currWorkMode(),
+                    2000
+                );
+            } catch (Exception ex) {
+                // 记录错误日志
+                LOGGER.error(ex.getMessage(), ex);
+            }
+        } else if (cmdLn.hasOption("config_file")) {
+            // 从配置文件中读取配置
+            //
+            try {
+                strConfig = Files.readString(Paths.get(cmdLn.getOptionValue("config_file")));
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+            }
+        }
+
+        if (null == strConfig ||
+            strConfig.isEmpty()) {
+            LOGGER.error("配置文本为空, 请检查 Nacos 或配置文件");
+            System.exit(-1);
+            return;
+        }
+
+        JSONObject joConfig = JSONObject.parseObject(strConfig);
     }
 
     /**

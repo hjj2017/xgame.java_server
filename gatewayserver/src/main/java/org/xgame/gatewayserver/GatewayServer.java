@@ -70,7 +70,8 @@ public final class GatewayServer {
         op.addRequiredOption(null, "server_id", true, "服务器 Id");
         op.addRequiredOption(null, "bind_host", true, "服务器主机地址");
         op.addRequiredOption(null, "bind_port", true, "服务器端口号");
-        op.addRequiredOption(null, "nacos_server_addr", true, "Nacos 服务器地址");
+        op.addOption(null, "config_file", true, "配置文件");
+        op.addOption(null, "nacos_server_addr", true, "Nacos 服务器地址");
 
         try {
             // 创建默认解析器
@@ -80,6 +81,8 @@ public final class GatewayServer {
 
             // 设置服务器 Id
             GatewayServer._Id = _cmdLn.getOptionValue("server_id", null);
+            // 初始化配置
+            Configure.init(_cmdLn);
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
@@ -104,8 +107,6 @@ public final class GatewayServer {
             WorkModeDef.currWorkMode()
         );
 
-        // 初始化配置
-        Configure.init(_cmdLn);
         // 启动 Netty 服务器
         startUpNettyServer(_cmdLn);
         // 开始发现新业务服务器

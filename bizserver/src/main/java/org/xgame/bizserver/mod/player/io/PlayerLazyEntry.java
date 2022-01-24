@@ -7,7 +7,7 @@ import org.xgame.comm.lazysave.ILazyEntry;
 /**
  * 玩家延迟入口
  */
-public class PlayerLazyEntry implements ILazyEntry {
+public final class PlayerLazyEntry implements ILazyEntry {
     /**
      * 玩家模型
      */
@@ -49,9 +49,6 @@ public class PlayerLazyEntry implements ILazyEntry {
 
     @Override
     public void delete() {
-        AsyncOperationProcessor.getInstance().process(
-            _p.getUUId(),
-            () -> _dao.delete(_p)
-        );
+        // 玩家不能被删除...
     }
 }
