@@ -12,7 +12,10 @@ import org.xgame.gatewayserver.cluster.ClusterLog;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,13 +36,18 @@ class FindByConfigFile implements IBizServerFindStrategy {
      */
     private final BizServerConnectHelper _connectHelper = new BizServerConnectHelper();
 
+    /**
+     * 业务服务器 Id 字典
+     */
+    private final Map<ServerJobTypeEnum, Set<String>> _bizServerIdMap = new ConcurrentHashMap<>();
+
     @Override
     public void startFind(CommandLine cmdLn) {
         if (null == cmdLn ||
             !cmdLn.hasOption("config_file")) {
             return;
         }
-        
+
         String strConfig = null;
 
         try {
@@ -58,35 +66,105 @@ class FindByConfigFile implements IBizServerFindStrategy {
         JSONObject joConfig = JSONObject.parseObject(strConfig);
         JSONArray jaPossibleBizServerList = joConfig.getJSONArray("possibleBizServerList");
 
-        MyTimer.getInstance().scheduleWithFixedDelay(() -> {
-            for (int i = 0; i < jaPossibleBizServerList.size(); i++) {
-                // 获取业务服务器配置
-                JSONObject joBizServer = jaPossibleBizServerList.getJSONObject(i);
-
-                if (null == joBizServer) {
-                    continue;
-                }
-
-                final Set<ServerJobTypeEnum> sjtSet = ServerJobTypeEnum.strToValSet(
-                    joBizServer.getString("serverJobTypeSet")
-                );
-
-                AsyncOperationProcessor.getInstance().process(i, () ->
-                    sjtSet.forEach((sjt) ->
-                        _connectHelper.connectToBizServer(
-                            sjt, // 服务器工作类型
-                            joBizServer.getString("serverId"),
-                            joBizServer.getString("host"),
-                            joBizServer.getIntValue("port")
-                        )
-                    )
-                );
-            }
-        }, 0, 5000, TimeUnit.MILLISECONDS);
+        MyTimer.getInstance().scheduleWithFixedDelay(
+            () -> connectToBizServer(jaPossibleBizServerList),
+            0,
+            5000, // 每隔 5 秒连接一次
+            TimeUnit.MILLISECONDS
+        );
     }
 
     @Override
     public NettyClient selectOneBizServer(ServerJobTypeEnum sjt) {
-        return null;
+        if (null == sjt) {
+            return null;
+        }
+
+        Set<String> innerSet = _bizServerIdMap.get(sjt);
+
+        if (null == innerSet ||
+            innerSet.isEmpty()) {
+            return null;
+        }
+
+        return _connectHelper.find(
+            sjt,
+            innerSet.stream().findAny().get()
+        );
+    }
+
+    /**
+     * 连接到业务服务器
+     *
+     * @param jaPossibleBizServerList 业务服务器列表
+     * @see #connectToBizServer(JSONObject)
+     * @see #connectToBizServer(ServerJobTypeEnum, JSONObject)
+     */
+    private void connectToBizServer(JSONArray jaPossibleBizServerList) {
+        if (null == jaPossibleBizServerList ||
+            jaPossibleBizServerList.isEmpty()) {
+            return;
+        }
+
+        for (int i = 0; i < jaPossibleBizServerList.size(); i++) {
+            // 获取业务服务器配置
+            JSONObject joBizServer = jaPossibleBizServerList.getJSONObject(i);
+            connectToBizServer(joBizServer);
+        }
+    }
+
+    /**
+     * 连接到业务服务器
+     *
+     * @param joBizServer 业务服务器配置
+     * @see #connectToBizServer(ServerJobTypeEnum, JSONObject)
+     */
+    private void connectToBizServer(JSONObject joBizServer) {
+        if (null == joBizServer ||
+            joBizServer.isEmpty()) {
+            return;
+        }
+
+        final Set<ServerJobTypeEnum> sjtSet = ServerJobTypeEnum.strToValSet(
+            joBizServer.getString("serverJobTypeSet")
+        );
+
+        sjtSet.forEach((sjt) ->
+            connectToBizServer(sjt, joBizServer)
+        );
+    }
+
+    /**
+     * 连接到业务服务器
+     *
+     * @param sjt         服务器工作类型
+     * @param joBizServer 业务服务器配置
+     */
+    private void connectToBizServer(ServerJobTypeEnum sjt, JSONObject joBizServer) {
+        if (null == sjt ||
+            null == joBizServer ||
+            joBizServer.isEmpty()) {
+            return;
+        }
+
+        Set<String> innerSet = _bizServerIdMap.get(sjt);
+
+        if (null == innerSet) {
+            _bizServerIdMap.putIfAbsent(
+                sjt, new HashSet<>()
+            );
+        }
+
+        innerSet = _bizServerIdMap.get(sjt);
+        innerSet.add(joBizServer.getString("serverId"));
+
+        AsyncOperationProcessor.getInstance().process(() ->
+            _connectHelper.connectToBizServer(
+                sjt, // 服务器工作类型
+                joBizServer.getString("serverId"),
+                joBizServer.getString("host"),
+                joBizServer.getIntValue("port")
+            )
+        );
     }
 }

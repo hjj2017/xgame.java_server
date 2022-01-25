@@ -41,6 +41,11 @@ class FindByNacos implements IBizServerFindStrategy {
 
     @Override
     public void startFind(CommandLine cmdLn) {
+        if (null == cmdLn ||
+            !cmdLn.hasOption("nacos_server_addr")) {
+            return;
+        }
+
         String serverAddrOfNacos = cmdLn.getOptionValue("nacos_server_addr");
         _ns = createNamingService(serverAddrOfNacos);
 
