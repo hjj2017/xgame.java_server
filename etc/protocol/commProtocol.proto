@@ -32,6 +32,25 @@ message PingResult {
     sint32 pingId = 1;
 }
 
+//
+// 检票
+///////////////////////////////////////////////////////////////////////
+// 指令
+message CheckInTicketCmd {
+    // 用户 Id
+    sint64 userId = 1;
+    // 票据, 该票据是在登录服务器上生成的
+    string ticket = 2;
+}
+
+// 结果
+message CheckInTicketResult {
+    // 用户 Id
+    sint64 userId = 1;
+    // 成功标志
+    bool succezz = 2;
+}
+
 // 
 // 断线重连
 ///////////////////////////////////////////////////////////////////////
@@ -61,9 +80,9 @@ message ReconnectResult {
 // 成功提示
 ///////////////////////////////////////////////////////////////////////
 // 结果
-message SuccezzHintResult {
+message SuccessHintResult {
     // 成功信息
-    string succezzInfo = 1;
+    string successInfo = 1;
 }
 
 //
@@ -75,25 +94,6 @@ message ErrorHintResult {
     sint32 errorCode = 1;
     // 错误消息
     string errorMsg = 2;
-}
-
-//
-// 检票
-///////////////////////////////////////////////////////////////////////
-// 指令
-message CheckInTicketCmd {
-    // 用户 Id
-    sint64 userId = 1;
-    // 票据, 该票据是在登录服务器上生成的
-    string ticket = 2;
-}
-
-// 结果
-message CheckInTicketResult {
-    // 用户 Id
-    sint64 userId = 1;
-    // 成功标志
-    bool succezz = 2;
 }
 
 //

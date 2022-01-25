@@ -12,6 +12,7 @@ import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.bizserver.mod.player.PlayerService;
 import org.xgame.comm.MainThreadProcessor;
 import org.xgame.comm.async.AsyncOperationProcessor;
+import org.xgame.comm.cmdhandler.CmdHandlerFactory;
 import org.xgame.comm.lazysave.LazySaveService;
 import org.xgame.comm.network.NettyServer;
 import org.xgame.comm.network.NettyServerConf;
@@ -136,6 +137,8 @@ public final class BizServer {
         if (null == cmdLn) {
             return;
         }
+
+        CmdHandlerFactory.init(BizServer.class.getPackageName() + ".cmdhandler");
 
         NettyServerConf newConf = new NettyServerConf()
             .setServerId(cmdLn.getOptionValue("server_id"))

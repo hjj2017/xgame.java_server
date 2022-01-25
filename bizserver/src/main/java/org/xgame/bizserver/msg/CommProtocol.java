@@ -1195,6 +1195,1321 @@ public final class CommProtocol {
 
   }
 
+  public interface CheckInTicketCmdOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:msg.CheckInTicketCmd)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 用户 Id
+     * </pre>
+     *
+     * <code>sint64 userId = 1;</code>
+     * @return The userId.
+     */
+    long getUserId();
+
+    /**
+     * <pre>
+     * 票据, 该票据是在登录服务器上生成的
+     * </pre>
+     *
+     * <code>string ticket = 2;</code>
+     * @return The ticket.
+     */
+    java.lang.String getTicket();
+    /**
+     * <pre>
+     * 票据, 该票据是在登录服务器上生成的
+     * </pre>
+     *
+     * <code>string ticket = 2;</code>
+     * @return The bytes for ticket.
+     */
+    com.google.protobuf.ByteString
+        getTicketBytes();
+  }
+  /**
+   * <pre>
+   * 检票
+   * /////////////////////////////////////////////////////////////////////
+   * 指令
+   * </pre>
+   *
+   * Protobuf type {@code msg.CheckInTicketCmd}
+   */
+  public static final class CheckInTicketCmd extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:msg.CheckInTicketCmd)
+      CheckInTicketCmdOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use CheckInTicketCmd.newBuilder() to construct.
+    private CheckInTicketCmd(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private CheckInTicketCmd() {
+      ticket_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CheckInTicketCmd();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private CheckInTicketCmd(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              userId_ = input.readSInt64();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ticket_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.Builder.class);
+    }
+
+    public static final int USERID_FIELD_NUMBER = 1;
+    private long userId_;
+    /**
+     * <pre>
+     * 用户 Id
+     * </pre>
+     *
+     * <code>sint64 userId = 1;</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public long getUserId() {
+      return userId_;
+    }
+
+    public static final int TICKET_FIELD_NUMBER = 2;
+    private volatile java.lang.Object ticket_;
+    /**
+     * <pre>
+     * 票据, 该票据是在登录服务器上生成的
+     * </pre>
+     *
+     * <code>string ticket = 2;</code>
+     * @return The ticket.
+     */
+    @java.lang.Override
+    public java.lang.String getTicket() {
+      java.lang.Object ref = ticket_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ticket_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 票据, 该票据是在登录服务器上生成的
+     * </pre>
+     *
+     * <code>string ticket = 2;</code>
+     * @return The bytes for ticket.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTicketBytes() {
+      java.lang.Object ref = ticket_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ticket_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (userId_ != 0L) {
+        output.writeSInt64(1, userId_);
+      }
+      if (!getTicketBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, ticket_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (userId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt64Size(1, userId_);
+      }
+      if (!getTicketBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, ticket_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd)) {
+        return super.equals(obj);
+      }
+      org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd other = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd) obj;
+
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (!getTicket()
+          .equals(other.getTicket())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USERID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUserId());
+      hash = (37 * hash) + TICKET_FIELD_NUMBER;
+      hash = (53 * hash) + getTicket().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 检票
+     * /////////////////////////////////////////////////////////////////////
+     * 指令
+     * </pre>
+     *
+     * Protobuf type {@code msg.CheckInTicketCmd}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:msg.CheckInTicketCmd)
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmdOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.Builder.class);
+      }
+
+      // Construct using org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        userId_ = 0L;
+
+        ticket_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_descriptor;
+      }
+
+      @java.lang.Override
+      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd getDefaultInstanceForType() {
+        return org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd build() {
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd buildPartial() {
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd result = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd(this);
+        result.userId_ = userId_;
+        result.ticket_ = ticket_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd) {
+          return mergeFrom((org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd other) {
+        if (other == org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.getDefaultInstance()) return this;
+        if (other.getUserId() != 0L) {
+          setUserId(other.getUserId());
+        }
+        if (!other.getTicket().isEmpty()) {
+          ticket_ = other.ticket_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long userId_ ;
+      /**
+       * <pre>
+       * 用户 Id
+       * </pre>
+       *
+       * <code>sint64 userId = 1;</code>
+       * @return The userId.
+       */
+      @java.lang.Override
+      public long getUserId() {
+        return userId_;
+      }
+      /**
+       * <pre>
+       * 用户 Id
+       * </pre>
+       *
+       * <code>sint64 userId = 1;</code>
+       * @param value The userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserId(long value) {
+        
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户 Id
+       * </pre>
+       *
+       * <code>sint64 userId = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        
+        userId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object ticket_ = "";
+      /**
+       * <pre>
+       * 票据, 该票据是在登录服务器上生成的
+       * </pre>
+       *
+       * <code>string ticket = 2;</code>
+       * @return The ticket.
+       */
+      public java.lang.String getTicket() {
+        java.lang.Object ref = ticket_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ticket_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 票据, 该票据是在登录服务器上生成的
+       * </pre>
+       *
+       * <code>string ticket = 2;</code>
+       * @return The bytes for ticket.
+       */
+      public com.google.protobuf.ByteString
+          getTicketBytes() {
+        java.lang.Object ref = ticket_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ticket_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 票据, 该票据是在登录服务器上生成的
+       * </pre>
+       *
+       * <code>string ticket = 2;</code>
+       * @param value The ticket to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTicket(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ticket_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 票据, 该票据是在登录服务器上生成的
+       * </pre>
+       *
+       * <code>string ticket = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTicket() {
+        
+        ticket_ = getDefaultInstance().getTicket();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 票据, 该票据是在登录服务器上生成的
+       * </pre>
+       *
+       * <code>string ticket = 2;</code>
+       * @param value The bytes for ticket to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTicketBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ticket_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:msg.CheckInTicketCmd)
+    }
+
+    // @@protoc_insertion_point(class_scope:msg.CheckInTicketCmd)
+    private static final org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd();
+    }
+
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<CheckInTicketCmd>
+        PARSER = new com.google.protobuf.AbstractParser<CheckInTicketCmd>() {
+      @java.lang.Override
+      public CheckInTicketCmd parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new CheckInTicketCmd(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<CheckInTicketCmd> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CheckInTicketCmd> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface CheckInTicketResultOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:msg.CheckInTicketResult)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 用户 Id
+     * </pre>
+     *
+     * <code>sint64 userId = 1;</code>
+     * @return The userId.
+     */
+    long getUserId();
+
+    /**
+     * <pre>
+     * 成功标志
+     * </pre>
+     *
+     * <code>bool succezz = 2;</code>
+     * @return The succezz.
+     */
+    boolean getSuccezz();
+  }
+  /**
+   * <pre>
+   * 结果
+   * </pre>
+   *
+   * Protobuf type {@code msg.CheckInTicketResult}
+   */
+  public static final class CheckInTicketResult extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:msg.CheckInTicketResult)
+      CheckInTicketResultOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use CheckInTicketResult.newBuilder() to construct.
+    private CheckInTicketResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private CheckInTicketResult() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CheckInTicketResult();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private CheckInTicketResult(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              userId_ = input.readSInt64();
+              break;
+            }
+            case 16: {
+
+              succezz_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.Builder.class);
+    }
+
+    public static final int USERID_FIELD_NUMBER = 1;
+    private long userId_;
+    /**
+     * <pre>
+     * 用户 Id
+     * </pre>
+     *
+     * <code>sint64 userId = 1;</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public long getUserId() {
+      return userId_;
+    }
+
+    public static final int SUCCEZZ_FIELD_NUMBER = 2;
+    private boolean succezz_;
+    /**
+     * <pre>
+     * 成功标志
+     * </pre>
+     *
+     * <code>bool succezz = 2;</code>
+     * @return The succezz.
+     */
+    @java.lang.Override
+    public boolean getSuccezz() {
+      return succezz_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (userId_ != 0L) {
+        output.writeSInt64(1, userId_);
+      }
+      if (succezz_ != false) {
+        output.writeBool(2, succezz_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (userId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt64Size(1, userId_);
+      }
+      if (succezz_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, succezz_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult)) {
+        return super.equals(obj);
+      }
+      org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult other = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult) obj;
+
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (getSuccezz()
+          != other.getSuccezz()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USERID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUserId());
+      hash = (37 * hash) + SUCCEZZ_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getSuccezz());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 结果
+     * </pre>
+     *
+     * Protobuf type {@code msg.CheckInTicketResult}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:msg.CheckInTicketResult)
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResultOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.Builder.class);
+      }
+
+      // Construct using org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        userId_ = 0L;
+
+        succezz_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_descriptor;
+      }
+
+      @java.lang.Override
+      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult getDefaultInstanceForType() {
+        return org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult build() {
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult buildPartial() {
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult result = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult(this);
+        result.userId_ = userId_;
+        result.succezz_ = succezz_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult) {
+          return mergeFrom((org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult other) {
+        if (other == org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.getDefaultInstance()) return this;
+        if (other.getUserId() != 0L) {
+          setUserId(other.getUserId());
+        }
+        if (other.getSuccezz() != false) {
+          setSuccezz(other.getSuccezz());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long userId_ ;
+      /**
+       * <pre>
+       * 用户 Id
+       * </pre>
+       *
+       * <code>sint64 userId = 1;</code>
+       * @return The userId.
+       */
+      @java.lang.Override
+      public long getUserId() {
+        return userId_;
+      }
+      /**
+       * <pre>
+       * 用户 Id
+       * </pre>
+       *
+       * <code>sint64 userId = 1;</code>
+       * @param value The userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserId(long value) {
+        
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户 Id
+       * </pre>
+       *
+       * <code>sint64 userId = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        
+        userId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean succezz_ ;
+      /**
+       * <pre>
+       * 成功标志
+       * </pre>
+       *
+       * <code>bool succezz = 2;</code>
+       * @return The succezz.
+       */
+      @java.lang.Override
+      public boolean getSuccezz() {
+        return succezz_;
+      }
+      /**
+       * <pre>
+       * 成功标志
+       * </pre>
+       *
+       * <code>bool succezz = 2;</code>
+       * @param value The succezz to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSuccezz(boolean value) {
+        
+        succezz_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成功标志
+       * </pre>
+       *
+       * <code>bool succezz = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSuccezz() {
+        
+        succezz_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:msg.CheckInTicketResult)
+    }
+
+    // @@protoc_insertion_point(class_scope:msg.CheckInTicketResult)
+    private static final org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult();
+    }
+
+    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<CheckInTicketResult>
+        PARSER = new com.google.protobuf.AbstractParser<CheckInTicketResult>() {
+      @java.lang.Override
+      public CheckInTicketResult parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new CheckInTicketResult(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<CheckInTicketResult> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CheckInTicketResult> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface ReconnectCmdOrBuilder extends
       // @@protoc_insertion_point(interface_extends:msg.ReconnectCmd)
       com.google.protobuf.MessageOrBuilder {
@@ -2880,8 +4195,8 @@ public final class CommProtocol {
 
   }
 
-  public interface SuccezzHintResultOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:msg.SuccezzHintResult)
+  public interface SuccessHintResultOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:msg.SuccessHintResult)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -2889,20 +4204,20 @@ public final class CommProtocol {
      * 成功信息
      * </pre>
      *
-     * <code>string succezzInfo = 1;</code>
-     * @return The succezzInfo.
+     * <code>string successInfo = 1;</code>
+     * @return The successInfo.
      */
-    java.lang.String getSuccezzInfo();
+    java.lang.String getSuccessInfo();
     /**
      * <pre>
      * 成功信息
      * </pre>
      *
-     * <code>string succezzInfo = 1;</code>
-     * @return The bytes for succezzInfo.
+     * <code>string successInfo = 1;</code>
+     * @return The bytes for successInfo.
      */
     com.google.protobuf.ByteString
-        getSuccezzInfoBytes();
+        getSuccessInfoBytes();
   }
   /**
    * <pre>
@@ -2911,26 +4226,26 @@ public final class CommProtocol {
    * 结果
    * </pre>
    *
-   * Protobuf type {@code msg.SuccezzHintResult}
+   * Protobuf type {@code msg.SuccessHintResult}
    */
-  public static final class SuccezzHintResult extends
+  public static final class SuccessHintResult extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:msg.SuccezzHintResult)
-      SuccezzHintResultOrBuilder {
+      // @@protoc_insertion_point(message_implements:msg.SuccessHintResult)
+      SuccessHintResultOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use SuccezzHintResult.newBuilder() to construct.
-    private SuccezzHintResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use SuccessHintResult.newBuilder() to construct.
+    private SuccessHintResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private SuccezzHintResult() {
-      succezzInfo_ = "";
+    private SuccessHintResult() {
+      successInfo_ = "";
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new SuccezzHintResult();
+      return new SuccessHintResult();
     }
 
     @java.lang.Override
@@ -2938,7 +4253,7 @@ public final class CommProtocol {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private SuccezzHintResult(
+    private SuccessHintResult(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2959,7 +4274,7 @@ public final class CommProtocol {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              succezzInfo_ = s;
+              successInfo_ = s;
               break;
             }
             default: {
@@ -2983,37 +4298,37 @@ public final class CommProtocol {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccezzHintResult_descriptor;
+      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccessHintResult_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccezzHintResult_fieldAccessorTable
+      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccessHintResult_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.class, org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.Builder.class);
+              org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.class, org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.Builder.class);
     }
 
-    public static final int SUCCEZZINFO_FIELD_NUMBER = 1;
-    private volatile java.lang.Object succezzInfo_;
+    public static final int SUCCESSINFO_FIELD_NUMBER = 1;
+    private volatile java.lang.Object successInfo_;
     /**
      * <pre>
      * 成功信息
      * </pre>
      *
-     * <code>string succezzInfo = 1;</code>
-     * @return The succezzInfo.
+     * <code>string successInfo = 1;</code>
+     * @return The successInfo.
      */
     @java.lang.Override
-    public java.lang.String getSuccezzInfo() {
-      java.lang.Object ref = succezzInfo_;
+    public java.lang.String getSuccessInfo() {
+      java.lang.Object ref = successInfo_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        succezzInfo_ = s;
+        successInfo_ = s;
         return s;
       }
     }
@@ -3022,18 +4337,18 @@ public final class CommProtocol {
      * 成功信息
      * </pre>
      *
-     * <code>string succezzInfo = 1;</code>
-     * @return The bytes for succezzInfo.
+     * <code>string successInfo = 1;</code>
+     * @return The bytes for successInfo.
      */
     @java.lang.Override
     public com.google.protobuf.ByteString
-        getSuccezzInfoBytes() {
-      java.lang.Object ref = succezzInfo_;
+        getSuccessInfoBytes() {
+      java.lang.Object ref = successInfo_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        succezzInfo_ = b;
+        successInfo_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -3054,8 +4369,8 @@ public final class CommProtocol {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getSuccezzInfoBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, succezzInfo_);
+      if (!getSuccessInfoBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, successInfo_);
       }
       unknownFields.writeTo(output);
     }
@@ -3066,8 +4381,8 @@ public final class CommProtocol {
       if (size != -1) return size;
 
       size = 0;
-      if (!getSuccezzInfoBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, succezzInfo_);
+      if (!getSuccessInfoBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, successInfo_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3079,13 +4394,13 @@ public final class CommProtocol {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult)) {
+      if (!(obj instanceof org.xgame.bizserver.msg.CommProtocol.SuccessHintResult)) {
         return super.equals(obj);
       }
-      org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult other = (org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult) obj;
+      org.xgame.bizserver.msg.CommProtocol.SuccessHintResult other = (org.xgame.bizserver.msg.CommProtocol.SuccessHintResult) obj;
 
-      if (!getSuccezzInfo()
-          .equals(other.getSuccezzInfo())) return false;
+      if (!getSuccessInfo()
+          .equals(other.getSuccessInfo())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3097,76 +4412,76 @@ public final class CommProtocol {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + SUCCEZZINFO_FIELD_NUMBER;
-      hash = (53 * hash) + getSuccezzInfo().hashCode();
+      hash = (37 * hash) + SUCCESSINFO_FIELD_NUMBER;
+      hash = (53 * hash) + getSuccessInfo().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(byte[] data)
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(java.io.InputStream input)
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseDelimitedFrom(java.io.InputStream input)
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseDelimitedFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parseFrom(
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3179,7 +4494,7 @@ public final class CommProtocol {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult prototype) {
+    public static Builder newBuilder(org.xgame.bizserver.msg.CommProtocol.SuccessHintResult prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -3201,26 +4516,26 @@ public final class CommProtocol {
      * 结果
      * </pre>
      *
-     * Protobuf type {@code msg.SuccezzHintResult}
+     * Protobuf type {@code msg.SuccessHintResult}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:msg.SuccezzHintResult)
-        org.xgame.bizserver.msg.CommProtocol.SuccezzHintResultOrBuilder {
+        // @@protoc_insertion_point(builder_implements:msg.SuccessHintResult)
+        org.xgame.bizserver.msg.CommProtocol.SuccessHintResultOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccezzHintResult_descriptor;
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccessHintResult_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccezzHintResult_fieldAccessorTable
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccessHintResult_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.class, org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.Builder.class);
+                org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.class, org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.Builder.class);
       }
 
-      // Construct using org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.newBuilder()
+      // Construct using org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3238,7 +4553,7 @@ public final class CommProtocol {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        succezzInfo_ = "";
+        successInfo_ = "";
 
         return this;
       }
@@ -3246,17 +4561,17 @@ public final class CommProtocol {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccezzHintResult_descriptor;
+        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_SuccessHintResult_descriptor;
       }
 
       @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult getDefaultInstanceForType() {
-        return org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.getDefaultInstance();
+      public org.xgame.bizserver.msg.CommProtocol.SuccessHintResult getDefaultInstanceForType() {
+        return org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.getDefaultInstance();
       }
 
       @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult build() {
-        org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult result = buildPartial();
+      public org.xgame.bizserver.msg.CommProtocol.SuccessHintResult build() {
+        org.xgame.bizserver.msg.CommProtocol.SuccessHintResult result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -3264,9 +4579,9 @@ public final class CommProtocol {
       }
 
       @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult buildPartial() {
-        org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult result = new org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult(this);
-        result.succezzInfo_ = succezzInfo_;
+      public org.xgame.bizserver.msg.CommProtocol.SuccessHintResult buildPartial() {
+        org.xgame.bizserver.msg.CommProtocol.SuccessHintResult result = new org.xgame.bizserver.msg.CommProtocol.SuccessHintResult(this);
+        result.successInfo_ = successInfo_;
         onBuilt();
         return result;
       }
@@ -3305,18 +4620,18 @@ public final class CommProtocol {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult) {
-          return mergeFrom((org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult)other);
+        if (other instanceof org.xgame.bizserver.msg.CommProtocol.SuccessHintResult) {
+          return mergeFrom((org.xgame.bizserver.msg.CommProtocol.SuccessHintResult)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult other) {
-        if (other == org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult.getDefaultInstance()) return this;
-        if (!other.getSuccezzInfo().isEmpty()) {
-          succezzInfo_ = other.succezzInfo_;
+      public Builder mergeFrom(org.xgame.bizserver.msg.CommProtocol.SuccessHintResult other) {
+        if (other == org.xgame.bizserver.msg.CommProtocol.SuccessHintResult.getDefaultInstance()) return this;
+        if (!other.getSuccessInfo().isEmpty()) {
+          successInfo_ = other.successInfo_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -3334,11 +4649,11 @@ public final class CommProtocol {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult parsedMessage = null;
+        org.xgame.bizserver.msg.CommProtocol.SuccessHintResult parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult) e.getUnfinishedMessage();
+          parsedMessage = (org.xgame.bizserver.msg.CommProtocol.SuccessHintResult) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3348,22 +4663,22 @@ public final class CommProtocol {
         return this;
       }
 
-      private java.lang.Object succezzInfo_ = "";
+      private java.lang.Object successInfo_ = "";
       /**
        * <pre>
        * 成功信息
        * </pre>
        *
-       * <code>string succezzInfo = 1;</code>
-       * @return The succezzInfo.
+       * <code>string successInfo = 1;</code>
+       * @return The successInfo.
        */
-      public java.lang.String getSuccezzInfo() {
-        java.lang.Object ref = succezzInfo_;
+      public java.lang.String getSuccessInfo() {
+        java.lang.Object ref = successInfo_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          succezzInfo_ = s;
+          successInfo_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3374,17 +4689,17 @@ public final class CommProtocol {
        * 成功信息
        * </pre>
        *
-       * <code>string succezzInfo = 1;</code>
-       * @return The bytes for succezzInfo.
+       * <code>string successInfo = 1;</code>
+       * @return The bytes for successInfo.
        */
       public com.google.protobuf.ByteString
-          getSuccezzInfoBytes() {
-        java.lang.Object ref = succezzInfo_;
+          getSuccessInfoBytes() {
+        java.lang.Object ref = successInfo_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          succezzInfo_ = b;
+          successInfo_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -3395,17 +4710,17 @@ public final class CommProtocol {
        * 成功信息
        * </pre>
        *
-       * <code>string succezzInfo = 1;</code>
-       * @param value The succezzInfo to set.
+       * <code>string successInfo = 1;</code>
+       * @param value The successInfo to set.
        * @return This builder for chaining.
        */
-      public Builder setSuccezzInfo(
+      public Builder setSuccessInfo(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        succezzInfo_ = value;
+        successInfo_ = value;
         onChanged();
         return this;
       }
@@ -3414,12 +4729,12 @@ public final class CommProtocol {
        * 成功信息
        * </pre>
        *
-       * <code>string succezzInfo = 1;</code>
+       * <code>string successInfo = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSuccezzInfo() {
+      public Builder clearSuccessInfo() {
         
-        succezzInfo_ = getDefaultInstance().getSuccezzInfo();
+        successInfo_ = getDefaultInstance().getSuccessInfo();
         onChanged();
         return this;
       }
@@ -3428,18 +4743,18 @@ public final class CommProtocol {
        * 成功信息
        * </pre>
        *
-       * <code>string succezzInfo = 1;</code>
-       * @param value The bytes for succezzInfo to set.
+       * <code>string successInfo = 1;</code>
+       * @param value The bytes for successInfo to set.
        * @return This builder for chaining.
        */
-      public Builder setSuccezzInfoBytes(
+      public Builder setSuccessInfoBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        succezzInfo_ = value;
+        successInfo_ = value;
         onChanged();
         return this;
       }
@@ -3456,41 +4771,41 @@ public final class CommProtocol {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:msg.SuccezzHintResult)
+      // @@protoc_insertion_point(builder_scope:msg.SuccessHintResult)
     }
 
-    // @@protoc_insertion_point(class_scope:msg.SuccezzHintResult)
-    private static final org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:msg.SuccessHintResult)
+    private static final org.xgame.bizserver.msg.CommProtocol.SuccessHintResult DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult();
+      DEFAULT_INSTANCE = new org.xgame.bizserver.msg.CommProtocol.SuccessHintResult();
     }
 
-    public static org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult getDefaultInstance() {
+    public static org.xgame.bizserver.msg.CommProtocol.SuccessHintResult getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<SuccezzHintResult>
-        PARSER = new com.google.protobuf.AbstractParser<SuccezzHintResult>() {
+    private static final com.google.protobuf.Parser<SuccessHintResult>
+        PARSER = new com.google.protobuf.AbstractParser<SuccessHintResult>() {
       @java.lang.Override
-      public SuccezzHintResult parsePartialFrom(
+      public SuccessHintResult parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SuccezzHintResult(input, extensionRegistry);
+        return new SuccessHintResult(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<SuccezzHintResult> parser() {
+    public static com.google.protobuf.Parser<SuccessHintResult> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<SuccezzHintResult> getParserForType() {
+    public com.google.protobuf.Parser<SuccessHintResult> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public org.xgame.bizserver.msg.CommProtocol.SuccezzHintResult getDefaultInstanceForType() {
+    public org.xgame.bizserver.msg.CommProtocol.SuccessHintResult getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4202,1321 +5517,6 @@ public final class CommProtocol {
 
   }
 
-  public interface CheckInTicketCmdOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:msg.CheckInTicketCmd)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 用户 Id
-     * </pre>
-     *
-     * <code>sint64 userId = 1;</code>
-     * @return The userId.
-     */
-    long getUserId();
-
-    /**
-     * <pre>
-     * 票据, 该票据是在登录服务器上生成的
-     * </pre>
-     *
-     * <code>string ticket = 2;</code>
-     * @return The ticket.
-     */
-    java.lang.String getTicket();
-    /**
-     * <pre>
-     * 票据, 该票据是在登录服务器上生成的
-     * </pre>
-     *
-     * <code>string ticket = 2;</code>
-     * @return The bytes for ticket.
-     */
-    com.google.protobuf.ByteString
-        getTicketBytes();
-  }
-  /**
-   * <pre>
-   * 检票
-   * /////////////////////////////////////////////////////////////////////
-   * 指令
-   * </pre>
-   *
-   * Protobuf type {@code msg.CheckInTicketCmd}
-   */
-  public static final class CheckInTicketCmd extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:msg.CheckInTicketCmd)
-      CheckInTicketCmdOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use CheckInTicketCmd.newBuilder() to construct.
-    private CheckInTicketCmd(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private CheckInTicketCmd() {
-      ticket_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new CheckInTicketCmd();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private CheckInTicketCmd(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-
-              userId_ = input.readSInt64();
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              ticket_ = s;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.Builder.class);
-    }
-
-    public static final int USERID_FIELD_NUMBER = 1;
-    private long userId_;
-    /**
-     * <pre>
-     * 用户 Id
-     * </pre>
-     *
-     * <code>sint64 userId = 1;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public long getUserId() {
-      return userId_;
-    }
-
-    public static final int TICKET_FIELD_NUMBER = 2;
-    private volatile java.lang.Object ticket_;
-    /**
-     * <pre>
-     * 票据, 该票据是在登录服务器上生成的
-     * </pre>
-     *
-     * <code>string ticket = 2;</code>
-     * @return The ticket.
-     */
-    @java.lang.Override
-    public java.lang.String getTicket() {
-      java.lang.Object ref = ticket_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        ticket_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 票据, 该票据是在登录服务器上生成的
-     * </pre>
-     *
-     * <code>string ticket = 2;</code>
-     * @return The bytes for ticket.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTicketBytes() {
-      java.lang.Object ref = ticket_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        ticket_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (userId_ != 0L) {
-        output.writeSInt64(1, userId_);
-      }
-      if (!getTicketBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, ticket_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (userId_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeSInt64Size(1, userId_);
-      }
-      if (!getTicketBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, ticket_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd)) {
-        return super.equals(obj);
-      }
-      org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd other = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd) obj;
-
-      if (getUserId()
-          != other.getUserId()) return false;
-      if (!getTicket()
-          .equals(other.getTicket())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + USERID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getUserId());
-      hash = (37 * hash) + TICKET_FIELD_NUMBER;
-      hash = (53 * hash) + getTicket().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * 检票
-     * /////////////////////////////////////////////////////////////////////
-     * 指令
-     * </pre>
-     *
-     * Protobuf type {@code msg.CheckInTicketCmd}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:msg.CheckInTicketCmd)
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmdOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.Builder.class);
-      }
-
-      // Construct using org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        userId_ = 0L;
-
-        ticket_ = "";
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketCmd_descriptor;
-      }
-
-      @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd getDefaultInstanceForType() {
-        return org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd build() {
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd buildPartial() {
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd result = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd(this);
-        result.userId_ = userId_;
-        result.ticket_ = ticket_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd) {
-          return mergeFrom((org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd other) {
-        if (other == org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd.getDefaultInstance()) return this;
-        if (other.getUserId() != 0L) {
-          setUserId(other.getUserId());
-        }
-        if (!other.getTicket().isEmpty()) {
-          ticket_ = other.ticket_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private long userId_ ;
-      /**
-       * <pre>
-       * 用户 Id
-       * </pre>
-       *
-       * <code>sint64 userId = 1;</code>
-       * @return The userId.
-       */
-      @java.lang.Override
-      public long getUserId() {
-        return userId_;
-      }
-      /**
-       * <pre>
-       * 用户 Id
-       * </pre>
-       *
-       * <code>sint64 userId = 1;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(long value) {
-        
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户 Id
-       * </pre>
-       *
-       * <code>sint64 userId = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        
-        userId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object ticket_ = "";
-      /**
-       * <pre>
-       * 票据, 该票据是在登录服务器上生成的
-       * </pre>
-       *
-       * <code>string ticket = 2;</code>
-       * @return The ticket.
-       */
-      public java.lang.String getTicket() {
-        java.lang.Object ref = ticket_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          ticket_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 票据, 该票据是在登录服务器上生成的
-       * </pre>
-       *
-       * <code>string ticket = 2;</code>
-       * @return The bytes for ticket.
-       */
-      public com.google.protobuf.ByteString
-          getTicketBytes() {
-        java.lang.Object ref = ticket_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          ticket_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 票据, 该票据是在登录服务器上生成的
-       * </pre>
-       *
-       * <code>string ticket = 2;</code>
-       * @param value The ticket to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTicket(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        ticket_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 票据, 该票据是在登录服务器上生成的
-       * </pre>
-       *
-       * <code>string ticket = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTicket() {
-        
-        ticket_ = getDefaultInstance().getTicket();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 票据, 该票据是在登录服务器上生成的
-       * </pre>
-       *
-       * <code>string ticket = 2;</code>
-       * @param value The bytes for ticket to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTicketBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        ticket_ = value;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:msg.CheckInTicketCmd)
-    }
-
-    // @@protoc_insertion_point(class_scope:msg.CheckInTicketCmd)
-    private static final org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd();
-    }
-
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<CheckInTicketCmd>
-        PARSER = new com.google.protobuf.AbstractParser<CheckInTicketCmd>() {
-      @java.lang.Override
-      public CheckInTicketCmd parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CheckInTicketCmd(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<CheckInTicketCmd> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<CheckInTicketCmd> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public org.xgame.bizserver.msg.CommProtocol.CheckInTicketCmd getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface CheckInTicketResultOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:msg.CheckInTicketResult)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 用户 Id
-     * </pre>
-     *
-     * <code>sint64 userId = 1;</code>
-     * @return The userId.
-     */
-    long getUserId();
-
-    /**
-     * <pre>
-     * 成功标志
-     * </pre>
-     *
-     * <code>bool succezz = 2;</code>
-     * @return The succezz.
-     */
-    boolean getSuccezz();
-  }
-  /**
-   * <pre>
-   * 结果
-   * </pre>
-   *
-   * Protobuf type {@code msg.CheckInTicketResult}
-   */
-  public static final class CheckInTicketResult extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:msg.CheckInTicketResult)
-      CheckInTicketResultOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use CheckInTicketResult.newBuilder() to construct.
-    private CheckInTicketResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private CheckInTicketResult() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new CheckInTicketResult();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private CheckInTicketResult(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-
-              userId_ = input.readSInt64();
-              break;
-            }
-            case 16: {
-
-              succezz_ = input.readBool();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.Builder.class);
-    }
-
-    public static final int USERID_FIELD_NUMBER = 1;
-    private long userId_;
-    /**
-     * <pre>
-     * 用户 Id
-     * </pre>
-     *
-     * <code>sint64 userId = 1;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public long getUserId() {
-      return userId_;
-    }
-
-    public static final int SUCCEZZ_FIELD_NUMBER = 2;
-    private boolean succezz_;
-    /**
-     * <pre>
-     * 成功标志
-     * </pre>
-     *
-     * <code>bool succezz = 2;</code>
-     * @return The succezz.
-     */
-    @java.lang.Override
-    public boolean getSuccezz() {
-      return succezz_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (userId_ != 0L) {
-        output.writeSInt64(1, userId_);
-      }
-      if (succezz_ != false) {
-        output.writeBool(2, succezz_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (userId_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeSInt64Size(1, userId_);
-      }
-      if (succezz_ != false) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, succezz_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult)) {
-        return super.equals(obj);
-      }
-      org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult other = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult) obj;
-
-      if (getUserId()
-          != other.getUserId()) return false;
-      if (getSuccezz()
-          != other.getSuccezz()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + USERID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getUserId());
-      hash = (37 * hash) + SUCCEZZ_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getSuccezz());
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * 结果
-     * </pre>
-     *
-     * Protobuf type {@code msg.CheckInTicketResult}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:msg.CheckInTicketResult)
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResultOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.class, org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.Builder.class);
-      }
-
-      // Construct using org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        userId_ = 0L;
-
-        succezz_ = false;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.xgame.bizserver.msg.CommProtocol.internal_static_msg_CheckInTicketResult_descriptor;
-      }
-
-      @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult getDefaultInstanceForType() {
-        return org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult build() {
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult buildPartial() {
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult result = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult(this);
-        result.userId_ = userId_;
-        result.succezz_ = succezz_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult) {
-          return mergeFrom((org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult other) {
-        if (other == org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult.getDefaultInstance()) return this;
-        if (other.getUserId() != 0L) {
-          setUserId(other.getUserId());
-        }
-        if (other.getSuccezz() != false) {
-          setSuccezz(other.getSuccezz());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private long userId_ ;
-      /**
-       * <pre>
-       * 用户 Id
-       * </pre>
-       *
-       * <code>sint64 userId = 1;</code>
-       * @return The userId.
-       */
-      @java.lang.Override
-      public long getUserId() {
-        return userId_;
-      }
-      /**
-       * <pre>
-       * 用户 Id
-       * </pre>
-       *
-       * <code>sint64 userId = 1;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(long value) {
-        
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户 Id
-       * </pre>
-       *
-       * <code>sint64 userId = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        
-        userId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private boolean succezz_ ;
-      /**
-       * <pre>
-       * 成功标志
-       * </pre>
-       *
-       * <code>bool succezz = 2;</code>
-       * @return The succezz.
-       */
-      @java.lang.Override
-      public boolean getSuccezz() {
-        return succezz_;
-      }
-      /**
-       * <pre>
-       * 成功标志
-       * </pre>
-       *
-       * <code>bool succezz = 2;</code>
-       * @param value The succezz to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSuccezz(boolean value) {
-        
-        succezz_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 成功标志
-       * </pre>
-       *
-       * <code>bool succezz = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSuccezz() {
-        
-        succezz_ = false;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:msg.CheckInTicketResult)
-    }
-
-    // @@protoc_insertion_point(class_scope:msg.CheckInTicketResult)
-    private static final org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult();
-    }
-
-    public static org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<CheckInTicketResult>
-        PARSER = new com.google.protobuf.AbstractParser<CheckInTicketResult>() {
-      @java.lang.Override
-      public CheckInTicketResult parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CheckInTicketResult(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<CheckInTicketResult> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<CheckInTicketResult> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public org.xgame.bizserver.msg.CommProtocol.CheckInTicketResult getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface KickOutUserResultOrBuilder extends
       // @@protoc_insertion_point(interface_extends:msg.KickOutUserResult)
       com.google.protobuf.MessageOrBuilder {
@@ -6144,6 +6144,16 @@ public final class CommProtocol {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_msg_PingResult_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_msg_CheckInTicketCmd_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_msg_CheckInTicketCmd_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_msg_CheckInTicketResult_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_msg_CheckInTicketResult_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_msg_ReconnectCmd_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6154,25 +6164,15 @@ public final class CommProtocol {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_msg_ReconnectResult_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_msg_SuccezzHintResult_descriptor;
+    internal_static_msg_SuccessHintResult_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_msg_SuccezzHintResult_fieldAccessorTable;
+      internal_static_msg_SuccessHintResult_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_msg_ErrorHintResult_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_msg_ErrorHintResult_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_msg_CheckInTicketCmd_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_msg_CheckInTicketCmd_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_msg_CheckInTicketResult_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_msg_CheckInTicketResult_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_msg_KickOutUserResult_descriptor;
   private static final 
@@ -6189,16 +6189,16 @@ public final class CommProtocol {
     java.lang.String[] descriptorData = {
       "\n\022commProtocol.proto\022\003msg\"\031\n\007PingCmd\022\016\n\006" +
       "pingId\030\001 \001(\021\"\034\n\nPingResult\022\016\n\006pingId\030\001 \001" +
-      "(\021\"E\n\014ReconnectCmd\022\016\n\006userId\030\001 \001(\022\022\017\n\007uk" +
-      "eyStr\030\002 \001(\t\022\024\n\014ukeyExpireAt\030\003 \001(\022\"T\n\017Rec" +
-      "onnectResult\022\016\n\006userId\030\001 \001(\022\022\017\n\007ukeyStr\030" +
-      "\002 \001(\t\022\024\n\014ukeyExpireAt\030\003 \001(\022\022\n\n\002ok\030\004 \001(\010\"" +
-      "(\n\021SuccezzHintResult\022\023\n\013succezzInfo\030\001 \001(" +
-      "\t\"6\n\017ErrorHintResult\022\021\n\terrorCode\030\001 \001(\021\022" +
-      "\020\n\010errorMsg\030\002 \001(\t\"2\n\020CheckInTicketCmd\022\016\n" +
-      "\006userId\030\001 \001(\022\022\016\n\006ticket\030\002 \001(\t\"6\n\023CheckIn" +
-      "TicketResult\022\016\n\006userId\030\001 \001(\022\022\017\n\007succezz\030" +
-      "\002 \001(\010\"#\n\021KickOutUserResult\022\016\n\006reason\030\001 \001" +
+      "(\021\"2\n\020CheckInTicketCmd\022\016\n\006userId\030\001 \001(\022\022\016" +
+      "\n\006ticket\030\002 \001(\t\"6\n\023CheckInTicketResult\022\016\n" +
+      "\006userId\030\001 \001(\022\022\017\n\007succezz\030\002 \001(\010\"E\n\014Reconn" +
+      "ectCmd\022\016\n\006userId\030\001 \001(\022\022\017\n\007ukeyStr\030\002 \001(\t\022" +
+      "\024\n\014ukeyExpireAt\030\003 \001(\022\"T\n\017ReconnectResult" +
+      "\022\016\n\006userId\030\001 \001(\022\022\017\n\007ukeyStr\030\002 \001(\t\022\024\n\014uke" +
+      "yExpireAt\030\003 \001(\022\022\n\n\002ok\030\004 \001(\010\"(\n\021SuccessHi" +
+      "ntResult\022\023\n\013successInfo\030\001 \001(\t\"6\n\017ErrorHi" +
+      "ntResult\022\021\n\terrorCode\030\001 \001(\021\022\020\n\010errorMsg\030" +
+      "\002 \001(\t\"#\n\021KickOutUserResult\022\016\n\006reason\030\001 \001" +
       "(\t*\333\001\n\016CommMsgCodeDef\022\n\n\006_Dummy\020\000\022\014\n\010_Pi" +
       "ngCmd\020\001\022\017\n\013_PingResult\020\002\022\025\n\021_CheckInTick" +
       "etCmd\020\013\022\030\n\024_CheckInTicketResult\020\014\022\021\n\r_Re" +
@@ -6223,42 +6223,42 @@ public final class CommProtocol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_msg_PingResult_descriptor,
         new java.lang.String[] { "PingId", });
-    internal_static_msg_ReconnectCmd_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_msg_ReconnectCmd_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_msg_ReconnectCmd_descriptor,
-        new java.lang.String[] { "UserId", "UkeyStr", "UkeyExpireAt", });
-    internal_static_msg_ReconnectResult_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_msg_ReconnectResult_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_msg_ReconnectResult_descriptor,
-        new java.lang.String[] { "UserId", "UkeyStr", "UkeyExpireAt", "Ok", });
-    internal_static_msg_SuccezzHintResult_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_msg_SuccezzHintResult_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_msg_SuccezzHintResult_descriptor,
-        new java.lang.String[] { "SuccezzInfo", });
-    internal_static_msg_ErrorHintResult_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_msg_ErrorHintResult_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_msg_ErrorHintResult_descriptor,
-        new java.lang.String[] { "ErrorCode", "ErrorMsg", });
     internal_static_msg_CheckInTicketCmd_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_msg_CheckInTicketCmd_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_msg_CheckInTicketCmd_descriptor,
         new java.lang.String[] { "UserId", "Ticket", });
     internal_static_msg_CheckInTicketResult_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_msg_CheckInTicketResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_msg_CheckInTicketResult_descriptor,
         new java.lang.String[] { "UserId", "Succezz", });
+    internal_static_msg_ReconnectCmd_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_msg_ReconnectCmd_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_msg_ReconnectCmd_descriptor,
+        new java.lang.String[] { "UserId", "UkeyStr", "UkeyExpireAt", });
+    internal_static_msg_ReconnectResult_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_msg_ReconnectResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_msg_ReconnectResult_descriptor,
+        new java.lang.String[] { "UserId", "UkeyStr", "UkeyExpireAt", "Ok", });
+    internal_static_msg_SuccessHintResult_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_msg_SuccessHintResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_msg_SuccessHintResult_descriptor,
+        new java.lang.String[] { "SuccessInfo", });
+    internal_static_msg_ErrorHintResult_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_msg_ErrorHintResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_msg_ErrorHintResult_descriptor,
+        new java.lang.String[] { "ErrorCode", "ErrorMsg", });
     internal_static_msg_KickOutUserResult_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_msg_KickOutUserResult_fieldAccessorTable = new

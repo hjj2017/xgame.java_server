@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xgame.bizserver.def.ServerJobTypeEnum;
 import org.xgame.bizserver.msg.CommProtocol;
+import org.xgame.bizserver.msg.LoginServerProtocol;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,6 +83,12 @@ public final class MsgRecognizer {
                     CommProtocol.class
                 );
             }
+
+            tryInit(
+                ServerJobTypeEnum.LOGIN,
+                LoginServerProtocol.LoginServerMsgCodeDef.values(),
+                LoginServerProtocol.class
+            );
 
             _initOK = true;
         }
