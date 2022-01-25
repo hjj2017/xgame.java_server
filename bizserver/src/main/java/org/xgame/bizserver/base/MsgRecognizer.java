@@ -1,6 +1,5 @@
 package org.xgame.bizserver.base;
 
-import com.google.protobuf.Descriptors;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Internal;
 import com.google.protobuf.Parser;
@@ -9,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.xgame.bizserver.def.ServerJobTypeEnum;
 import org.xgame.bizserver.msg.CommProtocol;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,7 +33,7 @@ public final class MsgRecognizer {
     /**
      * 消息代号和消息对象字典
      */
-    private final Map<Integer, Descriptors.Descriptor> _msgCodeAndMsgDescMap = new ConcurrentHashMap<>();
+    private final Map<Integer, GeneratedMessageV3> _msgCodeAndMsgObjMap = new ConcurrentHashMap<>();
 
     /**
      * 消息编号和服务器工作类型字典
@@ -65,7 +63,7 @@ public final class MsgRecognizer {
     /**
      * 尝试初始化
      */
-    public void tryInit() {
+    private void tryInit() {
         if (_initOK) {
             return;
         }
@@ -75,13 +73,13 @@ public final class MsgRecognizer {
                 return;
             }
 
-            LOGGER.info("=== 完成消息编号与消息体的映射 ===");
+            LOGGER.debug("=== 完成消息编号与消息体的映射 ===");
 
             for (ServerJobTypeEnum sjt : ServerJobTypeEnum.values()) {
                 tryInit(
                     sjt, // 服务器工作类型
                     CommProtocol.CommMsgCodeDef.values(),
-                    CommProtocol.getDescriptor().getMessageTypes()
+                    CommProtocol.class
                 );
             }
 
@@ -92,17 +90,16 @@ public final class MsgRecognizer {
     /**
      * 尝试初始化
      *
-     * @param sjt          服务器工作类型
-     * @param enumValArray 消息枚举类型
-     * @param msgDescList  消息描述列表
+     * @param sjt           服务器工作类型
+     * @param enumValArray  消息枚举类型
+     * @param protocolClazz 消息协议类
      */
     private void tryInit(
-        ServerJobTypeEnum sjt, Enum<?>[] enumValArray, List<Descriptors.Descriptor> msgDescList) {
+        ServerJobTypeEnum sjt, Enum<?>[] enumValArray, Class<?> protocolClazz) {
         if (null == sjt ||
             null == enumValArray ||
             enumValArray.length <= 0 ||
-            null == msgDescList ||
-            msgDescList.isEmpty()) {
+            null == protocolClazz) {
             return;
         }
 
@@ -131,29 +128,47 @@ public final class MsgRecognizer {
             );
         }
 
-        for (Descriptors.Descriptor msgDesc : msgDescList) {
-            if (null == msgDesc) {
-                return;
+        // 获取内置类数组
+        Class<?>[] innerClazzArray = protocolClazz.getDeclaredClasses();
+
+        for (Class<?> innerClazz : innerClazzArray) {
+            if (!GeneratedMessageV3.class.isAssignableFrom(innerClazz)) {
+                // 如果不是消息,
+                continue;
             }
 
-            String msgName = msgDesc.getName()
+            // 创建消息对象
+            Object newMsg = null;
+
+            try {
+                newMsg = innerClazz.getDeclaredMethod("getDefaultInstance").invoke(innerClazz);
+            } catch (Exception ex) {
+                continue;
+            }
+
+            // 消息名称
+            final String msgName = innerClazz.getSimpleName()
                 .replaceAll("_", "")
                 .toLowerCase();
 
+            // 获取消息代号
             Integer msgCode = _msgNameAndMsgCodeMap.get(msgName);
 
-            if (null != msgCode) {
-                _msgCodeAndMsgDescMap.putIfAbsent(
-                    msgCode, msgDesc
-                );
-
-                LOGGER.debug(
-                    "关联 {} <==> {}, serverJobType = {}",
-                    msgDesc.getName(),
-                    msgCode,
-                    sjt.getStrVal()
-                );
+            if (null == msgCode) {
+                continue;
             }
+
+            _msgCodeAndMsgObjMap.putIfAbsent(
+                msgCode,
+                (GeneratedMessageV3) newMsg
+            );
+
+            LOGGER.info(
+                "关联 {} <==> {}, serverJobType = {}",
+                innerClazz.getSimpleName(),
+                msgCode,
+                sjt.getStrVal()
+            );
         }
     }
 
@@ -180,12 +195,12 @@ public final class MsgRecognizer {
         }
 
         tryInit();
-        Descriptors.Descriptor msgDesc = _msgCodeAndMsgDescMap.get(msgCode);
+        GeneratedMessageV3 msgObj = _msgCodeAndMsgObjMap.get(msgCode);
 
-        if (null == msgDesc) {
+        if (null == msgObj) {
             return null;
         } else {
-            return msgDesc.toProto().getParserForType();
+            return msgObj.getParserForType();
         }
     }
 
@@ -213,6 +228,8 @@ public final class MsgRecognizer {
         if (null == msgClazz) {
             return -1;
         }
+
+        tryInit();
 
         final String msgName = msgClazz.getSimpleName()
             .replaceAll("_", "")
