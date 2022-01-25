@@ -6,6 +6,9 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.xgame.gatewayserver.router.ClientMsgRouter;
@@ -50,6 +53,9 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
         }
 
         ChannelHandler[] hArray = {
+            new HttpServerCodec(), // Http 服务器编解码器
+            new HttpObjectAggregator(40960), // 内容长度限制
+            new WebSocketServerProtocolHandler("/websocket"), // WebSocket 协议处理器, 在这里处理握手、ping、pong 等消息
             new ClientMsgCodec(),
             new ClientMsgRouter()
         };
@@ -69,7 +75,8 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        if (null == ctx || null == ctx.channel()) {
+        if (null == ctx ||
+            null == ctx.channel()) {
             return;
         }
 
@@ -78,7 +85,8 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        if (null == ctx || null == ctx.channel()) {
+        if (null == ctx ||
+            null == ctx.channel()) {
             return;
         }
 

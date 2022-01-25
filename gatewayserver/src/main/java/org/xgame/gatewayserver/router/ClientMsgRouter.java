@@ -29,7 +29,6 @@ public class ClientMsgRouter extends ChannelInboundHandlerAdapter {
      */
     public ClientMsgRouter() {
         // 在此添加新的服务器工作类型和处理器
-        _hMap.put(ServerJobTypeEnum.CHAT, null);
         _hMap.put(ServerJobTypeEnum.LOGIN, new LoginServerRouter());
     }
 

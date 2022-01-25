@@ -5,7 +5,7 @@ option java_package = "org.xgame.bizserver.msg";
 option csharp_namespace = "Org.XGame.Comm.Msg";
 
 // 
-// 通用消息编号
+// 消息代号
 enum CommMsgCodeDef {
     _Dummy = 0;
     _PingCmd = 1;

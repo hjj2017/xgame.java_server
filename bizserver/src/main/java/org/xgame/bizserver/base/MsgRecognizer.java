@@ -76,14 +76,6 @@ public final class MsgRecognizer {
 
             LOGGER.debug("=== 完成消息编号与消息体的映射 ===");
 
-            for (ServerJobTypeEnum sjt : ServerJobTypeEnum.values()) {
-                tryInit(
-                    sjt, // 服务器工作类型
-                    CommProtocol.CommMsgCodeDef.values(),
-                    CommProtocol.class
-                );
-            }
-
             tryInit(
                 ServerJobTypeEnum.LOGIN,
                 LoginServerProtocol.LoginServerMsgCodeDef.values(),
@@ -170,7 +162,7 @@ public final class MsgRecognizer {
                 (GeneratedMessageV3) newMsg
             );
 
-            LOGGER.info(
+            LOGGER.debug(
                 "关联 {} <==> {}, serverJobType = {}",
                 innerClazz.getSimpleName(),
                 msgCode,

@@ -5,7 +5,7 @@ option java_package = "org.xgame.bizserver.msg";
 option csharp_namespace = "Org.XGame.Comm.Msg";
 
 //
-// 登录服务器消息编号
+// 消息代号
 enum LoginServerMsgCodeDef {
   _Dummy = 0;
   _UserLoginCmd = 101;

@@ -23,6 +23,13 @@ public class ClientMsgCodec extends CombinedChannelDuplexHandler<ClientMsgCodec.
     static private final Logger LOGGER = BaseLog.LOGGER;
 
     /**
+     * 类默认构造器
+     */
+    public ClientMsgCodec() {
+        super.init(new Decoder(), new Encoder());
+    }
+
+    /**
      * 客户端消息解码器
      * XXX 注意: 这里只将消息解码成半成品,
      * 不会完全解析成命令对象 XxxCmd!
