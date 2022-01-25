@@ -80,10 +80,10 @@ public final class BizServerFinder {
      */
     public NettyClient selectOneBizServer(ServerJobTypeEnum sjt) {
         if (null != _realFinder) {
-            LOGGER.warn("业务服务器发现者未空");
             return _realFinder.selectOneBizServer(sjt);
         }
 
+        LOGGER.warn("业务服务器发现者未空");
         return null;
     }
 }

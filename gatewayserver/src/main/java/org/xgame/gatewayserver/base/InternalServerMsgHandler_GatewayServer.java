@@ -1,7 +1,11 @@
 package org.xgame.gatewayserver.base;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelPipeline;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.InternalServerMsg;
 import org.xgame.bizserver.base.InternalServerMsgCodec;
@@ -41,12 +45,24 @@ public class InternalServerMsgHandler_GatewayServer extends ChannelInboundHandle
             return;
         }
 
-        // 添加编解码器
-        ctx.pipeline().addBefore(
-            ctx.name(),
-            InternalServerMsgCodec.class.getName(),
-            new InternalServerMsgCodec()
-        );
+        ChannelHandler[] hArray = {
+            new LengthFieldBasedFrameDecoder(4096, 0, 2, 0, 2),
+            new LengthFieldPrepender(2),
+            new InternalServerMsgCodec(),
+        };
+
+        // 获取信道管线
+        final ChannelPipeline pl = ctx.pipeline();
+
+        for (ChannelHandler h : hArray) {
+            // 获取处理器类
+            Class<? extends ChannelHandler>
+                hClazz = h.getClass();
+
+            if (null == pl.get(hClazz)) {
+                pl.addBefore(ctx.name(), hClazz.getSimpleName(), h);
+            }
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import org.slf4j.Logger;
+import org.xgame.bizserver.msg.CommProtocol;
 import org.xgame.comm.MainThreadProcessor;
 import org.xgame.comm.cmdhandler.AbstractCmdHandlerContext;
 
@@ -76,16 +77,16 @@ public class InternalServerMsgHandler_BizServer extends ChannelInboundHandlerAda
         // 获取协议消息
         GeneratedMessageV3 protoMsg = realMsg.getProtoMsg();
 
-//        if (CommProtocol.CommMsgCodeDef._PingCmd_VALUE != realMsg.getMsgCode()) {
-//            LOGGER.info(
-//                "收到内部服务器消息, proxyServerId = {}, remoteSessionId = {}, fromUserId = {}, msgCode = {}, msgClazz = {}",
-//                realMsg.getProxyServerId(),
-//                realMsg.getRemoteSessionId(),
-//                realMsg.getFromUserId(),
-//                realMsg.getMsgCode(),
-//                null == protoMsg ? "NULL" : protoMsg.getClass().getSimpleName()
-//            );
-//        }
+        if (CommProtocol.CommMsgCodeDef._PingCmd_VALUE != realMsg.getMsgCode()) {
+            LOGGER.info(
+                "收到内部服务器消息, proxyServerId = {}, remoteSessionId = {}, fromUserId = {}, msgCode = {}, msgClazz = {}",
+                realMsg.getProxyServerId(),
+                realMsg.getRemoteSessionId(),
+                realMsg.getFromUserId(),
+                realMsg.getMsgCode(),
+                null == protoMsg ? "NULL" : protoMsg.getClass().getSimpleName()
+            );
+        }
 
         AbstractCmdHandlerContext myCtx = new MyCmdHandlerContext(nettyCtx.channel())
             .setProxyServerId(realMsg.getProxyServerId())
