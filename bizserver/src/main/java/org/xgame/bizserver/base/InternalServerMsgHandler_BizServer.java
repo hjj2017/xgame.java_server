@@ -33,7 +33,7 @@ public class InternalServerMsgHandler_BizServer extends ChannelInboundHandlerAda
         };
 
         // 获取信道管线
-        ChannelPipeline pl = ctx.pipeline();
+        final ChannelPipeline pl = ctx.pipeline();
 
         for (ChannelHandler h : hArray) {
             // 获取处理器类
@@ -44,6 +44,24 @@ public class InternalServerMsgHandler_BizServer extends ChannelInboundHandlerAda
                 pl.addBefore(ctx.name(), hClazz.getSimpleName(), h);
             }
         }
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        if (null == ctx) {
+            return;
+        }
+
+        LOGGER.info("网关服务器已连入");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        if (null == ctx) {
+            return;
+        }
+
+        LOGGER.warn("网关服务器已断开");
     }
 
     @Override
@@ -85,14 +103,5 @@ public class InternalServerMsgHandler_BizServer extends ChannelInboundHandlerAda
         );
 
         realMsg.free();
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        if (null == ctx) {
-            return;
-        }
-
-        LOGGER.warn("连接已断开");
     }
 }

@@ -8,6 +8,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
+import org.xgame.gatewayserver.router.ClientMsgRouter;
 
 import java.util.List;
 import java.util.Map;
@@ -50,10 +51,11 @@ public class ClientMsgHandler extends ChannelDuplexHandler {
 
         ChannelHandler[] hArray = {
             new ClientMsgCodec(),
+            new ClientMsgRouter()
         };
 
         // 获取信道管线
-        ChannelPipeline pl = ctx.pipeline();
+        final ChannelPipeline pl = ctx.pipeline();
 
         for (ChannelHandler h : hArray) {
             // 获取处理器类
