@@ -61,7 +61,6 @@ class FindByNacos implements IBizServerFindStrategy {
     @Override
     public NettyClient selectOneBizServer(ServerJobTypeEnum sjt) {
         if (null == sjt ||
-            !_nettyClientMap.containsKey(sjt) ||
             null == _ns) {
             return null;
         }
@@ -80,7 +79,7 @@ class FindByNacos implements IBizServerFindStrategy {
                 return null;
             }
 
-            return _nettyClientMap.get(sjt).get(instance.getInstanceId());
+            return _connectHelper.find(sjt, instance.getInstanceId());
         } catch (Exception ex) {
             // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
@@ -135,8 +134,8 @@ class FindByNacos implements IBizServerFindStrategy {
             }
 
             connectToBizServer(
-                instance,
-                ServerJobTypeEnum.strToVal(ne.getGroupName())
+                ServerJobTypeEnum.strToVal(ne.getGroupName()),
+                instance
             );
         }
     }
@@ -144,18 +143,18 @@ class FindByNacos implements IBizServerFindStrategy {
     /**
      * 连接到业务服务器
      *
-     * @param regInstance 服务器信息
      * @param sjt         服务器工作类型
+     * @param regInstance 服务器信息
      */
-    private void connectToBizServer(Instance regInstance, ServerJobTypeEnum sjt) {
+    private void connectToBizServer(ServerJobTypeEnum sjt, Instance regInstance) {
         if (null == sjt ||
             null == regInstance) {
             return;
         }
 
         _connectHelper.connectToBizServer(
-            regInstance.getInstanceId(),
             sjt, // 服务器工作类型
+            regInstance.getInstanceId(),
             regInstance.getIp(),
             regInstance.getPort()
         );

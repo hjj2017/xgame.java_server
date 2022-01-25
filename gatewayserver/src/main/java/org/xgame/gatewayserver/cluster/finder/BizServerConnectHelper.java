@@ -32,9 +32,9 @@ class BizServerConnectHelper {
      * @param host     主机地址
      * @param port     端口号
      */
-    void connectToBizServer(String serverId, ServerJobTypeEnum sjt, String host, int port) {
-        if (null == serverId ||
-            null == sjt ||
+    void connectToBizServer(ServerJobTypeEnum sjt, String serverId, String host, int port) {
+        if (null == sjt ||
+            null == serverId ||
             null == host ||
             port <= 0) {
             return;
@@ -49,12 +49,14 @@ class BizServerConnectHelper {
         }
 
         if (innerMap.containsKey(serverId)) {
+            // 如果已经连接到服务器,
+            // 就不要重复连接了
             return;
         }
 
         LOGGER.info(
-            "发现新服务器, serverId = {}, serverJobType = {}, serverAddr = {}:{}",
-            serverId, sjt.getStrVal(), host, port
+            "发现新服务器, serverJobType = {}, serverId = {}, serverAddr = {}:{}",
+            sjt.getStrVal(), serverId, host, port
         );
 
         NettyClientConf newConf = new NettyClientConf()
@@ -68,5 +70,23 @@ class BizServerConnectHelper {
         newClient.connect();
 
         innerMap.put(serverId, newClient);
+    }
+
+    /**
+     * 根据服务器工作类型和服务器 Id 查找连接该服务器的客户端
+     *
+     * @param sjt      服务器工作类型
+     * @param serverId 服务器 Id
+     * @return 连接该服务器的客户端
+     */
+    NettyClient find(ServerJobTypeEnum sjt, String serverId) {
+        if (null == sjt ||
+            !_nettyClientMap.containsKey(sjt) ||
+            null == serverId ||
+            serverId.isEmpty()) {
+            return null;
+        }
+
+        return _nettyClientMap.get(sjt).get(serverId);
     }
 }

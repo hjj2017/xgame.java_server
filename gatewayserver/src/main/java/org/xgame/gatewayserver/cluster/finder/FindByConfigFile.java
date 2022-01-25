@@ -62,8 +62,8 @@ class FindByConfigFile implements IBizServerFindStrategy {
                 AsyncOperationProcessor.getInstance().process(i, () ->
                     sjtSet.forEach((sjt) ->
                         _connectHelper.connectToBizServer(
-                            joBizServer.getString("serverId"),
                             sjt, // 服务器工作类型
+                            joBizServer.getString("serverId"),
                             joBizServer.getString("host"),
                             joBizServer.getIntValue("port")
                         )
