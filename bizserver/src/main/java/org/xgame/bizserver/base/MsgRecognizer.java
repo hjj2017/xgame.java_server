@@ -1,13 +1,15 @@
 package org.xgame.bizserver.base;
 
+import com.google.protobuf.Descriptors;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Internal;
-import com.google.protobuf.Message;
+import com.google.protobuf.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xgame.bizserver.def.ServerJobTypeEnum;
+import org.xgame.bizserver.msg.CommProtocol;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,14 +23,19 @@ public final class MsgRecognizer {
     private static final Logger LOGGER = LoggerFactory.getLogger(MsgRecognizer.class);
 
     /**
-     * 消息代号和消息对象字典
+     * 单例对象
      */
-    private static final Map<Integer, GeneratedMessageV3> _msgCodeAndMsgObjMap = new ConcurrentHashMap<>();
+    private static final MsgRecognizer INSTANCE = new MsgRecognizer();
 
     /**
-     * 消息类型和消息编号字典
+     * 消息代号和消息对象字典
      */
-    private static final Map<Class<?>, Integer> _msgClazzAndMsgCodeMap = new ConcurrentHashMap<>();
+    private final Map<String, Integer> _msgNameAndMsgCodeMap = new ConcurrentHashMap<>();
+
+    /**
+     * 消息代号和消息对象字典
+     */
+    private final Map<Integer, Descriptors.Descriptor> _msgCodeAndMsgDescMap = new ConcurrentHashMap<>();
 
     /**
      * 消息编号和服务器工作类型字典
@@ -47,9 +54,18 @@ public final class MsgRecognizer {
     }
 
     /**
+     * 获取单例对象
+     *
+     * @return 单例对象
+     */
+    public static MsgRecognizer getInstance() {
+        return INSTANCE;
+    }
+
+    /**
      * 尝试初始化
      */
-    private static void tryInit() {
+    public void tryInit() {
         if (_initOK) {
             return;
         }
@@ -61,7 +77,12 @@ public final class MsgRecognizer {
 
             LOGGER.info("=== 完成消息编号与消息体的映射 ===");
 
-            for (ServerJobTypeEnum serverJobType : ServerJobTypeEnum.values()) {
+            for (ServerJobTypeEnum sjt : ServerJobTypeEnum.values()) {
+                tryInit(
+                    sjt, // 服务器工作类型
+                    CommProtocol.CommMsgCodeDef.values(),
+                    CommProtocol.getDescriptor().getMessageTypes()
+                );
             }
 
             _initOK = true;
@@ -71,76 +92,67 @@ public final class MsgRecognizer {
     /**
      * 尝试初始化
      *
-     * @param protocolClazz     协议类
-     * @param enumValArray      枚举值数组
-     * @param needServerJobType 需要服务器工作类型
+     * @param sjt          服务器工作类型
+     * @param enumValArray 消息枚举类型
+     * @param msgDescList  消息描述列表
      */
-    private static void tryInit(Class<?> protocolClazz, Enum<?>[] enumValArray, ServerJobTypeEnum needServerJobType) {
-        if (null == protocolClazz ||
+    private void tryInit(
+        ServerJobTypeEnum sjt, Enum<?>[] enumValArray, List<Descriptors.Descriptor> msgDescList) {
+        if (null == sjt ||
             null == enumValArray ||
-            enumValArray.length <= 0) {
+            enumValArray.length <= 0 ||
+            null == msgDescList ||
+            msgDescList.isEmpty()) {
             return;
         }
 
-        final Map<String, Integer> enumNameAndEnumValMap = new HashMap<>();
-
         for (Enum<?> enumVal : enumValArray) {
-            if (!(enumVal instanceof Internal.EnumLite) ||
-                enumVal.name().equals("_Dummy") ||
-                enumVal.name().equals("UNRECOGNIZED")) {
+            if (!(enumVal instanceof Internal.EnumLite)) {
                 continue;
             }
 
-            enumNameAndEnumValMap.put(
-                enumVal.name(),
-                ((Internal.EnumLite) enumVal).getNumber()
+            String msgName = enumVal.name()
+                .replaceAll("_", "")
+                .toLowerCase();
+
+            if ("dummy".equals(msgName) ||
+                "unrecognized".equals(msgName)) {
+                continue;
+            }
+
+            int msgCode = ((Internal.EnumLite) enumVal).getNumber();
+
+            _msgNameAndMsgCodeMap.putIfAbsent(
+                msgName, msgCode
+            );
+
+            _msgCodeAndServerJobTypeMap.put(
+                msgCode, sjt
             );
         }
 
-        // 获取内置类数组
-        Class<?>[] innerClazzArray = protocolClazz.getDeclaredClasses();
-
-        for (Class<?> innerClazz : innerClazzArray) {
-            if (!GeneratedMessageV3.class.isAssignableFrom(innerClazz)) {
-                // 如果不是消息,
-                continue;
+        for (Descriptors.Descriptor msgDesc : msgDescList) {
+            if (null == msgDesc) {
+                return;
             }
 
-            // 消息类
-            String clazzName = innerClazz.getSimpleName();
-            // 获取消息编号
-            Integer msgCode = enumNameAndEnumValMap.get("_" + clazzName);
+            String msgName = msgDesc.getName()
+                .replaceAll("_", "")
+                .toLowerCase();
 
-            if (null == msgCode) {
-                continue;
-            }
+            Integer msgCode = _msgNameAndMsgCodeMap.get(msgName);
 
-            try {
-                // 创建消息对象
-                Object newMsg = innerClazz.getDeclaredMethod("getDefaultInstance").invoke(innerClazz);
+            if (null != msgCode) {
+                _msgCodeAndMsgDescMap.putIfAbsent(
+                    msgCode, msgDesc
+                );
 
-                LOGGER.info(
+                LOGGER.debug(
                     "关联 {} <==> {}, serverJobType = {}",
-                    clazzName,
+                    msgDesc.getName(),
                     msgCode,
-                    needServerJobType.getStrVal()
+                    sjt.getStrVal()
                 );
-
-                _msgCodeAndMsgObjMap.put(
-                    msgCode, (GeneratedMessageV3) newMsg
-                );
-
-                _msgClazzAndMsgCodeMap.put(
-                    innerClazz, msgCode
-                );
-
-                _msgCodeAndServerJobTypeMap.put(
-                    msgCode,
-                    needServerJobType
-                );
-            } catch (Exception ex) {
-                // 记录错误日志
-                LOGGER.error(ex.getMessage(), ex);
             }
         }
     }
@@ -151,9 +163,8 @@ public final class MsgRecognizer {
      * @param msgCode 指定的消息编号
      * @return 服务器工作类型
      */
-    public static ServerJobTypeEnum getServerJobTypeByMsgCode(int msgCode) {
+    public ServerJobTypeEnum getServerJobTypeByMsgCode(int msgCode) {
         tryInit();
-
         return _msgCodeAndServerJobTypeMap.get(msgCode);
     }
 
@@ -163,46 +174,50 @@ public final class MsgRecognizer {
      * @param msgCode 消息编号
      * @return 消息构建器
      */
-    public static Message.Builder getMsgBuilderByMsgCode(int msgCode) {
+    public Parser<? extends GeneratedMessageV3> getMsgParserByMsgCode(int msgCode) {
         if (msgCode < 0) {
             return null;
         }
 
         tryInit();
+        Descriptors.Descriptor msgDesc = _msgCodeAndMsgDescMap.get(msgCode);
 
-        GeneratedMessageV3 msg = _msgCodeAndMsgObjMap.get(msgCode);
-
-        if (null == msg) {
+        if (null == msgDesc) {
             return null;
         } else {
-            return msg.newBuilderForType();
+            return msgDesc.toProto().getParserForType();
         }
     }
 
     /**
-     * 根据消息类获取消息编号
+     * 获取消息代号
+     *
+     * @param msgObj 消息对象
+     * @return 消息代号
+     */
+    public int getMsgCode(GeneratedMessageV3 msgObj) {
+        if (null == msgObj) {
+            return -1;
+        }
+
+        return getMsgCode(msgObj.getClass());
+    }
+
+    /**
+     * 获取消息代号
      *
      * @param msgClazz 消息类
-     * @return 消息编号
+     * @return 消息代号
      */
-    public static int getMsgCodeByMsgClazz(Class<?> msgClazz) {
+    public int getMsgCode(Class<? extends GeneratedMessageV3> msgClazz) {
         if (null == msgClazz) {
             return -1;
         }
 
-        tryInit();
+        final String msgName = msgClazz.getSimpleName()
+            .replaceAll("_", "")
+            .toLowerCase();
 
-        Integer msgCode = _msgClazzAndMsgCodeMap.get(msgClazz);
-
-        if (null != msgCode) {
-            return msgCode;
-        } else {
-            LOGGER.error(
-                "未识别出消息编号, msgClazz = {}",
-                msgClazz
-            );
-
-            return -1;
-        }
+        return _msgNameAndMsgCodeMap.get(msgName);
     }
 }

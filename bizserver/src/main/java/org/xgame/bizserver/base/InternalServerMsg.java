@@ -1,7 +1,7 @@
 package org.xgame.bizserver.base;
 
 import com.google.protobuf.GeneratedMessageV3;
-import com.google.protobuf.Message;
+import com.google.protobuf.Parser;
 import org.slf4j.Logger;
 
 /**
@@ -173,7 +173,7 @@ public final class InternalServerMsg {
             return;
         }
 
-        _msgCode = MsgRecognizer.getMsgCodeByMsgClazz(msgObj.getClass());
+        _msgCode = MsgRecognizer.getInstance().getMsgCode(msgObj);
         _msgBody = msgObj.toByteArray();
     }
 
@@ -184,9 +184,9 @@ public final class InternalServerMsg {
      */
     public GeneratedMessageV3 getProtoMsg() {
         // 获取消息构建器
-        Message.Builder msgBuilder = MsgRecognizer.getMsgBuilderByMsgCode(_msgCode);
+        Parser<? extends GeneratedMessageV3> msgParser = MsgRecognizer.getInstance().getMsgParserByMsgCode(_msgCode);
 
-        if (null == msgBuilder) {
+        if (null == msgParser) {
             LOGGER.error(
                 "未找到消息构建器, msgCode = {}",
                 _msgCode
@@ -195,22 +195,12 @@ public final class InternalServerMsg {
         }
 
         try {
-            msgBuilder.clear();
-            msgBuilder.mergeFrom(_msgBody);
+            return msgParser.parseFrom(_msgBody);
         } catch (Exception ex) {
-            // 记录错误日志
             LOGGER.error(ex.getMessage(), ex);
-            return null;
         }
 
-        Message newMsg = msgBuilder.build();
-
-        if (newMsg instanceof GeneratedMessageV3) {
-            // 如果是 Protobuf 消息,
-            return (GeneratedMessageV3) newMsg;
-        } else {
-            return null;
-        }
+        return null;
     }
 
     /**

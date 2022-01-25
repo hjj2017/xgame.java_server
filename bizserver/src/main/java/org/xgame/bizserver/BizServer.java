@@ -7,6 +7,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.xgame.bizserver.base.BaseLog;
 import org.xgame.bizserver.base.InternalServerMsgHandler_BizServer;
+import org.xgame.bizserver.base.MsgRecognizer;
 import org.xgame.bizserver.cluster.CurrServerReporter;
 import org.xgame.bizserver.def.WorkModeDef;
 import org.xgame.bizserver.mod.player.PlayerService;
@@ -57,6 +58,8 @@ public final class BizServer {
      * @param argvArray 命令行参数数组
      */
     public static void main(String[] argvArray) {
+        MsgRecognizer.getInstance().tryInit();
+
         // 设置 log4j 属性文件
         PropertyConfigurator.configure(BizServer.class.getClassLoader().getResourceAsStream("log4j.properties"));
         (new BizServer()).init(argvArray).startUp();

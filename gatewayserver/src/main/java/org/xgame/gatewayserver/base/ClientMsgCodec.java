@@ -90,7 +90,7 @@ public class ClientMsgCodec extends CombinedChannelDuplexHandler<ClientMsgCodec.
                     ((InternalServerMsg) msgObj).free();
                 } else /*if (msgObj instanceof GeneratedMessageV3)*/ {
                     // 如果是协议消息
-                    msgCode = MsgRecognizer.getMsgCodeByMsgClazz(msgObj.getClass());
+                    msgCode = MsgRecognizer.getInstance().getMsgCode((GeneratedMessageV3) msgObj);
                     msgBody = ((GeneratedMessageV3) msgObj).toByteArray();
                 }
 

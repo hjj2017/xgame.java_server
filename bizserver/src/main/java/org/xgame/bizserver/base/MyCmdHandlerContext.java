@@ -54,7 +54,7 @@ public class MyCmdHandlerContext extends AbstractCmdHandlerContext {
             .setRemoteSessionId(getRemoteSessionId())
             .setClientIP(getClientIP())
             .setFromUserId(getFromUserId())
-            .setMsgCode(MsgRecognizer.getMsgCodeByMsgClazz(protobufMsg.getClass()))
+            .setMsgCode(MsgRecognizer.getInstance().getMsgCode(protobufMsg))
             .setMsgBody(protobufMsg.toByteArray());
 
         return _proxyServerCh.writeAndFlush(innerMsg);

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 package msg;
-option java_package = "org.alphagame.bizserver.allmsg";
-option csharp_namespace = "Assets.XyzCode.Comm.AllMsg";
+option java_package = "org.xgame.bizserver.msg";
+option csharp_namespace = "Org.XGame.Comm.Msg";
 
 // 
 // 通用消息编号
@@ -10,12 +10,12 @@ enum CommMsgCodeDef {
     _Dummy = 0;
     _PingCmd = 1;
     _PingResult = 2;
-    _ReconnectCmd = 3;
-    _ReconnectResult = 4;
-    _SuccezzHintResult = 11;
-    _ErrorHintResult = 12;
-    _CheckInTicketCmd = 13;
-    _CheckInTicketResult = 14;
+    _CheckInTicketCmd = 11;
+    _CheckInTicketResult = 12;
+    _ReconnectCmd = 13;
+    _ReconnectResult = 14;
+    _SuccessHintResult = 15;
+    _ErrorHintResult = 16;
     _KickOutUserResult = 44;
 }
 
