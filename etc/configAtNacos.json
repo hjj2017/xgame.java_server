@@ -1,16 +1,12 @@
 {
     "dbAgent": {
-        "useImplClazz": "org.xgame.comm.db.impl.RabbitMQImpl",
-        "rabbitMQConf": {
-            "uri": "amqp://xxoo:xxoo@192.168.56.101:5672/xxoo",
+        "mongoDBConnStr": "mongodb://127.0.0.1:27017/xxoo?retryWrites=true&w=majority&maxPoolSize=32",
+        "--rabbitMQConf": {
+            "uri": "amqp://xxoo:xxoo@127.0.0.1:5672/xxoo",
             "rpcRequestQueueArray": [
                 "rpc_request_queue_0",
                 "rpc_request_queue_1"
             ]
         }
-    },
-
-    "mongoDB": {
-        "connStr": "mongodb://192.168.56.101:27017/xxoo?retryWrites=true&w=majority&maxPoolSize=32"
     }
 }
