@@ -69,7 +69,9 @@ class BizServerConnectHelper {
         NettyClient newClient = new NettyClient(newConf);
         newClient.connect();
 
-        innerMap.put(serverId, newClient);
+        if (newClient.isOpen()) {
+            innerMap.put(serverId, newClient);
+        }
     }
 
     /**

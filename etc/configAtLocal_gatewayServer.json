@@ -1,5 +1,5 @@
 {
     "possibleBizServerList": [
-        { "serverId": "1001", "host": "127.0.0.1", "port": 4401, "serverJobTypeSet": "LOGIN,GAME" }
+        { "serverId": "bizServer_4501", "host": "127.0.0.1", "port": 4501, "serverJobTypeSet": "LOGIN,GAME" }
     ]
 }
