@@ -11,7 +11,10 @@ import org.xgame.gatewayserver.base.ClientMsgSemiFinished;
 import org.xgame.gatewayserver.base.IdSetterGetter;
 import org.xgame.gatewayserver.cluster.finder.BizServerFinder;
 
-public class LoginServerRouter {
+/**
+ * 登录服务器路由器
+ */
+class LoginServerRouter implements IRouter {
     /**
      * 日志对象
      */
