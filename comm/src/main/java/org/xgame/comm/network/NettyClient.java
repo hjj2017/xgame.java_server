@@ -65,6 +65,15 @@ public final class NettyClient {
      * 连接
      */
     public void connect() {
+        connect(true);
+    }
+
+    /**
+     * 连接
+     *
+     * @param printError 打印错误信息
+     */
+    public void connect(boolean printError) {
         try {
             // Netty NIO 线程池
             NioEventLoopGroup workerGroup = _usingConf.getWorkerGroup();
@@ -114,8 +123,10 @@ public final class NettyClient {
             _ch = f.channel();
             _ch.closeFuture().addListener(this::onLoseConnect);
         } catch (Exception ex) {
-            // 记录错误日志
-            LOGGER.error(ex.getMessage(), ex);
+            if (printError) {
+                // 记录错误日志
+                LOGGER.error(ex.getMessage(), ex);
+            }
         }
     }
 

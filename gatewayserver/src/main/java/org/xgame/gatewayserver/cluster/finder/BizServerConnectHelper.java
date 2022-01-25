@@ -54,7 +54,7 @@ class BizServerConnectHelper {
             return;
         }
 
-        LOGGER.info(
+        LOGGER.debug(
             "发现新服务器, serverJobType = {}, serverId = {}, serverAddr = {}:{}",
             sjt.getStrVal(), serverId, host, port
         );
@@ -67,7 +67,7 @@ class BizServerConnectHelper {
             .setCloseCallback(innerMap.values()::remove);
 
         NettyClient newClient = new NettyClient(newConf);
-        newClient.connect();
+        newClient.connect(false);
 
         if (newClient.isOpen()) {
             innerMap.put(serverId, newClient);
