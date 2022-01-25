@@ -15,6 +15,13 @@ import java.nio.file.Paths;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 通过配置文件发现,
+ * 其本质是通过定时任务不断的尝试连接目标服务器!
+ * 目标服务器有哪些?
+ * 这个已经在配置文件中明确定义了...
+ * 所以无法像 Nacos 那样, 支持运行期间动态增加业务服务器...
+ */
 class FindByConfigFile implements IBizServerFindStrategy {
     /**
      * 日志对象
@@ -28,6 +35,11 @@ class FindByConfigFile implements IBizServerFindStrategy {
 
     @Override
     public void startFind(CommandLine cmdLn) {
+        if (null == cmdLn ||
+            !cmdLn.hasOption("config_file")) {
+            return;
+        }
+        
         String strConfig = null;
 
         try {
